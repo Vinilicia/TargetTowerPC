@@ -1,0 +1,44 @@
+[gd_scene load_steps=5 format=3 uid="uid://b0b80o28au65e"]
+
+[ext_resource type="Script" path="res://Scripts/Actors/Enemies/Enemy.gd" id="1_olwcp"]
+[ext_resource type="Texture2D" uid="uid://dc4hwctpoftru" path="res://icon.svg" id="2_0kqgt"]
+[ext_resource type="PackedScene" uid="uid://iffx5ee4et50" path="res://Scenes/Actions-Reactions/Reactions.tscn" id="3_00mss"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fr1pd"]
+radius = 8.0
+height = 16.0
+
+[node name="Enemy" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 31
+script = ExtResource("1_olwcp")
+Jump_Force = -200
+
+[node name="Sprite" type="Sprite2D" parent="."]
+scale = Vector2(0.125, 0.125)
+texture = ExtResource("2_0kqgt")
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+shape = SubResource("CapsuleShape2D_fr1pd")
+debug_color = Color(0, 0.6, 0.701961, 0.419608)
+
+[node name="Wall_Detec_For_Jump" type="RayCast2D" parent="."]
+position = Vector2(0, -16)
+target_position = Vector2(13, 0)
+collision_mask = 4
+
+[node name="Wall_Detec" type="RayCast2D" parent="."]
+target_position = Vector2(13, 0)
+collision_mask = 4
+
+[node name="Reactions" parent="." instance=ExtResource("3_00mss")]
+is_pushable = true
+is_freezable = true
+is_heatable = true
+Weight = 100.0
+Heat_Resistance = 1.0
+Temp_To_Flamed = 2.0
+Burn_Type = "Cool_Off"
+Burn_Time = 2.0
+Auto_Defrost = true
+Defrost_Time = 5.0

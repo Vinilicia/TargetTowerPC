@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://iffx5ee4et50"]
+
+[ext_resource type="Script" path="res://Scripts/Actions-Reactions/Reactions.gd" id="1_hcvhn"]
+
+[node name="Reactions" type="Node"]
+script = ExtResource("1_hcvhn")
+Fire_Range = 1
+Burn_Type = "Destroy"
+Can_Be_Destroyed = true
+Max_Temp_Supported = 4

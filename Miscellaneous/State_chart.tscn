@@ -1,0 +1,97 @@
+[gd_scene load_steps=6 format=3 uid="uid://bjhp7k0tua0v8"]
+
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="1_tcdga"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/parallel_state.gd" id="2_7l62e"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="3_moj08"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="4_ntm7h"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="5_qyg7q"]
+
+[node name="StateChart" type="Node"]
+script = ExtResource("1_tcdga")
+
+[node name="States" type="Node" parent="."]
+script = ExtResource("2_7l62e")
+
+[node name="Fire" type="Node" parent="States"]
+script = ExtResource("3_moj08")
+initial_state = NodePath("Normal")
+
+[node name="Normal" type="Node" parent="States/Fire"]
+script = ExtResource("4_ntm7h")
+
+[node name="To_Heating" type="Node" parent="States/Fire/Normal"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../Heating")
+event = &"\"Got_Heated\""
+
+[node name="Heating" type="Node" parent="States/Fire"]
+script = ExtResource("4_ntm7h")
+
+[node name="To_Normal" type="Node" parent="States/Fire/Heating"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../Normal")
+
+[node name="To_On_Fire" type="Node" parent="States/Fire/Heating"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../On_Fire")
+
+[node name="On_Fire" type="Node" parent="States/Fire"]
+script = ExtResource("4_ntm7h")
+
+[node name="To_Heating" type="Node" parent="States/Fire/On_Fire"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../Heating")
+
+[node name="To_Burnt" type="Node" parent="States/Fire/On_Fire"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../Burnt")
+
+[node name="Burnt" type="Node" parent="States/Fire"]
+script = ExtResource("4_ntm7h")
+
+[node name="Water" type="Node" parent="States"]
+script = ExtResource("3_moj08")
+initial_state = NodePath("Dry")
+
+[node name="Dry" type="Node" parent="States/Water"]
+script = ExtResource("4_ntm7h")
+
+[node name="To_Wet" type="Node" parent="States/Water/Dry"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../Wet")
+
+[node name="Wet" type="Node" parent="States/Water"]
+script = ExtResource("4_ntm7h")
+
+[node name="To_Dry" type="Node" parent="States/Water/Wet"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../Dry")
+
+[node name="Freeze" type="Node" parent="States"]
+script = ExtResource("3_moj08")
+initial_state = NodePath("Normal")
+
+[node name="Normal" type="Node" parent="States/Freeze"]
+script = ExtResource("4_ntm7h")
+
+[node name="To_Slowed" type="Node" parent="States/Freeze/Normal"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../Slowed")
+
+[node name="Slowed" type="Node" parent="States/Freeze"]
+script = ExtResource("4_ntm7h")
+
+[node name="To_Normal" type="Node" parent="States/Freeze/Slowed"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../Normal")
+
+[node name="To_Frozen" type="Node" parent="States/Freeze/Slowed"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../Frozen")
+
+[node name="Frozen" type="Node" parent="States/Freeze"]
+script = ExtResource("4_ntm7h")
+
+[node name="To_Slowed" type="Node" parent="States/Freeze/Frozen"]
+script = ExtResource("5_qyg7q")
+to = NodePath("../../Slowed")

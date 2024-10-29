@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://burg3todgx2jh"]
+
+[ext_resource type="PackedScene" uid="uid://iffx5ee4et50" path="res://Scenes/Actions-Reactions/Reactions.tscn" id="1_cr525"]
+[ext_resource type="Script" path="res://Miscellaneous/Bonfire.gd" id="1_rawbb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tabyj"]
+size = Vector2(32, 16)
+
+[node name="Bonfire" type="Area2D"]
+collision_layer = 16
+collision_mask = 30
+script = ExtResource("1_rawbb")
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_tabyj")
+
+[node name="Reactions" parent="." instance=ExtResource("1_cr525")]
+is_heatable = true
+Heat_Resistance = 1.0
+Temp_To_Flamed = 1.0
+Emanate_Heat = true
+Base_Heat = 2.0
+Fire_Range = 6
+Burn_Type = "Cool_Off"
+Burn_Time = 10.0
+Can_Be_Destroyed = false
+Max_Temp_Supported = 0

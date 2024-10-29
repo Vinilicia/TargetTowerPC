@@ -1,0 +1,32 @@
+[gd_scene load_steps=4 format=3 uid="uid://c6knkrnive6ub"]
+
+[ext_resource type="Script" path="res://Scripts/Arrows/Platform_Arrow.gd" id="1_a3nj1"]
+[ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_ftbuc"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h84jg"]
+size = Vector2(5.57763, 1)
+
+[node name="Arrow" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 28
+script = ExtResource("1_a3nj1")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_ftbuc")
+
+[node name="Anim_Player" type="AnimationPlayer" parent="."]
+
+[node name="Plat_Spawner" type="Marker2D" parent="."]
+position = Vector2(-4.5, -0.791)
+
+[node name="Collision" type="Area2D" parent="."]
+position = Vector2(5, -0.5)
+collision_layer = 2
+collision_mask = 28
+
+[node name="Coll" type="CollisionShape2D" parent="Collision"]
+scale = Vector2(0.359, -1)
+shape = SubResource("RectangleShape2D_h84jg")
+
+[connection signal="body_entered" from="Collision" to="." method="_on_body_entered"]

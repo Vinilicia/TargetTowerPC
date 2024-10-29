@@ -1,0 +1,23 @@
+[gd_scene load_steps=3 format=3 uid="uid://trih87ps31u"]
+
+[ext_resource type="Script" path="res://Scripts/Interactibles/Objects/Platform.gd" id="1_4arru"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_tnn8w"]
+size = Vector2(15, 2.71951)
+
+[node name="Platform" type="RigidBody2D"]
+rotation = 1.5708
+collision_layer = 4
+collision_mask = 29
+lock_rotation = true
+freeze = true
+max_contacts_reported = 10
+contact_monitor = true
+script = ExtResource("1_4arru")
+
+[node name="Platform_Col" type="CollisionShape2D" parent="."]
+rotation = 3.14159
+scale = Vector2(1.00277, -0.581561)
+shape = SubResource("RectangleShape2D_tnn8w")
+one_way_collision = true
+debug_color = Color(0.956863, 0.0784314, 0.486275, 0.733333)

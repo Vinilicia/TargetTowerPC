@@ -1,0 +1,35 @@
+[gd_scene load_steps=6 format=3 uid="uid://dkmuq3cn3ke8j"]
+
+[ext_resource type="Script" path="res://Scripts/Arrows/Freeze_Arrow.gd" id="1_p5k47"]
+[ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_qfcbn"]
+[ext_resource type="PackedScene" uid="uid://cwjuhs7dtev4v" path="res://Scenes/Actions-Reactions/Actions.tscn" id="3_x26si"]
+[ext_resource type="PackedScene" uid="uid://xmj0nx76ga7t" path="res://Scenes/Actions-Reactions/Freeze.tscn" id="4_ui11x"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_0l8f1"]
+size = Vector2(5.57763, 1)
+
+[node name="Freeze_Arrow" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 28
+script = ExtResource("1_p5k47")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_qfcbn")
+
+[node name="Anim_Player" type="AnimationPlayer" parent="."]
+
+[node name="Collision" type="Area2D" parent="."]
+position = Vector2(5, -0.5)
+collision_layer = 2
+collision_mask = 28
+
+[node name="Coll" type="CollisionShape2D" parent="Collision"]
+scale = Vector2(0.359, -1)
+shape = SubResource("RectangleShape2D_0l8f1")
+
+[node name="Actions" parent="." instance=ExtResource("3_x26si")]
+
+[node name="Freeze" parent="Actions" instance=ExtResource("4_ui11x")]
+
+[connection signal="body_entered" from="Collision" to="." method="_on_body_entered"]

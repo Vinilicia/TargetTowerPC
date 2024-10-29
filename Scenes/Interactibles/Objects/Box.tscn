@@ -1,0 +1,27 @@
+[gd_scene load_steps=4 format=3 uid="uid://cbdgnirehg3g5"]
+
+[ext_resource type="Script" path="res://Scripts/Interactibles/Objects/Box.gd" id="1_lo34k"]
+[ext_resource type="PackedScene" uid="uid://iffx5ee4et50" path="res://Scenes/Actions-Reactions/Reactions.tscn" id="2_8qy7r"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_o308p"]
+size = Vector2(32, 32)
+
+[node name="Box" type="CharacterBody2D"]
+collision_layer = 16
+collision_mask = 21
+script = ExtResource("1_lo34k")
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+shape = SubResource("RectangleShape2D_o308p")
+
+[node name="Reactions" parent="." instance=ExtResource("2_8qy7r")]
+is_pushable = true
+is_freezable = true
+is_heatable = true
+Weight = 200.0
+Heat_Resistance = 2.0
+Temp_To_Flamed = 2.0
+Emanate_Heat = true
+Base_Heat = 1.0
+Fire_Range = 4
+Burn_Time = 7.0

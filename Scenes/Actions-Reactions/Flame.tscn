@@ -1,0 +1,16 @@
+[gd_scene load_steps=2 format=3 uid="uid://bnt2w2mn5r7pa"]
+
+[ext_resource type="Script" path="res://Scripts/Actions-Reactions/Flame.gd" id="1_u176f"]
+
+[node name="Flame" type="Area2D"]
+collision_layer = 128
+collision_mask = 24
+script = ExtResource("1_u176f")
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+debug_color = Color(0.968627, 0, 0, 0.419608)
+
+[connection signal="area_entered" from="." to="." method="_on_body_or_area_entered"]
+[connection signal="area_exited" from="." to="." method="_on_body_or_area_exited"]
+[connection signal="body_entered" from="." to="." method="_on_body_or_area_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_or_area_exited"]

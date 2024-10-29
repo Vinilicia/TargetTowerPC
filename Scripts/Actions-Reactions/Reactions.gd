@@ -1,0 +1,232 @@
+extends Node
+
+@onready var parent : Node2D = get_parent()
+
+@export_category("General")
+
+@export var is_pushable : bool
+@export var is_freezable : bool
+@export var is_heatable : bool
+@export var is_dryable : bool
+@export var is_electrifiable : bool
+
+############################################ GENERAL ############################################
+
+func _ready():
+	if is_freezable:
+		freeze_ready()
+	if is_heatable:
+		ready_heatable()
+
+func _physics_process(delta):
+	if is_pushable:
+		pushable_handle_physics(delta)
+	if is_heatable:
+		heatable_handle_physics()
+
+
+############################################# PUSHABLE #############################################
+
+@export_category("Pushable")
+@export var Weight : float
+
+var knockback_vector := Vector2.ZERO
+var dir = 0
+
+func be_pushed(direction : int, push_force : Vector2) -> void:
+	dir = direction
+	knockback_vector = Vector2(0,0)
+	if push_force.x - Weight > 0:
+		knockback_vector.x = push_force.x - Weight
+	if push_force.y - Weight > 0:
+		knockback_vector.y = push_force.y - Weight
+	knockback_vector *= dir
+
+func pushable_handle_physics(delta):
+	if knockback_vector.x != 0:
+		parent.velocity += knockback_vector
+		knockback_vector = Vector2.ZERO
+	if parent.is_on_floor():
+		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.velocity.x/7 * dir)
+	else:
+		parent.velocity.x = move_toward(parent.velocity.x, 0, parent.velocity.x/10 * dir)
+
+############################################ FLAMMABLE ############################################
+
+@export_category("Heatable")
+
+@export var Heat_Resistance : float
+@export var Fire_Resistance : float
+
+@export var Temp_To_Flamed : float
+
+#valor base da intensidade do calor e sua range(* 10)
+@export var Emanate_Heat : bool
+@export var Base_Heat : float
+@export_range(1, 10) var Fire_Range : int
+
+#queimar
+@export_enum("Destroy", "Cool_Off") var Burn_Type : String
+@export var Burn_Time : float
+@export var Can_Be_Destroyed : bool
+@export var Max_Temp_Supported : int
+
+var enter_burn_func : Callable
+var exit_burn_func : Callable
+
+var temperature : int = 0
+var time_per_tick : float = 0
+var was_hit : bool = false
+
+#estados
+var on_flame : bool = false
+var still_heating : bool = false
+
+#nós que podem ser criados
+var heat_area : Area2D
+var burning_timer : Timer
+var heating_timer : Timer
+
+var loop_number : int
+
+func ready_heatable() -> void:
+	enter_burn_func = parent.enter_burn_func
+	exit_burn_func = parent.exit_burn_func
+
+func start_heating(heat : float, max_heat_value : float, heating_body : Node, instant : bool = false) -> bool:
+	var temp_to_gain : float = heat - Fire_Resistance
+	loop_number = max(max_heat_value - temperature, 0)
+	if loop_number != 0:
+		if instant:
+			temperature += temp_to_gain
+		else:
+			time_per_tick = Heat_Resistance / temp_to_gain
+			create_heating_loop(time_per_tick, loop_number)
+		was_hit = true
+		return true
+	if instant:
+		was_hit = true
+	return false
+
+func create_heating_loop(time_per_tick : float, loop_number : int) -> void:
+	still_heating = true
+	heating_timer = Timer.new()
+	heating_timer.autostart = false
+	heating_timer.timeout.connect(gain_one_heat)
+	heating_timer.one_shot = true
+	parent.add_child(heating_timer)
+	heating_timer.start(time_per_tick)
+
+func gain_one_heat() -> void:
+	loop_number -= 1
+	temperature += 1
+	if loop_number > 0:
+		heating_timer.start(time_per_tick)
+
+func stop_heating_loop() -> void:
+	print_debug("Banana")
+	still_heating = false
+	loop_number = 0
+	if heating_timer:
+		heating_timer.stop()
+		heating_timer.queue_free()
+	lose_heat()
+
+func create_heat_area() -> void: 
+	var coll_node : CollisionShape2D = parent.get_node("Coll")
+	var coll_shape : Shape2D = coll_node.get_shape()
+	heat_area = load("res://Scenes/Actions-Reactions/Flame.tscn").instantiate()
+	parent.add_child(heat_area)
+	heat_area.set_collision(coll_shape, 1 + float(Fire_Range)/10)
+	heat_area.Max_Temp_Raise = 2
+
+func disable_heat_area() -> void:
+	heat_area.queue_free()
+
+func create_burning_timer() -> void:
+	if burning_timer == null:
+		burning_timer = Timer.new()
+		burning_timer.autostart = false
+		burning_timer.timeout.connect(exit_burn)
+		burning_timer.one_shot = true
+		parent.add_child(burning_timer)
+		burning_timer.start(Burn_Time)
+	elif Burn_Type == "Cool_Off":
+		burning_timer.start(Burn_Time)
+
+func lose_heat() -> void:
+	temperature = 0
+
+func exit_burn() -> void:
+	#alterar sprite e tals
+	on_flame = false
+	if heat_area:
+		disable_heat_area()
+	exit_burn_func.call()
+	if Burn_Type == "Cool_Off":
+		lose_heat()
+
+func enter_burn() -> void:
+	#alterar sprite e tals
+	still_heating = false
+	enter_burn_func.call()
+	on_flame = true
+
+func update_flame_intensity() -> void:
+	if heat_area != null:
+		heat_area.Flame_Intensity = Base_Heat * temperature
+
+func handle_fire_state() -> void:
+	#ganhou temperatura
+	if !on_flame and temperature >= Temp_To_Flamed:
+		if Emanate_Heat:
+			create_heat_area()
+		enter_burn()
+		create_burning_timer()
+		was_hit = false
+	if on_flame and was_hit:
+		was_hit = false
+		create_burning_timer()
+	if temperature >= Max_Temp_Supported and Can_Be_Destroyed:
+		exit_burn()
+
+func heatable_handle_physics() -> void:
+	handle_fire_state()
+	update_flame_intensity()
+############################################ FREEZABLE ############################################
+
+@export_category("Freezable")
+@export var Color_Change : Color = Color(0, 0, 1, 0.5)
+@export var Auto_Defrost : bool
+@export var Defrost_Time : float
+
+signal freeze_ended
+
+
+var frozen : bool = false
+
+func freeze_ready():
+	if Auto_Defrost:
+		freeze_ended.connect(be_defrosted)
+
+
+func be_frozen():
+	frozen = true
+	parent.coll.debug_color = parent.coll.debug_color + Color_Change
+	if Auto_Defrost:
+		await get_tree().create_timer(Defrost_Time).timeout
+		emit_signal("freeze_ended")
+
+func be_defrosted():
+	parent.coll.debug_color = parent.coll.debug_color - Color_Change
+	frozen = false
+
+
+############################################ DRYABLE ############################################
+
+@export_category("Dryable")
+
+############################################ ELECTRIFIABLE ############################################
+
+@export_category("Electrifiable")
+

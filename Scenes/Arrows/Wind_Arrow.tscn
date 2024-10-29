@@ -1,0 +1,50 @@
+[gd_scene load_steps=7 format=3 uid="uid://ts0g2wetnttl"]
+
+[ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="1_0n1aq"]
+[ext_resource type="Script" path="res://Scripts/Arrows/Wind_Arrow.gd" id="1_87pow"]
+[ext_resource type="PackedScene" uid="uid://6n5bosmdjh61" path="res://Scenes/Actions-Reactions/Push.tscn" id="3_hrb3y"]
+[ext_resource type="PackedScene" uid="uid://cwjuhs7dtev4v" path="res://Scenes/Actions-Reactions/Actions.tscn" id="3_qc4pf"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_mhx36"]
+radius = 5.0
+height = 28.0
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_jlwqu"]
+size = Vector2(5.57763, 1)
+
+[node name="Wind_Arrow" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 28
+script = ExtResource("1_87pow")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("1_0n1aq")
+
+[node name="Anim_Player" type="AnimationPlayer" parent="."]
+
+[node name="Push_Area" type="Area2D" parent="."]
+position = Vector2(3, -0.5)
+collision_layer = 2
+collision_mask = 28
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Push_Area"]
+shape = SubResource("CapsuleShape2D_mhx36")
+
+[node name="Collision" type="Area2D" parent="."]
+position = Vector2(3, -0.5)
+scale = Vector2(1, 3)
+collision_layer = 2
+collision_mask = 28
+
+[node name="Coll" type="CollisionShape2D" parent="Collision"]
+scale = Vector2(0.359, -1)
+shape = SubResource("RectangleShape2D_jlwqu")
+
+[node name="Actions" parent="." instance=ExtResource("3_qc4pf")]
+
+[node name="Push" parent="Actions" instance=ExtResource("3_hrb3y")]
+push_force = Vector2(350, 0)
+
+[connection signal="body_entered" from="Push_Area" to="." method="_on_push_area_body_entered"]
+[connection signal="body_entered" from="Collision" to="." method="_on_body_entered"]
