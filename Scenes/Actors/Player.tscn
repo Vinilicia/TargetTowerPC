@@ -1,7 +1,7 @@
 [gd_scene load_steps=9 format=3 uid="uid://bi46s1lw77hbo"]
 
 [ext_resource type="Texture2D" uid="uid://dc4hwctpoftru" path="res://icon.svg" id="1_5aeuf"]
-[ext_resource type="Script" path="res://Scripts/Actors/player.gd" id="1_sk7kx"]
+[ext_resource type="Script" path="res://Scripts/Actors/Player.gd" id="1_sk7kx"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="3_7ej5o"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="4_58ft6"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_6kmac"]

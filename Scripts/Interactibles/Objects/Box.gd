@@ -5,7 +5,6 @@ var gravity = ProjectSettings.get_setting("physics/2d/default_gravity")
 var reactions
 var coll
 
-var massiveness = 1
 var enter_burn_func : Callable = start_burning
 var exit_burn_func : Callable = stop_burning
  

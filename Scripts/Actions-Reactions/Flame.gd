@@ -4,18 +4,11 @@ extends Area2D
 @export var Flame_Intensity : float
 @export var Insta_Flame : bool
 
-var heating_bodies : Array[Node]
+var heating_nodes : Array[Node]
 var coll : CollisionShape2D
 
 func _ready():
 	coll = $Coll
-
-func in_heating_list(body : Node2D) -> bool:
-	for element in heating_bodies:
-		if body == element:
-			return true
-	return false
-
 
 func set_collision(collision_shape : Shape2D, collision_scale : float) -> void:
 	coll.shape = collision_shape
@@ -23,13 +16,14 @@ func set_collision(collision_shape : Shape2D, collision_scale : float) -> void:
 	
  
 func handle_start_flame(body_or_area : Node2D, intensity_modifier : float = 1) -> void:
-	#if get_parent().has_node("Reactions"):
-		#heating_bodies = get_parent().reactions.get_heating_bodies_array()
 	if is_heatable(body_or_area):
-		#body_or_area.reactions.fire_source = get_parent()
-		if body_or_area.reactions.start_heating(Flame_Intensity * intensity_modifier, Max_Temp_Raise, get_parent(),  Insta_Flame):
-			heating_bodies.append(body_or_area)
-		
+		var total_flame = Flame_Intensity * intensity_modifier
+		body_or_area.reactions.set_heating_values(total_flame, Max_Temp_Raise,  Insta_Flame)
+		body_or_area.reactions.start_heating()
+
+func handle_continue_flame(body_or_area : Node2D) -> void:
+	if is_heatable(body_or_area):
+		pass
 
 func handle_stop_flame(body_or_area : Node2D) -> void:
 	if !Insta_Flame:

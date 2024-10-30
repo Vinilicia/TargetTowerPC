@@ -93,7 +93,7 @@ func ready_heatable() -> void:
 	enter_burn_func = parent.enter_burn_func
 	exit_burn_func = parent.exit_burn_func
 
-func start_heating(heat : float, max_heat_value : float, heating_body : Node, instant : bool = false) -> bool:
+func start_heating(heat : float, max_heat_value : float, instant : bool = false) -> void:
 	var temp_to_gain : float = heat - Fire_Resistance
 	loop_number = max(max_heat_value - temperature, 0)
 	if loop_number != 0:
@@ -103,10 +103,8 @@ func start_heating(heat : float, max_heat_value : float, heating_body : Node, in
 			time_per_tick = Heat_Resistance / temp_to_gain
 			create_heating_loop(time_per_tick, loop_number)
 		was_hit = true
-		return true
 	if instant:
 		was_hit = true
-	return false
 
 func create_heating_loop(time_per_tick : float, loop_number : int) -> void:
 	still_heating = true
