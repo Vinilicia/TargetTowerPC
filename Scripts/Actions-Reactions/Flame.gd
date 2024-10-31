@@ -6,6 +6,7 @@ extends Area2D
 
 var heating_nodes : Array[Node]
 var coll : CollisionShape2D
+var parent_node : Node
 
 func _ready():
 	coll = $Coll
@@ -31,7 +32,7 @@ func handle_stop_flame(body_or_area : Node2D) -> void:
 	
 
 func is_heatable(body : Node2D) -> bool:
-	if body.has_node("Reactions"):
+	if body.has_node("Reactions") and body != parent_node:
 		return body.reactions.is_heatable
 	else:
 		return false

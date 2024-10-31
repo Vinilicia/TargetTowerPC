@@ -6,6 +6,7 @@ extends Arrow
 
 func _ready():
 	if charged:
+		flame.parent_node = self
 		flame.set_collision(coll.shape, 10)
 		flame.Flame_Intensity *= 2
 	else:

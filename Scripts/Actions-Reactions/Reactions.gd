@@ -141,6 +141,7 @@ func create_heat_area() -> void:
 	parent.add_child(heat_area)
 	heat_area.set_collision(coll_shape, 1 + float(Fire_Range)/10)
 	heat_area.Max_Temp_Raise = 2
+	heat_area.parent_node = parent
 
 func disable_heat_area() -> void:
 	heat_area.queue_free()
