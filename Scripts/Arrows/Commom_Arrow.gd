@@ -6,7 +6,7 @@ class_name Arrow
 @onready var sprite = $Sprite as Sprite2D
 
 
-@export var Flying_Speed : float = 400
+@export var Flying_Speed : float = 50  
 @export var Charge_Multiplier : float = 2
 @export var Despawn_Time : float = 7
 

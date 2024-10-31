@@ -17,18 +17,18 @@ func set_collision(collision_shape : Shape2D, collision_scale : float) -> void:
  
 func handle_start_flame(body_or_area : Node2D, intensity_modifier : float = 1) -> void:
 	if is_heatable(body_or_area):
+		body_or_area.reactions.set_contact(true)
 		var total_flame = Flame_Intensity * intensity_modifier
-		body_or_area.reactions.set_heating_values(total_flame, Max_Temp_Raise,  Insta_Flame)
-		body_or_area.reactions.start_heating()
+		body_or_area.reactions.start_heating(total_flame, Max_Temp_Raise,  Insta_Flame)
 
-func handle_continue_flame(body_or_area : Node2D) -> void:
-	if is_heatable(body_or_area):
-		pass
 
 func handle_stop_flame(body_or_area : Node2D) -> void:
-	if !Insta_Flame:
-		if body_or_area.reactions.still_heating:
-			body_or_area.reactions.stop_heating_loop()
+	if is_heatable(body_or_area):
+		body_or_area.reactions.set_contact(false)
+		if !Insta_Flame:
+			if body_or_area.reactions.still_heating:
+				body_or_area.reactions.stop_heating_loop()
+	
 
 func is_heatable(body : Node2D) -> bool:
 	if body.has_node("Reactions"):
@@ -42,3 +42,15 @@ func _on_body_or_area_entered(body_or_area) -> void:
 
 func _on_body_or_area_exited(body_or_area) -> void:
 	handle_stop_flame(body_or_area)
+
+func _process(delta: float) -> void:
+	var overlapping_bodies : Array[Node2D]
+	var overlapping_areas : Array[Area2D]
+	if has_overlapping_bodies():
+		overlapping_bodies = get_overlapping_bodies()
+		for body in overlapping_bodies:
+			handle_start_flame(body)
+	if has_overlapping_areas():
+		overlapping_areas = get_overlapping_areas()
+		for area in overlapping_areas:
+			handle_start_flame(area)

@@ -81,6 +81,7 @@ var was_hit : bool = false
 #estados
 var on_flame : bool = false
 var still_heating : bool = false
+var in_contact_with_fire : bool = false
 
 #nós que podem ser criados
 var heat_area : Area2D
@@ -114,6 +115,9 @@ func create_heating_loop(time_per_tick : float, loop_number : int) -> void:
 	heating_timer.one_shot = true
 	parent.add_child(heating_timer)
 	heating_timer.start(time_per_tick)
+
+func set_contact(value : bool) -> void:
+	in_contact_with_fire = value
 
 func gain_one_heat() -> void:
 	loop_number -= 1
@@ -156,13 +160,14 @@ func lose_heat() -> void:
 	temperature = 0
 
 func exit_burn() -> void:
-	#alterar sprite e tals
-	on_flame = false
-	if heat_area:
-		disable_heat_area()
-	exit_burn_func.call()
-	if Burn_Type == "Cool_Off":
+	if (Burn_Type == "Cool_Off" and !in_contact_with_fire) or Burn_Type == "Destroy":
 		lose_heat()
+		on_flame = false
+		if heat_area:
+			disable_heat_area()
+		exit_burn_func.call()
+	else:
+		create_burning_timer()
 
 func enter_burn() -> void:
 	#alterar sprite e tals
@@ -227,4 +232,3 @@ func be_defrosted():
 ############################################ ELECTRIFIABLE ############################################
 
 @export_category("Electrifiable")
-
