@@ -15,11 +15,13 @@ var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var direction = 0
 var frozen : bool = false
 var fire_level : int
-var health : int = 3
+var health : int = 5
 
 var enter_burn_func : Callable = start_taking_fire_damage
 var exit_burn_func : Callable = stop_taking_fire_damage
+var update_burn_func : Callable = update_taking_fire_damage
 
+var on_fire : bool = false
 func _physics_process(delta):
 	$Wall_Detec_For_Jump.target_position.x = 13 * direction
 	$Wall_Detec.target_position.x = 13 * direction
@@ -53,17 +55,23 @@ func get_frozen(freezetime : float) -> void:
 	$Coll.debug_color = $Coll.debug_color - Color(0, 0, 20, 0)
 
 func fire_ticking() -> void:
-	await get_tree().create_timer(1).timeout
+	await get_tree().create_timer(2.0 / float(fire_level)).timeout
+	print_debug(2.0 / float(fire_level))
 	health -= 1
 	coll.debug_color += Color(1, 0, 0, 0.9)
 	await get_tree().create_timer(0.1).timeout
 	coll.debug_color -= Color(1, 0, 0, 0.9)
+	fire_level -= 1
 	if fire_level > 0:
 		fire_ticking()
 
 func start_taking_fire_damage() -> void:
-	fire_level += 1
+	on_fire = true
+	fire_level = 1
 	fire_ticking()
 
+func update_taking_fire_damage() -> void:
+	fire_level += 1
+
 func stop_taking_fire_damage() -> void:
-	fire_level -= 1
+	pass

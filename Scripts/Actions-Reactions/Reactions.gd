@@ -16,7 +16,8 @@ func _ready():
 	if is_freezable:
 		freeze_ready()
 	if is_heatable:
-		ready_heatable()
+		#ready_heatable()
+		pass
 
 func _physics_process(delta):
 	if is_pushable:
@@ -70,9 +71,6 @@ func pushable_handle_physics(delta):
 @export var Burn_Time : float
 @export var Max_Temp_Supported : int
 
-var enter_burn_func : Callable
-var exit_burn_func : Callable
-
 var temperature : int = 0
 var time_per_tick : float = 0
 var was_hit : bool = false
@@ -88,10 +86,6 @@ var burning_timer : Timer
 var heating_timer : Timer
 
 var loop_number : int
-
-func ready_heatable() -> void:
-	enter_burn_func = parent.enter_burn_func
-	exit_burn_func = parent.exit_burn_func
 
 func start_heating(heat : float, max_heat_value : float, instant : bool = false) -> void:
 	var temp_to_gain : float = heat - Fire_Resistance
@@ -132,8 +126,8 @@ func stop_heating_loop() -> void:
 		heating_timer.queue_free()
 	lose_heat()
 
-func create_heat_area() -> void: 
-	var coll_node : CollisionShape2D = parent.get_node("Coll")
+func create_heat_area() -> void:
+	var coll_node : CollisionShape2D = parent.coll
 	var coll_shape : Shape2D = coll_node.get_shape()
 	heat_area = load("res://Scenes/Actions-Reactions/Flame.tscn").instantiate()
 	parent.add_child(heat_area)
@@ -152,26 +146,31 @@ func create_burning_timer() -> void:
 		burning_timer.one_shot = true
 		parent.add_child(burning_timer)
 		burning_timer.start(Burn_Time)
-	elif Burn_Type == "Cool_Off":
+	else:
 		burning_timer.start(Burn_Time)
 
 func lose_heat() -> void:
 	temperature = 0
 
 func enter_burn() -> void:
-	print_debug("anal")
 	still_heating = false
-	enter_burn_func.call()
+	parent.enter_burn_func.call()
 	on_flame = true
+	create_burning_timer()
+
+func update_burn() -> void:
+	if on_flame:
+		parent.update_burn_func.call()
+	if Burn_Type == "Cool_Off":
+		create_burning_timer()
 
 func exit_burn() -> void:
-	print_debug("sexo")
 	if (Burn_Type == "Cool_Off" and !in_contact_with_fire) or Burn_Type == "Destroy":
 		lose_heat()
 		on_flame = false
 		if heat_area:
 			disable_heat_area()
-		exit_burn_func.call()
+		parent.exit_burn_func.call()
 	else:
 		create_burning_timer()
 
@@ -184,12 +183,11 @@ func handle_fire_state() -> void:
 	if !on_flame and temperature >= Temp_To_Flamed:
 		if Emanate_Heat:
 			create_heat_area()
-		enter_burn()
-		create_burning_timer()
+		enter_burn() 
+		update_burn()
 		was_hit = false
 	if on_flame and was_hit:
-		enter_burn()
-		create_burning_timer()
+		update_burn()
 		was_hit = false
 	if temperature >= Max_Temp_Supported and Burn_Type == "Destroy":
 		exit_burn()

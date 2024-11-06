@@ -4,7 +4,7 @@
 [ext_resource type="Script" path="res://Scripts/Testers/Arrow_tester.gd" id="2_2rggl"]
 [ext_resource type="PackedScene" uid="uid://cbdgnirehg3g5" path="res://Scenes/Interactibles/Objects/Box.tscn" id="3_30oek"]
 [ext_resource type="PackedScene" uid="uid://b0b80o28au65e" path="res://Scenes/Actors/Enemies/Enemy.tscn" id="4_srvv8"]
-[ext_resource type="PackedScene" uid="uid://burg3todgx2jh" path="res://Miscellaneous/Bonfire.tscn" id="5_6bm7y"]
+[ext_resource type="PackedScene" uid="uid://burg3todgx2jh" path="res://Scenes/Interactibles/Objects/Bonfire.tscn" id="5_6bm7y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1cfxj"]
 size = Vector2(384, 20)

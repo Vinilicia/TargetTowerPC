@@ -3,7 +3,7 @@ class_name Arrow
 
 @onready var anim = $Anim_Player as AnimationPlayer
 @onready var sprite = $Sprite as Sprite2D
-
+@onready var coll = $Collision/Coll
 
 @export var Flying_Speed : float = 50  
 @export var Charge_Multiplier : float = 2
