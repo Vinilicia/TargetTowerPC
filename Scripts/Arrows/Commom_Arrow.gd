@@ -2,7 +2,6 @@ extends CharacterBody2D
 class_name Arrow
 
 @onready var anim = $Anim_Player as AnimationPlayer
-@onready var coll = $Collision/Coll as CollisionShape2D
 @onready var sprite = $Sprite as Sprite2D
 
 

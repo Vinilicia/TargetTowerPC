@@ -13,8 +13,8 @@ extends CharacterBody2D
 
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var direction = 0
-var frozen = false
-var on_fire : bool
+var frozen : bool = false
+var fire_level : int
 var health : int = 3
 
 var enter_burn_func : Callable = start_taking_fire_damage
@@ -39,8 +39,8 @@ func _process(delta):
 		print_debug("I died")
 		queue_free()
 
-func move(direction : int, speed : int):
-	velocity.x += direction * speed
+func move(dir : int, spd : int):
+	velocity.x += dir * spd
 
 func jump(multiplier : float = 1) -> void:
 	velocity.y = Jump_Force * multiplier
@@ -58,12 +58,12 @@ func fire_ticking() -> void:
 	coll.debug_color += Color(1, 0, 0, 0.9)
 	await get_tree().create_timer(0.1).timeout
 	coll.debug_color -= Color(1, 0, 0, 0.9)
-	if on_fire:
+	if fire_level > 0:
 		fire_ticking()
 
 func start_taking_fire_damage() -> void:
-	on_fire = true
+	fire_level += 1
 	fire_ticking()
 
 func stop_taking_fire_damage() -> void:
-	on_fire = false
+	fire_level -= 1

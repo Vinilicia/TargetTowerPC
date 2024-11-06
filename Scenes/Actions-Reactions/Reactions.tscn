@@ -6,5 +6,4 @@
 script = ExtResource("1_hcvhn")
 Fire_Range = 1
 Burn_Type = "Destroy"
-Can_Be_Destroyed = true
 Max_Temp_Supported = 4

@@ -15,7 +15,7 @@ func _ready():
 func get_frozen() -> void:
 	queue_free()
 
-func _on_body_entered(body) -> void:
+func _on_body_entered(_body) -> void:
 	get_frozen()
 
 func set_direction(dir) -> void:

@@ -68,7 +68,6 @@ func pushable_handle_physics(delta):
 #queimar
 @export_enum("Destroy", "Cool_Off") var Burn_Type : String
 @export var Burn_Time : float
-@export var Can_Be_Destroyed : bool
 @export var Max_Temp_Supported : int
 
 var enter_burn_func : Callable
@@ -102,12 +101,12 @@ func start_heating(heat : float, max_heat_value : float, instant : bool = false)
 			temperature += temp_to_gain
 		else:
 			time_per_tick = Heat_Resistance / temp_to_gain
-			create_heating_loop(time_per_tick, loop_number)
+			create_heating_loop(time_per_tick)
 		was_hit = true
 	if instant:
 		was_hit = true
 
-func create_heating_loop(time_per_tick : float, loop_number : int) -> void:
+func create_heating_loop(time_per_tick : float) -> void:
 	still_heating = true
 	heating_timer = Timer.new()
 	heating_timer.autostart = false
@@ -126,7 +125,6 @@ func gain_one_heat() -> void:
 		heating_timer.start(time_per_tick)
 
 func stop_heating_loop() -> void:
-	print_debug("Banana")
 	still_heating = false
 	loop_number = 0
 	if heating_timer:
@@ -160,7 +158,14 @@ func create_burning_timer() -> void:
 func lose_heat() -> void:
 	temperature = 0
 
+func enter_burn() -> void:
+	print_debug("anal")
+	still_heating = false
+	enter_burn_func.call()
+	on_flame = true
+
 func exit_burn() -> void:
+	print_debug("sexo")
 	if (Burn_Type == "Cool_Off" and !in_contact_with_fire) or Burn_Type == "Destroy":
 		lose_heat()
 		on_flame = false
@@ -169,12 +174,6 @@ func exit_burn() -> void:
 		exit_burn_func.call()
 	else:
 		create_burning_timer()
-
-func enter_burn() -> void:
-	#alterar sprite e tals
-	still_heating = false
-	enter_burn_func.call()
-	on_flame = true
 
 func update_flame_intensity() -> void:
 	if heat_area != null:
@@ -189,9 +188,10 @@ func handle_fire_state() -> void:
 		create_burning_timer()
 		was_hit = false
 	if on_flame and was_hit:
-		was_hit = false
+		enter_burn()
 		create_burning_timer()
-	if temperature >= Max_Temp_Supported and Can_Be_Destroyed:
+		was_hit = false
+	if temperature >= Max_Temp_Supported and Burn_Type == "Destroy":
 		exit_burn()
 
 func heatable_handle_physics() -> void:

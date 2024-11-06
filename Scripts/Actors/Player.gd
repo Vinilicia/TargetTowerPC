@@ -59,8 +59,8 @@ func hold_arrow() -> void:
 	arrow_sprite.visible = true;
 	is_holding = true
 
-func receive_knockback(facing_direction : int, force : float, knockback_force : Vector2 = Default_Knockback) -> void:
-	knockback_vector = knockback_force * facing_direction * force
+func receive_knockback(facing_dir : int, force : float, knockback_force : Vector2 = Default_Knockback) -> void:
+	knockback_vector = knockback_force * facing_dir * force
 	var knockback_tween := get_tree().create_tween()
 	knockback_tween.tween_property(self, "knockback_vector", Vector2.ZERO, 0.1)
 

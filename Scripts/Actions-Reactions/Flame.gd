@@ -38,8 +38,7 @@ func is_heatable(body : Node2D) -> bool:
 		return false
 
 func _on_body_or_area_entered(body_or_area) -> void:
-	if body_or_area != get_parent().get_parent():
-		handle_start_flame(body_or_area)
+	handle_start_flame(body_or_area)
 
 func _on_body_or_area_exited(body_or_area) -> void:
 	handle_stop_flame(body_or_area)

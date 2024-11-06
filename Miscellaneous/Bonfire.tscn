@@ -23,5 +23,4 @@ Base_Heat = 2.0
 Fire_Range = 6
 Burn_Type = "Cool_Off"
 Burn_Time = 2.0
-Can_Be_Destroyed = false
 Max_Temp_Supported = 0

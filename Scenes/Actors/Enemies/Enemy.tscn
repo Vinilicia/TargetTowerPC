@@ -40,5 +40,6 @@ Heat_Resistance = 1.0
 Temp_To_Flamed = 2.0
 Burn_Type = "Cool_Off"
 Burn_Time = 2.0
+Max_Temp_Supported = 0
 Auto_Defrost = true
 Defrost_Time = 5.0
