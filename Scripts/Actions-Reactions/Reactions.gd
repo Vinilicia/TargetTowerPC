@@ -14,7 +14,8 @@ extends Node
 
 func _ready():
 	if is_freezable:
-		freeze_ready()
+		#freeze_ready()
+		pass
 	if is_heatable:
 		#ready_heatable()
 		pass
@@ -89,10 +90,11 @@ var can_be_hit : bool = true
 var heat_area : Area2D
 var burning_timer : Timer
 var heating_timer : Timer
+var latest_fire_source : Node2D
 
 var loop_number : int
 
-func start_heating(heat : float, max_heat_value : float, instant : bool = false) -> void:
+func start_heating(heat : float, max_heat_value : float, source : Node2D, instant : bool = false) -> void:
 	var temp_to_gain : float = heat - Fire_Resistance
 	loop_number = max(max_heat_value - temperature, 0)
 	if loop_number != 0:
@@ -104,7 +106,7 @@ func start_heating(heat : float, max_heat_value : float, instant : bool = false)
 	if can_be_hit or instant:
 		was_hit = true
 		handle_hit_availability()
-		
+	latest_fire_source = source
 
 func handle_hit_availability() -> void:
 	can_be_hit = false
@@ -112,13 +114,14 @@ func handle_hit_availability() -> void:
 	can_be_hit = true
 
 func create_heating_loop(time_per_tick : float) -> void:
-	still_heating = true
-	heating_timer = Timer.new()
-	heating_timer.autostart = false
-	heating_timer.timeout.connect(gain_one_heat)
-	heating_timer.one_shot = true
-	parent.add_child(heating_timer)
-	heating_timer.start(time_per_tick)
+	if heating_timer == null:
+		still_heating = true
+		heating_timer = Timer.new()
+		heating_timer.autostart = false
+		heating_timer.timeout.connect(gain_one_heat)
+		heating_timer.one_shot = true
+		parent.add_child(heating_timer)
+		heating_timer.start(time_per_tick)
 
 func set_contact(value : bool) -> void:
 	in_contact_with_fire = value
@@ -201,12 +204,18 @@ func handle_fire_state() -> void:
 		update_burn()
 		was_hit = false
 	if temperature >= Max_Temp_Supported and Burn_Type == "Destroy":
+		print_debug(temperature)
 		exit_burn()
 
 func heatable_handle_physics() -> void:
 	handle_fire_state()
 	update_flame_intensity()
+
+
+
 ############################################ FREEZABLE ############################################
+
+
 
 @export_category("Freezable")
 @export var Color_Change : Color = Color(0, 0, 1, 0.5)
@@ -218,20 +227,25 @@ signal freeze_ended
 
 var frozen : bool = false
 
-func freeze_ready():
-	if Auto_Defrost:
-		freeze_ended.connect(be_defrosted)
+var freeze_timer : Timer
 
-
-func be_frozen():
+func enter_freeze() -> void:
 	frozen = true
-	parent.coll.debug_color = parent.coll.debug_color + Color_Change
-	if Auto_Defrost:
-		await get_tree().create_timer(Defrost_Time).timeout
-		emit_signal("freeze_ended")
+	parent.enter_freeze_func.call()
 
-func be_defrosted():
-	parent.coll.debug_color = parent.coll.debug_color - Color_Change
+func update_freeze() -> void:
+	parent.update_freeze_func.call()
+	if Auto_Defrost:
+		if freeze_timer == null:
+			freeze_timer = Timer.new()
+			freeze_timer.autostart = false
+			freeze_timer.timeout.connect(exit_freeze)
+			freeze_timer.one_shot = true
+			parent.add_child(freeze_timer)
+			freeze_timer.start(Defrost_Time)
+
+func exit_freeze() -> void:
+	parent.exit_freeze_func.call()
 	frozen = false
 
 

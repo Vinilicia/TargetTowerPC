@@ -5,12 +5,12 @@ extends Arrow
 @onready var flame = $Actions/Flame
 
 func _ready():
+	flame.parent_node = self
 	if charged:
-		flame.parent_node = self
 		flame.set_collision(coll.shape, 10)
 		flame.Flame_Intensity *= 2
 	else:
-		flame.set_collision(coll.shape, 1.1)
+		flame.set_collision(coll.shape, 1)
  
 func get_frozen() -> void:
 	queue_free()

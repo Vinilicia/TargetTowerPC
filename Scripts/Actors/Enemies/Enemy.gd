@@ -16,6 +16,7 @@ var direction = 0
 var frozen : bool = false
 var fire_level : int
 var health : int = 5
+var knockback_direction : int
 
 var enter_burn_func : Callable = start_taking_fire_damage
 var exit_burn_func : Callable = stop_taking_fire_damage
@@ -57,16 +58,18 @@ func get_frozen(freezetime : float) -> void:
 
 func take_damage() -> void:
 	health -= 1
-	reactions.set_knock_dir(1)
-	reactions.be_pushed(Vector2(200, -170))
-	coll.debug_color += Color(1, 0, 0, 0.9)
 	await get_tree().create_timer(0.1).timeout
 	coll.debug_color -= Color(1, 0, 0, 0.9)
 
+func receive_fire_knockback() -> void:
+	reactions.set_knock_dir(knockback_direction)
+	reactions.be_pushed(Vector2(200, -170))
+	coll.debug_color += Color(1, 0, 0, 0.9)
+
 func fire_ticking() -> void:
 	await get_tree().create_timer(min(2.0 / float(fire_level), 1)).timeout
-	print_debug(min(2.0 / float(fire_level), 1))
 	take_damage()
+	receive_fire_knockback()
 	coll.debug_color += Color(1, 0, 0, 0.9)
 	await get_tree().create_timer(0.1).timeout
 	coll.debug_color -= Color(1, 0, 0, 0.9)
@@ -79,8 +82,14 @@ func start_taking_fire_damage() -> void:
 	fire_level = 1
 	fire_ticking()
 
+func get_fire_source() -> Node2D:
+	return reactions.latest_fire_source
+
 func update_taking_fire_damage() -> void:
 	fire_level += 1
+	var fire_source : Node2D = get_fire_source()
+	knockback_direction = sign(global_position.x - fire_source.global_position.x)
+	print_debug(global_position.x - fire_source.global_position.x)
 
 func stop_taking_fire_damage() -> void:
-	pass
+	print_debug("amor")

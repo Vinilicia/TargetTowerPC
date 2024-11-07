@@ -25,3 +25,4 @@ Emanate_Heat = true
 Base_Heat = 1.0
 Fire_Range = 4
 Burn_Time = 7.0
+Hit_Reset_Time = 10.0

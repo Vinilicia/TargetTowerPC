@@ -6,7 +6,7 @@ extends Area2D
 
 var heating_nodes : Array[Node]
 var coll : CollisionShape2D
-var parent_node : Node
+var parent_node : Node2D
 
 func _ready():
 	coll = $Coll
@@ -20,7 +20,7 @@ func handle_start_flame(body_or_area : Node2D, intensity_modifier : float = 1) -
 	if is_heatable(body_or_area):
 		body_or_area.reactions.set_contact(true)
 		var total_flame = Flame_Intensity * intensity_modifier
-		body_or_area.reactions.start_heating(total_flame, Max_Temp_Raise,  Insta_Flame)
+		body_or_area.reactions.start_heating(total_flame, Max_Temp_Raise, self, Insta_Flame)
 
 
 func handle_stop_flame(body_or_area : Node2D) -> void:

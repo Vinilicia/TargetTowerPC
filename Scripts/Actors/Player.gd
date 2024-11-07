@@ -1,3 +1,4 @@
+@tool
 extends CharacterBody2D
 
 @export var Move_Speed : float
@@ -33,9 +34,13 @@ var is_jumping : bool = false
 var on_floor : bool = true
 var facing_direction : int
 
-var current_arrow_index = 5
+@export_category("Para debugar")
+@export_range(0 , 6) var Current_Arrow_Index : int
+
+var current_arrow_index : int
 
 func _ready():
+	current_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 
 func _process(delta):
