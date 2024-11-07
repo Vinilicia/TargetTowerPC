@@ -5,7 +5,8 @@ extends Node2D
 
 func handle_push(body : Node2D, direction : int, push_multiplier : float = 1) -> void:
 	if is_pushable(body):
-		body.reactions.be_pushed(direction, push_force * push_multiplier)
+		body.reactions.set_knock_dir(direction)
+		body.reactions.be_pushed(push_force * push_multiplier)
 
 func is_pushable(body : Node2D) -> bool:
 	if body.has_node("Reactions"):

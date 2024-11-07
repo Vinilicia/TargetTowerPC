@@ -34,14 +34,16 @@ func _physics_process(delta):
 var knockback_vector := Vector2.ZERO
 var dir = 0
 
-func be_pushed(direction : int, push_force : Vector2) -> void:
+func set_knock_dir(direction: int) -> void:
 	dir = direction
+
+func be_pushed(push_force : Vector2) -> void:
 	knockback_vector = Vector2(0,0)
 	if push_force.x - Weight > 0:
 		knockback_vector.x = push_force.x - Weight
-	if push_force.y - Weight > 0:
-		knockback_vector.y = push_force.y - Weight
-	knockback_vector *= dir
+	if push_force.y + Weight < 0:
+		knockback_vector.y = push_force.y + Weight
+	knockback_vector.x *= dir
 
 func pushable_handle_physics(delta):
 	if knockback_vector.x != 0:
@@ -71,6 +73,8 @@ func pushable_handle_physics(delta):
 @export var Burn_Time : float
 @export var Max_Temp_Supported : int
 
+@export var Hit_Reset_Time : float
+
 var temperature : int = 0
 var time_per_tick : float = 0
 var was_hit : bool = false
@@ -79,6 +83,7 @@ var was_hit : bool = false
 var on_flame : bool = false
 var still_heating : bool = false
 var in_contact_with_fire : bool = false
+var can_be_hit : bool = true
 
 #nós que podem ser criados
 var heat_area : Area2D
@@ -96,9 +101,15 @@ func start_heating(heat : float, max_heat_value : float, instant : bool = false)
 		else:
 			time_per_tick = Heat_Resistance / temp_to_gain
 			create_heating_loop(time_per_tick)
+	if can_be_hit or instant:
 		was_hit = true
-	if instant:
-		was_hit = true
+		handle_hit_availability()
+		
+
+func handle_hit_availability() -> void:
+	can_be_hit = false
+	await get_tree().create_timer(Hit_Reset_Time).timeout
+	can_be_hit = true
 
 func create_heating_loop(time_per_tick : float) -> void:
 	still_heating = true

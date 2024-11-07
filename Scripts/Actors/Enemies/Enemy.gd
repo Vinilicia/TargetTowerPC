@@ -22,6 +22,7 @@ var exit_burn_func : Callable = stop_taking_fire_damage
 var update_burn_func : Callable = update_taking_fire_damage
 
 var on_fire : bool = false
+
 func _physics_process(delta):
 	$Wall_Detec_For_Jump.target_position.x = 13 * direction
 	$Wall_Detec.target_position.x = 13 * direction
@@ -54,10 +55,18 @@ func get_frozen(freezetime : float) -> void:
 	frozen = false
 	$Coll.debug_color = $Coll.debug_color - Color(0, 0, 20, 0)
 
-func fire_ticking() -> void:
-	await get_tree().create_timer(2.0 / float(fire_level)).timeout
-	print_debug(2.0 / float(fire_level))
+func take_damage() -> void:
 	health -= 1
+	reactions.set_knock_dir(1)
+	reactions.be_pushed(Vector2(200, -170))
+	coll.debug_color += Color(1, 0, 0, 0.9)
+	await get_tree().create_timer(0.1).timeout
+	coll.debug_color -= Color(1, 0, 0, 0.9)
+
+func fire_ticking() -> void:
+	await get_tree().create_timer(min(2.0 / float(fire_level), 1)).timeout
+	print_debug(min(2.0 / float(fire_level), 1))
+	take_damage()
 	coll.debug_color += Color(1, 0, 0, 0.9)
 	await get_tree().create_timer(0.1).timeout
 	coll.debug_color -= Color(1, 0, 0, 0.9)

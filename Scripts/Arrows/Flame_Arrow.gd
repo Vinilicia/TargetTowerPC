@@ -10,7 +10,7 @@ func _ready():
 		flame.set_collision(coll.shape, 10)
 		flame.Flame_Intensity *= 2
 	else:
-		flame.set_collision(coll.shape, 0.9)
+		flame.set_collision(coll.shape, 1.1)
  
 func get_frozen() -> void:
 	queue_free()
