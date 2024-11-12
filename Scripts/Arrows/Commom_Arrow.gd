@@ -5,7 +5,7 @@ class_name Arrow
 @onready var sprite = $Sprite as Sprite2D
 @onready var coll = $Collision/Coll
 
-@export var Flying_Speed : float = 50  
+@export var Flying_Speed : float = 400
 @export var Charge_Multiplier : float = 2
 @export var Despawn_Time : float = 7
 
@@ -92,4 +92,4 @@ func despawn() -> void:
 
 func get_frozen() -> void:
 	velocity = Vector2.ZERO
-	$Collision/Coll.disabled = true
+	$Collision/Coll.call_deferred("set_disabled", true)

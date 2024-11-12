@@ -15,6 +15,8 @@ size = Vector2(20, 64)
 [node name="Level" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_o47bd")]
+position = Vector2(88, 0)
+velocity = Vector2(0, 347634)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(128, 96)

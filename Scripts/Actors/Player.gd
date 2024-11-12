@@ -1,4 +1,3 @@
-@tool
 extends CharacterBody2D
 
 @export var Move_Speed : float
@@ -40,7 +39,7 @@ var facing_direction : int
 var current_arrow_index : int
 
 func _ready():
-	current_arrow_index
+	current_arrow_index = Current_Arrow_Index
 	current_arrow = equip_arrow(current_arrow_index)
 
 func _process(delta):

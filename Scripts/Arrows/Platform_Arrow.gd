@@ -14,7 +14,7 @@ func _on_body_entered(body) -> void:
 			platform.change_to("horizontal")
 		else:
 			platform.change_to("vertical")
-		add_child(platform)
+		call_deferred("add_child", platform)
 	if body.is_in_group("Attachables"):
 		spawn_joint(body)
 		despawn()
