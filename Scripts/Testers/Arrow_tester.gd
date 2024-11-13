@@ -7,7 +7,7 @@ extends AnimatableBody2D
 var final_position : Vector2 = Vector2.RIGHT * 40 + initial_position
 
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	position = position.lerp(current_position, 0.5)
 
 func test_movement() -> void:

@@ -5,7 +5,7 @@ class_name Arrow
 @onready var sprite = $Sprite as Sprite2D
 @onready var coll = $Collision/Coll
 
-@export var Flying_Speed : float = 400
+@export var Flying_Speed : float = 40
 @export var Charge_Multiplier : float = 2
 @export var Despawn_Time : float = 7
 
@@ -13,7 +13,7 @@ var direction : int = 1
 var charged : bool = false
 var downward : bool = false
 
-func _physics_process(delta):
+func _physics_process(_delta):
 	move_and_slide()
 
 
@@ -34,8 +34,6 @@ func fly_downward(_player : CharacterBody2D) -> void:
 
 func flip_children() -> void:
 	var collision = $Collision
-	var coll = collision.get_child(0)
-	
 	if downward:
 		$Sprite.rotation = deg_to_rad(0)
 		collision.position = Vector2(collision.position.y, abs(collision.position.x))

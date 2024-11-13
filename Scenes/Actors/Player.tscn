@@ -19,11 +19,11 @@ script = ExtResource("1_sk7kx")
 Move_Speed = 100.0
 Jump_Force = -340.0
 Gravity_Multiplier = 1.4
-Arrows_paths = Array[String](["res://Scenes/Arrows/Commom_Arrow.tscn", "res://Scenes/Arrows/Push_Arrow.tscn", "res://Scenes/Arrows/Wind_Arrow.tscn", "res://Scenes/Arrows/Platform_Arrow.tscn", "res://Scenes/Arrows/Freeze_Arrow.tscn", "res://Scenes/Arrows/Flame_Arrow.tscn"])
+Arrows_paths = Array[String](["res://Scenes/Arrows/Commom_Arrow.tscn", "res://Scenes/Arrows/Push_Arrow.tscn", "res://Scenes/Arrows/Wind_Arrow.tscn", "res://Scenes/Arrows/Platform_Arrow.tscn", "res://Scenes/Arrows/Freeze_Arrow.tscn", "res://Scenes/Arrows/Flame_Arrow.tscn", "res://Scenes/Arrows/Shock_Arrow.tscn"])
 Max_hold_time = 1.5
 Shoot_Delay = 0.1
 Jump_buffering_time = 0.1
-Max_Arrows = 6
+Max_Arrows = 7
 Exit_Time = 2.0
 Current_Arrow_Index = 5
 

@@ -8,24 +8,9 @@ extends Node
 @export var is_freezable : bool
 @export var is_heatable : bool
 @export var is_dryable : bool
-@export var is_electrifiable : bool
+@export var is_shockable : bool
 
-############################################ GENERAL ############################################
-
-func _ready():
-	if is_freezable:
-		#freeze_ready()
-		pass
-	if is_heatable:
-		#ready_heatable()
-		pass
-
-func _physics_process(delta):
-	if is_pushable:
-		pushable_handle_physics(delta)
-	if is_heatable:
-		heatable_handle_physics()
-
+############################################# GENERAL ############################################
 
 ############################################# PUSHABLE #############################################
 
@@ -46,7 +31,7 @@ func be_pushed(push_force : Vector2) -> void:
 		knockback_vector.y = push_force.y + Weight
 	knockback_vector.x *= dir
 
-func pushable_handle_physics(delta):
+func pushable_handle_physics(_delta):
 	if knockback_vector.x != 0:
 		parent.velocity += knockback_vector
 		knockback_vector = Vector2.ZERO
@@ -59,200 +44,178 @@ func pushable_handle_physics(delta):
 
 @export_category("Heatable")
 
-@export var Heat_Resistance : float
-@export var Fire_Resistance : float
+#Intensidade do fogo que esse objeto produz, vai ser passado para a área de fogo
+@export var Fire_Intensity : float
 
-@export var Temp_To_Flamed : float
+#Resistência a fogo, vai ser subtraída da intensidade da fonte ( objeto com intensidade 1 não 
+#coloca fogo em objeto com resistencia 1 )
+@export var Fire_Resistance : int
 
-#valor base da intensidade do calor e sua range(* 10)
-@export var Emanate_Heat : bool
-@export var Base_Heat : float
-@export_range(1, 10) var Fire_Range : int
+#Tempo base demorado para pegar fogo, assumindo que a intensidade da fonte é 1
+@export var Time_To_Fire : float
 
-#queimar
-@export_enum("Destroy", "Cool_Off") var Burn_Type : String
-@export var Burn_Time : float
-@export var Max_Temp_Supported : int
+#Tipo de saída do estado fogo. Se o objeto é destruído ou apenas volta ao normal
+@export_enum("Cool_off", "Destroy") var Burn_Type : String
 
-@export var Hit_Reset_Time : float
+#Tempo demorado para sair do estado de fogo
+@export var Time_On_Fire : float
 
-var temperature : int = 0
-var time_per_tick : float = 0
-var was_hit : bool = false
+#Se o objeto emana calor quando pega fogo. Inimigos provavelmente não vão
+@export var Emanates_Heat : bool
 
-#estados
-var on_flame : bool = false
+#Range da área de fogo ao redor do objeto, 0 significa que a área tem o mesmo tamanho da colisão do
+#objeto e 10 significa que tem o dobro
+@export_range(0, 10) var Fire_Range : int
+
+
+#Ta pegando fogo bicho( auto-explicativo i guess? )
+var on_fire : bool = false
 var still_heating : bool = false
-var in_contact_with_fire : bool = false
-var can_be_hit : bool = true
 
-#nós que podem ser criados
-var heat_area : Area2D
-var burning_timer : Timer
 var heating_timer : Timer
-var latest_fire_source : Node2D
+var burning_timer : Timer
+var heat_area : Area2D
 
-var loop_number : int
+var enter_fire_func : Callable = enter_fire
+var exit_fire_func : Callable = exit_fire
 
-func start_heating(heat : float, max_heat_value : float, source : Node2D, instant : bool = false) -> void:
-	var temp_to_gain : float = heat - Fire_Resistance
-	loop_number = max(max_heat_value - temperature, 0)
-	if loop_number != 0:
-		if instant:
-			temperature += temp_to_gain
-		else:
-			time_per_tick = Heat_Resistance / temp_to_gain
-			create_heating_loop(time_per_tick)
-	if can_be_hit or instant:
-		was_hit = true
-		handle_hit_availability()
-	latest_fire_source = source
-
-func handle_hit_availability() -> void:
-	can_be_hit = false
-	await get_tree().create_timer(Hit_Reset_Time).timeout
-	can_be_hit = true
-
-func create_heating_loop(time_per_tick : float) -> void:
-	if heating_timer == null:
-		still_heating = true
-		heating_timer = Timer.new()
-		heating_timer.autostart = false
-		heating_timer.timeout.connect(gain_one_heat)
-		heating_timer.one_shot = true
-		parent.add_child(heating_timer)
-		heating_timer.start(time_per_tick)
-
-func set_contact(value : bool) -> void:
-	in_contact_with_fire = value
-
-func gain_one_heat() -> void:
-	loop_number -= 1
-	temperature += 1
-	if loop_number > 0:
-		heating_timer.start(time_per_tick)
-
-func stop_heating_loop() -> void:
-	still_heating = false
-	loop_number = 0
-	if heating_timer:
-		heating_timer.stop()
-		heating_timer.queue_free()
-	lose_heat()
+func get_hit_by_fire(intensity : int, instant : bool) -> void:
+	if instant or on_fire:
+		enter_fire_func.call()
+	else:
+		var heating_time : float = Time_To_Fire / float(max(1, intensity - Fire_Resistance))
+		start_heating_timer(heating_time)
 
 func create_heat_area() -> void:
 	var coll_node : CollisionShape2D = parent.coll
 	var coll_shape : Shape2D = coll_node.get_shape()
 	heat_area = load("res://Scenes/Actions-Reactions/Flame.tscn").instantiate()
-	parent.add_child(heat_area)
 	heat_area.set_collision(coll_shape, 1 + float(Fire_Range)/10)
-	heat_area.Max_Temp_Raise = 2
 	heat_area.parent_node = parent
+	parent.call_deferred("add_child", heat_area) 
 
-func disable_heat_area() -> void:
-	heat_area.queue_free()
+func start_heating_timer(time_to_fire : float) -> void:
+	if heating_timer == null:
+		still_heating = true
+		heating_timer = Timer.new()
+		heating_timer.autostart = false
+		heating_timer.one_shot = true
+		heating_timer.timeout.connect(enter_fire_func)
+		parent.add_child(heating_timer)
+		heating_timer.start(time_to_fire)
 
-func create_burning_timer() -> void:
-	if burning_timer == null:
-		burning_timer = Timer.new()
-		burning_timer.autostart = false
-		burning_timer.timeout.connect(exit_burn)
-		burning_timer.one_shot = true
-		parent.add_child(burning_timer)
-		burning_timer.start(Burn_Time)
-	else:
-		burning_timer.start(Burn_Time)
+func stop_heating_timer() -> void:
+	if heating_timer != null:
+		heating_timer.stop()
+		heating_timer.call_deferred("free")
 
-func lose_heat() -> void:
-	temperature = 0
+func start_burning_timer() -> void:
+	still_heating = true
+	burning_timer = Timer.new()
+	burning_timer.autostart = false
+	burning_timer.one_shot = true
+	burning_timer.timeout.connect(exit_fire_func)
+	parent.add_child(burning_timer)
+	burning_timer.start(Time_On_Fire)
 
-func enter_burn() -> void:
-	still_heating = false
-	parent.enter_burn_func.call()
-	on_flame = true
-	create_burning_timer()
+func restart_burning_timer() -> void:
+	stop_burning_timer()
+	start_burning_timer()
 
-func update_burn() -> void:
-	if on_flame:
-		parent.update_burn_func.call()
-	if Burn_Type == "Cool_Off":
-		create_burning_timer()
+func stop_burning_timer() -> void:
+	if burning_timer != null:
+		burning_timer.stop()
+		burning_timer.call_deferred("free")
 
-func exit_burn() -> void:
-	if (Burn_Type == "Cool_Off" and !in_contact_with_fire) or Burn_Type == "Destroy":
-		lose_heat()
-		on_flame = false
-		if heat_area:
-			disable_heat_area()
-		parent.exit_burn_func.call()
-	else:
-		create_burning_timer()
+func enter_fire() -> void:
+	on_fire = true
+	if Emanates_Heat:
+		create_heat_area()
+	start_burning_timer()
+	
+	parent.enter_fire_func.call()
+	enter_fire_func = update_fire
 
-func update_flame_intensity() -> void:
-	if heat_area != null:
-		heat_area.Flame_Intensity = Base_Heat * temperature
+func update_fire() -> void:
+	parent.update_fire_func.call()
+	if Burn_Type == "Cool_off":
+		restart_burning_timer()
 
-func handle_fire_state() -> void:
-	#ganhou temperatura
-	if !on_flame and temperature >= Temp_To_Flamed:
-		if Emanate_Heat:
-			create_heat_area()
-		enter_burn() 
-		update_burn()
-		was_hit = false
-	if on_flame and was_hit:
-		update_burn()
-		was_hit = false
-	if temperature >= Max_Temp_Supported and Burn_Type == "Destroy":
-		print_debug(temperature)
-		exit_burn()
-
-func heatable_handle_physics() -> void:
-	handle_fire_state()
-	update_flame_intensity()
-
+func exit_fire() -> void:
+	if Burn_Type == "Cool_off":
+		on_fire = false
+		if Emanates_Heat:
+			heat_area.queue_free()
+		stop_burning_timer()
+		
+		parent.exit_fire_func.call()
+	
+	elif Burn_Type == "Destroy":
+		
+		parent.exit_fire_func.call()
+		call_deferred("free")
+	
+	enter_fire_func = enter_fire
 
 
 ############################################ FREEZABLE ############################################
 
-
-
 @export_category("Freezable")
-@export var Color_Change : Color = Color(0, 0, 1, 0.5)
-@export var Auto_Defrost : bool
-@export var Defrost_Time : float
 
-signal freeze_ended
+@export var Auto_Defrosts : bool
+@export var Defrosting_Time : float
 
+var enter_ice_func : Callable = enter_ice
+var exit_ice_func : Callable = exit_ice
 
 var frozen : bool = false
 
-var freeze_timer : Timer
+var defrosting_timer : Timer
 
-func enter_freeze() -> void:
+func get_hit_by_ice() -> void:
+	enter_ice_func.call()
+
+
+func enter_ice() -> void:
 	frozen = true
-	parent.enter_freeze_func.call()
+	enter_ice_func = update_ice
+	
+	enter_fire_func = exit_ice
+	exit_fire_func = func(): pass
+	
+	parent.enter_ice_func.call()
+	if Auto_Defrosts:
+		start_defrosting_timer()
 
-func update_freeze() -> void:
-	parent.update_freeze_func.call()
-	if Auto_Defrost:
-		if freeze_timer == null:
-			freeze_timer = Timer.new()
-			freeze_timer.autostart = false
-			freeze_timer.timeout.connect(exit_freeze)
-			freeze_timer.one_shot = true
-			parent.add_child(freeze_timer)
-			freeze_timer.start(Defrost_Time)
+func update_ice() -> void:
+	parent.update_ice_func.call()
 
-func exit_freeze() -> void:
-	parent.exit_freeze_func.call()
-	frozen = false
+func exit_ice() -> void:
+	stop_defrosting_timer()
+	enter_ice_func = enter_ice
+	
+	enter_fire_func = enter_fire
+	exit_fire_func = exit_fire
+	
+	parent.exit_ice_func.call()
 
+func start_defrosting_timer() -> void:
+	defrosting_timer = Timer.new()
+	defrosting_timer.autostart = false
+	defrosting_timer.timeout.connect(exit_ice)
+	defrosting_timer.one_shot = true
+	parent.add_child(defrosting_timer)
+	defrosting_timer.start(Defrosting_Time)
+
+func stop_defrosting_timer() -> void:
+	if defrosting_timer != null:
+		defrosting_timer.stop()
+		defrosting_timer.queue_free()
 
 ############################################ DRYABLE ############################################
 
 @export_category("Dryable")
 
-############################################ ELECTRIFIABLE ############################################
+############################################ SHOCKABLE ############################################
 
-@export_category("Electrifiable")
+@export_category("Shockable")

@@ -36,13 +36,10 @@ script = ExtResource("2_2rggl")
 shape = SubResource("RectangleShape2D_adgot")
 
 [node name="Enemy" parent="." groups=["Freezable"] instance=ExtResource("4_srvv8")]
-position = Vector2(168, 24)
+position = Vector2(41, 49)
 
 [node name="Box" parent="." groups=["Attachables"] instance=ExtResource("3_30oek")]
 position = Vector2(232, 64)
 
-[node name="Box2" parent="." instance=ExtResource("3_30oek")]
-position = Vector2(-104, 16)
-
 [node name="Bonfire" parent="." instance=ExtResource("5_6bm7y")]
-position = Vector2(48, 80)
+position = Vector2(192, 78)

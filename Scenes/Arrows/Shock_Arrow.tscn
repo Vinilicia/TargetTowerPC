@@ -1,0 +1,36 @@
+[gd_scene load_steps=6 format=3 uid="uid://dhovf2uran7cb"]
+
+[ext_resource type="Script" path="res://Scripts/Arrows/Shock_Arrow.gd" id="1_o5nhc"]
+[ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_vp7py"]
+[ext_resource type="PackedScene" uid="uid://cwjuhs7dtev4v" path="res://Scenes/Actions-Reactions/Actions.tscn" id="3_u3a5w"]
+[ext_resource type="PackedScene" uid="uid://dkni2sf7wns4r" path="res://Scenes/Actions-Reactions/Shock.tscn" id="4_qamar"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ri8v"]
+size = Vector2(5.57763, 1)
+
+[node name="Shock_Arrow" type="CharacterBody2D"]
+collision_layer = 2
+collision_mask = 28
+script = ExtResource("1_o5nhc")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_vp7py")
+
+[node name="Anim_Player" type="AnimationPlayer" parent="."]
+
+[node name="Collision" type="Area2D" parent="."]
+position = Vector2(5, -0.5)
+collision_layer = 2
+collision_mask = 28
+
+[node name="Coll" type="CollisionShape2D" parent="Collision"]
+scale = Vector2(0.359, -1)
+shape = SubResource("RectangleShape2D_2ri8v")
+
+[node name="Actions" parent="." instance=ExtResource("3_u3a5w")]
+
+[node name="Shock" parent="Actions" instance=ExtResource("4_qamar")]
+position = Vector2(5, -0.5)
+
+[connection signal="body_entered" from="Collision" to="." method="_on_body_entered"]

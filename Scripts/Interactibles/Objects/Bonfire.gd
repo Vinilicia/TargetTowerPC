@@ -3,9 +3,9 @@ extends Area2D
 var reactions
 var coll
 
-var enter_burn_func : Callable = start_burning
-var exit_burn_func : Callable = stop_burning
-var update_burn_func : Callable = update_burning
+var enter_fire_func : Callable = start_burning
+var exit_fire_func : Callable = stop_burning
+var update_fire_func : Callable = update_burning
  
 func _ready():
 	reactions = $Reactions

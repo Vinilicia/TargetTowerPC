@@ -3,17 +3,13 @@ extends Area2D
 @export var Flame_Intensity : float
 @export var Insta_Flame : bool
 
-var heating_nodes : Array[Node]
-var coll : CollisionShape2D
 var parent_node : Node2D
-
-func _ready():
-	coll = $Coll
+var coll : CollisionShape2D
 
 func set_collision(collision_shape : Shape2D, collision_scale : float) -> void:
-	coll.shape = collision_shape
-	coll.scale = Vector2(1, 1) * collision_scale
-	
+	coll = $Coll
+	coll.call_deferred("set_shape", collision_shape)
+	coll.call_deferred("set_scale", Vector2(1, 1) * collision_scale)
  
 func handle_start_flame(body_or_area : Node2D) -> void:
 	if is_heatable(body_or_area):
@@ -24,12 +20,11 @@ func handle_stop_flame(body_or_area : Node2D) -> void:
 	if is_heatable(body_or_area):
 		if !Insta_Flame:
 			if body_or_area.reactions.still_heating:
-				body_or_area.reactions.stop_heating_loop()
-	
+				body_or_area.reactions.stop_heating_timer()
 
-func is_heatable(body : Node2D) -> bool:
-	if body.has_node("Reactions2") and body != parent_node:
-		return body.reactions.is_heatable
+func is_heatable(body_or_area : Node2D) -> bool:
+	if body_or_area.has_node("Reactions") and body_or_area != parent_node:
+		return body_or_area.reactions.is_heatable
 	else:
 		return false
 
@@ -39,7 +34,7 @@ func _on_body_or_area_entered(body_or_area) -> void:
 func _on_body_or_area_exited(body_or_area) -> void:
 	handle_stop_flame(body_or_area)
 
-func _process(delta: float) -> void:
+func _process(_delta: float) -> void:
 	var overlapping_bodies : Array[Node2D]
 	var overlapping_areas : Array[Area2D]
 	if has_overlapping_bodies():

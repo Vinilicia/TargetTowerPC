@@ -7,21 +7,24 @@ extends CharacterBody2D
 @onready var wall_detec_for_jump = $Wall_Detec_For_Jump as RayCast2D
 @onready var wall_detec = $Wall_Detec as RayCast2D
 @onready var speed : int = 0
-@onready var reactions = $Reactions2
+@onready var reactions = $Reactions
 @onready var coll = $Coll
 
 
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var direction = 0
-var frozen : bool = false
 var fire_level : int = 0
 var health : int = 5
-var knockback_direction : int
 
 var enter_fire_func : Callable = start_taking_fire_damage
 var exit_fire_func : Callable = stop_taking_fire_damage
-
+var update_fire_func : Callable = update_taking_fire_damage
 var on_fire : bool = false
+
+var enter_ice_func : Callable = enter_ice
+var exit_ice_func : Callable = exit_ice
+var update_ice_func : Callable = update_ice
+var frozen : bool = false
 
 func _physics_process(delta):
 	$Wall_Detec_For_Jump.target_position.x = 13 * direction
@@ -34,10 +37,11 @@ func _physics_process(delta):
 	if direction:
 		move(direction, speed)
 		direction = 0
-	if !frozen:
-		move_and_slide()
+	#if !frozen:
+		#move_and_slide()
+	move_and_slide()
 
-func _process(delta):
+func _process(_delta):
 	if health <= 0:
 		print_debug("I died")
 		queue_free()
@@ -47,13 +51,6 @@ func move(dir : int, spd : int):
 
 func jump(multiplier : float = 1) -> void:
 	velocity.y = Jump_Force * multiplier
-
-func get_frozen(freezetime : float) -> void:
-	frozen = true
-	$Coll.debug_color = $Coll.debug_color + Color(0, 0, 20, 0)
-	await get_tree().create_timer(freezetime).timeout
-	frozen = false
-	$Coll.debug_color = $Coll.debug_color - Color(0, 0, 20, 0)
 
 func take_damage() -> void:
 	health -= 1
@@ -73,9 +70,22 @@ func fire_ticking() -> void:
 
 func start_taking_fire_damage() -> void:
 	fire_level += 1
-	if !on_fire:
-		on_fire = true
-		fire_ticking()
+	on_fire = true
+	fire_ticking()
+
+func update_taking_fire_damage() -> void:
+	fire_level += 1
 
 func stop_taking_fire_damage() -> void:
 	pass
+
+func enter_ice() -> void:
+	frozen = true
+	coll.debug_color += Color(0, 0, 1, 0.6)
+
+func update_ice() -> void:
+	print_debug("What is love?")
+
+func exit_ice() -> void:
+	frozen = false
+	coll.debug_color -= Color(0, 0, 1, 0.6)

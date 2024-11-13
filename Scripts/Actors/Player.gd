@@ -108,8 +108,8 @@ func jump(multiplier : float = 1) -> void:
 	velocity.y = Jump_Force * multiplier
 	state_chart.send_event("jumped")
 
-func move(facing_direction : int) -> void:
-	velocity.x = facing_direction * Move_Speed
+func move(arg_facing_direction : int) -> void:
+	velocity.x = arg_facing_direction * Move_Speed
 
 func _on_screen_exit_timer_timeout():
 	print_debug("Macarrão")

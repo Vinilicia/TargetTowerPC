@@ -1,0 +1,14 @@
+[gd_scene load_steps=2 format=3 uid="uid://dkni2sf7wns4r"]
+
+[ext_resource type="Script" path="res://Scripts/Actions-Reactions/Shock.gd" id="1_u5vqd"]
+
+[node name="Shock" type="Area2D"]
+script = ExtResource("1_u5vqd")
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+debug_color = Color(1, 1, 0, 0.721569)
+
+[connection signal="area_entered" from="." to="." method="_on_area_or_body_entered"]
+[connection signal="area_exited" from="." to="." method="_on_area_or_body_exited"]
+[connection signal="body_entered" from="." to="." method="_on_area_or_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_area_or_body_exited"]
