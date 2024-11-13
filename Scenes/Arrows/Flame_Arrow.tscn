@@ -31,7 +31,6 @@ shape = SubResource("RectangleShape2D_2ri8v")
 
 [node name="Flame" parent="Actions" instance=ExtResource("4_geovp")]
 position = Vector2(5, -0.5)
-Max_Temp_Raise = 10.0
 Flame_Intensity = 2.0
 Insta_Flame = true
 

@@ -7,20 +7,19 @@ extends CharacterBody2D
 @onready var wall_detec_for_jump = $Wall_Detec_For_Jump as RayCast2D
 @onready var wall_detec = $Wall_Detec as RayCast2D
 @onready var speed : int = 0
-@onready var reactions = $Reactions
+@onready var reactions = $Reactions2
 @onready var coll = $Coll
 
 
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var direction = 0
 var frozen : bool = false
-var fire_level : int
+var fire_level : int = 0
 var health : int = 5
 var knockback_direction : int
 
-var enter_burn_func : Callable = start_taking_fire_damage
-var exit_burn_func : Callable = stop_taking_fire_damage
-var update_burn_func : Callable = update_taking_fire_damage
+var enter_fire_func : Callable = start_taking_fire_damage
+var exit_fire_func : Callable = stop_taking_fire_damage
 
 var on_fire : bool = false
 
@@ -58,38 +57,25 @@ func get_frozen(freezetime : float) -> void:
 
 func take_damage() -> void:
 	health -= 1
-	await get_tree().create_timer(0.1).timeout
-	coll.debug_color -= Color(1, 0, 0, 0.9)
-
-func receive_fire_knockback() -> void:
-	reactions.set_knock_dir(knockback_direction)
-	reactions.be_pushed(Vector2(200, -170))
-	coll.debug_color += Color(1, 0, 0, 0.9)
 
 func fire_ticking() -> void:
 	await get_tree().create_timer(min(2.0 / float(fire_level), 1)).timeout
 	take_damage()
-	receive_fire_knockback()
+	#receive_fire_knockback()
 	coll.debug_color += Color(1, 0, 0, 0.9)
 	await get_tree().create_timer(0.1).timeout
 	coll.debug_color -= Color(1, 0, 0, 0.9)
 	fire_level -= 1
 	if fire_level > 0:
 		fire_ticking()
+	else:
+		on_fire = false
 
 func start_taking_fire_damage() -> void:
-	on_fire = true
-	fire_level = 1
-	fire_ticking()
-
-func get_fire_source() -> Node2D:
-	return reactions.latest_fire_source
-
-func update_taking_fire_damage() -> void:
 	fire_level += 1
-	var fire_source : Node2D = get_fire_source()
-	knockback_direction = sign(global_position.x - fire_source.global_position.x)
-	print_debug(global_position.x - fire_source.global_position.x)
+	if !on_fire:
+		on_fire = true
+		fire_ticking()
 
 func stop_taking_fire_damage() -> void:
-	print_debug("amor")
+	pass

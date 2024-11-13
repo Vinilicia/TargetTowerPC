@@ -1,6 +1,5 @@
 extends Area2D
 
-@export var Max_Temp_Raise : float
 @export var Flame_Intensity : float
 @export var Insta_Flame : bool
 
@@ -16,23 +15,20 @@ func set_collision(collision_shape : Shape2D, collision_scale : float) -> void:
 	coll.scale = Vector2(1, 1) * collision_scale
 	
  
-func handle_start_flame(body_or_area : Node2D, intensity_modifier : float = 1) -> void:
+func handle_start_flame(body_or_area : Node2D) -> void:
 	if is_heatable(body_or_area):
-		body_or_area.reactions.set_contact(true)
-		var total_flame = Flame_Intensity * intensity_modifier
-		body_or_area.reactions.start_heating(total_flame, Max_Temp_Raise, self, Insta_Flame)
+		body_or_area.reactions.get_hit_by_fire(Flame_Intensity, Insta_Flame)
 
 
 func handle_stop_flame(body_or_area : Node2D) -> void:
 	if is_heatable(body_or_area):
-		body_or_area.reactions.set_contact(false)
 		if !Insta_Flame:
 			if body_or_area.reactions.still_heating:
 				body_or_area.reactions.stop_heating_loop()
 	
 
 func is_heatable(body : Node2D) -> bool:
-	if body.has_node("Reactions") and body != parent_node:
+	if body.has_node("Reactions2") and body != parent_node:
 		return body.reactions.is_heatable
 	else:
 		return false
