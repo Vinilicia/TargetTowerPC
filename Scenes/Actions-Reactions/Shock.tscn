@@ -3,10 +3,12 @@
 [ext_resource type="Script" path="res://Scripts/Actions-Reactions/Shock.gd" id="1_u5vqd"]
 
 [node name="Shock" type="Area2D"]
+collision_layer = 128
+collision_mask = 24
 script = ExtResource("1_u5vqd")
 
 [node name="Coll" type="CollisionShape2D" parent="."]
-debug_color = Color(1, 1, 0, 0.721569)
+debug_color = Color(1, 1, 0, 0.501961)
 
 [connection signal="area_entered" from="." to="." method="_on_area_or_body_entered"]
 [connection signal="area_exited" from="." to="." method="_on_area_or_body_exited"]

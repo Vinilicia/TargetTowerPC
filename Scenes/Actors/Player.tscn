@@ -25,7 +25,7 @@ Shoot_Delay = 0.1
 Jump_buffering_time = 0.1
 Max_Arrows = 7
 Exit_Time = 2.0
-Current_Arrow_Index = 5
+Current_Arrow_Index = 2
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 shape = SubResource("RectangleShape2D_ytu4p")

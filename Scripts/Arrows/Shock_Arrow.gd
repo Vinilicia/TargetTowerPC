@@ -7,12 +7,10 @@ extends Arrow
 func _ready():
 	shock.parent_node = self
 	shock.set_collision(coll.shape, 1)
- 
-func get_frozen() -> void:
-	queue_free()
 
 func _on_body_entered(body) -> void:
 	super._on_body_entered(body)
+	print(coll.get_scale())
 
 func set_direction(dir) -> void:
 	if direction != dir:

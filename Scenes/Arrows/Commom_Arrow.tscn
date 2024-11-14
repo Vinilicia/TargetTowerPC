@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="1_jx316"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ri8v"]
-size = Vector2(5.57763, 1)
+size = Vector2(2, 1)
 
 [node name="Arrow" type="CharacterBody2D"]
 collision_layer = 2
@@ -23,7 +23,6 @@ collision_layer = 2
 collision_mask = 28
 
 [node name="Coll" type="CollisionShape2D" parent="Collision"]
-scale = Vector2(0.359, -1)
 shape = SubResource("RectangleShape2D_2ri8v")
 
 [connection signal="body_entered" from="Collision" to="." method="_on_body_entered"]

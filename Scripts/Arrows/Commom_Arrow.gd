@@ -77,8 +77,8 @@ func spawn_joint(body) -> void:
 	#get_tree().current_scene.add_child(joint)
 	var pos = global_position
 	var pos_relativa = pos - body.global_position
-	self.get_parent().remove_child(self)
-	body.add_child(self)
+	self.get_parent().call_deferred("remove_child", self)
+	body.call_deferred("add_child", self)
 	self.position = pos_relativa
 
 func bounce() -> void:

@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://dkni2sf7wns4r" path="res://Scenes/Actions-Reactions/Shock.tscn" id="4_qamar"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ri8v"]
-size = Vector2(5.57763, 1)
+size = Vector2(2, 1)
 
 [node name="Shock_Arrow" type="CharacterBody2D"]
 collision_layer = 2
@@ -25,7 +25,6 @@ collision_layer = 2
 collision_mask = 28
 
 [node name="Coll" type="CollisionShape2D" parent="Collision"]
-scale = Vector2(0.359, -1)
 shape = SubResource("RectangleShape2D_2ri8v")
 
 [node name="Actions" parent="." instance=ExtResource("3_u3a5w")]
