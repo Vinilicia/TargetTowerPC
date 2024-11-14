@@ -6,7 +6,6 @@ extends Arrow
 
 func _on_body_entered(body) -> void:
 	get_frozen()
-
 	if !downward:
 		if charged:
 			push.handle_push(body, direction, Charge_Push_Mod)

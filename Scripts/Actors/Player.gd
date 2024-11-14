@@ -112,7 +112,6 @@ func move(arg_facing_direction : int) -> void:
 	velocity.x = arg_facing_direction * Move_Speed
 
 func _on_screen_exit_timer_timeout():
-	print_debug("Macarrão")
 	die()
 
 func die():

@@ -17,6 +17,8 @@ shape = SubResource("RectangleShape2D_o308p")
 [node name="Reactions" parent="." instance=ExtResource("2_15dir")]
 is_pushable = true
 is_heatable = true
+is_shockable = true
+Weight = 100.0
 Fire_Intensity = 1.0
 Time_To_Fire = 2.0
 Burn_Type = "Destroy"

@@ -32,7 +32,7 @@ func _on_body_entered(body) -> void:
 
 
 func _on_push_area_body_entered(body):
-	$Push_Area.set_deferred("monitoring", false)
+	#$Push_Area.set_deferred("monitoring", false)
 	if !downward:
 		push.handle_push(body, direction)
 

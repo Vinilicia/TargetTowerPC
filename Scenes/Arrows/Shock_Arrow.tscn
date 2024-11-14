@@ -12,6 +12,8 @@ size = Vector2(2, 1)
 collision_layer = 2
 collision_mask = 28
 script = ExtResource("1_o5nhc")
+Charged_Time = 5.0
+Despawn_Time = 10.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1

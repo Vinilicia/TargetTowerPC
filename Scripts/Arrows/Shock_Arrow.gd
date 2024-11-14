@@ -1,8 +1,10 @@
 extends Arrow
 
-@export var Time_Attached : float
+@export var Charged_Time : float
 
 @onready var shock = $Actions/Shock
+
+var decharging_timer : Timer
 
 func _ready():
 	shock.parent_node = self
@@ -10,7 +12,19 @@ func _ready():
 
 func _on_body_entered(body) -> void:
 	super._on_body_entered(body)
-	print(coll.get_scale())
+
+func start_decharging() -> void:
+	if decharging_timer == null:
+		decharging_timer = Timer.new()
+		decharging_timer.autostart = false
+		decharging_timer.timeout.connect(despawn_shock)
+		decharging_timer.one_shot = true
+		add_child(decharging_timer)
+		decharging_timer.start(Charged_Time)
+
+func despawn_shock() -> void:
+	shock.queue_free()
+	decharging_timer.queue_free()
 
 func set_direction(dir) -> void:
 	if direction != dir:

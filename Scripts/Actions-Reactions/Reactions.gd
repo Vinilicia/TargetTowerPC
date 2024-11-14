@@ -12,6 +12,10 @@ extends Node
 
 ############################################# GENERAL ############################################
 
+func _physics_process(delta: float) -> void:
+	if is_pushable:
+		pushable_handle_physics(delta)
+	
 ############################################# PUSHABLE #############################################
 
 @export_category("Pushable")
@@ -212,10 +216,27 @@ func stop_defrosting_timer() -> void:
 		defrosting_timer.stop()
 		defrosting_timer.queue_free()
 
-############################################ DRYABLE ############################################
-
-@export_category("Dryable")
-
 ############################################ SHOCKABLE ############################################
 
 @export_category("Shockable")
+
+
+var enter_shock_func : Callable = enter_shock
+var exit_shock_func : Callable = exit_shock
+
+var in_shock : bool = false
+
+func get_hit_by_shock() -> void:
+	enter_shock_func.call()
+
+func enter_shock() -> void:
+	in_shock = true
+	parent.coll.debug_color += Color(1, 1, 0, 0.5)
+
+func exit_shock() -> void:
+	in_shock = false
+	parent.coll.debug_color -= Color(1, 1, 0, 0.5)
+
+############################################ DRYABLE ############################################
+
+@export_category("Dryable")
