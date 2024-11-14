@@ -31,10 +31,10 @@ var fall_jump_buffer : bool = false
 var ledge_jump_buffer : bool = false
 var is_jumping : bool = false
 var on_floor : bool = true
-var facing_direction : int
+var facing_direction : int = 1
 
 @export_category("Para debugar")
-@export_range(0 , 6) var Current_Arrow_Index : int
+@export_range(0 , 9) var Current_Arrow_Index : int # so vai ate 7 por enquanto
 
 var current_arrow_index : int
 
