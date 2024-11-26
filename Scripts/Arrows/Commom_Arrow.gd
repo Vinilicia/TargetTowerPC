@@ -8,6 +8,7 @@ class_name Arrow
 @export var Flying_Speed : float = 400
 @export var Charge_Multiplier : float = 2
 @export var Despawn_Time : float = 7
+@export var Cost : int = 1
 
 var direction : int = 1
 var charged : bool = false

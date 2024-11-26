@@ -34,12 +34,12 @@ var on_floor : bool = true
 var facing_direction : int = 1
 
 @export_category("Para debugar")
-@export_range(0 , 9) var Current_Arrow_Index : int # so vai ate 7 por enquanto
+@export_range(0 , 9) var Initial_Arrow_Index : int # so vai ate 7 por enquanto
 
 var current_arrow_index : int
 
 func _ready():
-	current_arrow_index = Current_Arrow_Index
+	current_arrow_index = Initial_Arrow_Index
 	current_arrow = equip_arrow(current_arrow_index)
 
 func _process(delta):
