@@ -1,0 +1,9 @@
+[gd_scene load_steps=2 format=3 uid="uid://c4wp68he0ocwp"]
+
+[ext_resource type="Script" path="res://Scripts/Actions-Reactions/Fire.gd" id="1_wlo0t"]
+
+[node name="Fire" type="Area2D"]
+collision_layer = 256
+script = ExtResource("1_wlo0t")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
