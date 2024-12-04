@@ -3,8 +3,8 @@
 [ext_resource type="Script" path="res://Scripts/Actions-Reactions/Flame.gd" id="1_u176f"]
 
 [node name="Flame" type="Area2D"]
-collision_layer = 128
-collision_mask = 24
+collision_layer = 256
+collision_mask = 1536
 script = ExtResource("1_u176f")
 
 [node name="Coll" type="CollisionShape2D" parent="."]

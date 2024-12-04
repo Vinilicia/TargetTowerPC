@@ -84,6 +84,8 @@ Switch_Arrow={
 2d_physics/layer_5="Interactables"
 2d_physics/layer_9="Fire"
 2d_physics/layer_10="Ice"
+2d_physics/layer_11="Water"
+2d_physics/layer_12="Electricity"
 
 [rendering]
 

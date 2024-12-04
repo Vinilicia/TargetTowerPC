@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://d7m0k4hcddd7"]
+
+[ext_resource type="Script" path="res://Scripts/Actions-Reactions/React.gd" id="1_uudgt"]
+
+[node name="React" type="Node"]
+script = ExtResource("1_uudgt")
+Fire_Scale = 0.75

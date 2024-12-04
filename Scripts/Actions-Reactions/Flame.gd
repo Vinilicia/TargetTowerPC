@@ -2,6 +2,9 @@ extends Area2D
 
 @export var Flame_Intensity : float
 @export var Insta_Flame : bool
+@export var Extinguishes : bool = true
+
+var duration : float
 
 var parent_node : Node2D
 var coll : CollisionShape2D
