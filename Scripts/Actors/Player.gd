@@ -4,7 +4,7 @@ extends CharacterBody2D
 @export var Jump_Force : float
 @export var Default_Knockback : Vector2 = Vector2(170, 0)
 @export var Gravity_Multiplier : float
-@export var Arrows_paths : Array[String]
+@export_dir var Arrows_paths : Array[String]
 @export var Max_hold_time : float
 @export var Shoot_Delay : float
 @export var Jump_buffering_time : float

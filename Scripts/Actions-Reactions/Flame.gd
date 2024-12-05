@@ -1,6 +1,6 @@
 extends Area2D
 
-@export var Flame_Intensity : float
+@export var Fire_Intensity : float
 @export var Insta_Flame : bool
 @export var Extinguishes : bool = true
 
@@ -16,7 +16,7 @@ func set_collision(collision_shape : Shape2D, collision_scale : float) -> void:
  
 func handle_start_flame(body_or_area : Node2D) -> void:
 	if is_heatable(body_or_area):
-		body_or_area.reactions.get_hit_by_fire(Flame_Intensity, Insta_Flame)
+		body_or_area.reactions.get_hit_by_fire(Fire_Intensity, Insta_Flame)
 
 
 func handle_stop_flame(body_or_area : Node2D) -> void:

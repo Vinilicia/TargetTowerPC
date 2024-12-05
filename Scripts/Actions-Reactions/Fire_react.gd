@@ -29,10 +29,14 @@ func initialize(new_parent: Node2D, fire_properties: Dictionary) -> void:
 	time_to_fire = fire_properties.get("time_to_fire")
 	burn_type = fire_properties.get("burn_type")
 	time_on_fire = fire_properties.get("time_on_fire")
+	print(time_on_fire)
 	emanates_heat = fire_properties.get("emanates_heat")
 	fire_intensity = fire_properties.get("fire_intensity")
 	fire_scale = fire_properties.get("fire_scale")
 
+func react(body_or_area : CollisionObject2D) -> void:
+	if body_or_area.get_collision_layer_value(9):
+		get_hit_by_fire(body_or_area.Fire_Intensity, body_or_area.Insta_Flame)
 
 func get_hit_by_fire(intensity : int, instant : bool) -> void:
 	if instant or on_fire:
@@ -72,6 +76,7 @@ func start_burning_timer() -> void:
 	burning_timer.timeout.connect(exit_fire_func)
 	parent.add_child(burning_timer)
 	burning_timer.start(time_on_fire)
+	print(time_on_fire)
 
 func restart_burning_timer() -> void:
 	stop_burning_timer()
@@ -83,6 +88,7 @@ func stop_burning_timer() -> void:
 		burning_timer.call_deferred("free")
 
 func enter_fire() -> void:
+	print("Oh my god")
 	on_fire = true
 	if emanates_heat:
 		create_heat_area()
@@ -109,5 +115,5 @@ func exit_fire() -> void:
 		
 		parent.exit_fire_func.call()
 		call_deferred("free")
-	
+	print("Mama mia")
 	enter_fire_func = enter_fire

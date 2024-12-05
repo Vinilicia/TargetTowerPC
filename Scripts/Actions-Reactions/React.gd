@@ -1,6 +1,6 @@
-extends Node
+extends Node2D
 
-@onready var parent : Node2D = get_parent()
+var parent : Node2D
 
 @export_category("General")
 
@@ -9,6 +9,11 @@ extends Node
 @export var is_flammable : bool
 @export var is_dryable : bool
 @export var is_shockable : bool
+
+@export var collision_shape : Shape2D
+
+var reaction_area : Area2D
+var reaction_collision : CollisionShape2D
 
 var fire_react_path : String = "res://Scenes/Actions-Reactions/Fire_React.tscn"
 var freeze_react_path : String = "res://Scenes/Actions-Reactions/Freeze_React.tscn"
@@ -43,15 +48,7 @@ var freeze_react : Node
 #Escala da colisão do fogo em relação a do objeto em si
 @export_range(0, 2) var Fire_Scale : float
 
-var fire_properties : Dictionary = {
-	"fire_resistance": Fire_Resistance,
-	"time_to_fire": Time_To_Fire,
-	"burn_type": Burn_Type,
-	"time_on_fire": Time_On_Fire,
-	"emanates_heat": Emanates_Heat,
-	"fire_intensity": Fire_Intensity,
-	"fire_scale": Fire_Scale
-}
+var fire_properties : Dictionary
 
 ############################################ FREEZABLE ############################################
 
@@ -66,11 +63,32 @@ var freeze_properties : Dictionary = {
 }
 
 ############################################# GENERAL ############################################
+var thing = true
 
 func _ready() -> void:
+	parent = get_parent()
+	reaction_area = $Reaction_Area
 	initialize_children()
 
+func _process(_delta) -> void:
+	if thing and parent.coll != null:
+		thing = false
+		initialize_area()
+
+func initialize_area() -> void:
+	reaction_collision = $Reaction_Area/Coll
+	reaction_collision.shape = parent.coll.get_shape()
+
 func initialize_children() -> void:
+	fire_properties = {
+		"fire_resistance": Fire_Resistance,
+		"time_to_fire": Time_To_Fire,
+		"burn_type": Burn_Type,
+		"time_on_fire": Time_On_Fire,
+		"emanates_heat": Emanates_Heat,
+		"fire_intensity": Fire_Intensity,
+		"fire_scale": Fire_Scale
+	}
 	if is_flammable:
 		spawn_fire_react()
 	if is_freezable:
@@ -82,7 +100,7 @@ func handle_reaction(body_or_area : Node2D) -> void:
 	if fire_react != null:
 		fire_react.react(body_or_area)
 	if freeze_react != null:
-		freeze_react.react(body_or_area)
+		freeze_react.react(body_or_arekkkka)
 	#if shock_react != null:
 		#pass
 
