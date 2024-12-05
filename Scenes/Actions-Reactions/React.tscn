@@ -4,4 +4,3 @@
 
 [node name="React" type="Node"]
 script = ExtResource("1_uudgt")
-Fire_Scale = 0.75
