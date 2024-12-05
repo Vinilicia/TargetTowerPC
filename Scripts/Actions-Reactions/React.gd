@@ -4,11 +4,11 @@ var parent : Node2D
 
 @export_category("General")
 
-@export var is_pushable : bool
-@export var is_freezable : bool
-@export var is_flammable : bool
-@export var is_dryable : bool
-@export var is_shockable : bool
+@export var Is_pushable : bool
+@export var Is_freezable : bool
+@export var Is_flammable : bool
+@export var Is_dryable : bool
+@export var Is_shockable : bool
 
 @export var collision_shape : Shape2D
 
@@ -20,8 +20,8 @@ var freeze_react_path : String = "res://Scenes/Actions-Reactions/Freeze_React.ts
 var shock_react_path
 
 
-var fire_react : Node
-var freeze_react : Node
+var fire_react : Reaction
+var freeze_react : Reaction
 
 ############################################ FLAMMABLE ############################################
 
@@ -57,18 +57,23 @@ var fire_properties : Dictionary
 @export var Auto_Defrosts : bool
 @export var Defrosting_Time : float
 
-var freeze_properties : Dictionary = {
-	"auto_defrosts": Auto_Defrosts,
-	"defrosting_time": Defrosting_Time
-}
+var freeze_properties : Dictionary 
 
 ############################################# GENERAL ############################################
 var thing = true
 
+var is_flammable : bool
+var is_freezable : bool
+var is_shockable : bool
+
 func _ready() -> void:
 	parent = get_parent()
+	is_flammable = Is_flammable
+	is_freezable = Is_freezable
+	is_shockable = Is_shockable
+	
 	reaction_area = $Reaction_Area
-	initialize_children()
+	update_children()
 
 func _process(_delta) -> void:
 	if thing and parent.coll != null:
@@ -79,19 +84,23 @@ func initialize_area() -> void:
 	reaction_collision = $Reaction_Area/Coll
 	reaction_collision.shape = parent.coll.get_shape()
 
-func initialize_children() -> void:
-	fire_properties = {
-		"fire_resistance": Fire_Resistance,
-		"time_to_fire": Time_To_Fire,
-		"burn_type": Burn_Type,
-		"time_on_fire": Time_On_Fire,
-		"emanates_heat": Emanates_Heat,
-		"fire_intensity": Fire_Intensity,
-		"fire_scale": Fire_Scale
-	}
-	if is_flammable:
+func update_children() -> void:
+	if is_flammable and fire_react == null:
+		fire_properties = {
+			"fire_resistance": Fire_Resistance,
+			"time_to_fire": Time_To_Fire,
+			"burn_type": Burn_Type,
+			"time_on_fire": Time_On_Fire,
+			"emanates_heat": Emanates_Heat,
+			"fire_intensity": Fire_Intensity,
+			"fire_scale": Fire_Scale
+		}
 		spawn_fire_react()
-	if is_freezable:
+	if is_freezable and freeze_react == null:
+		freeze_properties = {
+			"auto_defrosts": Auto_Defrosts,
+			"defrosting_time": Defrosting_Time
+		}
 		spawn_freeze_react()
 	if is_shockable:
 		spawn_shock_react()
@@ -100,7 +109,7 @@ func handle_reaction(body_or_area : Node2D) -> void:
 	if fire_react != null:
 		fire_react.react(body_or_area)
 	if freeze_react != null:
-		freeze_react.react(body_or_arekkkka)
+		freeze_react.react(body_or_area)
 	#if shock_react != null:
 		#pass
 
@@ -116,3 +125,17 @@ func spawn_freeze_react() -> void:
 
 func spawn_shock_react() -> void:
 	pass
+
+############################################# TRANSITIONS ############################################
+
+func fire_enter_transition() -> void:
+	if !is_freezable:
+		is_freezable = true
+		update_children()
+		freeze_react.enter_func = fire_react.exit_func
+		freeze_react.exit_func = func() : pass
+
+func fire_exit_transition() -> void:
+	if !Is_freezable:
+		is_freezable = false
+		freeze_react.free()

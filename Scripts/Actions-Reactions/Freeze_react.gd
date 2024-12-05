@@ -1,10 +1,11 @@
-extends Node
-
-
-var parent : Node2D
+extends Reaction
 
 var auto_defrosts : bool
 var defrosting_time : float
+
+var frozen : bool = false
+
+var defrosting_timer : Timer
 
 func react(body_or_area : CollisionObject2D) -> void:
 	if body_or_area.get_collision_layer_value(10):
@@ -12,26 +13,21 @@ func react(body_or_area : CollisionObject2D) -> void:
 
 func initialize(new_parent: Node2D, freeze_properties: Dictionary) -> void:
 	parent = new_parent
+	enter_func = enter_ice
+	exit_func = exit_ice
 	
 	auto_defrosts = freeze_properties.get("auto_defrosts")
 	defrosting_time = freeze_properties.get("defrosting_time")
 
-var enter_ice_func : Callable = enter_ice
-var exit_ice_func : Callable = exit_ice
-
-var frozen : bool = false
-
-var defrosting_timer : Timer
 
 func get_hit_by_ice() -> void:
-	enter_ice_func.call()
-
+	enter_func.call()
 
 func enter_ice() -> void:
 	frozen = true
-	enter_ice_func = update_ice
+	enter_func = update_ice
 	
-	parent.enter_ice_func.call()
+	parent.enter_func.call()
 	if auto_defrosts:
 		start_defrosting_timer()
 
@@ -40,10 +36,8 @@ func update_ice() -> void:
 
 func exit_ice() -> void:
 	stop_defrosting_timer()
-	enter_ice_func = enter_ice
-	
-	
-	parent.exit_ice_func.call()
+	enter_func = enter_ice
+	parent.exit_func.call()
 
 func start_defrosting_timer() -> void:
 	defrosting_timer = Timer.new()

@@ -7,7 +7,7 @@ extends CharacterBody2D
 @onready var wall_detec_for_jump = $Wall_Detec_For_Jump as RayCast2D
 @onready var wall_detec = $Wall_Detec as RayCast2D
 @onready var speed : int = 0
-@onready var reactions = $Reactions
+@onready var react = $React
 @onready var coll = $Coll
 
 
@@ -19,6 +19,7 @@ var health : int = 5
 var enter_fire_func : Callable = start_taking_fire_damage
 var exit_fire_func : Callable = stop_taking_fire_damage
 var update_fire_func : Callable = update_taking_fire_damage
+
 var on_fire : bool = false
 
 var enter_ice_func : Callable = enter_ice

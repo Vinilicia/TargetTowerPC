@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" path="res://Scripts/Actors/Enemies/Enemy.gd" id="1_olwcp"]
 [ext_resource type="Texture2D" uid="uid://dc4hwctpoftru" path="res://icon.svg" id="2_0kqgt"]
-[ext_resource type="PackedScene" uid="uid://nfq26jfnfs5o" path="res://Scenes/Actions-Reactions/Reactions.tscn" id="3_8yxpy"]
+[ext_resource type="PackedScene" uid="uid://d7m0k4hcddd7" path="res://Scenes/Actions-Reactions/React.tscn" id="3_f0346"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_fr1pd"]
 radius = 8.0
@@ -31,13 +31,10 @@ collision_mask = 4
 target_position = Vector2(13, 0)
 collision_mask = 4
 
-[node name="Reactions" parent="." instance=ExtResource("3_8yxpy")]
-is_pushable = true
-is_freezable = true
-is_heatable = true
-Weight = 50.0
-Time_To_Fire = 0.5
+[node name="React" parent="." instance=ExtResource("3_f0346")]
+Fire_Resistance = 1
+Time_To_Fire = 2.0
 Burn_Type = "Cool_off"
-Time_On_Fire = 1.0
+Time_On_Fire = 2.0
 Auto_Defrosts = true
 Defrosting_Time = 5.0

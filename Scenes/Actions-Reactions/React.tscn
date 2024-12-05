@@ -4,20 +4,7 @@
 
 [node name="React" type="Node2D"]
 script = ExtResource("1_uudgt")
-is_pushable = null
-is_freezable = null
-is_flammable = null
-is_dryable = null
-is_shockable = null
-Fire_Resistance = null
-Time_To_Fire = null
-Burn_Type = null
 Time_On_Fire = 5.0
-Emanates_Heat = null
-Fire_Intensity = null
-Fire_Scale = null
-Auto_Defrosts = null
-Defrosting_Time = null
 
 [node name="Reaction_Area" type="Area2D" parent="."]
 collision_layer = 2147483648

@@ -2,15 +2,15 @@ extends Arrow
 
 @export var Charge_Inten_Mod : float = 2
 
-@onready var flame = $Actions/Flame
+@onready var fire = $Actions/Fire
 
 func _ready():
-	flame.parent_node = self
+	fire.parent_node = self
 	if charged:
-		flame.set_collision(coll.shape, 10)
-		flame.Flame_Intensity *= 2
+		fire.set_collision(coll.shape, 10)
+		fire.Intensity *= 2
 	else:
-		flame.set_collision(coll.shape, 1)
+		fire.set_collision(coll.shape, 1.2)
  
 func get_frozen() -> void:
 	queue_free()
@@ -21,11 +21,11 @@ func _on_body_entered(_body) -> void:
 func set_direction(dir) -> void:
 	if direction != dir:
 		super.set_direction(dir)
-		flame = $Actions/Flame
-		flame.position.x *= -1
+		fire = $Actions/Fire
+		fire.position.x *= -1
 
 func flip_children() -> void:
 	super.flip_children()
-	flame = $Actions/Flame
-	flame.position = Vector2(flame.position.y, abs(flame.position.x))
-	flame.rotation = deg_to_rad(90)
+	fire = $Actions/Fire
+	fire.position = Vector2(fire.position.y, abs(fire.position.x))
+	fire.rotation = deg_to_rad(90)

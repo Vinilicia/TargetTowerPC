@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://xmj0nx76ga7t"]
+
+[ext_resource type="Script" path="res://Scripts/Actions-Reactions/Freeze.gd" id="1_cw4on"]
+
+[node name="Freezer" type="Area2D"]
+collision_layer = 512
+collision_mask = 0
+script = ExtResource("1_cw4on")
+
+[node name="Coll" type="CollisionShape2D" parent="."]

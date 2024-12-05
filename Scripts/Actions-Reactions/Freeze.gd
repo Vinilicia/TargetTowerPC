@@ -1,11 +1,9 @@
-extends Node2D
+extends Area2D
 
-func handle_freeze(body : Node2D) -> void:
-	if is_freezable(body):
-		body.reactions.get_hit_by_ice()
+var coll : CollisionShape2D
+var parent_node : Node2D
 
-func is_freezable(body : Node2D) -> bool:
-	if body.has_node("Reactions"):
-		return body.reactions.is_freezable
-	else:
-		return false
+func set_collision(collision_shape : Shape2D, collision_scale : float) -> void:
+	coll = $Coll
+	coll.call_deferred("set_shape", collision_shape)
+	coll.call_deferred("set_scale", Vector2(1, 1) * collision_scale)
