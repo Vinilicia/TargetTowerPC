@@ -117,6 +117,9 @@ func spawn_fire_react() -> void:
 	fire_react = load(fire_react_path).instantiate()
 	add_child(fire_react)
 	fire_react.initialize(parent, fire_properties)
+	
+	#fire_react.taken.connect(parent.enter_fire_func)
+	#fire_react.stopped.connect(parent.exit_fire_func)
 
 func spawn_freeze_react() -> void:
 	freeze_react = load(freeze_react_path).instantiate()
@@ -132,8 +135,8 @@ func fire_enter_transition() -> void:
 	if !is_freezable:
 		is_freezable = true
 		update_children()
-		freeze_react.enter_func = fire_react.exit_func
-		freeze_react.exit_func = func() : pass
+		freeze_react.take_func = fire_react.stop_func
+		freeze_react.stop_func = func() : pass
 
 func fire_exit_transition() -> void:
 	if !Is_freezable:

@@ -4,8 +4,8 @@ class_name Reaction
 
 var parent : Node2D
 
-var enter_func : Callable
-var exit_func : Callable
+var take_func : Callable
+var stop_func : Callable
 
-signal entered
-signal exited
+signal taken
+signal stopped

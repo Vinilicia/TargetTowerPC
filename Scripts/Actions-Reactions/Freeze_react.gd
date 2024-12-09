@@ -13,31 +13,30 @@ func react(body_or_area : CollisionObject2D) -> void:
 
 func initialize(new_parent: Node2D, freeze_properties: Dictionary) -> void:
 	parent = new_parent
-	enter_func = enter_ice
-	exit_func = exit_ice
+	take_func = enter_ice
+	stop_func = exit_ice
 	
 	auto_defrosts = freeze_properties.get("auto_defrosts")
 	defrosting_time = freeze_properties.get("defrosting_time")
 
 
 func get_hit_by_ice() -> void:
-	enter_func.call()
+	take_func.call()
 
 func enter_ice() -> void:
+	taken.emit()
 	frozen = true
-	enter_func = update_ice
-	
-	parent.enter_func.call()
+	take_func = update_ice
 	if auto_defrosts:
 		start_defrosting_timer()
 
 func update_ice() -> void:
-	parent.update_ice_func.call()
+	pass
 
 func exit_ice() -> void:
+	stopped.emit()
 	stop_defrosting_timer()
-	enter_func = enter_ice
-	parent.exit_func.call()
+	take_func = enter_ice
 
 func start_defrosting_timer() -> void:
 	defrosting_timer = Timer.new()

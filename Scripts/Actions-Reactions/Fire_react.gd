@@ -16,9 +16,12 @@ var burning_timer : Timer
 var fire : Area2D
 
 func initialize(new_parent: Node2D, fire_properties: Dictionary) -> void:
+	
 	parent = new_parent
-	enter_func = enter_fire
-	exit_func = exit_fire
+	
+	take_func = enter_fire
+	stop_func = exit_fire
+	
 	fire_resistance = fire_properties.get("fire_resistance")
 	time_to_fire = fire_properties.get("time_to_fire")
 	burn_type = fire_properties.get("burn_type")
@@ -33,7 +36,7 @@ func react(body_or_area : CollisionObject2D) -> void:
 
 func get_hit_by_fire(intensity : int, instant : bool) -> void:
 	if instant or on_fire:
-		enter_func.call()
+		take_func.call()
 	else:
 		var heating_time : float = time_to_fire / float(max(1, intensity - fire_resistance))
 		start_heating_timer(heating_time)
@@ -45,7 +48,7 @@ func create_fire() -> void:
 	fire.set_collision(coll_shape, fire_scale)
 	fire.parent_node = parent
 	fire.duration = time_on_fire
-	fire.connect_extinguish_signal(exit_func)
+	fire.connect_extinguish_signal(stop_func)
 	parent.call_deferred("add_child", fire)
 
 func start_heating_timer(time_to_fire : float) -> void:
@@ -54,7 +57,7 @@ func start_heating_timer(time_to_fire : float) -> void:
 		heating_timer = Timer.new()
 		heating_timer.autostart = false
 		heating_timer.one_shot = true
-		heating_timer.timeout.connect(enter_func)
+		heating_timer.timeout.connect(take_func)
 		parent.add_child(heating_timer)
 		heating_timer.start(time_to_fire)
 
@@ -63,53 +66,38 @@ func stop_heating_timer() -> void:
 		heating_timer.stop()
 		heating_timer.call_deferred("free")
 
-func start_burning_timer() -> void:
-	still_heating = true
-	burning_timer = Timer.new()
-	burning_timer.autostart = false
-	burning_timer.one_shot = true
-	burning_timer.timeout.connect(exit_func)
-	parent.add_child(burning_timer)
-	burning_timer.start(time_on_fire)
-
-func restart_burning_timer() -> void:
-	stop_burning_timer()
-	start_burning_timer()
-
-func stop_burning_timer() -> void:
-	if burning_timer != null:
-		burning_timer.stop()
-		burning_timer.call_deferred("free")
+#func start_burning_timer() -> void:
+	#still_heating = true
+	#burning_timer = Timer.new()
+	#burning_timer.autostart = false
+	#burning_timer.one_shot = true
+	#burning_timer.timeout.connect(stop_func)
+	#parent.add_child(burning_timer)
+	#burning_timer.start(time_on_fire)
+#
+#func restart_burning_timer() -> void:
+	#stop_burning_timer()
+	#start_burning_timer()
+#
+#func stop_burning_timer() -> void:
+	#if burning_timer != null:
+		#burning_timer.stop()
+		#burning_timer.call_deferred("free")
 
 func enter_fire() -> void:
-	entered.emit()
+	taken.emit()
 	
 	on_fire = true
 	if emanates_heat:
 		create_fire()
-	start_burning_timer()
 	
-	parent.enter_fire_func.call()
-	enter_func = update_fire
+	take_func = update_fire
 
 func update_fire() -> void:
-	parent.update_fire_func.call()
 	if burn_type == "Cool_off":
-		restart_burning_timer()
+		fire.start_timer()
 
 func exit_fire() -> void:
-	exited.emit()
-	
-	if burn_type == "Cool_off":
-		on_fire = false
-		if emanates_heat:
-			fire.queue_free()
-		stop_burning_timer()
-		
-		parent.exit_fire_func.call()
-	
-	elif burn_type == "Destroy":
-		
-		parent.exit_func.call()
-		call_deferred("free")
-	enter_func = enter_fire
+	stopped.emit()
+	on_fire = false
+	take_func = enter_fire

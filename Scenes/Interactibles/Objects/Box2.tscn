@@ -17,6 +17,8 @@ script = ExtResource("1_yd07j")
 shape = SubResource("RectangleShape2D_o308p")
 
 [node name="React" parent="." instance=ExtResource("2_nghxj")]
+Is_freezable = true
+Is_flammable = true
 collision_shape = SubResource("RectangleShape2D_eksb4")
 Fire_Resistance = 1
 Time_To_Fire = 2.0
@@ -24,5 +26,5 @@ Burn_Type = "Destroy"
 Emanates_Heat = true
 Fire_Intensity = 1.0
 Fire_Scale = 1.4
-Auto_Defrosts = false
-Defrosting_Time = 0.0
+Auto_Defrosts = true
+Defrosting_Time = 5.0
