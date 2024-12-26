@@ -10,10 +10,14 @@ config_version=5
 
 [application]
 
-config/name="TargetTowerest"
+config/name="TargetTower - The Demo"
 run/main_scene="res://Scenes/Levels/Level.tscn"
 config/features=PackedStringArray("4.3", "Mobile")
 config/icon="res://icon.svg"
+
+[aseprite_importers]
+
+aseprite_executable_path="/home/dyego/opt/aseprite/aseprite"
 
 [display]
 
@@ -30,7 +34,7 @@ version_control/autoload_on_startup=true
 
 [editor_plugins]
 
-enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg")
+enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg", "res://addons/nklbdev.aseprite_importers/plugin.cfg")
 
 [input]
 
@@ -90,4 +94,5 @@ Switch_Arrow={
 
 [rendering]
 
+textures/canvas_textures/default_texture_filter=0
 renderer/rendering_method="mobile"

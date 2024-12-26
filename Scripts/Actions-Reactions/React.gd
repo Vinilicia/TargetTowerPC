@@ -16,12 +16,9 @@ var reaction_area : Area2D
 var reaction_collision : CollisionShape2D
 
 var fire_react_path : String = "res://Scenes/Actions-Reactions/Fire_React.tscn"
-var freeze_react_path : String = "res://Scenes/Actions-Reactions/Freeze_React.tscn"
-var shock_react_path
 
 
 var fire_react : Reaction
-var freeze_react : Reaction
 
 ############################################ FLAMMABLE ############################################
 
@@ -49,15 +46,6 @@ var freeze_react : Reaction
 @export_range(0, 2) var Fire_Scale : float
 
 var fire_properties : Dictionary
-
-############################################ FREEZABLE ############################################
-
-@export_category("Freezable")
-
-@export var Auto_Defrosts : bool
-@export var Defrosting_Time : float
-
-var freeze_properties : Dictionary 
 
 ############################################# GENERAL ############################################
 var thing = true
@@ -96,22 +84,10 @@ func update_children() -> void:
 			"fire_scale": Fire_Scale
 		}
 		spawn_fire_react()
-	if is_freezable and freeze_react == null:
-		freeze_properties = {
-			"auto_defrosts": Auto_Defrosts,
-			"defrosting_time": Defrosting_Time
-		}
-		spawn_freeze_react()
-	if is_shockable:
-		spawn_shock_react()
 
 func handle_reaction(body_or_area : Node2D) -> void:
 	if fire_react != null:
 		fire_react.react(body_or_area)
-	if freeze_react != null:
-		freeze_react.react(body_or_area)
-	#if shock_react != null:
-		#pass
 
 func spawn_fire_react() -> void:
 	fire_react = load(fire_react_path).instantiate()
@@ -120,25 +96,3 @@ func spawn_fire_react() -> void:
 	
 	#fire_react.taken.connect(parent.enter_fire_func)
 	#fire_react.stopped.connect(parent.exit_fire_func)
-
-func spawn_freeze_react() -> void:
-	freeze_react = load(freeze_react_path).instantiate()
-	add_child(freeze_react)
-	freeze_react.initialize(parent, freeze_properties)
-
-func spawn_shock_react() -> void:
-	pass
-
-############################################# TRANSITIONS ############################################
-
-func fire_enter_transition() -> void:
-	if !is_freezable:
-		is_freezable = true
-		update_children()
-		freeze_react.take_func = fire_react.stop_func
-		freeze_react.stop_func = func() : pass
-
-func fire_exit_transition() -> void:
-	if !Is_freezable:
-		is_freezable = false
-		freeze_react.free()

@@ -31,4 +31,4 @@ func set_direction(dir : int) -> void:
 func flip_children() -> void:
 	super.flip_children()
 	var plat_spawner = $Plat_Spawner
-	plat_spawner.position = Vector2(0.791, -4.5)
+	plat_spawner.position = Vector2(0.5, -4.5)

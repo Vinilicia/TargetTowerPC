@@ -1,9 +1,8 @@
-[gd_scene load_steps=8 format=3 uid="uid://bchqxwlm3ufd0"]
+[gd_scene load_steps=7 format=3 uid="uid://bchqxwlm3ufd0"]
 
 [ext_resource type="PackedScene" uid="uid://bi46s1lw77hbo" path="res://Scenes/Actors/Player.tscn" id="1_o47bd"]
 [ext_resource type="Script" path="res://Scripts/Testers/Arrow_tester.gd" id="2_2rggl"]
-[ext_resource type="PackedScene" uid="uid://b0b80o28au65e" path="res://Scenes/Actors/Enemies/Enemy.tscn" id="4_srvv8"]
-[ext_resource type="PackedScene" uid="uid://xhwqoiulihut" path="res://Scenes/Interactibles/Objects/Box2.tscn" id="5_0kdnj"]
+[ext_resource type="PackedScene" uid="uid://xhwqoiulihut" path="res://Scenes/Interactibles/Objects/Box.tscn" id="5_0kdnj"]
 [ext_resource type="PackedScene" uid="uid://burg3todgx2jh" path="res://Scenes/Interactibles/Objects/Bonfire.tscn" id="5_6bm7y"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1cfxj"]
@@ -34,9 +33,6 @@ script = ExtResource("2_2rggl")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Arrow_tester"]
 shape = SubResource("RectangleShape2D_adgot")
-
-[node name="Enemy" parent="." groups=["Freezable"] instance=ExtResource("4_srvv8")]
-position = Vector2(41, 49)
 
 [node name="Bonfire" parent="." instance=ExtResource("5_6bm7y")]
 position = Vector2(192, 78)

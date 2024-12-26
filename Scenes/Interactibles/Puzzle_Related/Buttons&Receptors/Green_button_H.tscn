@@ -1,0 +1,119 @@
+[gd_scene load_steps=12 format=3 uid="uid://c6jm3ekcih4g8"]
+
+[ext_resource type="Script" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/Green_button.gd" id="1_cq3c1"]
+[ext_resource type="Texture2D" uid="uid://b1gqtnad53to0" path="res://Assets/Home_bred/Mechanisms/Buttons/Green_ButtonH1.svg" id="2_uk0hg"]
+[ext_resource type="Texture2D" uid="uid://c6hdes5xkbui1" path="res://Assets/Home_bred/Mechanisms/Buttons/Green_ButtonH2.svg" id="3_cgjvl"]
+[ext_resource type="Texture2D" uid="uid://jdukrml5gwxi" path="res://Assets/Home_bred/Mechanisms/Buttons/Green_ButtonH3.svg" id="4_mmuft"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_rxqap"]
+size = Vector2(49.5, 7.375)
+
+[sub_resource type="Animation" id="Animation_vm4mw"]
+resource_name = "Being_Pressed"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.04, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("2_uk0hg"), ExtResource("3_cgjvl"), ExtResource("4_mmuft")]
+}
+
+[sub_resource type="Animation" id="Animation_u4pil"]
+resource_name = "Being_Unpressed"
+length = 0.1
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.04, 0.1),
+"transitions": PackedFloat32Array(1, 1, 1),
+"update": 1,
+"values": [ExtResource("4_mmuft"), ExtResource("3_cgjvl"), ExtResource("2_uk0hg")]
+}
+
+[sub_resource type="Animation" id="Animation_ujyas"]
+resource_name = "Idle"
+length = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_uk0hg")]
+}
+
+[sub_resource type="Animation" id="Animation_212ho"]
+resource_name = "Pressed"
+loop_mode = 1
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("4_mmuft")]
+}
+
+[sub_resource type="Animation" id="Animation_t6mab"]
+length = 0.001
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath("Sprite:texture")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0),
+"transitions": PackedFloat32Array(1),
+"update": 1,
+"values": [ExtResource("2_uk0hg")]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_kcc5d"]
+_data = {
+"Being_Pressed": SubResource("Animation_vm4mw"),
+"Being_Unpressed": SubResource("Animation_u4pil"),
+"Idle": SubResource("Animation_ujyas"),
+"Pressed": SubResource("Animation_212ho"),
+"RESET": SubResource("Animation_t6mab")
+}
+
+[node name="Green_Button_H" type="Area2D"]
+script = ExtResource("1_cq3c1")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_uk0hg")
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+position = Vector2(0, 9)
+shape = SubResource("RectangleShape2D_rxqap")
+
+[node name="AnimationPlayer" type="AnimationPlayer" parent="."]
+libraries = {
+"": SubResource("AnimationLibrary_kcc5d")
+}
+autoplay = "Idle"
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_exited" from="." to="." method="_on_body_exited"]

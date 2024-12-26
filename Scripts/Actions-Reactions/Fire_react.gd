@@ -101,3 +101,4 @@ func exit_fire() -> void:
 	stopped.emit()
 	on_fire = false
 	take_func = enter_fire
+	stop_heating_timer()

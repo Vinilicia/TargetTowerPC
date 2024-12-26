@@ -1,0 +1,10 @@
+[gd_scene load_steps=3 format=3 uid="uid://bsfhwiv55jayj"]
+
+[ext_resource type="Script" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/Blue_Receptor.gd" id="1_vsef0"]
+[ext_resource type="Texture2D" uid="uid://ctc7apxg4d5uq" path="res://Assets/Home_bred/Mechanisms/Buttons/Receptors/Blue_Receptor.svg" id="2_v4hyx"]
+
+[node name="Blue_Receptor" type="Node2D"]
+script = ExtResource("1_vsef0")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+texture = ExtResource("2_v4hyx")

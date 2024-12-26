@@ -2,7 +2,7 @@ extends Arrow
 
 @export var Charge_Inten_Mod : float = 2
 
-@onready var fire = $Actions/Fire
+@onready var fire = $Fire
 
 func _ready():
 	fire.parent_node = self
@@ -21,11 +21,11 @@ func _on_body_entered(_body) -> void:
 func set_direction(dir) -> void:
 	if direction != dir:
 		super.set_direction(dir)
-		fire = $Actions/Fire
+		fire = $Fire
 		fire.position.x *= -1
 
 func flip_children() -> void:
 	super.flip_children()
-	fire = $Actions/Fire
+	fire = $Fire
 	fire.position = Vector2(fire.position.y, abs(fire.position.x))
 	fire.rotation = deg_to_rad(90)

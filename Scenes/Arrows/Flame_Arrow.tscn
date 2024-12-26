@@ -1,8 +1,7 @@
-[gd_scene load_steps=6 format=3 uid="uid://dos8syduy35sk"]
+[gd_scene load_steps=5 format=3 uid="uid://dos8syduy35sk"]
 
 [ext_resource type="Script" path="res://Scripts/Arrows/Flame_Arrow.gd" id="1_t00ne"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_sre6a"]
-[ext_resource type="PackedScene" uid="uid://cwjuhs7dtev4v" path="res://Scenes/Actions-Reactions/Actions.tscn" id="3_xilcx"]
 [ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Scenes/Actions-Reactions/Fire.tscn" id="4_334qw"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ri8v"]
@@ -27,9 +26,7 @@ collision_mask = 28
 [node name="Coll" type="CollisionShape2D" parent="Collision"]
 shape = SubResource("RectangleShape2D_2ri8v")
 
-[node name="Actions" parent="." instance=ExtResource("3_xilcx")]
-
-[node name="Fire" parent="Actions" instance=ExtResource("4_334qw")]
+[node name="Fire" parent="." instance=ExtResource("4_334qw")]
 position = Vector2(5, -0.5)
 Intensity = 10.0
 Instant = true
