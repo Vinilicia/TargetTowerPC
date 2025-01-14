@@ -1,9 +1,14 @@
-[gd_scene load_steps=7 format=3 uid="uid://bchqxwlm3ufd0"]
+[gd_scene load_steps=12 format=3 uid="uid://bchqxwlm3ufd0"]
 
 [ext_resource type="PackedScene" uid="uid://bi46s1lw77hbo" path="res://Scenes/Actors/Player.tscn" id="1_o47bd"]
 [ext_resource type="Script" path="res://Scripts/Testers/Arrow_tester.gd" id="2_2rggl"]
+[ext_resource type="PackedScene" uid="uid://bd5krujpcucd0" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Receptor.tscn" id="3_hspo1"]
 [ext_resource type="PackedScene" uid="uid://xhwqoiulihut" path="res://Scenes/Interactibles/Objects/Box.tscn" id="5_0kdnj"]
-[ext_resource type="PackedScene" uid="uid://burg3todgx2jh" path="res://Scenes/Interactibles/Objects/Bonfire.tscn" id="5_6bm7y"]
+[ext_resource type="PackedScene" uid="uid://cjd68laeibaxd" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Red_button.tscn" id="6_0t0os"]
+[ext_resource type="PackedScene" uid="uid://c6jm3ekcih4g8" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Green_button.tscn" id="7_liokt"]
+[ext_resource type="PackedScene" uid="uid://c17srlbk1bg00" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Blue_button.tscn" id="8_3v7gs"]
+[ext_resource type="PackedScene" uid="uid://bhvt3jevmwiq7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="9_f4r27"]
+[ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="9_p6dam"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1cfxj"]
 size = Vector2(384, 20)
@@ -14,19 +19,19 @@ size = Vector2(20, 64)
 [node name="Level" type="Node2D"]
 
 [node name="Player" parent="." instance=ExtResource("1_o47bd")]
-position = Vector2(88, 0)
+position = Vector2(77, 73)
 velocity = Vector2(0, 347634)
 
 [node name="StaticBody2D" type="StaticBody2D" parent="."]
 position = Vector2(128, 96)
 collision_layer = 4
-collision_mask = 3
+collision_mask = 31
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="StaticBody2D"]
 shape = SubResource("RectangleShape2D_1cfxj")
 
 [node name="Arrow_tester" type="AnimatableBody2D" parent="." groups=["Attachables"]]
-position = Vector2(168, 152)
+position = Vector2(147, 76)
 collision_layer = 4
 collision_mask = 3
 script = ExtResource("2_2rggl")
@@ -34,8 +39,39 @@ script = ExtResource("2_2rggl")
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Arrow_tester"]
 shape = SubResource("RectangleShape2D_adgot")
 
-[node name="Bonfire" parent="." instance=ExtResource("5_6bm7y")]
-position = Vector2(192, 78)
+[node name="Receptor1" parent="Arrow_tester" instance=ExtResource("3_hspo1")]
+Receptor_Color = "Red"
+
+[node name="Receptor2" parent="Arrow_tester" instance=ExtResource("3_hspo1")]
+position = Vector2(0, 15)
+Receptor_Color = "Green"
+
+[node name="Receptor3" parent="Arrow_tester" instance=ExtResource("3_hspo1")]
+position = Vector2(0, -15)
+Receptor_Color = "Blue"
 
 [node name="Box" parent="." instance=ExtResource("5_0kdnj")]
-position = Vector2(258, 54)
+position = Vector2(258, 69)
+
+[node name="Red_Button" parent="." instance=ExtResource("6_0t0os")]
+position = Vector2(286, 83)
+
+[node name="Green_Button" parent="." instance=ExtResource("7_liokt")]
+position = Vector2(50, 83)
+
+[node name="Blue_Button" parent="." instance=ExtResource("8_3v7gs")]
+position = Vector2(20, 84)
+Pressed_time = 3.0
+
+[node name="HUD" parent="." instance=ExtResource("9_p6dam")]
+
+[node name="Bat" parent="." instance=ExtResource("9_f4r27")]
+position = Vector2(-26, -51)
+idle_movement_angle = 180.0
+idle_moving_distance = 70.0
+
+[connection signal="Is_Pressed" from="Red_Button" to="Arrow_tester/Receptor1" method="on_button_pressed"]
+[connection signal="Is_Pressed" from="Green_Button" to="Arrow_tester/Receptor2" method="on_button_pressed"]
+[connection signal="Is_Unpressed" from="Green_Button" to="Arrow_tester/Receptor2" method="on_button_unpressed"]
+[connection signal="Is_Pressed" from="Blue_Button" to="Arrow_tester/Receptor3" method="on_button_pressed"]
+[connection signal="Is_Unpressed" from="Blue_Button" to="Arrow_tester/Receptor3" method="on_button_unpressed"]

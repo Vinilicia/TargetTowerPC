@@ -19,10 +19,14 @@ config/icon="res://icon.svg"
 
 aseprite_executable_path="/home/dyego/opt/aseprite/aseprite"
 
+[autoload]
+
+UiHandler="*res://Scripts/Singletons/UI_handler.gd"
+
 [display]
 
-window/size/viewport_width=432
-window/size/viewport_height=208
+window/size/viewport_width=480
+window/size/viewport_height=270
 window/size/mode=2
 window/size/initial_position_type=0
 window/stretch/mode="viewport"
@@ -35,6 +39,10 @@ version_control/autoload_on_startup=true
 [editor_plugins]
 
 enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg", "res://addons/nklbdev.aseprite_importers/plugin.cfg")
+
+[global_group]
+
+Attachables=""
 
 [input]
 

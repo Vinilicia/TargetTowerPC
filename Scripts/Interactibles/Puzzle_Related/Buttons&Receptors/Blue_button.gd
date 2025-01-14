@@ -1,35 +1,31 @@
 extends Area2D
 
+@onready var coll = $Collision 
 
-@onready var timer = $Timer
-@onready var anim = $AnimationPlayer
-
-@export var pressed_time : float = 5
+@export var Pressed_time : float = 5
 
 var pressed = false
-var can_be_pressed = true
+var timer = Timer
+
 signal Is_Pressed
 signal Is_Unpressed
 
-
 func _on_body_entered(body):
-	if can_be_pressed:
-		emit_signal("Is_Pressed")
-		pressed = true
-		can_be_pressed = false
-		timer.start(pressed_time)
-		anim.play("Being_Pressed")
-		await anim.animation_finished
-		anim.play("Pressed")
+	pressed = true
+	emit_signal("Is_Pressed")
+	coll.set_deferred("disabled", true)
+	create_timer()
 
+func create_timer() -> void:
+	timer = Timer.new()
+	timer.one_shot = true
+	timer.autostart = false
+	timer.timeout.connect(timer_timeout)
+	add_child(timer)
+	timer.start(Pressed_time)
 
-
-
-func _on_timer_timeout():
+func timer_timeout():
 	if pressed: 
 		emit_signal("Is_Unpressed")
 		pressed = false
-		can_be_pressed = true
-		anim.play("Being_Unpressed")
-		await anim.animation_finished
-		anim.play("Idle")
+		coll.set_deferred("disabled", false)

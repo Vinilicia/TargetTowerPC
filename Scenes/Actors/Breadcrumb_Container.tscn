@@ -1,0 +1,15 @@
+[gd_scene load_steps=2 format=3 uid="uid://cw0thw4v7g48x"]
+
+[ext_resource type="Script" path="res://Scripts/Actors/Breadcrumb_Container.gd" id="1_mgdut"]
+
+[node name="Breadcrumb_Container" type="Node" node_paths=PackedStringArray("spawning_timer")]
+script = ExtResource("1_mgdut")
+spawning_timer = NodePath("Spawning_Timer")
+spawning_delay = 0.4
+breadcrumb_max = 4
+breadcrumb_path = "res://Scenes/Actors/Breadcrumb.tscn"
+
+[node name="Spawning_Timer" type="Timer" parent="."]
+wait_time = 0.2
+
+[connection signal="timeout" from="Spawning_Timer" to="." method="_spawn_breadcrumb"]

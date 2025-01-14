@@ -23,9 +23,3 @@ func set_direction(dir) -> void:
 		super.set_direction(dir)
 		fire = $Fire
 		fire.position.x *= -1
-
-func flip_children() -> void:
-	super.flip_children()
-	fire = $Fire
-	fire.position = Vector2(fire.position.y, abs(fire.position.x))
-	fire.rotation = deg_to_rad(90)

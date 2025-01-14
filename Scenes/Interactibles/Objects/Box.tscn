@@ -6,9 +6,9 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_o308p"]
 size = Vector2(32, 32)
 
-[node name="Box" type="CharacterBody2D"]
+[node name="Box" type="CharacterBody2D" groups=["Attachables"]]
 collision_layer = 16
-collision_mask = 21
+collision_mask = 23
 script = ExtResource("1_yd07j")
 
 [node name="Coll" type="CollisionShape2D" parent="."]
