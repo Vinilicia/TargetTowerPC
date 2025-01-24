@@ -12,10 +12,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_ytu4p"]
 size = Vector2(16, 16)
 
-[node name="Player" type="CharacterBody2D"]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("remote")]
 collision_mask = 28
 velocity = Vector2(0, 91925.6)
+floor_constant_speed = true
 script = ExtResource("1_sk7kx")
+remote = NodePath("Remote")
 Move_Speed = 100.0
 Jump_Force = -340.0
 Gravity_Multiplier = 1.4
@@ -90,6 +92,8 @@ wait_time = 2.0
 [node name="Jump_Buffering" type="Timer" parent="Timers"]
 
 [node name="Breadcrumb_Container" parent="." instance=ExtResource("8_t0jf5")]
+
+[node name="Remote" type="RemoteTransform2D" parent="."]
 
 [connection signal="screen_entered" from="Screen_Notifier" to="." method="screen_entered"]
 [connection signal="screen_exited" from="Screen_Notifier" to="." method="screen_exited"]

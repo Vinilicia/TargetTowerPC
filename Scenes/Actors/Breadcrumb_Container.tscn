@@ -5,7 +5,7 @@
 [node name="Breadcrumb_Container" type="Node" node_paths=PackedStringArray("spawning_timer")]
 script = ExtResource("1_mgdut")
 spawning_timer = NodePath("Spawning_Timer")
-spawning_delay = 0.4
+spawning_delay = 1.0
 breadcrumb_max = 4
 breadcrumb_path = "res://Scenes/Actors/Breadcrumb.tscn"
 

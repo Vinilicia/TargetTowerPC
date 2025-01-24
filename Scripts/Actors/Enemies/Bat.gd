@@ -9,6 +9,7 @@ extends CharacterBody2D
 @export var giving_up_timer : Timer
 @export var line_of_sight : RayCast2D
 @export var breadcrumb_los : RayCast2D
+@export var breadcrumb_checking_timer : Timer
 
 @export_category("Movement")
 @export var idle_flying_speed : float
@@ -140,38 +141,40 @@ func start_chase() -> void:
 
 func give_up_chase() -> void:
 	saw_player = false
-	state_chart.send_event("Gave_Up_Chase")
+	state_chart.send_event("Player_Got_Away")
 
 func _sight_area_body_exited(player: Node2D) -> void:
 	player_is_nearby = false
 	saw_player = false
-	state_chart.send_event("Gave_Up_Chase")
+	state_chart.send_event("Player_Got_Away")
 
 func _chasing_state_entered() -> void:
-	player_target.add_pursuer()
+	#player_target.add_pursuer()
 	current_speed = chase_flying_speed
-	get_breadcrumb_container()
+	#get_breadcrumb_container()
+	#breadcrumb_checking_timer.start()
 
-func get_chasing_target() -> Node2D:
-	if !breadcrumb_container.breadcrumbs.is_empty():
-		var target : Breadcrumb 
-		for breadcrumb in breadcrumb_container.breadcrumbs:
-			breadcrumb_los.target_position = breadcrumb.global_position - global_position
-			if breadcrumb_los.get_collider() == breadcrumb:
-				target = breadcrumb
-				return target
-		return null
-	else:
-		return null
+#func get_chasing_target() -> void:	
+	#target = null
+	#if !breadcrumb_container.breadcrumbs.is_empty():
+		#var breadcrumb : Breadcrumb
+		#for i in range(breadcrumb_container.breadcrumb_count):
+			#breadcrumb = breadcrumb_container.get_breadcrumb(i)
+			#breadcrumb_los.target_position = breadcrumb.global_position - global_position
+			#if breadcrumb_los.get_collider() == breadcrumb:
+				#target = breadcrumb
 
-func _chasing_state_physics_processing() -> void:
-	var target = get_chasing_target()
-	if target != null:
-		pass
+var target_position : Vector2 = Vector2(0, 0)
 
+func _chasing_state_physics_processing(delta : float) -> void:
+	if line_of_sight.get_collider() == player_target:
+		target_position = player_target.position
+	
+	if !saw_player:
+		giving_up_timer.start()
+	
+	move_to(target_position)
 
-func get_breadcrumb_container() -> void:
-	breadcrumb_container = player_target.get_breadcrumb_container()
 
 func _seeing_player_physics_processing(delta: float) -> void:
 	if line_of_sight.get_collider() == player_target:

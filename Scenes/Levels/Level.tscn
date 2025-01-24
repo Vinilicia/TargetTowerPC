@@ -1,5 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://bchqxwlm3ufd0"]
+[gd_scene load_steps=14 format=3 uid="uid://bchqxwlm3ufd0"]
 
+[ext_resource type="Script" path="res://Scenes/Levels/level.gd" id="1_3ogdt"]
 [ext_resource type="PackedScene" uid="uid://bi46s1lw77hbo" path="res://Scenes/Actors/Player.tscn" id="1_o47bd"]
 [ext_resource type="Script" path="res://Scripts/Testers/Arrow_tester.gd" id="2_2rggl"]
 [ext_resource type="PackedScene" uid="uid://bd5krujpcucd0" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Receptor.tscn" id="3_hspo1"]
@@ -9,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://c17srlbk1bg00" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Blue_button.tscn" id="8_3v7gs"]
 [ext_resource type="PackedScene" uid="uid://bhvt3jevmwiq7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="9_f4r27"]
 [ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="9_p6dam"]
+[ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Maps/Camera.tscn" id="11_hpumo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1cfxj"]
 size = Vector2(384, 20)
@@ -16,7 +18,9 @@ size = Vector2(384, 20)
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_adgot"]
 size = Vector2(20, 64)
 
-[node name="Level" type="Node2D"]
+[node name="Level" type="Node2D" node_paths=PackedStringArray("camera")]
+script = ExtResource("1_3ogdt")
+camera = NodePath("Camera")
 
 [node name="Player" parent="." instance=ExtResource("1_o47bd")]
 position = Vector2(77, 73)
@@ -67,8 +71,12 @@ Pressed_time = 3.0
 
 [node name="Bat" parent="." instance=ExtResource("9_f4r27")]
 position = Vector2(-26, -51)
+idle_flying_speed = 140.0
 idle_movement_angle = 180.0
 idle_moving_distance = 70.0
+
+[node name="Camera" parent="." instance=ExtResource("11_hpumo")]
+visible = false
 
 [connection signal="Is_Pressed" from="Red_Button" to="Arrow_tester/Receptor1" method="on_button_pressed"]
 [connection signal="Is_Pressed" from="Green_Button" to="Arrow_tester/Receptor2" method="on_button_pressed"]

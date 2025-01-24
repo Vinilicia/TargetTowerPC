@@ -14,7 +14,6 @@ func activate(direction : int, downward : bool) -> void:
 	$Timer.start(spawning_time)
 
 func spawn() -> void:
-	print("oh my god")
 	var tween = create_tween()
 	if down:
 		platform_col.set_deferred("one_way_collision", false)

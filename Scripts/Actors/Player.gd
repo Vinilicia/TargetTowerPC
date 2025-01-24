@@ -1,6 +1,9 @@
 extends CharacterBody2D
 class_name Player
 
+@export var remote : RemoteTransform2D
+
+
 @export var Move_Speed : float
 @export var Jump_Force : float
 @export var Default_Knockback : Vector2 = Vector2(170, 0)
@@ -41,6 +44,8 @@ var current_arrow_index : int
 var arrow_switcher
 
 func _ready():
+	velocity = Vector2.ZERO
+	setup_camera()
 	UiHandler.equiped_arrow_index = Initial_Arrow_Index
 	current_arrow_index = Initial_Arrow_Index
 	current_arrow = equip_arrow(current_arrow_index)
@@ -142,9 +147,6 @@ func _physics_process(delta):
 	if not is_on_floor():
 		velocity.y += get_current_gravity(velocity.y) * delta
 
-	if Input.is_action_just_pressed('ui_cancel'):
-		add_pursuer()
-
 	if Input.is_action_just_pressed("jump") and (is_on_floor() or ledge_jump_buffer):
 		jump()
 	if Input.is_action_just_released("jump") and velocity.y < 0:
@@ -190,8 +192,5 @@ func _on_floor_state_exited():
 	Default_Knockback *= 2
 	is_jumping = true
 
-func add_pursuer() -> void:
-	$Breadcrumb_Container.add_pursuer()
-
-func get_breadcrumb_container() -> Node:
-	return $Breadcrumb_Container
+func setup_camera() -> void:
+	remote.remote_path = get_parent().get_camera().get_path()

@@ -27,9 +27,13 @@ func _physics_process(delta: float) -> void:
 	
 	manage_breadcrumbs()
 
+func get_breadcrumb(index : int) -> Breadcrumb:
+	print(index)
+	return breadcrumbs[index]
+
 func manage_breadcrumbs() -> void:
 	if breadcrumb_count > breadcrumb_max:
-		var oldest = breadcrumbs.pop_front()
+		var oldest = breadcrumbs.pop_back()
 		oldest.queue_free()
 		breadcrumb_count -= 1
 
@@ -43,7 +47,7 @@ func _spawn_breadcrumb() -> void:
 	var breadcrumb : Breadcrumb = load(breadcrumb_path).instantiate()
 	var pos = get_parent().global_position
 	breadcrumb.global_position = pos
-	breadcrumbs.push_back(breadcrumb)
+	breadcrumbs.push_front(breadcrumb)
 	breadcrumb.array_pos = breadcrumbs.find(breadcrumb)
 	get_parent().get_parent().call_deferred("add_child", breadcrumb)
 	set_deferred("breadcrumb_count", breadcrumb_count + 1)

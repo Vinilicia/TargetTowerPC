@@ -9,17 +9,20 @@
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standandized_Capsule.tres" id="6_mpjdf"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/history_state.gd" id="7_1wqf1"]
 
-[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "breadcrumb_los")]
+[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "breadcrumb_los", "breadcrumb_checking_timer")]
 position = Vector2(14, 0)
 scale = Vector2(16, 16)
 collision_layer = 8
 collision_mask = 30
+motion_mode = 1
+wall_min_slide_angle = 0.0
 script = ExtResource("1_gfwsf")
 health = 3
-chasing_timer = NodePath("Chasing_Timer")
-giving_up_timer = NodePath("Giving_Up_Timer")
+chasing_timer = NodePath("Timers/Chasing_Timer")
+giving_up_timer = NodePath("Timers/Giving_Up_Timer")
 line_of_sight = NodePath("Behavior_Changing/Line_Of_Sight")
 breadcrumb_los = NodePath("Behavior_Changing/Breadcrumb_LOS")
+breadcrumb_checking_timer = NodePath("Timers/Breadcrumb_Check_Timer")
 idle_flying_speed = 70.0
 idle_moving_distance = 200.0
 idle_stopping_time = 1.2
@@ -38,87 +41,87 @@ shape = ExtResource("2_22gow")
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("2_jp576")
 
-[node name="CompoundState" type="Node" parent="StateChart"]
+[node name="State_Tree" type="Node" parent="StateChart"]
 script = ExtResource("3_mw4ge")
 initial_state = NodePath("Idle")
 
-[node name="Idle" type="Node" parent="StateChart/CompoundState"]
+[node name="Idle" type="Node" parent="StateChart/State_Tree"]
 script = ExtResource("3_mw4ge")
 initial_state = NodePath("Stopped")
 
-[node name="Stopped" type="Node" parent="StateChart/CompoundState/Idle"]
+[node name="Stopped" type="Node" parent="StateChart/State_Tree/Idle"]
 script = ExtResource("4_u345c")
 
-[node name="To_Moving" type="Node" parent="StateChart/CompoundState/Idle/Stopped"]
+[node name="To_Moving" type="Node" parent="StateChart/State_Tree/Idle/Stopped"]
 script = ExtResource("5_80kjg")
 to = NodePath("../../Moving")
 event = &"Started_Moving"
 
-[node name="Moving" type="Node" parent="StateChart/CompoundState/Idle"]
+[node name="Moving" type="Node" parent="StateChart/State_Tree/Idle"]
 script = ExtResource("4_u345c")
 
-[node name="To_Stopped" type="Node" parent="StateChart/CompoundState/Idle/Moving"]
+[node name="To_Stopped" type="Node" parent="StateChart/State_Tree/Idle/Moving"]
 script = ExtResource("5_80kjg")
 to = NodePath("../../Stopped")
 event = &"Arrived"
 
-[node name="To_Seeing_Player" type="Node" parent="StateChart/CompoundState/Idle"]
+[node name="To_Seeing_Player" type="Node" parent="StateChart/State_Tree/Idle"]
 script = ExtResource("5_80kjg")
 to = NodePath("../../Seeing_Player")
 event = &"Saw_Player"
 
-[node name="Idle_Last_State" type="Node" parent="StateChart/CompoundState/Idle"]
+[node name="Idle_Last_State" type="Node" parent="StateChart/State_Tree/Idle"]
 script = ExtResource("7_1wqf1")
 deep = true
 default_state = NodePath("../Stopped")
 
-[node name="Seeing_Player" type="Node" parent="StateChart/CompoundState"]
+[node name="Seeing_Player" type="Node" parent="StateChart/State_Tree"]
 script = ExtResource("3_mw4ge")
 initial_state = NodePath("Starting_Chase")
 
-[node name="Starting_Chase" type="Node" parent="StateChart/CompoundState/Seeing_Player"]
+[node name="Starting_Chase" type="Node" parent="StateChart/State_Tree/Seeing_Player"]
 script = ExtResource("4_u345c")
 
-[node name="To_Chasing" type="Node" parent="StateChart/CompoundState/Seeing_Player/Starting_Chase"]
+[node name="To_Chasing" type="Node" parent="StateChart/State_Tree/Seeing_Player/Starting_Chase"]
 script = ExtResource("5_80kjg")
 to = NodePath("../../Chasing")
 event = &"Started_Chase"
 
-[node name="To_Idle" type="Node" parent="StateChart/CompoundState/Seeing_Player/Starting_Chase"]
+[node name="To_Idle" type="Node" parent="StateChart/State_Tree/Seeing_Player/Starting_Chase"]
 script = ExtResource("5_80kjg")
 to = NodePath("../../../Idle/Idle_Last_State")
-event = &"Gave_Up_Chase"
+event = &"Player_Got_Away"
 
-[node name="Chasing" type="Node" parent="StateChart/CompoundState/Seeing_Player"]
+[node name="Chasing" type="Node" parent="StateChart/State_Tree/Seeing_Player"]
 script = ExtResource("4_u345c")
 
-[node name="To_Backtracking" type="Node" parent="StateChart/CompoundState/Seeing_Player/Chasing"]
+[node name="To_Backtracking" type="Node" parent="StateChart/State_Tree/Seeing_Player/Chasing"]
 script = ExtResource("5_80kjg")
 to = NodePath("../../../Backtracking")
 event = &"Player_Got_Away"
 
-[node name="To_Attacking" type="Node" parent="StateChart/CompoundState/Seeing_Player/Chasing"]
+[node name="To_Attacking" type="Node" parent="StateChart/State_Tree/Seeing_Player/Chasing"]
 script = ExtResource("5_80kjg")
 to = NodePath("../../Attacking")
 event = &"Player_Entered_Range"
 
-[node name="Attacking" type="Node" parent="StateChart/CompoundState/Seeing_Player"]
+[node name="Attacking" type="Node" parent="StateChart/State_Tree/Seeing_Player"]
 script = ExtResource("4_u345c")
 
-[node name="To_Chasing" type="Node" parent="StateChart/CompoundState/Seeing_Player/Attacking"]
+[node name="To_Chasing" type="Node" parent="StateChart/State_Tree/Seeing_Player/Attacking"]
 script = ExtResource("5_80kjg")
 to = NodePath("../../Chasing")
 event = &"Player_Exited_Range"
 
-[node name="Backtracking" type="Node" parent="StateChart/CompoundState"]
+[node name="Backtracking" type="Node" parent="StateChart/State_Tree"]
 script = ExtResource("4_u345c")
 
-[node name="To_Idle" type="Node" parent="StateChart/CompoundState/Backtracking"]
+[node name="To_Idle" type="Node" parent="StateChart/State_Tree/Backtracking"]
 script = ExtResource("5_80kjg")
 to = NodePath("../../Idle")
 event = &"Got_On_Idling_Spot"
 
-[node name="To_Seeing_Player" type="Node" parent="StateChart/CompoundState/Backtracking"]
+[node name="To_Seeing_Player" type="Node" parent="StateChart/State_Tree/Backtracking"]
 script = ExtResource("5_80kjg")
 to = NodePath("../../Seeing_Player")
 event = &"Saw_Player"
@@ -188,25 +191,32 @@ monitorable = false
 shape = ExtResource("2_22gow")
 debug_color = Color(0, 0.6, 0.701961, 1)
 
-[node name="Chasing_Timer" type="Timer" parent="."]
+[node name="Timers" type="Node" parent="."]
+
+[node name="Chasing_Timer" type="Timer" parent="Timers"]
 wait_time = 2.0
 one_shot = true
 
-[node name="Giving_Up_Timer" type="Timer" parent="."]
+[node name="Giving_Up_Timer" type="Timer" parent="Timers"]
 one_shot = true
 
-[connection signal="state_physics_processing" from="StateChart/CompoundState/Idle" to="." method="_idle_physics_processing"]
-[connection signal="state_entered" from="StateChart/CompoundState/Idle/Stopped" to="." method="_stopped_state_entered"]
-[connection signal="state_entered" from="StateChart/CompoundState/Idle/Moving" to="." method="start_idle_moving"]
-[connection signal="state_physics_processing" from="StateChart/CompoundState/Idle/Moving" to="." method="_moving_physics_processing"]
-[connection signal="state_physics_processing" from="StateChart/CompoundState/Seeing_Player" to="." method="_seeing_player_physics_processing"]
-[connection signal="state_entered" from="StateChart/CompoundState/Seeing_Player/Starting_Chase" to="." method="_starting_chase_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/CompoundState/Seeing_Player/Starting_Chase" to="." method="_starting_chase_physics_processing"]
-[connection signal="taken" from="StateChart/CompoundState/Seeing_Player/Starting_Chase/To_Idle" to="." method="_on_to_idle_taken"]
-[connection signal="state_entered" from="StateChart/CompoundState/Seeing_Player/Chasing" to="." method="_chasing_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/CompoundState/Seeing_Player/Chasing" to="." method="_chasing_state_physics_processing"]
-[connection signal="state_processing" from="StateChart/CompoundState/Seeing_Player/Chasing" to="." method="_chasing_state_physics_processing"]
+[node name="Breadcrumb_Check_Timer" type="Timer" parent="Timers"]
+wait_time = 0.1
+
+[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
+
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Idle" to="." method="_idle_physics_processing"]
+[connection signal="state_entered" from="StateChart/State_Tree/Idle/Stopped" to="." method="_stopped_state_entered"]
+[connection signal="state_entered" from="StateChart/State_Tree/Idle/Moving" to="." method="start_idle_moving"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Idle/Moving" to="." method="_moving_physics_processing"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Seeing_Player" to="." method="_seeing_player_physics_processing"]
+[connection signal="state_entered" from="StateChart/State_Tree/Seeing_Player/Starting_Chase" to="." method="_starting_chase_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Seeing_Player/Starting_Chase" to="." method="_starting_chase_physics_processing"]
+[connection signal="taken" from="StateChart/State_Tree/Seeing_Player/Starting_Chase/To_Idle" to="." method="_on_to_idle_taken"]
+[connection signal="state_entered" from="StateChart/State_Tree/Seeing_Player/Chasing" to="." method="_chasing_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Seeing_Player/Chasing" to="." method="_chasing_state_physics_processing"]
 [connection signal="body_entered" from="Behavior_Changing/Sight_Area" to="." method="_player_entered_area"]
 [connection signal="body_exited" from="Behavior_Changing/Sight_Area" to="." method="_sight_area_body_exited"]
-[connection signal="timeout" from="Chasing_Timer" to="." method="start_chase"]
-[connection signal="timeout" from="Giving_Up_Timer" to="." method="give_up_chase"]
+[connection signal="timeout" from="Timers/Chasing_Timer" to="." method="start_chase"]
+[connection signal="timeout" from="Timers/Giving_Up_Timer" to="." method="give_up_chase"]
+[connection signal="timeout" from="Timers/Breadcrumb_Check_Timer" to="." method="get_chasing_target"]
