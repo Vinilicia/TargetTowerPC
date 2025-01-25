@@ -9,7 +9,7 @@
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standandized_Capsule.tres" id="6_mpjdf"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/history_state.gd" id="7_1wqf1"]
 
-[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "breadcrumb_los", "breadcrumb_checking_timer")]
+[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "breadcrumb_los", "navigator")]
 position = Vector2(14, 0)
 scale = Vector2(16, 16)
 collision_layer = 8
@@ -22,13 +22,14 @@ chasing_timer = NodePath("Timers/Chasing_Timer")
 giving_up_timer = NodePath("Timers/Giving_Up_Timer")
 line_of_sight = NodePath("Behavior_Changing/Line_Of_Sight")
 breadcrumb_los = NodePath("Behavior_Changing/Breadcrumb_LOS")
-breadcrumb_checking_timer = NodePath("Timers/Breadcrumb_Check_Timer")
+navigator = NodePath("Navigator")
 idle_flying_speed = 70.0
 idle_moving_distance = 200.0
 idle_stopping_time = 1.2
 los_tween_duration = 0.1
+starting_give_up_time = 1.0
+chasing_give_up_time = 2.0
 chase_flying_speed = 80.0
-turning_delay = 0.3
 dash_speed_increase = 3.0
 dash_attack_damage = 3
 dash_attack_delay = 0.5
@@ -200,11 +201,12 @@ one_shot = true
 [node name="Giving_Up_Timer" type="Timer" parent="Timers"]
 one_shot = true
 
-[node name="Breadcrumb_Check_Timer" type="Timer" parent="Timers"]
-wait_time = 0.1
+[node name="Navigator" type="NavigationAgent2D" parent="."]
+avoidance_layers = 0
+avoidance_mask = 0
+debug_enabled = true
 
-[node name="NavigationAgent2D" type="NavigationAgent2D" parent="."]
-
+[connection signal="state_exited" from="StateChart/State_Tree/Idle" to="." method="_idle_state_exited"]
 [connection signal="state_physics_processing" from="StateChart/State_Tree/Idle" to="." method="_idle_physics_processing"]
 [connection signal="state_entered" from="StateChart/State_Tree/Idle/Stopped" to="." method="_stopped_state_entered"]
 [connection signal="state_entered" from="StateChart/State_Tree/Idle/Moving" to="." method="start_idle_moving"]
@@ -215,8 +217,10 @@ wait_time = 0.1
 [connection signal="taken" from="StateChart/State_Tree/Seeing_Player/Starting_Chase/To_Idle" to="." method="_on_to_idle_taken"]
 [connection signal="state_entered" from="StateChart/State_Tree/Seeing_Player/Chasing" to="." method="_chasing_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/State_Tree/Seeing_Player/Chasing" to="." method="_chasing_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/State_Tree/Backtracking" to="." method="_on_backtracking_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Backtracking" to="." method="_backtracking_physics_processing"]
 [connection signal="body_entered" from="Behavior_Changing/Sight_Area" to="." method="_player_entered_area"]
 [connection signal="body_exited" from="Behavior_Changing/Sight_Area" to="." method="_sight_area_body_exited"]
 [connection signal="timeout" from="Timers/Chasing_Timer" to="." method="start_chase"]
 [connection signal="timeout" from="Timers/Giving_Up_Timer" to="." method="give_up_chase"]
-[connection signal="timeout" from="Timers/Breadcrumb_Check_Timer" to="." method="get_chasing_target"]
+[connection signal="target_reached" from="Navigator" to="." method="_navigator_target_reached"]

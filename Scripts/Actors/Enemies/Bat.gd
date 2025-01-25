@@ -9,7 +9,7 @@ extends CharacterBody2D
 @export var giving_up_timer : Timer
 @export var line_of_sight : RayCast2D
 @export var breadcrumb_los : RayCast2D
-@export var breadcrumb_checking_timer : Timer
+@export var navigator : NavigationAgent2D
 
 @export_category("Movement")
 @export var idle_flying_speed : float
@@ -18,8 +18,9 @@ extends CharacterBody2D
 @export var idle_stopping_time : float
 @export var los_tween_duration : float
 
+@export var starting_give_up_time : float
+@export var chasing_give_up_time : float
 @export var chase_flying_speed : float
-@export var turning_delay : float
 
 @export var dash_speed_increase : float
 
@@ -40,6 +41,10 @@ var seeing_player : bool = false
 var player_relative_position : Vector2
 
 var remaining_time_for_chase : float = -1
+
+
+var give_up_time : float
+
 var saw_player : bool = false
 
 var final_velocity : Vector2
@@ -120,6 +125,7 @@ func _player_entered_area(player: Node2D) -> void:
 
 func _starting_chase_state_entered() -> void:
 	stop(0.5)
+	give_up_time = starting_give_up_time
 	remaining_time_for_chase = chasing_timer.wait_time
 	chasing_timer.start()
 
@@ -130,7 +136,7 @@ func _starting_chase_physics_processing(delta: float) -> void:
 		remaining_time_for_chase = chasing_timer.time_left
 		chasing_timer.stop()
 		if giving_up_timer.is_stopped():
-			giving_up_timer.start()
+			giving_up_timer.start(give_up_time)
 	else:
 		giving_up_timer.stop()
 		if chasing_timer.is_stopped():
@@ -145,12 +151,11 @@ func give_up_chase() -> void:
 
 func _sight_area_body_exited(player: Node2D) -> void:
 	player_is_nearby = false
-	saw_player = false
-	state_chart.send_event("Player_Got_Away")
 
 func _chasing_state_entered() -> void:
 	#player_target.add_pursuer()
 	current_speed = chase_flying_speed
+	give_up_time = give_up_time
 	#get_breadcrumb_container()
 	#breadcrumb_checking_timer.start()
 
@@ -168,10 +173,11 @@ var target_position : Vector2 = Vector2(0, 0)
 
 func _chasing_state_physics_processing(delta : float) -> void:
 	if line_of_sight.get_collider() == player_target:
+		giving_up_timer.stop()
 		target_position = player_target.position
-	
-	if !saw_player:
-		giving_up_timer.start()
+	else:
+		if giving_up_timer.is_stopped():
+			giving_up_timer.start(give_up_time)
 	
 	move_to(target_position)
 
@@ -184,3 +190,25 @@ func _seeing_player_physics_processing(delta: float) -> void:
 func _idle_physics_processing(delta: float) -> void:
 	if sign(velocity.x) != facing_direction and sign(velocity.x) != 0:
 		turn_around()
+
+
+func _on_backtracking_state_entered() -> void:
+	stop(0.5)
+	print(idle_position)
+	current_speed = idle_flying_speed
+	navigator.target_position = idle_position
+
+
+func _backtracking_physics_processing(delta: float) -> void:
+	move_to(navigator.get_next_path_position())
+
+
+
+var idle_position : Vector2
+
+func _idle_state_exited() -> void:
+	idle_position = global_position
+
+
+func _navigator_target_reached() -> void:
+	state_chart.send_event("Got_On_Idling_Spot")
