@@ -51,21 +51,8 @@ position = Vector2(147, -10)
 [node name="Bat" parent="." instance=ExtResource("6_6chf3")]
 position = Vector2(500, -33)
 idle_movement_angle = 180.0
+dash_attack_damage = 0.0
 
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
+visible = false
 navigation_polygon = SubResource("NavigationPolygon_da11a")
-
-[node name="NavigationObstacle2D" type="NavigationObstacle2D" parent="NavigationRegion2D"]
-vertices = PackedVector2Array(320, -66, 91, -64, 91, -96, 168, -100, 169, -142, 239, -142, 239, -97, 316, -97)
-affect_navigation_mesh = true
-avoidance_layers = 0
-
-[node name="NavigationObstacle2D2" type="NavigationObstacle2D" parent="NavigationRegion2D"]
-vertices = PackedVector2Array(527, -68, 525, -82, 360, -84, 362, -58)
-affect_navigation_mesh = true
-avoidance_layers = 0
-
-[node name="NavigationObstacle2D3" type="NavigationObstacle2D" parent="NavigationRegion2D"]
-vertices = PackedVector2Array(31, -104, 45, -123, -9, -132, -9, -63, 51, -65, 47, -101)
-affect_navigation_mesh = true
-avoidance_layers = 0

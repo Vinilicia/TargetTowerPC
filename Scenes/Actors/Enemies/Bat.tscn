@@ -9,7 +9,7 @@
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standandized_Capsule.tres" id="6_mpjdf"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/history_state.gd" id="7_1wqf1"]
 
-[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "breadcrumb_los", "navigator")]
+[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "navigator")]
 position = Vector2(14, 0)
 scale = Vector2(16, 16)
 collision_layer = 8
@@ -17,24 +17,17 @@ collision_mask = 30
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_gfwsf")
-health = 3
 chasing_timer = NodePath("Timers/Chasing_Timer")
 giving_up_timer = NodePath("Timers/Giving_Up_Timer")
 line_of_sight = NodePath("Behavior_Changing/Line_Of_Sight")
-breadcrumb_los = NodePath("Behavior_Changing/Breadcrumb_LOS")
 navigator = NodePath("Navigator")
 idle_flying_speed = 70.0
 idle_moving_distance = 200.0
-idle_stopping_time = 1.2
-los_tween_duration = 0.1
-starting_give_up_time = 1.0
-chasing_give_up_time = 2.0
+idle_tolerance = 40
 chase_flying_speed = 80.0
+starting_give_up_delay = 1.0
+chasing_give_up_delay = 2.0
 dash_speed_increase = 3.0
-dash_attack_damage = 3
-dash_attack_delay = 0.5
-bite_attack_damage = 2
-bite_attack_delay = 0.3
 
 [node name="Coll" type="CollisionShape2D" parent="."]
 shape = ExtResource("2_22gow")
@@ -114,18 +107,23 @@ script = ExtResource("5_80kjg")
 to = NodePath("../../Chasing")
 event = &"Player_Exited_Range"
 
+[node name="Last_State" type="Node" parent="StateChart/State_Tree/Seeing_Player"]
+script = ExtResource("7_1wqf1")
+default_state = NodePath("../Starting_Chase")
+
 [node name="Backtracking" type="Node" parent="StateChart/State_Tree"]
 script = ExtResource("4_u345c")
 
 [node name="To_Idle" type="Node" parent="StateChart/State_Tree/Backtracking"]
 script = ExtResource("5_80kjg")
-to = NodePath("../../Idle")
+to = NodePath("../../Idle/Idle_Last_State")
 event = &"Got_On_Idling_Spot"
 
 [node name="To_Seeing_Player" type="Node" parent="StateChart/State_Tree/Backtracking"]
 script = ExtResource("5_80kjg")
-to = NodePath("../../Seeing_Player")
+to = NodePath("../../Seeing_Player/Last_State")
 event = &"Saw_Player"
+delay_seconds = 0.3
 
 [node name="Behavior_Changing" type="Node2D" parent="."]
 scale = Vector2(0.063, 0.063)
@@ -148,49 +146,19 @@ collision_layer = 0
 shape = ExtResource("6_mpjdf")
 debug_color = Color(0.678431, 0.313726, 0.0627451, 0.419608)
 
-[node name="Bite_Attack_Area" type="Area2D" parent="Behavior_Changing"]
-position = Vector2(10, 0)
-scale = Vector2(16, 24)
-collision_layer = 0
-
-[node name="Bite_Arrack_Area_Collision" type="CollisionShape2D" parent="Behavior_Changing/Bite_Attack_Area"]
-shape = ExtResource("6_mpjdf")
-debug_color = Color(0.992157, 0.0666667, 0.176471, 0.462745)
-
 [node name="Line_Of_Sight" type="RayCast2D" parent="Behavior_Changing"]
 target_position = Vector2(0, 0)
 collision_mask = 21
 
-[node name="Breadcrumb_LOS" type="RayCast2D" parent="Behavior_Changing"]
-target_position = Vector2(0, 0)
-collision_mask = 156
-collide_with_areas = true
-
 [node name="Attacks" type="Node2D" parent="."]
 scale = Vector2(0.063, 0.063)
 
-[node name="Bite" type="Area2D" parent="Attacks"]
-visible = false
-position = Vector2(10, 0)
-scale = Vector2(16, 24)
-collision_layer = 0
-monitoring = false
-monitorable = false
-
-[node name="Bite_Collision" type="CollisionShape2D" parent="Attacks/Bite"]
-shape = ExtResource("6_mpjdf")
-debug_color = Color(1, 0.00784314, 0.0313726, 0.996078)
-
-[node name="Dash" type="Area2D" parent="Attacks"]
-visible = false
+[node name="Hit_Box" type="Area2D" parent="Attacks"]
 scale = Vector2(20, 20)
-collision_layer = 0
-monitoring = false
-monitorable = false
 
-[node name="Dash_Collision" type="CollisionShape2D" parent="Attacks/Dash"]
+[node name="Coll" type="CollisionShape2D" parent="Attacks/Hit_Box"]
 shape = ExtResource("2_22gow")
-debug_color = Color(0, 0.6, 0.701961, 1)
+debug_color = Color(0.541176, 0.407843, 1, 0.733333)
 
 [node name="Timers" type="Node" parent="."]
 
@@ -220,7 +188,7 @@ debug_enabled = true
 [connection signal="state_entered" from="StateChart/State_Tree/Backtracking" to="." method="_on_backtracking_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/State_Tree/Backtracking" to="." method="_backtracking_physics_processing"]
 [connection signal="body_entered" from="Behavior_Changing/Sight_Area" to="." method="_player_entered_area"]
-[connection signal="body_exited" from="Behavior_Changing/Sight_Area" to="." method="_sight_area_body_exited"]
+[connection signal="body_exited" from="Behavior_Changing/Sight_Area" to="." method="_player_exited_area"]
 [connection signal="timeout" from="Timers/Chasing_Timer" to="." method="start_chase"]
 [connection signal="timeout" from="Timers/Giving_Up_Timer" to="." method="give_up_chase"]
 [connection signal="target_reached" from="Navigator" to="." method="_navigator_target_reached"]

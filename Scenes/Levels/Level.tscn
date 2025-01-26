@@ -74,6 +74,7 @@ position = Vector2(-26, -51)
 idle_flying_speed = 140.0
 idle_movement_angle = 180.0
 idle_moving_distance = 70.0
+dash_attack_damage = 0.0
 
 [node name="Camera" parent="." instance=ExtResource("11_hpumo")]
 visible = false
