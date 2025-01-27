@@ -1,10 +1,11 @@
-[gd_scene load_steps=8 format=4 uid="uid://dbmux1c4ct4hu"]
+[gd_scene load_steps=9 format=4 uid="uid://dbmux1c4ct4hu"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/level.gd" id="1_uc4dq"]
 [ext_resource type="PackedScene" uid="uid://bi46s1lw77hbo" path="res://Scenes/Actors/Player.tscn" id="2_2xmhl"]
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Maps/Camera.tscn" id="3_va085"]
-[ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="4_m2u3u"]
+[ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://addons/godot_state_charts/Playing_UI.tscn" id="4_m2u3u"]
 [ext_resource type="Texture2D" uid="uid://cd0k0djy6c56t" path="res://Assets/Home_bred/Tilemap/Sprite-0001.aseprite" id="5_q6jeh"]
+[ext_resource type="PackedScene" uid="uid://bxwbrgb1hel0x" path="res://Scenes/Interactibles/Objects/Metal_moving_platform.tscn" id="6_4dc3q"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_wvund"]
 texture = ExtResource("5_q6jeh")
@@ -33,3 +34,15 @@ process_mode = 3
 position = Vector2(147, -10)
 
 [node name="HUD" parent="." instance=ExtResource("4_m2u3u")]
+
+[node name="Metal_Moving_Platform" parent="." instance=ExtResource("6_4dc3q")]
+position = Vector2(784, -987)
+scale = Vector2(3.72, 1)
+move_speed = 3.0
+distance = 40
+direction = 1
+
+[node name="Metal_Moving_Platform2" parent="." instance=ExtResource("6_4dc3q")]
+position = Vector2(969, -1046)
+scale = Vector2(3.72, 1)
+distance = 20

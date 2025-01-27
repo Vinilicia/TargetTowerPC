@@ -17,7 +17,7 @@ config/icon="res://icon.svg"
 
 [aseprite_importers]
 
-aseprite_executable_path="/home/dyego/opt/aseprite/aseprite"
+aseprite_executable_path="/home/vinilicia/Documents/aseprite/build/bin/aseprite"
 
 [autoload]
 

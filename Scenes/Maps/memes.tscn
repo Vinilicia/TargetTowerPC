@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://bi46s1lw77hbo" path="res://Scenes/Actors/Player.tscn" id="1_tk0n7"]
 [ext_resource type="Script" path="res://Scenes/Levels/level.gd" id="1_x316n"]
-[ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="3_l0271"]
+[ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://addons/godot_state_charts/Playing_UI.tscn" id="3_l0271"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_7vwbg"]
 
