@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://bi46s1lw77hbo"]
 
-[ext_resource type="Texture2D" uid="uid://dc4hwctpoftru" path="res://icon.svg" id="1_5aeuf"]
+[ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="1_5aeuf"]
 [ext_resource type="Script" path="res://Scripts/Actors/Player.gd" id="1_sk7kx"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="3_7ej5o"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="4_58ft6"]
@@ -60,11 +60,13 @@ script = ExtResource("6_jlbgp")
 script = ExtResource("7_7kqk0")
 to = NodePath("../../Jumping")
 event = &"jumped"
+delay_in_seconds = "0.0"
 
 [node name="To_falling" type="Node" parent="StateChart/CompoundState/On_floor"]
 script = ExtResource("7_7kqk0")
 to = NodePath("../../Falling")
 event = &"is_falling"
+delay_in_seconds = "0.0"
 
 [node name="Jumping" type="Node" parent="StateChart/CompoundState"]
 script = ExtResource("6_jlbgp")
@@ -73,6 +75,7 @@ script = ExtResource("6_jlbgp")
 script = ExtResource("7_7kqk0")
 to = NodePath("../../Falling")
 event = &"is_falling"
+delay_in_seconds = "0.0"
 
 [node name="Falling" type="Node" parent="StateChart/CompoundState"]
 script = ExtResource("6_jlbgp")
@@ -81,6 +84,7 @@ script = ExtResource("6_jlbgp")
 script = ExtResource("7_7kqk0")
 to = NodePath("../../On_floor")
 event = &"hit_floor"
+delay_in_seconds = "0.0"
 
 [node name="Timers" type="Node" parent="."]
 

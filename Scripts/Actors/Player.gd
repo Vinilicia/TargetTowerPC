@@ -28,7 +28,7 @@ var knockback_vector : Vector2
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var is_on_screen : bool = true
 var can_shoot : bool = true
-var current_arrow : CharacterBody2D
+var current_arrow : Area2D
 var holding_time : float = 0.0
 var is_holding : bool = false
 var fall_jump_buffer : bool = false
@@ -106,7 +106,7 @@ func shoot_arrow_d() -> void:
 	await shooting_timer.timeout
 	can_shoot = true
 
-func equip_arrow(array_position : int) -> CharacterBody2D:
+func equip_arrow(array_position : int) -> Area2D:
 	var arrow = load(Arrows_paths[array_position]).instantiate()
 	return arrow
 
@@ -169,7 +169,7 @@ func _physics_process(delta):
 		velocity += knockback_vector
 	move_and_slide()
 
-func _on_jumping_state_processing():
+func _on_jumping_state_processing(delta: float):
 	if Input.is_action_just_pressed("jump"):
 		fall_jump_buffer = true
 		jump_buffering.start(Jump_buffering_time)

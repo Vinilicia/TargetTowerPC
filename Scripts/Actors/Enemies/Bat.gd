@@ -146,7 +146,6 @@ func _starting_chase_state_entered() -> void:
 func _starting_chase_physics_processing(delta: float) -> void:
 	if line_of_sight.get_collider() != player_target:
 		remaining_time_for_chase = chasing_timer.time_left
-		print(remaining_time_for_chase)
 		chasing_timer.stop()
 		if giving_up_timer.is_stopped():
 			giving_up_timer.start(give_up_time)

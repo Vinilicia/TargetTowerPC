@@ -6,10 +6,11 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ri8v"]
 size = Vector2(2, 1)
 
-[node name="Arrow" type="CharacterBody2D"]
+[node name="Arrow" type="Area2D"]
 collision_layer = 2
 collision_mask = 28
 script = ExtResource("1_g5uwg")
+Flying_Speed = 500.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -17,12 +18,8 @@ texture = ExtResource("1_jx316")
 
 [node name="Anim_Player" type="AnimationPlayer" parent="."]
 
-[node name="Collision" type="Area2D" parent="."]
+[node name="Coll" type="CollisionShape2D" parent="."]
 position = Vector2(5, -0.5)
-collision_layer = 2
-collision_mask = 28
-
-[node name="Coll" type="CollisionShape2D" parent="Collision"]
 shape = SubResource("RectangleShape2D_2ri8v")
 
-[connection signal="body_entered" from="Collision" to="." method="_on_body_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

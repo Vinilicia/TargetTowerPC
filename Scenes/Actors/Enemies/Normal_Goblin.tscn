@@ -1,0 +1,97 @@
+[gd_scene load_steps=10 format=3 uid="uid://wkr5vvc6juys"]
+
+[ext_resource type="Script" path="res://Scripts/Actors/Enemies/normal_goblin.gd" id="1_lcxwn"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_qs8xc"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_wqmh0"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_mqlfr"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_esu5x"]
+[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_787da"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_db406"]
+radius = 8.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tticn"]
+radius = 35.3537
+height = 70.7074
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_571o4"]
+
+[node name="Normal Goblin" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 23
+script = ExtResource("1_lcxwn")
+
+[node name="coll" type="CollisionShape2D" parent="."]
+scale = Vector2(16, 16)
+shape = ExtResource("2_qs8xc")
+
+[node name="Detectors" type="Node2D" parent="."]
+
+[node name="Wall_Detector" type="RayCast2D" parent="Detectors"]
+target_position = Vector2(-32, 0)
+collision_mask = 20
+
+[node name="Ground_Detector" type="RayCast2D" parent="Detectors"]
+position = Vector2(-11, 0)
+target_position = Vector2(0, 12)
+collision_mask = 20
+
+[node name="Attack_Area" type="Area2D" parent="."]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack_Area"]
+position = Vector2(-11, 0)
+shape = SubResource("CircleShape2D_db406")
+debug_color = Color(0.941452, 0.102353, 0.546891, 0.42)
+
+[node name="Sight_Area" type="Area2D" parent="."]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sight_Area"]
+position = Vector2(-39, -3)
+scale = Vector2(1.92171, 0.593997)
+shape = SubResource("CapsuleShape2D_tticn")
+debug_color = Color(0.307514, 0.904886, 0.469353, 0.42)
+
+[node name="Arrow_Detector" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arrow_Detector"]
+position = Vector2(-99, -1)
+shape = SubResource("CapsuleShape2D_571o4")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("3_wqmh0")
+
+[node name="State_Tree" type="Node" parent="StateChart"]
+script = ExtResource("4_mqlfr")
+initial_state = NodePath("Guarding")
+
+[node name="Guarding" type="Node" parent="StateChart/State_Tree"]
+script = ExtResource("5_esu5x")
+
+[node name="To_Chasing" type="Node" parent="StateChart/State_Tree/Guarding"]
+script = ExtResource("6_787da")
+to = NodePath("../../Chasing")
+event = &"Chase_Player"
+delay_in_seconds = "0.0"
+
+[node name="Chasing" type="Node" parent="StateChart/State_Tree"]
+script = ExtResource("5_esu5x")
+
+[node name="To_Guarding" type="Node" parent="StateChart/State_Tree/Chasing"]
+script = ExtResource("6_787da")
+to = NodePath("../../Guarding")
+event = &"Guard"
+delay_in_seconds = "0.0"
+
+[node name="Line_Of_Sight" type="RayCast2D" parent="."]
+collision_mask = 21
+
+[connection signal="body_entered" from="Attack_Area" to="." method="_player_entered_atack_area"]
+[connection signal="body_exited" from="Attack_Area" to="." method="_player_exited_attack_area"]
+[connection signal="body_entered" from="Sight_Area" to="." method="_player_entered_sight_area"]
+[connection signal="body_exited" from="Sight_Area" to="." method="_player_exited_sight_area"]
+[connection signal="area_entered" from="Arrow_Detector" to="." method="_on_arrow_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Chasing" to="." method="_on_chasing_state_physics_processing"]
