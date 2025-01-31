@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=4 uid="uid://dbmux1c4ct4hu"]
+[gd_scene load_steps=13 format=4 uid="uid://dbmux1c4ct4hu"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/level.gd" id="1_uc4dq"]
 [ext_resource type="PackedScene" uid="uid://bi46s1lw77hbo" path="res://Scenes/Actors/Player.tscn" id="2_2xmhl"]
@@ -7,6 +7,7 @@
 [ext_resource type="Texture2D" uid="uid://cd0k0djy6c56t" path="res://Assets/Home_bred/Tilemap/Sprite-0001.aseprite" id="5_q6jeh"]
 [ext_resource type="PackedScene" uid="uid://bhvt3jevmwiq7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="6_6chf3"]
 [ext_resource type="PackedScene" uid="uid://wkr5vvc6juys" path="res://Scenes/Actors/Enemies/Normal_Goblin.tscn" id="7_p32w5"]
+[ext_resource type="PackedScene" uid="uid://k0n5dsd1hmv6" path="res://Scenes/Actors/Enemies/Shield_Goblin.tscn" id="8_qf7u2"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_pjq8s"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -58,6 +59,7 @@ visible = false
 navigation_polygon = SubResource("NavigationPolygon_da11a")
 
 [node name="Normal Goblin" parent="." instance=ExtResource("7_p32w5")]
-position = Vector2(1083, 72)
-direction = 0
-speed = 70.0
+position = Vector2(775, -109)
+
+[node name="Shield Goblin" parent="." instance=ExtResource("8_qf7u2")]
+position = Vector2(1023, 72)

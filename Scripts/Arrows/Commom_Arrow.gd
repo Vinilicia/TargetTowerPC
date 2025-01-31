@@ -13,10 +13,13 @@ class_name Arrow
 var direction : int = 1
 var charged : bool = false
 var downward : bool = false
-var velocity := Vector2.ZERO  # Criamos manualmente a velocidade
+var velocity := Vector2.ZERO 
 
+func _ready():
+	body_entered.connect(_on_body_entered) 
+	
 func _physics_process(delta):
-	position += velocity * delta  # Aplica movimento manualmente
+	position += velocity * delta 
 
 func fly(is_charged : bool, _player : CharacterBody2D) -> void:
 	if is_charged:

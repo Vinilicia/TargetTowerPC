@@ -5,6 +5,7 @@ extends Arrow
 @onready var fire = $Fire
 
 func _ready():
+	body_entered.connect(_on_body_entered) 
 	fire.parent_node = self
 	if charged:
 		fire.set_collision(coll.shape, 10)
