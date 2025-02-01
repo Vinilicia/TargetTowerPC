@@ -73,7 +73,7 @@ script = ExtResource("2_vqykb")
 
 [node name="State_Tree" type="Node" parent="StateChart"]
 script = ExtResource("4_bo1xe")
-initial_state = NodePath("Guarding")
+initial_state = NodePath("Shielding")
 
 [node name="Guarding" type="Node" parent="StateChart/State_Tree"]
 script = ExtResource("5_jmfj7")
@@ -128,4 +128,5 @@ shape = SubResource("RectangleShape2D_mndhr")
 [connection signal="body_exited" from="Sight_Area" to="." method="_player_exited_sight_area"]
 [connection signal="area_entered" from="Arrow_Detector" to="." method="_on_arrow_entered"]
 [connection signal="state_physics_processing" from="StateChart/State_Tree/Chasing" to="." method="_on_chasing_state_physics_processing"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Shielding" to="." method="_on_shielding_state_physics_processing"]
 [connection signal="area_entered" from="Area_Shield" to="." method="_arrow_entered_area_shield"]

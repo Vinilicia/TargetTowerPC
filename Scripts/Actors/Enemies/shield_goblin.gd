@@ -39,17 +39,17 @@ func _physics_process(delta: float) -> void:
 		
 	velocity.x = direction * speed
 	
-	if player_is_nearby: #and shield.disabled:
+	if player_is_nearby:
 		arrow_detector.disabled = true
 		player_relative_position = player_target.global_position - global_position
 		line_of_sight.target_position = player_relative_position
-		if !saw_player and line_of_sight.get_collider() == player_target:
+		if !saw_player and line_of_sight.get_collider() == player_target and shield.disabled:
 			state_chart.send_event("Chase_Player")
 			saw_player = true
 	else:
 		arrow_detector.disabled = false
 		
-	if (not ((wall_detector.is_colliding() or not ground_detector.is_colliding()) and saw_player)) and not stop:
+	if (not ((wall_detector.is_colliding() or not ground_detector.is_colliding()) and saw_player)) and shield.disabled:
 		move_and_slide()
 
 func _player_entered_sight_area(player: Node2D) -> void:
@@ -59,7 +59,8 @@ func _player_entered_sight_area(player: Node2D) -> void:
 func _player_exited_sight_area(player: Node2D) -> void:
 	player_is_nearby = false
 	saw_player = false
-	state_chart.send_event("Guard")
+	if shield.disabled:
+		state_chart.send_event("Guard")
 
 func _player_entered_attack_area(body: Node2D) -> void:
 	is_player_inside = true
@@ -84,6 +85,22 @@ func _on_chasing_state_physics_processing(delta: float) -> void:
 		if direction != 1:
 			direction = 1
 			flip()
+			
+func _on_shielding_state_physics_processing(delta: float) -> void:
+	if player_target != null and line_of_sight.get_collider() == player_target and not stop:
+		if position.y - player_target.position.y > 30:
+			shield_up()
+		else:
+			if position.x - player_target.position.x > 0:
+				shield_down()
+				if direction != -1:
+					direction = -1
+					flip()
+			else:
+				shield_down()
+				if direction != 1:
+					direction = 1
+					flip()
 
 func flip() -> void:
 	wall_detector.scale.x *= -1
@@ -94,6 +111,26 @@ func flip() -> void:
 	shield.position.x *= -1
 	area_shield.position.x *= -1
 
+func shield_up():
+	shield.rotation = deg_to_rad(90)
+	shield.position.x = 0
+	shield.position.y = -16
+	area_shield.rotation = deg_to_rad(90)
+	area_shield.position.x = 0
+	area_shield.position.y = -18
+	
+func shield_down():
+	shield.rotation = 0
+	area_shield.rotation = 0
+	if direction == -1:
+		shield.position.x = -16
+		area_shield.position.x = -18
+	else:
+		shield.position.x = 16
+		area_shield.position.x = 18
+	shield.position.y = -6
+	area_shield.position.y = -6
+	
 func _on_arrow_entered(arrow: Area2D) -> void:
 	if shield.disabled:
 		arrow.set_collision_mask_value(4, false)
@@ -107,5 +144,5 @@ func _on_arrow_entered(arrow: Area2D) -> void:
 func _arrow_entered_area_shield(body: Node2D) -> void:
 	if not shield.disabled:
 		stop = true
-		await get_tree().create_timer(1.5).timeout
+		await get_tree().create_timer(2.5).timeout
 		stop = false
