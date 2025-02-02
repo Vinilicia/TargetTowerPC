@@ -5,6 +5,3 @@ extends Node2D
 
 func get_camera() -> Camera2D:
 	return camera
-
-func _ready() -> void:
-	tilemap.position = tilemap.position

@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Maps/Camera.tscn" id="3_va085"]
 [ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="4_m2u3u"]
 [ext_resource type="Texture2D" uid="uid://cd0k0djy6c56t" path="res://Assets/Home_bred/Tilemap/Sprite-0001.aseprite" id="5_q6jeh"]
-[ext_resource type="PackedScene" uid="uid://bhvt3jevmwiq7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="6_6chf3"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="6_uotx5"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_pjq8s"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -48,11 +48,11 @@ position = Vector2(147, -10)
 
 [node name="HUD" parent="." instance=ExtResource("4_m2u3u")]
 
-[node name="Bat" parent="." instance=ExtResource("6_6chf3")]
-position = Vector2(500, -33)
-idle_movement_angle = 180.0
-dash_attack_damage = 0.0
-
 [node name="NavigationRegion2D" type="NavigationRegion2D" parent="."]
 visible = false
 navigation_polygon = SubResource("NavigationPolygon_da11a")
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+position = Vector2(385, 13)
+scale = Vector2(64, 96)
+shape = ExtResource("6_uotx5")

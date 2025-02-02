@@ -42,12 +42,12 @@ func open() -> void:
 func change_margin_visibility() -> void:
 	margin_texture.visible = !margin_texture.visible
 
-func change_icons_modulate(modulate : Color) -> void:
+func change_icons_modulate(new_modulate : Color) -> void:
 	var tween = create_tween()
 	tween.set_parallel()
 	for i in range(icons.size()):
 		if i != UiHandler.equiped_arrow_index:
-			tween.tween_property(icons[i], "modulate", modulate, 0.1)
+			tween.tween_property(icons[i], "modulate", new_modulate, 0.1)
 
 
 func close() -> void:

@@ -1,6 +1,10 @@
 extends CharacterBody2D
 class_name Player
 
+@export_category("Camera")
+@export var camera_distance : float
+@export var camera_move_duration : float
+
 @export var remote : RemoteTransform2D
 
 
@@ -49,6 +53,8 @@ func _ready():
 	UiHandler.equiped_arrow_index = Initial_Arrow_Index
 	current_arrow_index = Initial_Arrow_Index
 	current_arrow = equip_arrow(current_arrow_index)
+	turn(-facing_direction)
+	turn(facing_direction)
 
 func _process(delta):
 	if is_holding == true:
@@ -115,8 +121,8 @@ func jump(multiplier : float = 1) -> void:
 	velocity.y = Jump_Force * multiplier
 	state_chart.send_event("jumped")
 
-func move(arg_facing_direction : int) -> void:
-	velocity.x = arg_facing_direction * Move_Speed
+func move(facing_dir : int) -> void:
+	velocity.x = facing_dir * Move_Speed
 
 func _on_screen_exit_timer_timeout():
 	die()
@@ -136,7 +142,20 @@ func get_current_gravity(velocity_in_y : float) -> float:
 	else:
 		return gravity * Gravity_Multiplier
 
-func _physics_process(delta):
+var pos : Vector2
+var tween : Tween
+
+func turn(facing_dir) -> void:
+	arrow_spawner.position.x = 8 * facing_dir 
+	arrow_sprite.scale.x = facing_dir
+	pos = remote.position
+	var final_pos = Vector2(camera_distance * facing_dir, pos.y)
+	tween = create_tween().set_ease(Tween.EASE_IN_OUT)
+	tween.tween_property(self, "pos", final_pos, camera_move_duration)
+
+func _physics_process(delta): 
+	remote.position = remote.position.lerp(pos, 0.5)
+	
 	if velocity.y > 0 and !is_on_floor():
 		state_chart.send_event("is_falling")
 	if is_on_floor():
@@ -155,13 +174,13 @@ func _physics_process(delta):
 		hold_arrow()
 		can_shoot = false
 		shoot_arrow_d()
-	var direction : int = Input.get_axis("left", "right")
+	
+	var direction : int = int(Input.get_axis("left", "right"))
 	if direction:
-		facing_direction = direction
-	if direction:
+		if facing_direction != direction:
+			facing_direction = direction
+			turn(facing_direction)
 		move(direction)
-		arrow_spawner.position.x = 8 * direction 
-		arrow_sprite.scale.x = direction
 	else:
 		velocity.x = move_toward(velocity.x, 0, Move_Speed)
 		
@@ -178,13 +197,18 @@ func _on_jump_buffering_timeout():
 	fall_jump_buffer = false
 	ledge_jump_buffer = false
 
+var cam : Camera2D = null
+
 func _on_falling_state_entered():
+	#create_tween().tween_property(cam, "position_smoothing_speed", 0, 0.1)
+	
 	if on_floor == true:
 		on_floor = false
 		jump_buffering.start(Jump_buffering_time/10 * 6)
 		ledge_jump_buffer = true
 
 func _on_floor_state_entered():
+	#cam.position_smoothing_enabled = true
 	Default_Knockback = Vector2(170, 0)
 	is_jumping = false
 
@@ -194,3 +218,5 @@ func _on_floor_state_exited():
 
 func setup_camera() -> void:
 	remote.remote_path = get_parent().get_camera().get_path()
+	#cam = get_node(remote.remote_path)
+	#remote.remote_path = cam.get_path()

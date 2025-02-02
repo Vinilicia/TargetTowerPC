@@ -17,7 +17,7 @@ var spawning : bool = false
 func add_pursuer() -> void:
 	pursuer_count += 1
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if pursuer_count > 0 and not spawning:
 		spawning = true
 		start_spawning()
