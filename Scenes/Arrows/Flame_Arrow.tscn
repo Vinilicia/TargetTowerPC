@@ -7,10 +7,12 @@
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_2ri8v"]
 size = Vector2(2, 1)
 
-[node name="Flame_Arrow" type="CharacterBody2D"]
+[node name="Flame_Arrow" type="Area2D"]
 collision_layer = 2
 collision_mask = 28
 script = ExtResource("1_t00ne")
+Flying_Speed = 500.0
+Despawn_Time = 2.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -18,18 +20,10 @@ texture = ExtResource("2_sre6a")
 
 [node name="Anim_Player" type="AnimationPlayer" parent="."]
 
-[node name="Collision" type="Area2D" parent="."]
-position = Vector2(5, -0.5)
-collision_layer = 2
-collision_mask = 28
-
-[node name="Coll" type="CollisionShape2D" parent="Collision"]
-shape = SubResource("RectangleShape2D_2ri8v")
-
 [node name="Fire" parent="." instance=ExtResource("4_334qw")]
-position = Vector2(5, -0.5)
 Intensity = 10.0
 Instant = true
 
-[connection signal="area_shape_entered" from="Collision" to="." method="_on_area_shape_entered"]
-[connection signal="body_entered" from="Collision" to="." method="_on_body_entered"]
+[node name="Coll" type="CollisionShape2D" parent="."]
+position = Vector2(5, -0.5)
+shape = SubResource("RectangleShape2D_2ri8v")

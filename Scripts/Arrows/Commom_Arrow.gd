@@ -1,22 +1,25 @@
-extends CharacterBody2D
+extends Area2D
 class_name Arrow
 
 @onready var anim = $Anim_Player as AnimationPlayer
 @onready var sprite = $Sprite as Sprite2D
-@onready var coll = $Collision/Coll
+@onready var coll = $Coll
 
 @export var Flying_Speed : float = 320
 @export var Charge_Multiplier : float = 2
-@export var Despawn_Time : float = 7
+@export var Despawn_Time : float = 0
 @export var Cost : int = 1
 
 var direction : int = 1
 var charged : bool = false
 var downward : bool = false
+var velocity := Vector2.ZERO 
 
-func _physics_process(_delta):
-	move_and_slide()
-
+func _ready():
+	body_entered.connect(_on_body_entered) 
+	
+func _physics_process(delta):
+	position += velocity * delta 
 
 func fly(is_charged : bool, _player : CharacterBody2D) -> void:
 	if is_charged:
@@ -33,19 +36,10 @@ func fly_downward(_player : CharacterBody2D) -> void:
 func flip_children() -> void:
 	rotation = deg_to_rad(90)
 
-
 func set_direction(dir : int) -> void:
 	if direction != dir:
 		rotation = deg_to_rad(180)
 		direction = dir
-
-func _on_body_entered(body):
-	get_frozen()
-	if body.is_in_group("Attachables"):
-		spawn_joint(body)
-		despawn()
-	if !body.is_in_group("Attachables"):
-		bounce()
 
 func spawn_joint(body) -> void:
 	var pos = global_position
@@ -63,4 +57,12 @@ func despawn() -> void:
 
 func get_frozen() -> void:
 	velocity = Vector2.ZERO
-	$Collision/Coll.call_deferred("set_disabled", true)
+	coll.call_deferred("set_disabled", true)
+
+func _on_body_entered(body: Node2D) -> void:
+	get_frozen()
+	if body.is_in_group("Attachables"):
+		spawn_joint(body)
+		despawn()
+	else:
+		bounce()

@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://c6jm3ekcih4g8" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Green_button.tscn" id="7_liokt"]
 [ext_resource type="PackedScene" uid="uid://c17srlbk1bg00" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Blue_button.tscn" id="8_3v7gs"]
 [ext_resource type="PackedScene" uid="uid://bhvt3jevmwiq7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="9_f4r27"]
-[ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="9_p6dam"]
+[ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://addons/godot_state_charts/Playing_UI.tscn" id="9_p6dam"]
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Maps/Camera.tscn" id="11_hpumo"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_1cfxj"]
