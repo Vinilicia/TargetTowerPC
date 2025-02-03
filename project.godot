@@ -95,9 +95,9 @@ Switch_Arrow={
 2d_physics/layer_4="Enemies"
 2d_physics/layer_5="Interactables"
 2d_physics/layer_9="Fire"
-2d_physics/layer_10="Ice"
-2d_physics/layer_11="Water"
-2d_physics/layer_12="Electricity"
+2d_physics/layer_10="Player_Damage"
+2d_physics/layer_11="Enemy_Damage"
+2d_physics/layer_12="General_Damage"
 2d_physics/layer_32="React"
 
 [rendering]

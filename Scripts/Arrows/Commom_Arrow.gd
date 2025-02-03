@@ -1,11 +1,11 @@
 extends Area2D
 class_name Arrow
 
-@onready var anim = $Anim_Player as AnimationPlayer
-@onready var sprite = $Sprite as Sprite2D
-@onready var coll = $Coll
+@export var anim : AnimationPlayer
+@export var sprite : Sprite2D
+@export var coll : CollisionShape2D
 
-@export var Flying_Speed : float = 320
+@export var Flying_Speed : float = 400
 @export var Charge_Multiplier : float = 2
 @export var Despawn_Time : float = 0
 @export var Cost : int = 1
@@ -19,7 +19,7 @@ func _ready():
 	body_entered.connect(_on_body_entered) 
 	
 func _physics_process(delta):
-	position += velocity * delta 
+	position += velocity * delta
 
 func fly(is_charged : bool, _player : CharacterBody2D) -> void:
 	if is_charged:

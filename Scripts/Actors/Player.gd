@@ -220,3 +220,6 @@ func setup_camera() -> void:
 	remote.remote_path = get_parent().get_camera().get_path()
 	#cam = get_node(remote.remote_path)
 	#remote.remote_path = cam.get_path()
+
+func take_damage(amount : float, knockback : float) -> void:
+	print("Took ", amount, " damage.")

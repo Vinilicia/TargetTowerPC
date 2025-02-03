@@ -7,6 +7,8 @@ extends CharacterBody2D
 @export var giving_up_timer : Timer
 @export var line_of_sight : RayCast2D
 @export var navigator : NavigationAgent2D
+@export var dash_area : Area2D
+@export var contact_hitbox : Area2D
 
 @export_category("Behaviourial")
 @export_group("Idle")
@@ -22,8 +24,7 @@ extends CharacterBody2D
 @export var chasing_give_up_delay : float
 
 @export_group("Attacks")
-@export var dash_speed_increase : float
-@export var dash_attack_damage : float
+@export var dash_speed : float
 @export var dash_duration : float
 @export var dash_delay : float
 @export var dash_hitbox_increase : float
@@ -90,8 +91,6 @@ func move_to(pos : Vector2) -> void:
 func turn_around() -> void:
 	facing_direction *= -1
 	for child in $Behavior_Changing.get_children():
-		child.position = Vector2(child.position.x * -1, child.position.y)
-	for child in $Attacks.get_children():
 		child.position = Vector2(child.position.x * -1, child.position.y)
 
 func stop(duration : float) -> void:
@@ -195,3 +194,36 @@ func _navigator_target_reached() -> void:
 	state_chart.send_event("Got_On_Idling_Spot") #Vai para o estado Idle
 
 #endregion
+
+
+func _dash_area_body_entered(body: Node2D) -> void:
+	state_chart.send_event("Player_Got_In_Range")
+
+
+func _preparing_state_entered() -> void:
+	stop(0.1)
+	contact_hitbox.scale *= dash_hitbox_increase
+	await get_tree().create_timer(dash_delay).timeout
+	dash_area.monitoring = false
+	state_chart.send_event("Prepared_Attack")
+
+
+var attack_pos
+
+func _internal_attacking_state_entered() -> void:
+	current_speed = dash_speed
+	attack_pos = global_position + facing_direction * Vector2(80 , 0)
+	move_to(attack_pos)
+
+
+func _internal_attack_physics_processing(delta: float) -> void:
+	if (global_position - attack_pos).length() < 10:
+		stop(0.3)
+		state_chart.send_event("Finished_Attack")
+
+
+func _recovering_state_entered() -> void:
+	contact_hitbox.scale *= (1 / dash_hitbox_increase)
+	await get_tree().create_timer(dash_delay * 3).timeout
+	dash_area.monitoring = true
+	state_chart.send_event("Recovered")

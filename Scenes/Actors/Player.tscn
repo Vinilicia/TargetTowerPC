@@ -1,15 +1,14 @@
-[gd_scene load_steps=9 format=3 uid="uid://bi46s1lw77hbo"]
+[gd_scene load_steps=10 format=3 uid="uid://bi46s1lw77hbo"]
 
 [ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="1_5aeuf"]
 [ext_resource type="Script" path="res://Scripts/Actors/Player.gd" id="1_sk7kx"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_1vfqp"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="3_7ej5o"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="4_58ft6"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_6kmac"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="6_jlbgp"]
 [ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_7kqk0"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ytu4p"]
-size = Vector2(16, 16)
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Utilities/Hurtbox.tscn" id="9_y5vna"]
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("remote")]
 collision_mask = 28
@@ -30,7 +29,8 @@ Max_Arrows = 3
 Exit_Time = 2.0
 
 [node name="Collision" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_ytu4p")
+scale = Vector2(16, 16)
+shape = ExtResource("2_1vfqp")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(0, 2.38419e-07)
@@ -96,6 +96,13 @@ wait_time = 2.0
 update_rotation = false
 update_scale = false
 
+[node name="Hurtbox" parent="." instance=ExtResource("9_y5vna")]
+scale = Vector2(18, 18)
+collision_mask = 3072
+
+[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
+shape = ExtResource("2_1vfqp")
+
 [connection signal="screen_entered" from="Screen_Notifier" to="." method="screen_entered"]
 [connection signal="screen_exited" from="Screen_Notifier" to="." method="screen_exited"]
 [connection signal="state_entered" from="StateChart/CompoundState/On_floor" to="." method="_on_floor_state_entered"]
@@ -106,3 +113,4 @@ update_scale = false
 [connection signal="state_entered" from="StateChart/CompoundState/Falling" to="." method="_on_falling_state_entered"]
 [connection signal="timeout" from="Timers/Screen_Exit_Timer" to="." method="_on_screen_exit_timer_timeout"]
 [connection signal="timeout" from="Timers/Jump_Buffering" to="." method="_on_jump_buffering_timeout"]
+[connection signal="took_damage" from="Hurtbox" to="." method="take_damage"]

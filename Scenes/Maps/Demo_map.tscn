@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=4 uid="uid://dbmux1c4ct4hu"]
+[gd_scene load_steps=12 format=4 uid="uid://dbmux1c4ct4hu"]
 
 [ext_resource type="Script" path="res://Scenes/Levels/level.gd" id="1_uc4dq"]
 [ext_resource type="PackedScene" uid="uid://bi46s1lw77hbo" path="res://Scenes/Actors/Player.tscn" id="2_2xmhl"]
@@ -6,6 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="4_m2u3u"]
 [ext_resource type="Texture2D" uid="uid://cd0k0djy6c56t" path="res://Assets/Home_bred/Tilemap/Sprite-0001.aseprite" id="5_q6jeh"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="6_uotx5"]
+[ext_resource type="PackedScene" uid="uid://bhvt3jevmwiq7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="7_qomuu"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_pjq8s"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -56,3 +57,7 @@ navigation_polygon = SubResource("NavigationPolygon_da11a")
 position = Vector2(385, 13)
 scale = Vector2(64, 96)
 shape = ExtResource("6_uotx5")
+
+[node name="Bat" parent="." instance=ExtResource("7_qomuu")]
+position = Vector2(290, -19)
+idle_movement_angle = 180.0
