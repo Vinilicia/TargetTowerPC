@@ -40,7 +40,7 @@ tile_map_data = PackedByteArray("AAACAAQAAAAAAAAAAAADAAQAAAAAAAAAAAAEAAQAAAAAAAA
 tile_set = SubResource("TileSet_mv68p")
 
 [node name="Player" parent="." instance=ExtResource("2_2xmhl")]
-position = Vector2(38, 36)
+position = Vector2(98, 30)
 
 [node name="Camera" parent="." instance=ExtResource("3_va085")]
 process_mode = 3
@@ -53,4 +53,7 @@ visible = false
 navigation_polygon = SubResource("NavigationPolygon_da11a")
 
 [node name="Rock Goblin" parent="." instance=ExtResource("6_spny6")]
-position = Vector2(489, -11)
+position = Vector2(267, -21)
+
+[node name="Rock Goblin2" parent="." instance=ExtResource("6_spny6")]
+position = Vector2(498, -12)
