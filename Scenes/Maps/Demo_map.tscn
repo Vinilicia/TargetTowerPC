@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Maps/Camera.tscn" id="3_va085"]
 [ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="4_m2u3u"]
 [ext_resource type="Texture2D" uid="uid://cd0k0djy6c56t" path="res://Assets/Home_bred/Tilemap/Sprite-0001.aseprite" id="5_q6jeh"]
-[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="6_uotx5"]
+[ext_resource type="PackedScene" uid="uid://w2pw765x6aql" path="res://Scenes/Actors/Enemies/Rock_Goblin.tscn" id="6_spny6"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_pjq8s"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -52,7 +52,5 @@ position = Vector2(147, -10)
 visible = false
 navigation_polygon = SubResource("NavigationPolygon_da11a")
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
-position = Vector2(385, 13)
-scale = Vector2(64, 96)
-shape = ExtResource("6_uotx5")
+[node name="Rock Goblin" parent="." instance=ExtResource("6_spny6")]
+position = Vector2(489, -11)
