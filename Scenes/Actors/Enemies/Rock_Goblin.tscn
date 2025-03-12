@@ -22,10 +22,8 @@ scale = Vector2(120, 20)
 shape = ExtResource("2_cbwjt")
 debug_color = Color(0.234089, 0.629159, 0.300647, 0.42)
 
-[node name="Line_Of_Sight" type="RayCast2D" parent="."]
-
 [node name="Rock_Spawner" type="Marker2D" parent="."]
-position = Vector2(-10, -6)
+position = Vector2(0, -10)
 
 [connection signal="body_entered" from="Sight_Area" to="." method="_player_entered_sight_area"]
 [connection signal="body_exited" from="Sight_Area" to="." method="_player_exited_sight_area"]

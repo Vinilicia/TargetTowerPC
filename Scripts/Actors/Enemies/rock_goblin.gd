@@ -3,7 +3,6 @@ extends CharacterBody2D
 @export_enum("Esquerda", "Direita") var direction: int
 
 @onready var rock = load("res://Scenes/Actors/Enemies/Throwable_rock.tscn")
-@onready var line_of_sight := $Line_Of_Sight as RayCast2D
 @onready var sight_area := $Sight_Area/CollisionShape2D as CollisionShape2D
 @onready var rock_spawner = $Rock_Spawner as Marker2D
 
@@ -24,7 +23,6 @@ func _physics_process(delta: float) -> void:
 		move_and_slide()
 		
 	if player_is_nearby:
-		line_of_sight.target_position = player_target.global_position - global_position
 		if position.x - player_target.position.x > 0:
 			if direction != -1:
 				direction = -1
@@ -55,4 +53,3 @@ func _player_exited_sight_area(player: Node2D) -> void:
 
 func flip() -> void:
 	sight_area.position.x *= -1
-	rock_spawner.position.x *= -1

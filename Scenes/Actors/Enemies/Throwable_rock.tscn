@@ -20,5 +20,6 @@ collision_mask = 3
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Damage_Area"]
 scale = Vector2(1.1, 1.1)
 shape = ExtResource("2_kkss6")
+debug_color = Color(0.940957, 4.81307e-07, 0.51487, 0.42)
 
 [connection signal="body_entered" from="Damage_Area" to="." method="_on_player_entered_damage_area"]
