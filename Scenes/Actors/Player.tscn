@@ -62,11 +62,13 @@ script = ExtResource("6_jlbgp")
 script = ExtResource("7_7kqk0")
 to = NodePath("../../Jumping")
 event = &"jumped"
+delay_in_seconds = "0.0"
 
 [node name="To_falling" type="Node" parent="StateChart/CompoundState/On_floor"]
 script = ExtResource("7_7kqk0")
 to = NodePath("../../Falling")
 event = &"is_falling"
+delay_in_seconds = "0.0"
 
 [node name="Jumping" type="Node" parent="StateChart/CompoundState"]
 script = ExtResource("6_jlbgp")
@@ -75,6 +77,7 @@ script = ExtResource("6_jlbgp")
 script = ExtResource("7_7kqk0")
 to = NodePath("../../Falling")
 event = &"is_falling"
+delay_in_seconds = "0.0"
 
 [node name="Falling" type="Node" parent="StateChart/CompoundState"]
 script = ExtResource("6_jlbgp")
@@ -83,6 +86,7 @@ script = ExtResource("6_jlbgp")
 script = ExtResource("7_7kqk0")
 to = NodePath("../../On_floor")
 event = &"hit_floor"
+delay_in_seconds = "0.0"
 
 [node name="Timers" type="Node" parent="."]
 

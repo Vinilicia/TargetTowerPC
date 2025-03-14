@@ -54,11 +54,11 @@ shape = SubResource("CapsuleShape2D_tticn")
 debug_color = Color(0.307514, 0.904886, 0.469353, 0.42)
 
 [node name="Arrow_Detector" type="Area2D" parent="."]
+position = Vector2(-92, 0)
 collision_layer = 8
 collision_mask = 2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Arrow_Detector"]
-position = Vector2(-92, 0)
 rotation = -4.71239
 shape = SubResource("CapsuleShape2D_571o4")
 
