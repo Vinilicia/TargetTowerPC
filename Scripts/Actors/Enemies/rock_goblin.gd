@@ -39,7 +39,6 @@ func _throw_rock() -> void:
 	var instance = rock.instantiate()
 	get_parent().call_deferred("add_child", instance)
 	instance.global_position = rock_spawner.global_position
-	instance.direction = direction
 	instance.throw(player_target.position)
 	await get_tree().create_timer(2).timeout
 	timer_off = true

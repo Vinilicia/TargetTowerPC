@@ -1,11 +1,5 @@
 extends RigidBody2D
 
-@export var minimun_angle : int
-
-var direction : int
-var pos : float
-var pos_thrower : float
-
 func _physics_process(delta: float) -> void:
 	await get_tree().create_timer(5).timeout
 	queue_free()
@@ -20,7 +14,7 @@ func throw(position_target : Vector2) -> void:
 	if round(yf - y0) == 3:
 		yMax = y0 - 20
 	elif yf < y0:
-		yMax = yf - 20
+		yMax = yf - 30
 	else:
 		yMax = y0 - 30
 	var vy = sqrt(2*g*abs(yMax))

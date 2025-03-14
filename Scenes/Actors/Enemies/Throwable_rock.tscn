@@ -4,10 +4,9 @@
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standandized_Capsule.tres" id="2_kkss6"]
 
 [node name="Throwable_Rock" type="RigidBody2D"]
-collision_layer = 8
-collision_mask = 3
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_yrknf")
-minimun_angle = 30
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 shape = ExtResource("2_kkss6")

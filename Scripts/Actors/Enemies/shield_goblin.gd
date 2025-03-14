@@ -16,6 +16,7 @@ extends CharacterBody2D
 @onready var shield:= $Shield/CollisionShape2D as CollisionShape2D
 @onready var area_shield:= $Area_Shield/CollisionShape2D as CollisionShape2D
 
+var shield_timer : Timer = null
 var is_player_inside: bool = false
 var player_is_nearby: bool = false
 var saw_player : bool = false
@@ -24,6 +25,11 @@ var player_relative_position : Vector2
 var stop : bool = false
 
 func _ready() -> void:
+	shield_timer = Timer.new()
+	shield_timer.autostart = false
+	add_child(shield_timer)
+	shield_timer.one_shot = true
+	shield_timer.timeout.connect(unstop_goblin)
 	if direction == 0:
 		direction = -1;
 	else:
@@ -140,9 +146,10 @@ func _on_arrow_entered(arrow: Area2D) -> void:
 		set_collision_mask_value(2, true)
 		speed /= 3
 
-
 func _arrow_entered_area_shield(body: Node2D) -> void:
 	if not shield.disabled:
 		stop = true
-		await get_tree().create_timer(2.5).timeout
-		stop = false
+		shield_timer.start(2.5)
+		
+func unstop_goblin() -> void:
+	stop = false
