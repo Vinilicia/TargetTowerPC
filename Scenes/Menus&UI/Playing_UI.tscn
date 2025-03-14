@@ -1,7 +1,7 @@
 [gd_scene load_steps=12 format=3 uid="uid://vwrakc6w7pwa"]
 
-[ext_resource type="Script" path="res://Scripts/Menus&UI/Playing_ui.gd" id="1_vftap"]
-[ext_resource type="Script" path="res://Scripts/Menus&UI/Arrow_switch.gd" id="2_ebnx1"]
+[ext_resource type="Script" uid="uid://bwctur50717fg" path="res://Scripts/Menus&UI/Playing_ui.gd" id="1_vftap"]
+[ext_resource type="Script" uid="uid://bax64eucw0ixf" path="res://Scripts/Menus&UI/Arrow_switch.gd" id="2_ebnx1"]
 [ext_resource type="Texture2D" uid="uid://dgrx1yyq26jhe" path="res://Assets/Home_bred/UI/one.png" id="2_ijdat"]
 [ext_resource type="Texture2D" uid="uid://b77yxo7f8bemb" path="res://Assets/Home_bred/UI/two.png" id="3_3iw5f"]
 [ext_resource type="PackedScene" uid="uid://dgt2ss0d4d6rv" path="res://Scenes/Menus&UI/Arrow_Selection_Button.tscn" id="3_477tk"]
@@ -87,9 +87,9 @@ tracks/1/keys = {
 
 [sub_resource type="AnimationLibrary" id="AnimationLibrary_g38lq"]
 _data = {
-"RESET": SubResource("Animation_j3axm"),
-"closing": SubResource("Animation_qwa2h"),
-"opening": SubResource("Animation_f17yb")
+&"RESET": SubResource("Animation_j3axm"),
+&"closing": SubResource("Animation_qwa2h"),
+&"opening": SubResource("Animation_f17yb")
 }
 
 [node name="HUD" type="CanvasLayer"]

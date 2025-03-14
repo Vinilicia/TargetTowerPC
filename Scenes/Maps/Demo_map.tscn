@@ -64,4 +64,3 @@ shape = ExtResource("6_uotx5")
 
 [node name="Bat" parent="." instance=ExtResource("7_qomuu")]
 position = Vector2(290, -19)
-idle_movement_angle = 180.0

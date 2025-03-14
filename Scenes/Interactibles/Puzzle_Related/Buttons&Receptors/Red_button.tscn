@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://cjd68laeibaxd"]
 
-[ext_resource type="Script" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/Red_button.gd" id="1_upa32"]
+[ext_resource type="Script" uid="uid://cs1o1a6sihmab" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/Red_button.gd" id="1_upa32"]
 
 [sub_resource type="RectangleShape2D" id="RectangleShape2D_e1wbf"]
 

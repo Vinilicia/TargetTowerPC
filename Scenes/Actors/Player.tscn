@@ -1,15 +1,15 @@
-[gd_scene load_steps=9 format=3 uid="uid://bi46s1lw77hbo"]
+[gd_scene load_steps=11 format=3 uid="uid://bi46s1lw77hbo"]
 
 [ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="1_5aeuf"]
-[ext_resource type="Script" path="res://Scripts/Actors/Player.gd" id="1_sk7kx"]
+[ext_resource type="Script" uid="uid://jocsxhht7p0d" path="res://Scripts/Actors/Player.gd" id="1_sk7kx"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_1vfqp"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="3_7ej5o"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="4_58ft6"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="5_6kmac"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="6_jlbgp"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="7_7kqk0"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_ytu4p"]
-size = Vector2(16, 16)
+[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="4_58ft6"]
+[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="5_6kmac"]
+[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="6_jlbgp"]
+[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="7_7kqk0"]
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="9_y5vna"]
+[ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="10_p8ysk"]
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("remote")]
 collision_mask = 28
@@ -30,7 +30,8 @@ Max_Arrows = 3
 Exit_Time = 2.0
 
 [node name="Collision" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_ytu4p")
+scale = Vector2(16, 16)
+shape = ExtResource("2_1vfqp")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 position = Vector2(0, 2.38419e-07)
@@ -100,6 +101,19 @@ wait_time = 2.0
 update_rotation = false
 update_scale = false
 
+[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("9_y5vna")]
+scale = Vector2(18, 18)
+collision_mask = 3072
+parent = NodePath("..")
+invincibility_time = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
+shape = ExtResource("2_1vfqp")
+
+[node name="HealthManager" type="Node" parent="."]
+script = ExtResource("10_p8ysk")
+max_health = 5.0
+
 [connection signal="screen_entered" from="Screen_Notifier" to="." method="screen_entered"]
 [connection signal="screen_exited" from="Screen_Notifier" to="." method="screen_exited"]
 [connection signal="state_entered" from="StateChart/CompoundState/On_floor" to="." method="_on_floor_state_entered"]
@@ -110,3 +124,6 @@ update_scale = false
 [connection signal="state_entered" from="StateChart/CompoundState/Falling" to="." method="_on_falling_state_entered"]
 [connection signal="timeout" from="Timers/Screen_Exit_Timer" to="." method="_on_screen_exit_timer_timeout"]
 [connection signal="timeout" from="Timers/Jump_Buffering" to="." method="_on_jump_buffering_timeout"]
+[connection signal="got_knocked" from="Hurtbox" to="." method="receive_knockback"]
+[connection signal="lost_health" from="HealthManager" to="." method="take_damage"]
+[connection signal="ran_out" from="HealthManager" to="." method="die"]

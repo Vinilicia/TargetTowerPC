@@ -1,11 +1,11 @@
 [gd_scene load_steps=10 format=3 uid="uid://wkr5vvc6juys"]
 
-[ext_resource type="Script" path="res://Scripts/Actors/Enemies/normal_goblin.gd" id="1_lcxwn"]
+[ext_resource type="Script" uid="uid://dihwtmdgfkujj" path="res://Scripts/Actors/Enemies/normal_goblin.gd" id="1_lcxwn"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_qs8xc"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/state_chart.gd" id="3_wqmh0"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/compound_state.gd" id="4_mqlfr"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/atomic_state.gd" id="5_esu5x"]
-[ext_resource type="Script" path="res://addons/godot_state_charts/transition.gd" id="6_787da"]
+[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="3_wqmh0"]
+[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="4_mqlfr"]
+[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="5_esu5x"]
+[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="6_787da"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_db406"]
 radius = 8.0

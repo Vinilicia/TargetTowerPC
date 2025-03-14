@@ -11,7 +11,7 @@ func _on_body_entered(body) -> void:
 		var platform = plat_spawner.instantiate()
 		call_deferred("add_child", platform)
 		platform.position = Vector2(5, -0.5)
-		platform.call_deferred("activate", direction, downward)
+		platform.call_deferred("activate", facing_direction, downward)
 	if body.is_in_group("Attachables"):
 		spawn_joint(body)
 		despawn()

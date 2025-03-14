@@ -76,9 +76,10 @@ func hold_arrow() -> void:
 	arrow_sprite.visible = true;
 	is_holding = true
 
-func receive_knockback(facing_dir : int, force : float, knockback_force : Vector2 = Default_Knockback) -> void:
-	knockback_vector = knockback_force * facing_dir * force
-	var knockback_tween := get_tree().create_tween()
+func receive_knockback(_knockback_vector : Vector2) -> void:
+	print(_knockback_vector)
+	knockback_vector = _knockback_vector
+	var knockback_tween : Tween = get_tree().create_tween()
 	knockback_tween.tween_property(self, "knockback_vector", Vector2.ZERO, 0.1)
 
 func shoot_arrow() -> void:
@@ -86,7 +87,7 @@ func shoot_arrow() -> void:
 	arrow_sprite.visible = false
 	get_parent().call_deferred("add_child", current_arrow)
 	current_arrow.global_position = arrow_spawner.global_position
-	current_arrow.set_direction(sign(arrow_spawner.position.x))
+	current_arrow.set_facing_direction(sign(arrow_spawner.position.x))
 	var is_charged : bool = true
 	if holding_time < Max_hold_time:
 		current_arrow.fly(!is_charged, self)
@@ -104,7 +105,7 @@ func shoot_arrow_d() -> void:
 	arrow_sprite.visible = false
 	get_parent().call_deferred("add_child", current_arrow)
 	current_arrow.global_position = arrow_spawner.global_position
-	current_arrow.set_direction(sign(arrow_spawner.position.x))
+	current_arrow.set_facing_direction(sign(arrow_spawner.position.x))
 	current_arrow.fly_downward(self)
 	arrow_spawner.position = Vector2(8, 0) * facing_direction
 	shooting_timer.start(Shoot_Delay)
@@ -128,7 +129,7 @@ func _on_screen_exit_timer_timeout():
 	die()
 
 func die():
-	get_tree().reload_current_scene()
+	get_tree().call_deferred("reload_current_scene")
 
 func screen_exited():
 	screen_exit_timer.start()
@@ -146,7 +147,7 @@ var pos : Vector2
 var tween : Tween
 
 func turn(facing_dir) -> void:
-	arrow_spawner.position.x = 8 * facing_dir 
+	arrow_spawner.position.x = 8 * facing_dir
 	arrow_sprite.scale.x = facing_dir
 	pos = remote.position
 	var final_pos = Vector2(camera_distance * facing_dir, pos.y)
@@ -188,7 +189,7 @@ func _physics_process(delta):
 		velocity += knockback_vector
 	move_and_slide()
 
-func _on_jumping_state_processing(delta: float):
+func _on_jumping_state_processing():
 	if Input.is_action_just_pressed("jump"):
 		fall_jump_buffer = true
 		jump_buffering.start(Jump_buffering_time)
@@ -220,3 +221,6 @@ func setup_camera() -> void:
 	remote.remote_path = get_parent().get_camera().get_path()
 	#cam = get_node(remote.remote_path)
 	#remote.remote_path = cam.get_path()
+
+func take_damage(amount : float) -> void:
+	print("Took ", amount, " damage.")

@@ -1,0 +1,8 @@
+[gd_resource type="Theme" load_steps=2 format=3 uid="uid://84irkq8dvq1a"]
+
+[ext_resource type="FontFile" uid="uid://we2hkdmwoyf1" path="res://Assets/HandymandiFree.ttf" id="1_v2nnt"]
+
+[resource]
+default_base_scale = 1.0
+default_font = ExtResource("1_v2nnt")
+default_font_size = 14

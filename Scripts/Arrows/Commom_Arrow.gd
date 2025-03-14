@@ -1,16 +1,16 @@
 extends Area2D
 class_name Arrow
 
-@onready var anim = $Anim_Player as AnimationPlayer
-@onready var sprite = $Sprite as Sprite2D
-@onready var coll = $Coll
+@export var anim : AnimationPlayer
+@export var sprite : Sprite2D
+@export var coll : CollisionShape2D
 
-@export var Flying_Speed : float = 320
+@export var Flying_Speed : float = 400
 @export var Charge_Multiplier : float = 2
 @export var Despawn_Time : float = 0
 @export var Cost : int = 1
 
-var direction : int = 1
+var facing_direction : int = 1
 var charged : bool = false
 var downward : bool = false
 var velocity := Vector2.ZERO 
@@ -19,14 +19,14 @@ func _ready():
 	body_entered.connect(_on_body_entered) 
 	
 func _physics_process(delta):
-	position += velocity * delta 
+	position += velocity * delta
 
 func fly(is_charged : bool, _player : CharacterBody2D) -> void:
 	if is_charged:
 		charged = true
-		velocity = Vector2(direction * Flying_Speed * Charge_Multiplier, 0)
+		velocity = Vector2(facing_direction * Flying_Speed * Charge_Multiplier, 0)
 	else:
-		velocity = Vector2(direction * Flying_Speed, 0)
+		velocity = Vector2(facing_direction * Flying_Speed, 0)
 
 func fly_downward(_player : CharacterBody2D) -> void:
 	flip_children()
@@ -36,10 +36,10 @@ func fly_downward(_player : CharacterBody2D) -> void:
 func flip_children() -> void:
 	rotation = deg_to_rad(90)
 
-func set_direction(dir : int) -> void:
-	if direction != dir:
+func set_facing_direction(dir : int) -> void:
+	if facing_direction != dir:
 		rotation = deg_to_rad(180)
-		direction = dir
+		facing_direction = dir
 
 func spawn_joint(body) -> void:
 	var pos = global_position

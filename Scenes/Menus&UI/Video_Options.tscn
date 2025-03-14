@@ -1,0 +1,92 @@
+[gd_scene load_steps=3 format=3 uid="uid://w4qscxieiq2w"]
+
+[ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_p83ip"]
+[ext_resource type="Script" uid="uid://b3jgm08i0y5ge" path="res://Scripts/Menus&UI/Video_options.gd" id="2_7rmdv"]
+
+[node name="VideoMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_p83ip")
+script = ExtResource("2_7rmdv")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="ScreenShakeCheck" type="CheckBox" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+text = "Screen shake"
+
+[node name="ModeContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ModeContainer"]
+layout_mode = 2
+text = "Window mode:"
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/ModeContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/ModeContainer"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+alignment = 1
+selected = 0
+allow_reselect = true
+item_count = 5
+popup/item_0/text = "Window"
+popup/item_0/id = 0
+popup/item_1/id = 3
+popup/item_1/separator = true
+popup/item_2/text = "Borderless window"
+popup/item_2/id = 1
+popup/item_3/id = 4
+popup/item_3/separator = true
+popup/item_4/text = "Fullscreen"
+popup/item_4/id = 2
+
+[node name="ResolutionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
+layout_mode = 2
+text = "Resultion:"
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
+custom_minimum_size = Vector2(110, 0)
+layout_mode = 2
+size_flags_horizontal = 0
+alignment = 1
+selected = 0
+allow_reselect = true
+item_count = 5
+popup/item_0/text = "960x540"
+popup/item_0/id = 0
+popup/item_1/id = 3
+popup/item_1/separator = true
+popup/item_2/text = "1440x810"
+popup/item_2/id = 1
+popup/item_3/id = 4
+popup/item_3/separator = true
+popup/item_4/text = "1920x1080"
+popup/item_4/id = 2
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ModeContainer/OptionButton" to="." method="_on_window_mode_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ResolutionContainer/OptionButton" to="." method="_on_resolution_item_selected"]

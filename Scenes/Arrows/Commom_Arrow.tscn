@@ -1,16 +1,22 @@
-[gd_scene load_steps=4 format=3 uid="uid://de13e283ng22u"]
+[gd_scene load_steps=7 format=3 uid="uid://de13e283ng22u"]
 
-[ext_resource type="Script" path="res://Scripts/Arrows/Commom_Arrow.gd" id="1_g5uwg"]
+[ext_resource type="Script" uid="uid://cdxa4sa0e3u2o" path="res://Scripts/Arrows/Commom_Arrow.gd" id="1_g5uwg"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="1_jx316"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="3_8wux4"]
+[ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="3_wms8w"]
+[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="5_2so76"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ri8v"]
-size = Vector2(2, 1)
+[sub_resource type="Gradient" id="Gradient_rhvf2"]
+resource_local_to_scene = true
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.984314, 1, 0.505882)
 
-[node name="Arrow" type="Area2D"]
+[node name="Arrow" type="Area2D" node_paths=PackedStringArray("anim", "sprite", "coll")]
 collision_layer = 2
 collision_mask = 28
 script = ExtResource("1_g5uwg")
-Flying_Speed = 500.0
+anim = NodePath("Anim_Player")
+sprite = NodePath("Sprite")
+coll = NodePath("Coll")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -19,5 +25,22 @@ texture = ExtResource("1_jx316")
 [node name="Anim_Player" type="AnimationPlayer" parent="."]
 
 [node name="Coll" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(5, -0.5)
-shape = SubResource("RectangleShape2D_2ri8v")
+scale = Vector2(4, 2)
+shape = ExtResource("3_8wux4")
+
+[node name="Arrow_Trail" parent="." instance=ExtResource("3_wms8w")]
+gradient = SubResource("Gradient_rhvf2")
+
+[node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_2so76")]
+position = Vector2(5, -0.5)
+scale = Vector2(4, 2)
+collision_layer = 512
+parent = NodePath("..")
+Damage = 1.0
+Knockback_force = 40.0
+
+[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+shape = ExtResource("3_8wux4")
+debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
