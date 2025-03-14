@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://dagiqrgqyuu5o"]
 
-[ext_resource type="Script" path="res://Scripts/Actors/Breadcrumb.gd" id="1_c4ask"]
+[ext_resource type="Script" uid="uid://hpg2qiybgc2k" path="res://Scripts/Actors/Breadcrumb.gd" id="1_c4ask"]
 [ext_resource type="Texture2D" uid="uid://bsxsyj3bbyo2b" path="res://Assets/Sprite Pack 6/2 - Fairy/Hurt (32 x 32).png" id="2_tmkxi"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_c8bof"]
 

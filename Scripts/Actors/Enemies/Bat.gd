@@ -5,10 +5,11 @@ extends CharacterBody2D
 @export_category("Nodes")
 @export var chasing_timer : Timer
 @export var giving_up_timer : Timer
+@export var flinch_timer : Timer
 @export var line_of_sight : RayCast2D
 @export var navigator : NavigationAgent2D
 @export var dash_area : Area2D
-@export var contact_hitbox : Area2D
+@export var contact_hitbox : Hitbox
 
 @export_category("Behaviourial")
 @export_group("Idle")
@@ -75,7 +76,7 @@ func _player_entered_area(player: Node2D) -> void:
 	player_target = player
 	player_is_nearby = true
 
-func _player_exited_area(player: Node2D) -> void:
+func _player_exited_area(_player: Node2D) -> void:
 	player_is_nearby = false
 #endregion
 
@@ -142,7 +143,7 @@ func _starting_chase_state_entered() -> void:
 	chasing_timer.start()
 
 
-func _starting_chase_physics_processing(delta: float) -> void:
+func _starting_chase_physics_processing(_delta: float) -> void:
 	if line_of_sight.get_collider() != player_target:
 		remaining_time_for_chase = chasing_timer.time_left
 		chasing_timer.stop()
@@ -169,7 +170,7 @@ func _chasing_state_entered() -> void:
 	current_speed = chase_flying_speed
 	give_up_time = chasing_give_up_delay
 
-func _chasing_state_physics_processing(delta : float) -> void:
+func _chasing_state_physics_processing(_delta : float) -> void:
 	if line_of_sight.get_collider() == player_target:
 		giving_up_timer.stop()
 		chasing_target_position = player_target.position
@@ -187,7 +188,7 @@ func _on_backtracking_state_entered() -> void:
 	current_speed = idle_flying_speed
 	navigator.target_position = last_idle_position
 
-func _backtracking_physics_processing(delta: float) -> void:
+func _backtracking_physics_processing(_delta: float) -> void:
 	move_to(navigator.get_next_path_position())
 
 func _navigator_target_reached() -> void:
@@ -196,7 +197,7 @@ func _navigator_target_reached() -> void:
 #endregion
 
 
-func _dash_area_body_entered(body: Node2D) -> void:
+func _dash_area_body_entered(_body: Node2D) -> void:
 	state_chart.send_event("Player_Got_In_Range")
 
 
@@ -216,7 +217,8 @@ func _internal_attacking_state_entered() -> void:
 	move_to(attack_pos)
 
 
-func _internal_attack_physics_processing(delta: float) -> void:
+func _internal_attack_physics_processing(_delta: float) -> void:
+	move_to(attack_pos)
 	if (global_position - attack_pos).length() < 10:
 		stop(0.3)
 		state_chart.send_event("Finished_Attack")
@@ -227,3 +229,34 @@ func _recovering_state_entered() -> void:
 	await get_tree().create_timer(dash_delay * 3).timeout
 	dash_area.monitoring = true
 	state_chart.send_event("Recovered")
+
+var speed_before_flinch : float
+
+#func flinch() -> void:
+	#if speed_before_flinch == 0:
+		#speed_before_flinch = current_speed
+		#current_speed = 0
+	#flinch_timer.start()
+
+#func _flinch_timer_timeout() -> void:
+	#current_speed = speed_before_flinch
+	#speed_before_flinch = 0
+#
+#
+#func _external_attacking_state_exited() -> void:
+	#if !flinch_timer.is_stopped():
+		#flinch_timer.stop()
+
+func _took_damage(amount: float) -> void:
+	print("The bat took ", amount, " damage!")
+	
+	
+	#flinch()
+
+func _ran_out_of_health() -> void:
+	stop(0.1)
+	call_deferred("free")
+
+
+func _hurtbox_got_knocked(knockback_vector: Vector2) -> void:
+	pass

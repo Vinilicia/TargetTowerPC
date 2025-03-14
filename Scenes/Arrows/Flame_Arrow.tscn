@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dos8syduy35sk"]
 
-[ext_resource type="Script" path="res://Scripts/Arrows/Flame_Arrow.gd" id="1_t00ne"]
+[ext_resource type="Script" uid="uid://co4js5cxxb3v8" path="res://Scripts/Arrows/Flame_Arrow.gd" id="1_t00ne"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_sre6a"]
 [ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Scenes/Actions-Reactions/Fire.tscn" id="4_334qw"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="4_stov7"]

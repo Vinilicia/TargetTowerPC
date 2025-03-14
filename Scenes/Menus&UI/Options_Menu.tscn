@@ -1,0 +1,126 @@
+[gd_scene load_steps=7 format=3 uid="uid://dwwx3mfj10mny"]
+
+[ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_jwdl5"]
+[ext_resource type="FontFile" uid="uid://we2hkdmwoyf1" path="res://Assets/HandymandiFree.ttf" id="1_nsnvd"]
+[ext_resource type="Script" uid="uid://kmt6mu0uj7iv" path="res://Scripts/Menus&UI/Options_menu.gd" id="2_38gpb"]
+[ext_resource type="PackedScene" uid="uid://da2sx0ksycqcf" path="res://Scenes/Menus&UI/Controls_Options.tscn" id="4_quo3d"]
+[ext_resource type="PackedScene" uid="uid://cyfg1sluqqde" path="res://Scenes/Menus&UI/Audio_Options.tscn" id="5_y2ceo"]
+[ext_resource type="PackedScene" uid="uid://w4qscxieiq2w" path="res://Scenes/Menus&UI/Video_Options.tscn" id="6_4l1aj"]
+
+[node name="OptionsMenu" type="Control" node_paths=PackedStringArray("Menus_Container", "Controls_menu", "Audio_menu", "Video_menu", "Controls_button", "Audio_button", "Video_button")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_jwdl5")
+script = ExtResource("2_38gpb")
+Menus_Container = NodePath("MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SettingsMargin")
+Controls_menu = NodePath("MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SettingsMargin/ControlsMenu")
+Audio_menu = NodePath("MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SettingsMargin/AudioMenu")
+Video_menu = NodePath("MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SettingsMargin/VideoMenu")
+Controls_button = NodePath("MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer/ControlsButton")
+Audio_button = NodePath("MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer/AudioButton")
+Video_button = NodePath("MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer/VideoButton")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 15
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 30
+theme_override_constants/margin_bottom = 20
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="TitleLabel" type="Label" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+size_flags_vertical = 0
+theme_override_fonts/font = ExtResource("1_nsnvd")
+theme_override_font_sizes/font_size = 18
+text = "Settings"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 10
+theme_override_constants/margin_right = 5
+
+[node name="HBoxContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+
+[node name="SectionsMargin" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+theme_override_constants/margin_left = 5
+theme_override_constants/margin_top = 20
+theme_override_constants/margin_right = 15
+theme_override_constants/margin_bottom = 20
+
+[node name="SectionsContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin"]
+layout_mode = 2
+
+[node name="ControlsButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Controls"
+
+[node name="Separator" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="AudioButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Audio
+"
+
+[node name="Separator2" type="Control" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="VideoButton" type="Button" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer"]
+custom_minimum_size = Vector2(70, 0)
+layout_mode = 2
+size_flags_vertical = 3
+text = "Video"
+
+[node name="SettingsMargin" type="MarginContainer" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_top = -30
+theme_override_constants/margin_right = -15
+theme_override_constants/margin_bottom = -5
+
+[node name="ColorRect" type="ColorRect" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SettingsMargin"]
+layout_mode = 2
+color = Color(0, 0, 0, 0.0980392)
+
+[node name="ControlsMenu" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SettingsMargin" node_paths=PackedStringArray("parent_button") instance=ExtResource("4_quo3d")]
+visible = false
+layout_mode = 2
+parent_button = NodePath("../../SectionsMargin/SectionsContainer/ControlsButton")
+
+[node name="AudioMenu" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SettingsMargin" instance=ExtResource("5_y2ceo")]
+visible = false
+layout_mode = 2
+
+[node name="VideoMenu" parent="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SettingsMargin" instance=ExtResource("6_4l1aj")]
+visible = false
+layout_mode = 2
+
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer/ControlsButton" to="." method="_on_controls_button_pressed"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer/AudioButton" to="." method="_on_audio_button_pressed"]
+[connection signal="focus_entered" from="MarginContainer/VBoxContainer/MarginContainer/HBoxContainer/SectionsMargin/SectionsContainer/VideoButton" to="." method="_on_video_button_focus_entered"]

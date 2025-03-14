@@ -19,8 +19,8 @@ func get_frozen() -> void:
 func _on_body_entered(_body) -> void:
 	get_frozen()
 
-func set_direction(dir) -> void:
-	if direction != dir:
-		super.set_direction(dir)
+func set_facing_direction(dir) -> void:
+	if facing_direction != dir:
+		super.set_facing_direction(dir)
 		fire = $Fire
 		fire.position.x *= -1
