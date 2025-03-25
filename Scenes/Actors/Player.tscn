@@ -1,6 +1,5 @@
 [gd_scene load_steps=11 format=3 uid="uid://bi46s1lw77hbo"]
 
-[ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="1_5aeuf"]
 [ext_resource type="Script" uid="uid://jocsxhht7p0d" path="res://Scripts/Actors/Player.gd" id="1_sk7kx"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_1vfqp"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="3_7ej5o"]
@@ -9,6 +8,7 @@
 [ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="6_jlbgp"]
 [ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="7_7kqk0"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="9_y5vna"]
+[ext_resource type="PackedScene" uid="uid://m7rwi4hmayxa" path="res://Scenes/Actors/Archer_Sprite.tscn" id="10_08ldf"]
 [ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="10_p8ysk"]
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("remote")]
@@ -19,24 +19,19 @@ script = ExtResource("1_sk7kx")
 camera_distance = 60.0
 camera_move_duration = 1.0
 remote = NodePath("Remote")
-Move_Speed = 100.0
+Move_Speed = 140.0
 Jump_Force = -340.0
 Gravity_Multiplier = 1.4
+Jump_buffering_time = 0.1
 Arrows_paths = Array[String](["res://Scenes/Arrows/Commom_Arrow.tscn", "res://Scenes/Arrows/Platform_Arrow.tscn", "res://Scenes/Arrows/Flame_Arrow.tscn", ""])
 Max_hold_time = 1.5
 Shoot_Delay = 0.1
-Jump_buffering_time = 0.1
 Max_Arrows = 3
 Exit_Time = 2.0
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 scale = Vector2(16, 16)
 shape = ExtResource("2_1vfqp")
-
-[node name="Sprite" type="Sprite2D" parent="."]
-position = Vector2(0, 2.38419e-07)
-scale = Vector2(0.125, 0.125)
-texture = ExtResource("1_5aeuf")
 
 [node name="Screen_Notifier" type="VisibleOnScreenNotifier2D" parent="."]
 
@@ -114,6 +109,11 @@ shape = ExtResource("2_1vfqp")
 script = ExtResource("10_p8ysk")
 max_health = 5.0
 
+[node name="Archer" parent="." instance=ExtResource("10_08ldf")]
+
+[node name="AnimationPlayer" parent="Archer" index="0"]
+autoplay = "Idle"
+
 [connection signal="screen_entered" from="Screen_Notifier" to="." method="screen_entered"]
 [connection signal="screen_exited" from="Screen_Notifier" to="." method="screen_exited"]
 [connection signal="state_entered" from="StateChart/CompoundState/On_floor" to="." method="_on_floor_state_entered"]
@@ -127,3 +127,5 @@ max_health = 5.0
 [connection signal="got_knocked" from="Hurtbox" to="." method="receive_knockback"]
 [connection signal="lost_health" from="HealthManager" to="." method="take_damage"]
 [connection signal="ran_out" from="HealthManager" to="." method="die"]
+
+[editable path="Archer"]

@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fvomjlk0ur0o"
-valid=false
+uid="uid://ck12qehkxqymn"
+path="res://.godot/imported/Archer_Idle.png-94515dac16d15bff8fe8cd514139c3c7.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_file="res://Assets/Home_bred/UI/actual_archer.aseprite"
+source_file="res://Assets/Home_bred/Archer/Archer_Idle.png"
+dest_files=["res://.godot/imported/Archer_Idle.png-94515dac16d15bff8fe8cd514139c3c7.ctex"]
 
 [params]
 

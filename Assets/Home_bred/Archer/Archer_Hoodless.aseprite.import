@@ -2,12 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fvomjlk0ur0o"
-valid=false
+uid="uid://c00aithqjkcsl"
+path="res://.godot/imported/Archer_Hoodless.aseprite-8436273ceec02f41be3d66fb95532d45.ctex"
+metadata={
+"vram_texture": false
+}
 
 [deps]
 
-source_file="res://Assets/Home_bred/UI/actual_archer.aseprite"
+source_file="res://Assets/Home_bred/Archer/Archer_Hoodless.aseprite"
+dest_files=["res://.godot/imported/Archer_Hoodless.aseprite-8436273ceec02f41be3d66fb95532d45.ctex"]
 
 [params]
 

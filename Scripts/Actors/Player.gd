@@ -1,21 +1,24 @@
 extends CharacterBody2D
 class_name Player
 
-@export_category("Camera")
+@onready var anim = $Archer/AnimationPlayer
+
+@export_group("Camera")
 @export var camera_distance : float
 @export var camera_move_duration : float
-
 @export var remote : RemoteTransform2D
 
-
+@export_group("Physics")
 @export var Move_Speed : float
 @export var Jump_Force : float
 @export var Default_Knockback : Vector2 = Vector2(170, 0)
 @export var Gravity_Multiplier : float
+@export var Jump_buffering_time : float
+
+@export_group("Shooting")
 @export_dir var Arrows_paths : Array[String]
 @export var Max_hold_time : float
 @export var Shoot_Delay : float
-@export var Jump_buffering_time : float
 @export var Max_Arrows : int
 @export var Exit_Time : float
 
@@ -47,6 +50,13 @@ var facing_direction : int = 1
 var current_arrow_index : int
 var arrow_switcher
 
+func _handle_animation() -> void:
+	if is_on_floor():
+		if velocity == Vector2.ZERO:
+			anim.play("Idle")
+		else:
+			anim.play("Run")
+
 func _ready():
 	velocity = Vector2.ZERO
 	setup_camera()
@@ -57,6 +67,7 @@ func _ready():
 	turn(facing_direction)
 
 func _process(delta):
+	_handle_animation()
 	if is_holding == true:
 		holding_time += delta
 		arrow_sprite.visible = true
@@ -77,7 +88,6 @@ func hold_arrow() -> void:
 	is_holding = true
 
 func receive_knockback(_knockback_vector : Vector2) -> void:
-	print(_knockback_vector)
 	knockback_vector = _knockback_vector
 	var knockback_tween : Tween = get_tree().create_tween()
 	knockback_tween.tween_property(self, "knockback_vector", Vector2.ZERO, 0.1)
@@ -147,6 +157,8 @@ var pos : Vector2
 var tween : Tween
 
 func turn(facing_dir) -> void:
+	$Archer.scale.x  = facing_dir
+	$Archer.position.x = -28 * facing_dir
 	arrow_spawner.position.x = 8 * facing_dir
 	arrow_sprite.scale.x = facing_dir
 	pos = remote.position
