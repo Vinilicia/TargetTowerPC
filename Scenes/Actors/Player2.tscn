@@ -1,0 +1,90 @@
+[gd_scene load_steps=10 format=3 uid="uid://ev1c8jc3dq42"]
+
+[ext_resource type="Script" uid="uid://du36t4pvcn4ic" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
+[ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="4_26aeq"]
+[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="4_r6772"]
+[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="6_26aeq"]
+[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="7_wypxn"]
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_26aeq"]
+[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
+[ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Archer.tscn" id="9_26aeq"]
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("camera_remote", "v_component")]
+collision_mask = 28
+script = ExtResource("1_8nfcn")
+camera_distance = 60.0
+camera_move_duration = 1.5
+camera_remote = NodePath("Remote")
+v_component = NodePath("VelocityComponent")
+move_speed = 120.0
+jump_force = -340.0
+gravity_multiplier = 1.2
+jump_buffering_time = 0.1
+metadata/_custom_type_script = "uid://jocsxhht7p0d"
+
+[node name="VelocityComponent" parent="." instance=ExtResource("2_8nfcn")]
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+scale = Vector2(12, 18)
+shape = ExtResource("4_26aeq")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("4_r6772")
+metadata/_custom_type_script = "uid://beo34a6qi0ttu"
+
+[node name="Actions" type="Node" parent="StateChart"]
+script = ExtResource("6_26aeq")
+initial_state = NodePath("Grounded")
+
+[node name="Grounded" type="Node" parent="StateChart/Actions"]
+script = ExtResource("7_wypxn")
+
+[node name="ToFalling" type="Node" parent="StateChart/Actions/Grounded"]
+script = ExtResource("9_12lv1")
+to = NodePath("../../Falling")
+event = &"Falling"
+
+[node name="ToRising" type="Node" parent="StateChart/Actions/Grounded"]
+script = ExtResource("9_12lv1")
+to = NodePath("../../Rising")
+event = &"Rising"
+
+[node name="Rising" type="Node" parent="StateChart/Actions"]
+script = ExtResource("7_wypxn")
+
+[node name="ToFalling" type="Node" parent="StateChart/Actions/Rising"]
+script = ExtResource("9_12lv1")
+to = NodePath("../../Falling")
+event = &"Falling"
+
+[node name="Falling" type="Node" parent="StateChart/Actions"]
+script = ExtResource("7_wypxn")
+
+[node name="ToGrounded" type="Node" parent="StateChart/Actions/Falling"]
+script = ExtResource("9_12lv1")
+to = NodePath("../../Grounded")
+event = &"Grounded"
+
+[node name="Hurtbox" parent="." instance=ExtResource("8_26aeq")]
+visible = false
+
+[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
+scale = Vector2(12, 18)
+shape = ExtResource("4_26aeq")
+
+[node name="Remote" type="RemoteTransform2D" parent="."]
+update_rotation = false
+update_scale = false
+
+[node name="Archer" parent="." instance=ExtResource("9_26aeq")]
+position = Vector2(-28, -28)
+
+[connection signal="state_physics_processing" from="StateChart/Actions/Grounded" to="." method="_grounded_state_physics_processing"]
+[connection signal="taken" from="StateChart/Actions/Grounded/ToFalling" to="." method="_grounded_to_falling_taken"]
+[connection signal="taken" from="StateChart/Actions/Grounded/ToRising" to="." method="_grounded_to_rising_taken"]
+[connection signal="state_entered" from="StateChart/Actions/Rising" to="." method="_rising_state_entered"]
+[connection signal="taken" from="StateChart/Actions/Rising/ToFalling" to="." method="_rising_to_falling_taken"]
+[connection signal="state_entered" from="StateChart/Actions/Falling" to="." method="_falling_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Actions/Falling" to="." method="_falling_state_physics_processing"]
+[connection signal="taken" from="StateChart/Actions/Falling/ToGrounded" to="." method="_falling_to_grounded_taken"]
