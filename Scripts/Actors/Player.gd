@@ -1,5 +1,5 @@
 extends CharacterBody2D
-class_name Player
+#class_name Player
 
 @onready var anim = $Archer/AnimationPlayer
 
@@ -157,8 +157,8 @@ var pos : Vector2
 var tween : Tween
 
 func turn(facing_dir) -> void:
-	$Archer.scale.x  = facing_dir
-	$Archer.position.x = -28 * facing_dir
+	#$Archer.scale.x  = facing_dir
+	#$Archer.position.x = -28 * facing_dir
 	arrow_spawner.position.x = 8 * facing_dir
 	arrow_sprite.scale.x = facing_dir
 	pos = remote.position

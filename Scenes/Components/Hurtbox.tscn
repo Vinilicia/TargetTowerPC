@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://mtr77w2jjjxb" path="res://Scripts/Components/Hurtbox.gd" id="1_mlsjm"]
 
 [node name="Add_Collision" type="Area2D" node_paths=PackedStringArray("invincibility_timer")]
+modulate = Color(1, 0, 1, 1)
 collision_layer = 0
 collision_mask = 2048
 monitorable = false

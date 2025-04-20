@@ -47,6 +47,25 @@ enabled=PackedStringArray("res://addons/godot_state_charts/plugin.cfg", "res://a
 
 Attachables=""
 
+[importer_defaults]
+
+"Aseprite Sprite2D Import"={
+"animation/autoplay": "",
+"animation/default/direction": 0,
+"animation/default/name": "default",
+"animation/default/repeat_count": 0,
+"animation/strategy_(grid-based_spritesheet)": 0,
+"animation/strategy_(packed_spritesheet)": 0,
+"sprite2d/centered": true,
+"spritesheet/border_type": 0,
+"spritesheet/fixed_columns_count": 1,
+"spritesheet/fixed_rows_count": 1,
+"spritesheet/ignore_empty": false,
+"spritesheet/layout": 0,
+"spritesheet/merge_duplicates": false,
+"spritesheet/trim": false
+}
+
 [input]
 
 left={

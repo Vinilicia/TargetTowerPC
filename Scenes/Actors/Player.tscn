@@ -11,29 +11,15 @@
 [ext_resource type="PackedScene" uid="uid://m7rwi4hmayxa" path="res://Scenes/Actors/Archer_Sprite.tscn" id="10_08ldf"]
 [ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="10_p8ysk"]
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("remote")]
+[node name="Player" type="CharacterBody2D"]
 collision_mask = 28
 velocity = Vector2(0, 91925.6)
 floor_constant_speed = true
 script = ExtResource("1_sk7kx")
-camera_distance = 60.0
-camera_move_duration = 1.0
-remote = NodePath("Remote")
-Move_Speed = 140.0
-Jump_Force = -340.0
-Gravity_Multiplier = 1.4
-Jump_buffering_time = 0.1
-Arrows_paths = Array[String](["res://Scenes/Arrows/Commom_Arrow.tscn", "res://Scenes/Arrows/Platform_Arrow.tscn", "res://Scenes/Arrows/Flame_Arrow.tscn", ""])
-Max_hold_time = 1.5
-Shoot_Delay = 0.1
-Max_Arrows = 3
-Exit_Time = 2.0
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 scale = Vector2(16, 16)
 shape = ExtResource("2_1vfqp")
-
-[node name="Screen_Notifier" type="VisibleOnScreenNotifier2D" parent="."]
 
 [node name="Arrow_Spawner" type="Marker2D" parent="."]
 position = Vector2(8, 0)
@@ -85,9 +71,6 @@ delay_in_seconds = "0.0"
 
 [node name="Timers" type="Node" parent="."]
 
-[node name="Screen_Exit_Timer" type="Timer" parent="Timers"]
-wait_time = 2.0
-
 [node name="Shooting_Timer" type="Timer" parent="Timers"]
 
 [node name="Jump_Buffering" type="Timer" parent="Timers"]
@@ -110,19 +93,18 @@ script = ExtResource("10_p8ysk")
 max_health = 5.0
 
 [node name="Archer" parent="." instance=ExtResource("10_08ldf")]
+offset = Vector2(21, 17)
+region_rect = Rect2(17, 84, 15, 21)
 
 [node name="AnimationPlayer" parent="Archer" index="0"]
 autoplay = "Idle"
 
-[connection signal="screen_entered" from="Screen_Notifier" to="." method="screen_entered"]
-[connection signal="screen_exited" from="Screen_Notifier" to="." method="screen_exited"]
 [connection signal="state_entered" from="StateChart/CompoundState/On_floor" to="." method="_on_floor_state_entered"]
 [connection signal="state_exited" from="StateChart/CompoundState/On_floor" to="." method="_on_floor_state_exited"]
 [connection signal="state_processing" from="StateChart/CompoundState/On_floor" to="." method="_on_on_floor_state_processing"]
 [connection signal="state_entered" from="StateChart/CompoundState/Jumping" to="." method="_on_jumping_state_entered"]
 [connection signal="state_processing" from="StateChart/CompoundState/Jumping" to="." method="_on_jumping_state_processing"]
 [connection signal="state_entered" from="StateChart/CompoundState/Falling" to="." method="_on_falling_state_entered"]
-[connection signal="timeout" from="Timers/Screen_Exit_Timer" to="." method="_on_screen_exit_timer_timeout"]
 [connection signal="timeout" from="Timers/Jump_Buffering" to="." method="_on_jump_buffering_timeout"]
 [connection signal="got_knocked" from="Hurtbox" to="." method="receive_knockback"]
 [connection signal="lost_health" from="HealthManager" to="." method="take_damage"]

@@ -3,6 +3,7 @@
 [ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="1_vpft6"]
 
 [node name="Add_Collision" type="Area2D"]
+modulate = Color(1, 0, 0, 1)
 collision_layer = 0
 collision_mask = 0
 monitoring = false

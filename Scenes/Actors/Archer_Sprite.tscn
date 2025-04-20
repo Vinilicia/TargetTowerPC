@@ -4,5 +4,5 @@
 
 [node name="Archer" instance=ExtResource("1_7auk6")]
 position = Vector2(-28, -28)
-offset = Vector2(21, 17)
-region_rect = Rect2(32, 62, 15, 21)
+offset = Vector2(22, 18)
+region_rect = Rect2(70, 127, 13, 20)
