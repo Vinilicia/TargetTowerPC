@@ -45,5 +45,33 @@ func add_ground_velocity(value : Vector2) -> void:
 func add_wind_velocity(value : Vector2) -> void:
 	wind_velocity += value
 
+func get_proper_velocity(axis : int = -1):
+	if axis == 1:
+		return proper_velocity.x as float
+	elif axis == 2:
+		return proper_velocity.y as float
+	return proper_velocity as Vector2
+
+func get_knockback_velocity(axis : int = -1):
+	if axis == 1:
+		return knockback_velocity.x as float
+	elif axis == 2:
+		return knockback_velocity.y as float
+	return knockback_velocity as Vector2
+	
+func get_ground_velocity(axis : int = -1):
+	if axis == 1:
+		return ground_velocity.x as float
+	elif axis == 2:
+		return ground_velocity.y as float
+	return ground_velocity as Vector2
+
+func get_wind_velocity(axis : int = -1):
+	if axis == 1:
+		return wind_velocity.x as float
+	elif axis == 2:
+		return wind_velocity.y as float
+	return wind_velocity as Vector2
+
 func get_total_velocity() -> Vector2:
 	return proper_velocity + knockback_velocity + ground_velocity + wind_velocity

@@ -4,12 +4,14 @@ class_name Arrow
 @export var anim : AnimationPlayer
 @export var sprite : Sprite2D
 @export var coll : CollisionShape2D
+@export var trail : Trail
 
 @export var Flying_Speed : float = 400
 @export var Charge_Multiplier : float = 2
 @export var Despawn_Time : float = 0
 @export var Cost : int = 1
 
+var flying_direction : Vector2 = Vector2(1, 0)
 var facing_direction : int = 1
 var charged : bool = false
 var downward : bool = false
@@ -21,29 +23,24 @@ func _ready():
 func _physics_process(delta):
 	position += velocity * delta
 
-func fly(is_charged : bool, _player : CharacterBody2D) -> void:
+func fly(is_charged: bool, _player: CharacterBody2D) -> void:
+	set_deferred("monitoring", true)
 	if is_charged:
 		charged = true
-		velocity = Vector2(facing_direction * Flying_Speed * Charge_Multiplier, 0)
+		velocity = flying_direction.normalized() * Flying_Speed * Charge_Multiplier
 	else:
-		velocity = Vector2(facing_direction * Flying_Speed, 0)
-
-func fly_downward(_player : CharacterBody2D) -> void:
-	flip_children()
-	downward = true
-	velocity = Vector2(0, Flying_Speed * 1.2)
+		velocity = flying_direction.normalized() * Flying_Speed
+	trail.set_deferred("process_mode", ProcessMode.PROCESS_MODE_INHERIT)
 
 func flip_children() -> void:
 	rotation = deg_to_rad(90)
 
-func set_facing_direction(dir : int) -> void:
-	if facing_direction != dir:
-		rotation = deg_to_rad(180)
-		facing_direction = dir
+func set_flying_direction(dir_vector: Vector2) -> void:
+	rotation = dir_vector.angle()
+	flying_direction = dir_vector.normalized()
 
 func spawn_joint(body) -> void:
-	var pos = global_position
-	var pos_relativa = pos - body.global_position
+	var pos_relativa = global_position - body.global_position
 	self.get_parent().call_deferred("remove_child", self)
 	body.call_deferred("add_child", self)
 	self.position = pos_relativa

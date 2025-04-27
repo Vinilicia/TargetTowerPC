@@ -19,5 +19,5 @@ func _process(_delta: float) -> void:
 		add_point(point)
 
 func set_next_point() -> Vector2:
-	var parent : Arrow = get_parent()
-	return parent.global_position - Vector2(10 * parent.facing_direction, 0)
+	var parent: Arrow = get_parent()
+	return parent.global_position - parent.flying_direction.normalized() * 10
