@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://fvomjlk0ur0o"
-path="res://.godot/imported/actual_archer.aseprite-ca47e8b28ab42d1d8e174ac034e0466b.ctex"
+uid="uid://dpason8xd5ylp"
+path="res://.godot/imported/estatua.aseprite-f70a8a9d470cc909074f1ffd8caa03a8.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Home_bred/UI/actual_archer.aseprite"
-dest_files=["res://.godot/imported/actual_archer.aseprite-ca47e8b28ab42d1d8e174ac034e0466b.ctex"]
+source_file="res://Assets/Home_bred/Tilemap/estatua.aseprite"
+dest_files=["res://.godot/imported/estatua.aseprite-f70a8a9d470cc909074f1ffd8caa03a8.ctex"]
 
 [params]
 
