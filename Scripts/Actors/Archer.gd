@@ -22,6 +22,7 @@ class_name Player
 @export var default_knockback : Vector2 = Vector2(170, 0)
 @export var gravity_multiplier : float
 @export var jump_buffering_time : float
+@export var air_stall_velocity : float
  
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var can_shoot : bool = true
@@ -34,6 +35,8 @@ var pos : Vector2
 var tween : Tween
 var shoot_direction : Vector2
 var update_flying_dir : bool = false
+var count_hold_time : bool = false
+var dodge_direction : Vector2
 
 @export_category("Para debugar")
 @export_range(0 , 8) var initial_arrow_index : int
@@ -47,8 +50,11 @@ func _ready():
 	UiHandler.equiped_arrow_index = initial_arrow_index
 
 func _physics_process(delta: float) -> void:
+	if count_hold_time:
+		holding_time += delta
 	
 	if Input.is_action_just_released("shoot"):
+		count_hold_time = false
 		is_holding = false
 	
 	shoot_direction = Vector2(1, 0)
@@ -83,17 +89,40 @@ func _physics_process(delta: float) -> void:
 		v_component.add_proper_velocity(Vector2(0, decrement_yspeed))
 		
 	v_component.set_proper_velocity(0.0, 1)
-	var h_direction : int = int(Input.get_axis("left", "right"))
-	var v_direction : int = int(Input.get_axis("up", "down"))
-	var another_v_direction : int = int(Input.get_axis("angle down", "angle up"))
-	if h_direction:
-		if facing_direction != h_direction:
-			facing_direction = h_direction
+	var dir : int = int(Input.get_axis("left", "right"))
+	if dir:
+		if facing_direction != dir:
+			facing_direction = dir
 			turn(facing_direction)
 		move(facing_direction)
 	
+	shoot_direction = Vector2(1, 0)
+	dodge_direction = Vector2(1, 0)
+	if Input.is_action_pressed("down"):
+		if !is_on_floor():
+			shoot_direction = Vector2(0, 1)
+			dodge_direction = Vector2(0, 1)
+	if Input.is_action_pressed("up"):
+		shoot_direction = Vector2(0, -1)
+		if !is_on_floor():
+			dodge_direction = Vector2(0, -1)
+	if Input.is_action_pressed("angle down"):
+		shoot_direction = Vector2(1, 1)
+	if Input.is_action_pressed("angle up"):
+		shoot_direction = Vector2(1, -1)
+	
+	shoot_direction.x *= facing_direction
+	dodge_direction.x *= facing_direction
+	
+	if Input.is_action_just_pressed("dodge"):
+		dodge_roll()
 	velocity = v_component.get_total_velocity()
 	move_and_slide()
+
+func dodge_roll():
+	move_speed += 200
+	await get_tree().create_timer(0.2).timeout
+	move_speed -= 200
 
 
 func jump(multiplier : float = 1) -> void:
@@ -167,16 +196,30 @@ func hold_arrow() -> void:
 	add_child(current_arrow)
 	current_arrow.set_flying_direction(shoot_direction)
 
+func air_stall() -> void:
+	if v_component.get_proper_velocity(2) > 0:
+		v_component.set_proper_velocity(-air_stall_velocity, 2)
+	else:
+		v_component.add_proper_velocity(Vector2(0, -air_stall_velocity))
+
 func shoot() -> void:
 	update_flying_dir = false
 	current_arrow.top_level = true
 	current_arrow.global_position = global_position
-	current_arrow.fly(false, self)
+	if holding_time > max_hold_time:
+		current_arrow.fly(true, self)
+	else:
+		current_arrow.fly(false, self)
 	current_arrow = equip_arrow(current_arrow_index)
 	state_chart.send_event("CantShoot")
+	
+	holding_time = 0
+	#if shoot_direction == Vector2(0, 1):
+		#air_stall()
 
 func _can_shoot_state_entered() -> void:
 	if is_holding:
+		count_hold_time = true
 		hold_arrow()
 
 func _can_shoot_physics_processing(delta: float) -> void:

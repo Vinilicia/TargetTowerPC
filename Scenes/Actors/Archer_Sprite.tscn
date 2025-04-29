@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://m7rwi4hmayxa"]
-
-[ext_resource type="PackedScene" uid="uid://b6brjjdl4equl" path="res://Assets/Home_bred/Archer/Archer.aseprite" id="1_7auk6"]
-
-[node name="Archer" instance=ExtResource("1_7auk6")]
-position = Vector2(-28, -28)
-offset = Vector2(22, 18)
-region_rect = Rect2(70, 127, 13, 20)

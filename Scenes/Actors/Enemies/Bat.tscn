@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://bhvt3jevmwiq7"]
+[gd_scene load_steps=13 format=3 uid="uid://bhvt3jevmwiq7"]
 
 [ext_resource type="Script" uid="uid://dv4vq1ikjqs51" path="res://Scripts/Actors/Enemies/Bat.gd" id="1_gfwsf"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="2_22gow"]
@@ -11,6 +11,7 @@
 [ext_resource type="Script" uid="uid://cvnxhkjma2q88" path="res://addons/godot_state_charts/history_state.gd" id="7_1wqf1"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="10_ylyik"]
 [ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="11_2d5rs"]
+[ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="12_4cx4r"]
 
 [node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "flinch_timer", "line_of_sight", "navigator", "dash_area", "contact_hitbox")]
 position = Vector2(14, 0)
@@ -235,6 +236,11 @@ one_shot = true
 avoidance_layers = 0
 avoidance_mask = 0
 debug_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.490196, 0, 0.572549, 1)
+scale = Vector2(0.006, 0.006)
+texture = ExtResource("12_4cx4r")
 
 [connection signal="lost_health" from="HealthManager" to="." method="_took_damage"]
 [connection signal="ran_out" from="HealthManager" to="." method="_ran_out_of_health"]

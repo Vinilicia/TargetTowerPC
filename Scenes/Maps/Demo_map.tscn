@@ -7,7 +7,7 @@
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="6_uotx5"]
 [ext_resource type="PackedScene" uid="uid://bhvt3jevmwiq7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="7_qomuu"]
 [ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Options_Menu.tscn" id="8_dx1k0"]
-[ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Scenes/Actors/Player2.tscn" id="8_pjtoa"]
+[ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Scenes/Actors/Player.tscn" id="8_pjtoa"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_pjq8s"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
