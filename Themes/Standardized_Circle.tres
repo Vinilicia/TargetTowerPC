@@ -1,4 +1,4 @@
 [gd_resource type="CircleShape2D" format=3 uid="uid://c15fxfokquco3"]
 
 [resource]
-radius = 0.5
+radius = 4.0

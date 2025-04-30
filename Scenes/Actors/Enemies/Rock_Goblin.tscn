@@ -19,6 +19,8 @@ shape = ExtResource("1_nn6wd")
 collision_layer = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sight_Area"]
+position = Vector2(-63, -46)
+rotation = 1.5708
 shape = ExtResource("2_cbwjt")
 debug_color = Color(0.234089, 0.629159, 0.300647, 0.42)
 
