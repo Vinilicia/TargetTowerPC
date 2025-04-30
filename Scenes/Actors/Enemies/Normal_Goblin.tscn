@@ -25,8 +25,8 @@ height = 104.378
 collision_layer = 8
 collision_mask = 22
 script = ExtResource("1_lcxwn")
-hurtbox = NodePath("Hurtbox")
-attack = NodePath("Hitbox")
+hurtbox = NodePath("Boxes/Hurtbox")
+attack = NodePath("Boxes/AttackHitbox")
 
 [node name="coll" type="CollisionShape2D" parent="."]
 scale = Vector2(16, 16)
@@ -100,34 +100,45 @@ modulate = Color(0, 1, 0, 1)
 scale = Vector2(0.12, 0.12)
 texture = ExtResource("7_rg2yg")
 
-[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_7fg1c")]
-scale = Vector2(16, 16)
-collision_mask = 2560
-parent = NodePath("..")
-invincibility_time = 0.1
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Hurtbox"]
-shape = ExtResource("2_qs8xc")
-
 [node name="HealthManager" type="Node" parent="."]
 script = ExtResource("9_jgpfp")
 max_health = 5.0
 metadata/_custom_type_script = "uid://d4da8yc41448k"
 
-[node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("10_jabsr")]
+[node name="Boxes" type="Node2D" parent="."]
+
+[node name="Hurtbox" parent="Boxes" node_paths=PackedStringArray("parent") instance=ExtResource("8_7fg1c")]
+scale = Vector2(16, 16)
+collision_mask = 2560
+parent = NodePath("../..")
+invincibility_time = 0.1
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Boxes/Hurtbox"]
+shape = ExtResource("2_qs8xc")
+
+[node name="AttackHitbox" parent="Boxes" node_paths=PackedStringArray("parent") instance=ExtResource("10_jabsr")]
 visible = false
 position = Vector2(-11, 0)
 scale = Vector2(25, 20)
 collision_layer = 1024
 monitorable = false
-parent = NodePath("..")
+parent = NodePath("../..")
 Damage = 1.0
 Knockback_force = 120.0
 Knockback_angle = 30.0
 
-[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+[node name="Coll" type="CollisionShape2D" parent="Boxes/AttackHitbox"]
 shape = ExtResource("11_3ax3k")
 debug_color = Color(1, 0.6, 0.701961, 0.419608)
+
+[node name="ContactHitbox" parent="Boxes" node_paths=PackedStringArray("parent") instance=ExtResource("10_jabsr")]
+scale = Vector2(16, 16)
+collision_layer = 1024
+parent = NodePath("../..")
+Damage = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Boxes/ContactHitbox"]
+shape = ExtResource("2_qs8xc")
 
 [connection signal="body_entered" from="Attack_Area" to="." method="_player_entered_attack_area"]
 [connection signal="body_exited" from="Attack_Area" to="." method="_player_exited_attack_area"]
@@ -135,6 +146,6 @@ debug_color = Color(1, 0.6, 0.701961, 0.419608)
 [connection signal="body_exited" from="Sight_Area" to="." method="_player_exited_sight_area"]
 [connection signal="area_entered" from="Arrow_Detector" to="." method="_on_arrow_entered"]
 [connection signal="state_physics_processing" from="StateChart/State_Tree/Chasing" to="." method="_on_chasing_state_physics_processing"]
-[connection signal="took_damage" from="Hurtbox" to="HealthManager" method="lose_health"]
 [connection signal="lost_health" from="HealthManager" to="." method="_on_health_lost_health"]
 [connection signal="ran_out" from="HealthManager" to="." method="_on_health_ran_out"]
+[connection signal="took_damage" from="Boxes/Hurtbox" to="HealthManager" method="lose_health"]

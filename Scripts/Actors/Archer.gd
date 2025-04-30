@@ -44,7 +44,6 @@ var dodge_direction : Vector2
 func _ready():
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
-	Engine.time_scale = 0.5
 	velocity = Vector2.ZERO
 	setup_camera()
 	UiHandler.equiped_arrow_index = initial_arrow_index
@@ -235,6 +234,6 @@ func _cant_shoot_physics_processing(delta: float) -> void:
 		is_holding = true
 
 func _on_health_lost_health(_amount: float) -> void:
-	modulate += Color(1, 0, 0, 1)
-	await get_tree().create_timer(0.1).timeout
-	modulate -= Color(1, 0, 0, 1)
+	modulate = Color(1, 0, 0, 1)
+	await get_tree().create_timer(0.3).timeout
+	modulate = Color(1, 1, 1, 1)

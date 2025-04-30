@@ -122,7 +122,7 @@ position = Vector2(2, 2)
 
 [node name="HealthManager" type="Node" parent="."]
 script = ExtResource("11_jfvij")
-max_health = 4.0
+max_health = 20.0
 metadata/_custom_type_script = "uid://d4da8yc41448k"
 
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_physics_processing"]

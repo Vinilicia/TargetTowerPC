@@ -34,10 +34,10 @@ idle_tolerance = 40
 chase_flying_speed = 80.0
 starting_give_up_delay = 1.0
 chasing_give_up_delay = 2.0
-dash_speed = 160.0
+dash_speed = 200.0
 dash_duration = 1.0
 dash_delay = 0.3
-dash_hitbox_increase = 2.0
+dash_hitbox_increase = 1.5
 
 [node name="HealthManager" type="Node" parent="."]
 script = ExtResource("2_aocx4")
@@ -240,7 +240,7 @@ debug_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.490196, 0, 0.572549, 1)
-scale = Vector2(0.006, 0.006)
+scale = Vector2(0.01, 0.01)
 texture = ExtResource("12_4cx4r")
 
 [connection signal="lost_health" from="HealthManager" to="." method="_took_damage"]

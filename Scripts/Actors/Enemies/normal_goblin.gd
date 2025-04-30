@@ -26,9 +26,10 @@ var can_dash : bool = true
 
 func _ready() -> void:
 	if direction == 0:
-		direction = -1;
+		direction = -1
 	else:
-		direction = 1;
+		direction = 1
+		flip()
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -92,7 +93,7 @@ func flip() -> void:
 	arrow_detector.position *= -1
 	attack.position.x *= -1
 
-func _on_arrow_entered(arrow: Area2D) -> void:
+func _on_arrow_entered(_arrow: Area2D) -> void:
 	if can_dash:
 		set_collision_layer_value(4, false)
 		hurtbox.set_deferred("monitoring", false)

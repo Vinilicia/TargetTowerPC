@@ -19,7 +19,8 @@ func _ready() -> void:
 		direction = -1
 	else:
 		direction = 1
-		
+		flip()
+
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
