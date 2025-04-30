@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="3_mw4ge"]
 [ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="4_u345c"]
 [ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="5_80kjg"]
-[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standandized_Capsule.tres" id="6_mpjdf"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="6_mpjdf"]
 [ext_resource type="Script" uid="uid://cvnxhkjma2q88" path="res://addons/godot_state_charts/history_state.gd" id="7_1wqf1"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="10_ylyik"]
 [ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="11_2d5rs"]
@@ -41,7 +41,7 @@ dash_hitbox_increase = 2.0
 
 [node name="HealthManager" type="Node" parent="."]
 script = ExtResource("2_aocx4")
-max_health = 4.0
+max_health = 2.0
 
 [node name="Coll" type="CollisionShape2D" parent="."]
 shape = ExtResource("2_22gow")
@@ -200,7 +200,7 @@ scale = Vector2(0.063, 0.063)
 scale = Vector2(20, 20)
 collision_mask = 2560
 parent = NodePath("../..")
-invincibility_time = 1.0
+invincibility_time = 0.2
 
 [node name="Coll" type="CollisionShape2D" parent="Damage_Boxes/Hurtbox"]
 shape = ExtResource("2_22gow")
@@ -233,8 +233,9 @@ wait_time = 0.3
 one_shot = true
 
 [node name="Navigator" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
 avoidance_layers = 0
-avoidance_mask = 0
+avoidance_mask = 2
 debug_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

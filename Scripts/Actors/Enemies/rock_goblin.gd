@@ -1,10 +1,10 @@
 extends CharacterBody2D
 
-@export_enum("Esquerda", "Direita") var direction: int
+@export_enum("Esquerda", "Direita") var direction : int
 @export var sight_area_scale : Vector2 = Vector2(320, 150)
 
 @onready var rock = load("res://Scenes/Actors/Enemies/Throwable_rock.tscn")
-@onready var sight_area := $Sight_Area/CollisionShape2D as CollisionShape2D
+@onready var sight_area := $Sight_Area as Area2D
 @onready var rock_spawner = $RockSpawner as Marker2D
 
 var player_is_nearby : bool = false
@@ -56,3 +56,6 @@ func _player_exited_sight_area(player: Node2D) -> void:
 
 func flip() -> void:
 	sight_area.position.x *= -1
+
+func ran_out_of_health() -> void:
+	queue_free()

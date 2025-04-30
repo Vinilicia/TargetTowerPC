@@ -15,11 +15,12 @@ script = ExtResource("1_yrknf")
 texture = ExtResource("4_ppbia")
 
 [node name="Coll" type="CollisionShape2D" parent="."]
+scale = Vector2(8, 8)
 shape = ExtResource("2_foqvr")
 debug_color = Color(0.979514, 0, 0.387407, 0.42)
 
 [node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("3_ppbia")]
-collision_layer = 1024
+collision_layer = 2048
 parent = NodePath("..")
 Damage = 1.0
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=11 format=3 uid="uid://ev1c8jc3dq42"]
+[gd_scene load_steps=12 format=3 uid="uid://ev1c8jc3dq42"]
 
 [ext_resource type="Script" uid="uid://du36t4pvcn4ic" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_26aeq"]
 [ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
 [ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Archer.tscn" id="9_26aeq"]
+[ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component")]
 collision_mask = 20
@@ -101,6 +102,7 @@ event = &"CanShoot"
 
 [node name="Hurtbox" parent="." instance=ExtResource("8_26aeq")]
 visible = false
+collision_mask = 3072
 
 [node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
 scale = Vector2(12, 18)
@@ -118,6 +120,11 @@ region_rect = Rect2(65, 86, 15, 20)
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(2, 2)
 
+[node name="HealthManager" type="Node" parent="."]
+script = ExtResource("11_jfvij")
+max_health = 4.0
+metadata/_custom_type_script = "uid://d4da8yc41448k"
+
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_physics_processing"]
 [connection signal="taken" from="StateChart/Root/Memes/Grounded/ToFalling" to="." method="_grounded_to_falling_taken"]
 [connection signal="taken" from="StateChart/Root/Memes/Grounded/ToRising" to="." method="_grounded_to_rising_taken"]
@@ -130,5 +137,8 @@ position = Vector2(2, 2)
 [connection signal="state_physics_processing" from="StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_physics_processing"]
 [connection signal="state_entered" from="StateChart/Root/Shooting/CantShoot" to="." method="_cannot_shoot_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Shooting/CantShoot" to="." method="_cant_shoot_physics_processing"]
+[connection signal="took_damage" from="Hurtbox" to="HealthManager" method="lose_health"]
+[connection signal="lost_health" from="HealthManager" to="." method="_on_health_lost_health"]
+[connection signal="ran_out" from="HealthManager" to="." method="die"]
 
 [editable path="Archer"]

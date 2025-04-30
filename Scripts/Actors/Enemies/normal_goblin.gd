@@ -8,11 +8,14 @@ extends CharacterBody2D
 @onready var line_of_sight := $Line_Of_Sight as RayCast2D
 @onready var wall_detector := $Detectors/Wall_Detector as RayCast2D
 @onready var ground_detector := $Detectors/Ground_Detector as RayCast2D
-@onready var attack_area := $Attack_Area/CollisionShape2D as CollisionShape2D
+@onready var attack_area := $Attack_Area as Area2D
 @onready var sight_area := $Sight_Area/CollisionShape2D as CollisionShape2D
 @onready var arrow_detector := $Arrow_Detector as Area2D
 @onready var arrow_detector_area := $Arrow_Detector as Area2D
 @onready var coll: = $coll as CollisionShape2D
+
+@export var hurtbox : Hurtbox
+@export var attack : Hitbox
 
 var is_player_inside: bool = false
 var player_is_nearby: bool = false
@@ -59,12 +62,11 @@ func _player_exited_sight_area(player: Node2D) -> void:
 	can_dash = true
 
 func _player_entered_attack_area(body: Node2D) -> void:
-	is_player_inside = true
+	attack.set_deferred("monitorable", true)
+	attack.visible = true
 	await get_tree().create_timer(0.5).timeout
-	if is_player_inside:
-		#print_debug("tomou dano")
-		attack_area.disabled = true
-		attack_area.disabled = false
+	attack.visible = false
+	attack.set_deferred("monitorable", false)
 
 func _player_exited_attack_area(body: Node2D) -> void:
 	is_player_inside = false
@@ -88,16 +90,23 @@ func flip() -> void:
 	attack_area.position.x *= -1
 	sight_area.position.x *= -1
 	arrow_detector.position *= -1
+	attack.position.x *= -1
 
 func _on_arrow_entered(arrow: Area2D) -> void:
 	if can_dash:
 		set_collision_layer_value(4, false)
+		hurtbox.set_deferred("monitoring", false)
 		speed *= 3
 		can_dash = false
-		await get_tree().create_timer(0.5).timeout
+		await get_tree().create_timer(0.4).timeout
 		set_collision_layer_value(4, true)
+		hurtbox.set_deferred("monitoring", true)
 		speed /= 3
 		if not player_is_nearby:
 			can_dash = true
-	
-	
+
+func _on_health_ran_out() -> void:
+	queue_free()
+
+func _on_health_lost_health(amount: float) -> void:
+	print("Took ", amount, "damage.")

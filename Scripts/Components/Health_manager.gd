@@ -22,3 +22,7 @@ func lose_health(value : float) -> void:
 func check_if_alive() -> void:
 	if health == 0:
 		ran_out.emit()
+
+
+func _on_hurtbox_took_damage(amount: float) -> void:
+	pass # Replace with function body.

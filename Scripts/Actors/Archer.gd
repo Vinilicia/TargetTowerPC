@@ -156,9 +156,6 @@ func turn(facing_dir) -> void:
 func setup_camera() -> void:
 	camera_remote.remote_path = get_parent().get_camera().get_path()
 
-func take_damage(amount : float) -> void:
-	print("Took ", amount, " damage.")
-
 func _rising_to_falling_taken() -> void:
 	anim.clear_queue()
 	anim.play("Jump Apex")
@@ -236,3 +233,8 @@ func _cannot_shoot_state_entered() -> void:
 func _cant_shoot_physics_processing(delta: float) -> void:
 	if Input.is_action_pressed("shoot"):
 		is_holding = true
+
+func _on_health_lost_health(_amount: float) -> void:
+	modulate += Color(1, 0, 0, 1)
+	await get_tree().create_timer(0.1).timeout
+	modulate -= Color(1, 0, 0, 1)

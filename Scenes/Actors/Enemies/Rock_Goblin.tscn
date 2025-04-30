@@ -1,10 +1,11 @@
-[gd_scene load_steps=6 format=3 uid="uid://w2pw765x6aql"]
+[gd_scene load_steps=7 format=3 uid="uid://w2pw765x6aql"]
 
 [ext_resource type="Script" uid="uid://vuorsbcgd6yy" path="res://Scripts/Actors/Enemies/rock_goblin.gd" id="1_kcf3v"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_nn6wd"]
-[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standandized_Capsule.tres" id="2_cbwjt"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="2_cbwjt"]
 [ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="4_jrs23"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="5_oyvnn"]
+[ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="6_mss5r"]
 
 [node name="Rock Goblin" type="CharacterBody2D"]
 collision_layer = 8
@@ -16,11 +17,11 @@ scale = Vector2(16, 16)
 shape = ExtResource("1_nn6wd")
 
 [node name="Sight_Area" type="Area2D" parent="."]
-collision_layer = 8
+position = Vector2(-63, -46)
+collision_layer = 0
+monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sight_Area"]
-position = Vector2(-63, -46)
-rotation = 1.5708
 shape = ExtResource("2_cbwjt")
 debug_color = Color(0.234089, 0.629159, 0.300647, 0.42)
 
@@ -38,10 +39,17 @@ texture = ExtResource("4_jrs23")
 scale = Vector2(16, 16)
 collision_mask = 2560
 parent = NodePath("../..")
-invincibility_time = 0.5
+invincibility_time = 0.2
 
 [node name="Coll" type="CollisionShape2D" parent="DamageBoxes/Hurtbox"]
 shape = ExtResource("1_nn6wd")
 
+[node name="HealthManager" type="Node" parent="."]
+script = ExtResource("6_mss5r")
+max_health = 4.0
+metadata/_custom_type_script = "uid://d4da8yc41448k"
+
 [connection signal="body_entered" from="Sight_Area" to="." method="_player_entered_sight_area"]
 [connection signal="body_exited" from="Sight_Area" to="." method="_player_exited_sight_area"]
+[connection signal="took_damage" from="DamageBoxes/Hurtbox" to="HealthManager" method="lose_health"]
+[connection signal="ran_out" from="HealthManager" to="." method="ran_out_of_health"]

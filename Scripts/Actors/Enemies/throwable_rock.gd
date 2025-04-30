@@ -17,7 +17,7 @@ func throw(position_target : Vector2) -> void:
 		yMax = yf - 30
 	else:
 		yMax = y0 - 30
-	var vy = sqrt(2*g*abs(yMax))
+	var vy = sqrt(2*g*abs(yMax-y0))
 	var t1 = vy/g
 	var t2 = sqrt(2*(yf-yMax)/g)
 	var vx = (xf-x0)/(t1+t2)
