@@ -114,15 +114,15 @@ func _physics_process(delta: float) -> void:
 	shoot_direction.x *= facing_direction
 	dodge_direction.x *= facing_direction
 	
-	if Input.is_action_just_pressed("dodge"):
-		dodge_roll()
+	#if Input.is_action_just_pressed("dodge"):
+		#dodge_roll()
 	velocity = v_component.get_total_velocity()
 	move_and_slide()
 
-func dodge_roll():
-	move_speed += 200
-	await get_tree().create_timer(0.2).timeout
-	move_speed -= 200
+#func dodge_roll():
+	#v_component.set_knockback_velocity(dodge_direction * 100)
+	#await get_tree().create_timer(0.2).timeout
+	#v_component.set_knockback_velocity(Vector2.ZERO)
 
 
 func jump(multiplier : float = 1) -> void:

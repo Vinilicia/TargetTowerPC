@@ -1,10 +1,11 @@
 extends CharacterBody2D
 
 @export_enum("Esquerda", "Direita") var direction: int
+@export var sight_area_scale : Vector2 = Vector2(320, 150)
 
 @onready var rock = load("res://Scenes/Actors/Enemies/Throwable_rock.tscn")
 @onready var sight_area := $Sight_Area/CollisionShape2D as CollisionShape2D
-@onready var rock_spawner = $Rock_Spawner as Marker2D
+@onready var rock_spawner = $RockSpawner as Marker2D
 
 var player_is_nearby : bool = false
 var player_target : CharacterBody2D
@@ -12,10 +13,12 @@ var timer_off : bool = true
 var angle : float
 
 func _ready() -> void:
+	sight_area.scale = sight_area_scale
+	
 	if direction == 0:
-		direction = -1;
+		direction = -1
 	else:
-		direction = 1;
+		direction = 1
 		
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
@@ -37,9 +40,10 @@ func _physics_process(delta: float) -> void:
 func _throw_rock() -> void:
 	timer_off = false
 	var instance = rock.instantiate()
-	get_parent().call_deferred("add_child", instance)
+	call_deferred("add_child", instance)
+	instance.top_level = true
 	instance.global_position = rock_spawner.global_position
-	instance.throw(player_target.position)
+	instance.call_deferred("throw", player_target.position)
 	await get_tree().create_timer(2).timeout
 	timer_off = true
 	

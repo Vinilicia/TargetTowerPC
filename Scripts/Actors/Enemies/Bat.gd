@@ -248,15 +248,12 @@ var speed_before_flinch : float
 		#flinch_timer.stop()
 
 func _took_damage(amount: float) -> void:
-	print("The bat took ", amount, " damage!")
-	
-	
-	#flinch()
+	#print("The bat took ", amount, " damage!")
+	pass
 
 func _ran_out_of_health() -> void:
 	stop(0.1)
 	call_deferred("free")
-
 
 func _hurtbox_got_knocked(knockback_vector: Vector2) -> void:
 	pass

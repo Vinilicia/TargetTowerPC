@@ -19,7 +19,7 @@ height = 104.378
 
 [node name="Normal Goblin" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 23
+collision_mask = 22
 script = ExtResource("1_lcxwn")
 
 [node name="coll" type="CollisionShape2D" parent="."]

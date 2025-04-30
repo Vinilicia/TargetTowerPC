@@ -1,13 +1,14 @@
-[gd_scene load_steps=5 format=3 uid="uid://w2pw765x6aql"]
+[gd_scene load_steps=6 format=3 uid="uid://w2pw765x6aql"]
 
 [ext_resource type="Script" uid="uid://vuorsbcgd6yy" path="res://Scripts/Actors/Enemies/rock_goblin.gd" id="1_kcf3v"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_nn6wd"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standandized_Capsule.tres" id="2_cbwjt"]
 [ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="4_jrs23"]
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="5_oyvnn"]
 
 [node name="Rock Goblin" type="CharacterBody2D"]
 collision_layer = 8
-collision_mask = 23
+collision_mask = 20
 script = ExtResource("1_kcf3v")
 
 [node name="coll" type="CollisionShape2D" parent="."]
@@ -18,18 +19,27 @@ shape = ExtResource("1_nn6wd")
 collision_layer = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Sight_Area"]
-position = Vector2(-99, -19)
-scale = Vector2(120, 20)
 shape = ExtResource("2_cbwjt")
 debug_color = Color(0.234089, 0.629159, 0.300647, 0.42)
 
-[node name="Rock_Spawner" type="Marker2D" parent="."]
+[node name="RockSpawner" type="Marker2D" parent="."]
 position = Vector2(0, -10)
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.47451, 0.454902, 0, 1)
 scale = Vector2(0.12, 0.12)
 texture = ExtResource("4_jrs23")
+
+[node name="DamageBoxes" type="Node2D" parent="."]
+
+[node name="Hurtbox" parent="DamageBoxes" node_paths=PackedStringArray("parent") instance=ExtResource("5_oyvnn")]
+scale = Vector2(16, 16)
+collision_mask = 2560
+parent = NodePath("../..")
+invincibility_time = 0.5
+
+[node name="Coll" type="CollisionShape2D" parent="DamageBoxes/Hurtbox"]
+shape = ExtResource("1_nn6wd")
 
 [connection signal="body_entered" from="Sight_Area" to="." method="_player_entered_sight_area"]
 [connection signal="body_exited" from="Sight_Area" to="." method="_player_exited_sight_area"]
