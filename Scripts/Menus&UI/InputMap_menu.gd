@@ -18,9 +18,10 @@ var input_actions = {
 	"down": "Down",
 	"left": "Left",
 	"right": "Right",
+	"angle up": "Angle Up",
+	"angle down": "Angle Down",
 	"shoot": "Shoot",
-	"switch arrow": "Switch Arrow",
-	"map": "Map"
+	"jump": "Jump",
 }
 
 var forbidden_keys = [

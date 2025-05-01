@@ -172,7 +172,7 @@ scale = Vector2(0.063, 0.063)
 
 [node name="Sight_Area" type="Area2D" parent="Behavior_Changing"]
 position = Vector2(72, 0)
-scale = Vector2(300, 200)
+scale = Vector2(260, 170)
 collision_layer = 0
 
 [node name="Sight_Area_Collision" type="CollisionShape2D" parent="Behavior_Changing/Sight_Area"]
@@ -180,8 +180,8 @@ shape = ExtResource("6_mpjdf")
 debug_color = Color(0, 1, 0.34902, 0.419608)
 
 [node name="Dash_Attack_Area" type="Area2D" parent="Behavior_Changing"]
-position = Vector2(30, 0)
-scale = Vector2(60, 45)
+position = Vector2(25, 0)
+scale = Vector2(50, 40)
 collision_layer = 0
 monitorable = false
 
@@ -240,7 +240,7 @@ debug_enabled = true
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.490196, 0, 0.572549, 1)
-scale = Vector2(0.01, 0.01)
+scale = Vector2(0.006, 0.006)
 texture = ExtResource("12_4cx4r")
 
 [connection signal="lost_health" from="HealthManager" to="." method="_took_damage"]
