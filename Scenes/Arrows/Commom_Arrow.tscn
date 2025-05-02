@@ -42,7 +42,6 @@ scale = Vector2(4, 2)
 collision_layer = 512
 parent = NodePath("..")
 Damage = 1.0
-Knockback_force = 40.0
 
 [node name="Coll" type="CollisionShape2D" parent="Hitbox"]
 shape = ExtResource("3_8wux4")

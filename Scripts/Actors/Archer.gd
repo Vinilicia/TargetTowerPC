@@ -237,3 +237,8 @@ func _on_health_lost_health(_amount: float) -> void:
 	modulate = Color(1, 0, 0, 1)
 	await get_tree().create_timer(0.3).timeout
 	modulate = Color(1, 1, 1, 1)
+#
+#func _on_hurtbox_got_knocked(knockback_vector: Vector2) -> void:
+	#if sign(knockback_vector.x) == facing_direction:
+		#knockback_vector.x *= -1
+	#v_component.add_knockback_velocity(knockback_vector)

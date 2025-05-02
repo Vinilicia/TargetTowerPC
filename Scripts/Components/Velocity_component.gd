@@ -1,10 +1,21 @@
 extends Node
 class_name VelocityComponent
 
+@export var knockback_susceptability : int
+
 var proper_velocity : Vector2
 var knockback_velocity : Vector2
 var ground_velocity : Vector2
 var wind_velocity : Vector2
+
+signal knockback_changed
+func _physics_process(delta: float) -> void:
+	if knockback_velocity != Vector2.ZERO:
+		var reduction := knockback_velocity.length() / knockback_susceptability
+		if reduction < 10:
+			reduction = min(10, knockback_velocity.length())
+		var reduction_vector : Vector2 = knockback_velocity.normalized() * reduction
+		knockback_velocity -= reduction_vector
 
 func set_proper_velocity(value, axis : int = -1) -> void:
 	if value is Vector2:
@@ -20,6 +31,7 @@ func set_knockback_velocity(value) -> void:
 		knockback_velocity = value
 	elif value is float:
 		knockback_velocity *= value
+	emit_signal("knockback_changed")
 
 func set_ground_velocity(value) -> void:
 	if value is Vector2:
@@ -38,6 +50,7 @@ func add_proper_velocity(value : Vector2) -> void:
 
 func add_knockback_velocity(value : Vector2) -> void:
 	knockback_velocity += value
+	emit_signal("knockback_changed")
 
 func add_ground_velocity(value : Vector2) -> void:
 	ground_velocity += value
