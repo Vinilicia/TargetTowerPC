@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ev1c8jc3dq42"]
+[gd_scene load_steps=13 format=3 uid="uid://ev1c8jc3dq42"]
 
 [ext_resource type="Script" uid="uid://du36t4pvcn4ic" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_26aeq"]
 [ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
 [ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Archer.tscn" id="9_26aeq"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
 [ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component")]
@@ -30,12 +31,13 @@ jump_buffering_time = 0.1
 air_stall_velocity = 40.0
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
+[node name="Archer" parent="." instance=ExtResource("9_26aeq")]
+position = Vector2(-28, -28)
+offset = Vector2(22, 18)
+region_rect = Rect2(65, 86, 15, 20)
+
 [node name="VelocityComponent" parent="." instance=ExtResource("2_8nfcn")]
 knockback_susceptability = 6
-
-[node name="Coll" type="CollisionShape2D" parent="."]
-scale = Vector2(12, 18)
-shape = ExtResource("4_26aeq")
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("4_r6772")
@@ -103,21 +105,20 @@ event = &"CanShoot"
 
 [node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
 visible = false
+scale = Vector2(12, 19)
 collision_mask = 3072
 parent = NodePath("..")
 
 [node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
-scale = Vector2(12, 18)
-shape = ExtResource("4_26aeq")
+shape = ExtResource("11_cdutm")
 
 [node name="Remote" type="RemoteTransform2D" parent="."]
 update_rotation = false
 update_scale = false
 
-[node name="Archer" parent="." instance=ExtResource("9_26aeq")]
-position = Vector2(-28, -28)
-offset = Vector2(22, 18)
-region_rect = Rect2(65, 86, 15, 20)
+[node name="Coll" type="CollisionShape2D" parent="."]
+scale = Vector2(10, 18)
+shape = ExtResource("4_26aeq")
 
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(2, 2)
