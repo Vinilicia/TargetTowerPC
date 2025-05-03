@@ -21,8 +21,9 @@ class_name Player
 @export var jump_force : float
 @export var default_knockback : Vector2 = Vector2(170, 0)
 @export var gravity_multiplier : float
-@export var jump_buffering_time : float
+@export var jump_queuing_time : float
 @export var air_stall_velocity : float
+@export var coyote_time_timer : float
  
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var can_shoot : bool = true
@@ -37,6 +38,9 @@ var shoot_direction : Vector2
 var update_flying_dir : bool = false
 var count_hold_time : bool = false
 var dodge_direction : Vector2
+var coyote_time : bool = false
+var jump_queued : bool = false
+var jumping : bool = false
 
 @export_category("Para debugar")
 @export_range(0 , 8) var initial_arrow_index : int
@@ -56,21 +60,6 @@ func _physics_process(delta: float) -> void:
 		count_hold_time = false
 		is_holding = false
 	
-	shoot_direction = Vector2(1, 0)
-	if Input.is_action_pressed("down"):
-		if !is_on_floor():
-			shoot_direction = Vector2(0, 1)
-	if Input.is_action_pressed("up"):
-		shoot_direction = Vector2(0, -1)
-	if Input.is_action_pressed("angle down"):
-		shoot_direction = Vector2(1, 1)
-	if Input.is_action_pressed("angle up"):
-		shoot_direction = Vector2(1, -1)
-	shoot_direction.x *= facing_direction
-	
-	if update_flying_dir:
-		current_arrow.set_flying_direction(shoot_direction)
-	
 	if !is_on_floor():
 		v_component.add_proper_velocity(Vector2(0, get_current_gravity(velocity.y)  * delta))
 		if velocity.y >= 0:
@@ -78,15 +67,9 @@ func _physics_process(delta: float) -> void:
 		else:
 			state_chart.send_event("Rising")
 	
-	if is_on_floor():
-		state_chart.send_event("Grounded")
-		v_component.set_proper_velocity(0.0, 2)
-	if Input.is_action_just_pressed("jump") and is_on_floor():
+	if Input.is_action_just_pressed("jump") and (is_on_floor() or coyote_time):
 		jump()
-	if Input.is_action_just_released("jump") and velocity.y < 0:
-		var decrement_yspeed = -(v_component.get_proper_velocity(2) * 0.75) 
-		v_component.add_proper_velocity(Vector2(0, decrement_yspeed))
-		
+	
 	v_component.set_proper_velocity(0.0, 1)
 	var dir : int = int(Input.get_axis("left", "right"))
 	if dir:
@@ -115,7 +98,10 @@ func _physics_process(delta: float) -> void:
 	
 	#if Input.is_action_just_pressed("dodge"):
 		#dodge_roll()
+	if update_flying_dir:
+		current_arrow.set_flying_direction(shoot_direction)
 	velocity = v_component.get_total_velocity()
+	corner_correction(7, delta)
 	move_and_slide()
 
 #func dodge_roll():
@@ -123,9 +109,9 @@ func _physics_process(delta: float) -> void:
 	#await get_tree().create_timer(0.2).timeout
 	#v_component.set_knockback_velocity(Vector2.ZERO)
 
-
 func jump(multiplier : float = 1) -> void:
 	v_component.set_proper_velocity(jump_force * multiplier, 2)
+	state_chart.send_event("Rising")
 
 func move(facing_dir : int) -> void:
 	v_component.add_proper_velocity(Vector2(move_speed * facing_dir, 0))
@@ -165,6 +151,9 @@ func _falling_state_entered() -> void:
 
 func _grounded_to_falling_taken() -> void:
 	anim.stop()
+	coyote_time = true
+	await get_tree().create_timer(coyote_time_timer).timeout
+	coyote_time = false
 
 func _falling_to_grounded_taken() -> void:
 	anim.play("Landing")
@@ -179,13 +168,30 @@ func _grounded_physics_processing(delta: float) -> void:
 			anim.queue("Run")
 
 func _rising_state_entered() -> void:
+	jumping = true
 	anim.clear_queue()
 	anim.play("Jump")
 
 func _rising_physics_processing(delta: float) -> void:
-	if is_on_ceiling():
-		var decrement_yspeed = -(v_component.get_proper_velocity(2) * 0.2)
+	if !Input.is_action_pressed("jump") and jumping:
+		jumping = false
+		var decrement_yspeed = -(v_component.get_proper_velocity(2) * 0.75) 
 		v_component.add_proper_velocity(Vector2(0, decrement_yspeed))
+	if is_on_ceiling():
+		var decrement_yspeed = -(v_component.get_proper_velocity(2) * 0.5)
+		v_component.add_proper_velocity(Vector2(0, decrement_yspeed))
+
+func corner_correction(amount: int, delta: float) -> void:
+	if !is_on_ceiling():
+		if velocity.y < 0 and test_move(global_transform, Vector2(0, velocity.y * delta)):
+			var step := 0.5
+			for i in range(1, int(amount / step) + 1):
+				var offset_x := i * step * facing_direction
+				if !test_move(global_transform.translated(Vector2(offset_x, 0)), Vector2(0, velocity.y * delta)):
+					translate(Vector2(offset_x, 0))
+					if velocity.x * facing_direction < 0:
+						velocity.x = 0
+					break
 
 func hold_arrow() -> void:
 	update_flying_dir = true
@@ -237,3 +243,22 @@ func _on_health_lost_health(_amount: float) -> void:
 	modulate = Color(1, 0, 0, 1)
 	await get_tree().create_timer(0.3).timeout
 	modulate = Color(1, 1, 1, 1)
+#
+#func _on_hurtbox_got_knocked(knockback_vector: Vector2) -> void:
+	#if sign(knockback_vector.x) == facing_direction:
+		#knockback_vector.x *= -1
+	#v_component.add_knockback_velocity(knockback_vector)
+
+func _falling_state_processing(delta: float) -> void:
+	if is_on_floor():
+		state_chart.send_event("Grounded")
+	if Input.is_action_just_pressed("jump"):
+		jump_queued = true
+		await get_tree().create_timer(jump_queuing_time).timeout
+		jump_queued = false
+
+func _grounded_state_entered() -> void:
+	if jump_queued:
+		jump()
+	else:
+		v_component.set_proper_velocity(0.0, 2)

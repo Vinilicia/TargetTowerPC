@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://ev1c8jc3dq42"]
+[gd_scene load_steps=13 format=3 uid="uid://ev1c8jc3dq42"]
 
 [ext_resource type="Script" uid="uid://du36t4pvcn4ic" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_26aeq"]
 [ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
 [ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Archer.tscn" id="9_26aeq"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
 [ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component")]
@@ -17,7 +18,7 @@ collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("StateChart")
 camera_distance = 60.0
-camera_move_duration = 1.5
+camera_move_duration = 1.0
 camera_remote = NodePath("Remote")
 arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4"])
 max_hold_time = 1.5
@@ -26,15 +27,13 @@ v_component = NodePath("VelocityComponent")
 move_speed = 120.0
 jump_force = -340.0
 gravity_multiplier = 1.2
-jump_buffering_time = 0.1
+jump_queuing_time = 0.1
 air_stall_velocity = 40.0
+coyote_time_timer = 0.07
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
 [node name="VelocityComponent" parent="." instance=ExtResource("2_8nfcn")]
-
-[node name="Coll" type="CollisionShape2D" parent="."]
-scale = Vector2(12, 18)
-shape = ExtResource("4_26aeq")
+knockback_susceptability = 6
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("4_r6772")
@@ -80,6 +79,11 @@ script = ExtResource("9_12lv1")
 to = NodePath("../../../Grounded")
 event = &"Grounded"
 
+[node name="ToRising" type="Node" parent="StateChart/Root/Memes/Airborne/Falling"]
+script = ExtResource("9_12lv1")
+to = NodePath("../../Rising")
+event = &"Rising"
+
 [node name="Shooting" type="Node" parent="StateChart/Root"]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("CanShoot")
@@ -100,31 +104,37 @@ script = ExtResource("9_12lv1")
 to = NodePath("../../CanShoot")
 event = &"CanShoot"
 
-[node name="Hurtbox" parent="." instance=ExtResource("8_26aeq")]
+[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
 visible = false
+scale = Vector2(12, 19)
 collision_mask = 3072
+parent = NodePath("..")
 
 [node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
-scale = Vector2(12, 18)
-shape = ExtResource("4_26aeq")
+shape = ExtResource("11_cdutm")
 
 [node name="Remote" type="RemoteTransform2D" parent="."]
 update_rotation = false
 update_scale = false
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+scale = Vector2(10, 18)
+shape = ExtResource("4_26aeq")
+
+[node name="Marker2D" type="Marker2D" parent="."]
+position = Vector2(2, 2)
 
 [node name="Archer" parent="." instance=ExtResource("9_26aeq")]
 position = Vector2(-28, -28)
 offset = Vector2(22, 18)
 region_rect = Rect2(65, 86, 15, 20)
 
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(2, 2)
-
 [node name="HealthManager" type="Node" parent="."]
 script = ExtResource("11_jfvij")
 max_health = 20.0
 metadata/_custom_type_script = "uid://d4da8yc41448k"
 
+[connection signal="state_entered" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_physics_processing"]
 [connection signal="taken" from="StateChart/Root/Memes/Grounded/ToFalling" to="." method="_grounded_to_falling_taken"]
 [connection signal="taken" from="StateChart/Root/Memes/Grounded/ToRising" to="." method="_grounded_to_rising_taken"]
@@ -132,6 +142,7 @@ metadata/_custom_type_script = "uid://d4da8yc41448k"
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_physics_processing"]
 [connection signal="taken" from="StateChart/Root/Memes/Airborne/Rising/ToFalling" to="." method="_rising_to_falling_taken"]
 [connection signal="state_entered" from="StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_processing"]
 [connection signal="taken" from="StateChart/Root/Memes/Airborne/Falling/ToGrounded" to="." method="_falling_to_grounded_taken"]
 [connection signal="state_entered" from="StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_physics_processing"]

@@ -4,3 +4,5 @@
 
 [node name="VelocityComponent" type="Node"]
 script = ExtResource("1_m4b4b")
+
+[connection signal="knockback_changed" from="." to="." method="_on_knockback_changed"]

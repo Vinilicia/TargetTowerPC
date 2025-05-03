@@ -2,31 +2,32 @@ extends CharacterBody2D
 
 @onready var state_chart = $StateChart as StateChart
 
-@export_category("Nodes")
+@export_group("Nodes")
 @export var chasing_timer : Timer
 @export var giving_up_timer : Timer
 @export var flinch_timer : Timer
 @export var line_of_sight : RayCast2D
+@export var wall_detector : RayCast2D
 @export var navigator : NavigationAgent2D
 @export var dash_area : Area2D
 @export var contact_hitbox : Hitbox
 
-@export_category("Behaviourial")
-@export_group("Idle")
+@export_group("Behaviourial")
+@export_subgroup("Idle")
 @export var idle_flying_speed : float
 @export var idle_movement_angle : float
 @export var idle_moving_distance : float
 @export var idle_stopping_delay : float
 @export var idle_tolerance : int
 
-@export_group("Chase")
+@export_subgroup("Chase")
 @export var chase_flying_speed : float
 @export var starting_give_up_delay : float
 @export var chasing_give_up_delay : float
 
-@export_group("Attacks")
+@export_subgroup("Attacks")
 @export var dash_speed : float
-@export var dash_duration : float
+@export var dash_distance : float
 @export var dash_delay : float
 @export var dash_hitbox_increase : float
 
@@ -204,16 +205,21 @@ func _dash_area_body_entered(_body: Node2D) -> void:
 func _preparing_state_entered() -> void:
 	stop(0.1)
 	contact_hitbox.scale *= dash_hitbox_increase
+	wall_detector.target_position = facing_direction * Vector2(dash_distance, 0)
 	await get_tree().create_timer(dash_delay).timeout
 	dash_area.monitoring = false
 	state_chart.send_event("Prepared_Attack")
-
 
 var attack_pos
 
 func _internal_attacking_state_entered() -> void:
 	current_speed = dash_speed
-	attack_pos = global_position + facing_direction * Vector2(80 , 0)
+	var vec = facing_direction * Vector2(dash_distance, 0)
+	var wall_detec_point : Vector2 = wall_detector.get_collision_point()
+	if wall_detector.is_colliding():
+		attack_pos = wall_detec_point
+	else:
+		attack_pos = global_position + vec
 	move_to(attack_pos)
 
 
@@ -226,11 +232,10 @@ func _internal_attack_physics_processing(_delta: float) -> void:
 
 func _recovering_state_entered() -> void:
 	contact_hitbox.scale *= (1 / dash_hitbox_increase)
+	wall_detector.target_position = Vector2.ZERO
 	await get_tree().create_timer(dash_delay * 3).timeout
 	dash_area.monitoring = true
 	state_chart.send_event("Recovered")
-
-var speed_before_flinch : float
 
 #func flinch() -> void:
 	#if speed_before_flinch == 0:

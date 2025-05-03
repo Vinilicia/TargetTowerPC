@@ -41,7 +41,7 @@ func _physics_process(delta: float) -> void:
 func _throw_rock() -> void:
 	timer_off = false
 	var instance = rock.instantiate()
-	call_deferred("add_child", instance)
+	get_parent().call_deferred("add_child", instance)
 	instance.top_level = true
 	instance.global_position = rock_spawner.global_position
 	instance.call_deferred("throw", player_target.position)
