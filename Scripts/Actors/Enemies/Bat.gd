@@ -217,8 +217,7 @@ func _internal_attacking_state_entered() -> void:
 	var vec = facing_direction * Vector2(dash_distance, 0)
 	var wall_detec_point : Vector2 = wall_detector.get_collision_point()
 	if wall_detector.is_colliding():
-		print("B")
-		attack_pos = wall_detector.get_collision_point()
+		attack_pos = wall_detec_point
 	else:
 		attack_pos = global_position + vec
 	move_to(attack_pos)

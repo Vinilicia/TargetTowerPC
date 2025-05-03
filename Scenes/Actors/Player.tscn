@@ -27,14 +27,10 @@ v_component = NodePath("VelocityComponent")
 move_speed = 120.0
 jump_force = -340.0
 gravity_multiplier = 1.2
-jump_buffering_time = 0.1
+jump_queuing_time = 0.1
 air_stall_velocity = 40.0
+coyote_time_timer = 0.07
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
-
-[node name="Archer" parent="." instance=ExtResource("9_26aeq")]
-position = Vector2(-28, -28)
-offset = Vector2(22, 18)
-region_rect = Rect2(65, 86, 15, 20)
 
 [node name="VelocityComponent" parent="." instance=ExtResource("2_8nfcn")]
 knockback_susceptability = 6
@@ -83,6 +79,11 @@ script = ExtResource("9_12lv1")
 to = NodePath("../../../Grounded")
 event = &"Grounded"
 
+[node name="ToRising" type="Node" parent="StateChart/Root/Memes/Airborne/Falling"]
+script = ExtResource("9_12lv1")
+to = NodePath("../../Rising")
+event = &"Rising"
+
 [node name="Shooting" type="Node" parent="StateChart/Root"]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("CanShoot")
@@ -123,11 +124,17 @@ shape = ExtResource("4_26aeq")
 [node name="Marker2D" type="Marker2D" parent="."]
 position = Vector2(2, 2)
 
+[node name="Archer" parent="." instance=ExtResource("9_26aeq")]
+position = Vector2(-28, -28)
+offset = Vector2(22, 18)
+region_rect = Rect2(65, 86, 15, 20)
+
 [node name="HealthManager" type="Node" parent="."]
 script = ExtResource("11_jfvij")
 max_health = 20.0
 metadata/_custom_type_script = "uid://d4da8yc41448k"
 
+[connection signal="state_entered" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_physics_processing"]
 [connection signal="taken" from="StateChart/Root/Memes/Grounded/ToFalling" to="." method="_grounded_to_falling_taken"]
 [connection signal="taken" from="StateChart/Root/Memes/Grounded/ToRising" to="." method="_grounded_to_rising_taken"]
@@ -135,6 +142,7 @@ metadata/_custom_type_script = "uid://d4da8yc41448k"
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_physics_processing"]
 [connection signal="taken" from="StateChart/Root/Memes/Airborne/Rising/ToFalling" to="." method="_rising_to_falling_taken"]
 [connection signal="state_entered" from="StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_processing"]
 [connection signal="taken" from="StateChart/Root/Memes/Airborne/Falling/ToGrounded" to="." method="_falling_to_grounded_taken"]
 [connection signal="state_entered" from="StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_physics_processing"]

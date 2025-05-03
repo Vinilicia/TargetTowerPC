@@ -1,0 +1,36 @@
+[gd_scene load_steps=5 format=3 uid="uid://dnfcq0yact58d"]
+
+[ext_resource type="Texture2D" uid="uid://cxi3jf6t355qy" path="res://Assets/Home_bred/Mechanisms/Targets/RedTarget.png" id="1_l172j"]
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_06ovt"]
+atlas = ExtResource("1_l172j")
+region = Rect2(15, 0, 15, 16)
+margin = Rect2(1, 0, 1, 0)
+
+[sub_resource type="AtlasTexture" id="AtlasTexture_gef2q"]
+atlas = ExtResource("1_l172j")
+region = Rect2(0, 0, 15, 16)
+margin = Rect2(1, 0, 1, 0)
+
+[sub_resource type="SpriteFrames" id="SpriteFrames_y76en"]
+animations = [{
+"frames": [{
+"duration": 0.1,
+"texture": SubResource("AtlasTexture_06ovt")
+}],
+"loop": false,
+"name": &"Not Shining",
+"speed": 1.0
+}, {
+"frames": [{
+"duration": 0.1,
+"texture": SubResource("AtlasTexture_gef2q")
+}],
+"loop": false,
+"name": &"Shining",
+"speed": 1.0
+}]
+
+[node name="RedTargetSprite" type="AnimatedSprite2D"]
+sprite_frames = SubResource("SpriteFrames_y76en")
+animation = &"Shining"

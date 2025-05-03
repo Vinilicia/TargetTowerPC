@@ -1,0 +1,16 @@
+[gd_scene load_steps=3 format=3 uid="uid://c17srlbk1bg00"]
+
+[ext_resource type="Script" uid="uid://mvdf7kj1yhpl" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/Blue_button.gd" id="1_toau0"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="3_h85dg"]
+
+[node name="BlueTarget" type="Area2D"]
+collision_layer = 0
+collision_mask = 2
+script = ExtResource("1_toau0")
+Pressed_time = null
+
+[node name="Collision" type="CollisionShape2D" parent="."]
+scale = Vector2(8, 14)
+shape = ExtResource("3_h85dg")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
