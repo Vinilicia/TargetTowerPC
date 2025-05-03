@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dap7boltqh7h0"
-path="res://.godot/imported/chao.aseprite-ff4c037e1671239e0ef469f13f181454.ctex"
+uid="uid://d0ol5rgv83vhi"
+path="res://.godot/imported/joint-platform.aseprite-5ca3cd8fdcb610b5d12cfaf34a28d702.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Home_bred/Tilemap/chao.aseprite"
-dest_files=["res://.godot/imported/chao.aseprite-ff4c037e1671239e0ef469f13f181454.ctex"]
+source_file="res://Assets/Home_bred/Mechanisms/Blocks/joint-platform.aseprite"
+dest_files=["res://.godot/imported/joint-platform.aseprite-5ca3cd8fdcb610b5d12cfaf34a28d702.ctex"]
 
 [params]
 
