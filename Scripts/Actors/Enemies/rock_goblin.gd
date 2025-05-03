@@ -1,6 +1,6 @@
 extends CharacterBody2D
 
-@export_enum("Esquerda", "Direita") var direction : int
+@export_enum("Left", "Right") var direction : int
 @export var sight_area_scale : Vector2 = Vector2(320, 150)
 
 @onready var rock = load("res://Scenes/Actors/Enemies/Throwable_rock.tscn")
