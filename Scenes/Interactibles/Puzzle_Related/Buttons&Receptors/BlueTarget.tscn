@@ -7,7 +7,6 @@
 collision_layer = 0
 collision_mask = 2
 script = ExtResource("1_toau0")
-Pressed_time = null
 
 [node name="Collision" type="CollisionShape2D" parent="."]
 scale = Vector2(8, 14)

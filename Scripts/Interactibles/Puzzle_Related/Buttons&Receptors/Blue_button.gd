@@ -14,7 +14,6 @@ func _on_body_entered(body):
 	emit_signal("Is_Pressed")
 	coll.set_deferred("disabled", true)
 	create_timer()
-	anim.play("Not Shining")
 
 func create_timer() -> void:
 	timer = Timer.new()
