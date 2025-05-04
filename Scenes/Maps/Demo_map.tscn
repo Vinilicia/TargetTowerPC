@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://bi7ajwk42n3cg" path="res://Scenes/Levels/level.gd" id="1_uc4dq"]
 [ext_resource type="Texture2D" uid="uid://da58dobtmu48v" path="res://Assets/Home_bred/Tilemap/area-inicial.aseprite" id="3_tgyxi"]
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Maps/Camera.tscn" id="3_va085"]
-[ext_resource type="Texture2D" uid="uid://dap7boltqh7h0" path="res://Assets/Home_bred/Tilemap/chao.aseprite" id="4_cv115"]
+[ext_resource type="Texture2D" uid="uid://d1hvuiyfkjgb0" path="res://Assets/Home_bred/Tilemap/chao.aseprite" id="4_cv115"]
 [ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="4_m2u3u"]
 [ext_resource type="PackedScene" uid="uid://bhvt3jevmwiq7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="7_qomuu"]
 [ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Options_Menu.tscn" id="8_dx1k0"]
@@ -1938,7 +1938,7 @@ process_mode = 3
 visible = false
 
 [node name="Player" parent="." instance=ExtResource("8_pjtoa")]
-position = Vector2(205, -843)
+position = Vector2(12, 49)
 
 [node name="Enemies" type="Node2D" parent="."]
 
