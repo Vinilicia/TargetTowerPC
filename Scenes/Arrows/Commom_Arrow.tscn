@@ -2,7 +2,7 @@
 
 [ext_resource type="Script" uid="uid://cdxa4sa0e3u2o" path="res://Scripts/Arrows/Commom_Arrow.gd" id="1_g5uwg"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="1_jx316"]
-[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="3_8wux4"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="3_3qgj2"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="3_wms8w"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="5_2so76"]
 
@@ -27,22 +27,21 @@ texture = ExtResource("1_jx316")
 [node name="Anim_Player" type="AnimationPlayer" parent="."]
 
 [node name="Coll" type="CollisionShape2D" parent="."]
-position = Vector2(5, -0.5)
-scale = Vector2(4, 2)
-shape = ExtResource("3_8wux4")
+position = Vector2(3.5, -0.5)
+scale = Vector2(6, 5)
+shape = ExtResource("3_3qgj2")
 
 [node name="Arrow_Trail" parent="." instance=ExtResource("3_wms8w")]
 process_mode = 4
 gradient = SubResource("Gradient_rhvf2")
 
 [node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_2so76")]
-visible = false
-position = Vector2(5, -0.5)
-scale = Vector2(4, 2)
+position = Vector2(2, -0.5)
+scale = Vector2(18, 7)
 collision_layer = 512
 parent = NodePath("..")
 Damage = 1.0
 
 [node name="Coll" type="CollisionShape2D" parent="Hitbox"]
-shape = ExtResource("3_8wux4")
+shape = ExtResource("3_3qgj2")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)

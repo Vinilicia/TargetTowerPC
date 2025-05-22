@@ -8,17 +8,14 @@ extends CharacterBody2D
 @export var flinch_timer : Timer
 @export var line_of_sight : RayCast2D
 @export var wall_detector : RayCast2D
+@export var ceiling_detector : RayCast2D
 @export var navigator : NavigationAgent2D
 @export var dash_area : Area2D
 @export var contact_hitbox : Hitbox
+@export var v_component : VelocityComponent
 
 @export_group("Behaviourial")
-@export_subgroup("Idle")
-@export var idle_flying_speed : float
-@export var idle_movement_angle : float
-@export var idle_moving_distance : float
-@export var idle_stopping_delay : float
-@export var idle_tolerance : int
+@export var backtracking_speed : float
 
 @export_subgroup("Chase")
 @export var chase_flying_speed : float
@@ -32,16 +29,15 @@ extends CharacterBody2D
 @export var dash_hitbox_increase : float
 
 var current_speed : float
+var current_tolerance : float = 5
 var facing_direction : int = 1
 
-var moving_tween : Tween
 var stopping_tween : Tween
 
+var move_target : Vector2
 var initial_position : Vector2
 var movement_direction : Vector2
-var idle_target_position : Vector2
 var distance_to_target : float
-var last_idle_position : Vector2
 
 var player_is_nearby : bool = false
 var saw_player : bool = false
@@ -65,9 +61,13 @@ func _physics_process(_delta: float) -> void:
 		player_relative_position = player_target.global_position - global_position
 		line_of_sight.target_position = player_relative_position
 		if !saw_player and line_of_sight.get_collider() == player_target:
-			state_chart.send_event("Saw_Player")
+			state_chart.send_event("SawPlayer")
 			saw_player = true
 	
+	if (move_target - global_position).length() < current_tolerance:
+		stop(0.2)
+	
+	velocity = v_component.get_total_velocity()
 	move_and_slide()
 
 #Na função physics_process, como o processo de checar a linha de visão com o player é ligado à variável
@@ -83,64 +83,33 @@ func _player_exited_area(_player: Node2D) -> void:
 
 #region Usadas sempre
 #funções essenciais que podem ser usadas a qualquer momento
-func move_to(pos : Vector2) -> void:
-	if (pos - global_position).length() > 3:
-		var movement_vector = (pos - global_position).normalized()
-		velocity = current_speed * movement_vector
+func move_to(pos : Vector2, tol : float) -> void:
+	move_target = pos
+	current_tolerance = tol
+	var movement_vector = (pos - global_position).normalized()
+	v_component.set_proper_velocity(current_speed * movement_vector)
 
 func turn_around() -> void:
 	facing_direction *= -1
-	for child in $Behavior_Changing.get_children():
+	for child in $BehaviorChanging.get_children():
 		child.position = Vector2(child.position.x * -1, child.position.y)
 
 func stop(duration : float) -> void:
-	if moving_tween:
-		moving_tween.kill()
 	stopping_tween = create_tween()
-	stopping_tween.tween_property(self, "velocity", Vector2.ZERO, duration).set_ease(Tween.EASE_IN)
+	stopping_tween.tween_property(v_component, "proper_velocity", Vector2.ZERO, duration).set_ease(Tween.EASE_IN)
 #endregion
 
-#region Estado Idle
-#Estado Idle possui estados Moving e Stopped
-
-func idle_movement_turn() -> void:
-	var final_angle = deg_to_rad(idle_movement_angle) + PI
-	idle_movement_angle = rad_to_deg(final_angle)
-
-func pick_idle_target_position() -> void:
-	movement_direction = (Vector2.RIGHT.rotated(deg_to_rad(idle_movement_angle)) * idle_moving_distance)
-	idle_target_position = global_position + movement_direction
-	await get_tree().create_timer(idle_stopping_delay).timeout
-	state_chart.send_event("Started_Moving") #Vai pro estado Idle/Moving
-
-func start_idle_moving() -> void:
-	current_speed = 0
-	moving_tween = create_tween()
-	moving_tween.tween_property(self, "current_speed", idle_flying_speed, 1).set_ease(Tween.EASE_IN)
-
-func _moving_physics_processing(_delta: float) -> void:
-	move_to(idle_target_position)
-	distance_to_target = (idle_target_position - global_position).length()
-	if abs(distance_to_target) < idle_tolerance:
-		idle_movement_turn()
-		state_chart.send_event("Arrived") #Vai pro estado Idle/Stopped
-
-func _stopped_state_entered() -> void:
-	stop(1)
-	pick_idle_target_position()
-
-func _idle_state_exited() -> void:
-	last_idle_position = global_position
-#endregion
+func _idle_entered() -> void:
+	stop(0.1)
 
 #region Estado Starting_Chase
 #Existe mais para rodar a lógica do delay antes da perseguição começar
 func _starting_chase_state_entered() -> void:
-	stop(0.5)
 	give_up_time = starting_give_up_delay
 	remaining_time_for_chase = chasing_timer.wait_time
 	chasing_timer.start()
-
+	current_speed = backtracking_speed/2
+	move_to(global_position + Vector2(0, 30), 3)
 
 func _starting_chase_physics_processing(_delta: float) -> void:
 	if line_of_sight.get_collider() != player_target:
@@ -165,6 +134,7 @@ func give_up_chase() -> void:
 #endregion
 
 #region Estado Chasing
+
 func _chasing_state_entered() -> void:
 	current_speed = chase_flying_speed
 	give_up_time = chasing_give_up_delay
@@ -177,21 +147,59 @@ func _chasing_state_physics_processing(_delta : float) -> void:
 		if giving_up_timer.is_stopped():
 			giving_up_timer.start(give_up_time)
 	
-	move_to(chasing_target_position)
+	move_to(chasing_target_position, 10)
 #endregion
 
 #region Estado Backtracking
 
 func _on_backtracking_state_entered() -> void:
 	stop(0.5)
-	current_speed = idle_flying_speed
-	navigator.target_position = last_idle_position
+	current_speed = backtracking_speed
+	var start_angle : float = 155
+	var end_angle : float = 25
+	var step : int = -10
+	var radius : int = 500
+	var best_distance : float = 500
+	var best_point : Vector2
+	var current_distance : float = 500
+	var ceiling_point : bool = false
+	var multiplier : float = 1
+	
+	for angle_deg in range(start_angle, end_angle - 1, step):
+		var angle_rad = deg_to_rad(angle_deg)
+		var direction = Vector2(cos(angle_rad), -sin(angle_rad))
+
+		ceiling_detector.target_position = direction * radius
+		ceiling_detector.force_raycast_update()
+
+		if ceiling_detector.is_colliding():
+			var normal = ceiling_detector.get_collision_normal()
+
+			if normal.dot(Vector2.DOWN) > 0.7:
+				current_distance = (ceiling_detector.get_collision_point() - global_position).length()
+				if current_distance < best_distance:
+					best_distance = current_distance
+					best_point = ceiling_detector.get_collision_point()
+					ceiling_point = true
+			elif abs(normal.dot(Vector2.RIGHT)) > 0.7:
+				multiplier = 1
+				if ceiling_point:
+					multiplier = 1.3
+					current_distance = (ceiling_detector.get_collision_point() - global_position).length() * multiplier
+				if current_distance < best_distance:
+					best_distance = current_distance
+					best_point = ceiling_detector.get_collision_point()
+					ceiling_point = false
+	
+	ceiling_detector.target_position = best_point
+	
+	navigator.target_position = best_point
 
 func _backtracking_physics_processing(_delta: float) -> void:
-	move_to(navigator.get_next_path_position())
+	move_to(navigator.get_next_path_position(), 10)
 
 func _navigator_target_reached() -> void:
-	state_chart.send_event("Got_On_Idling_Spot") #Vai para o estado Idle
+	state_chart.send_event("Got_On_Idling_Spot")
 
 #endregion
 
@@ -218,11 +226,10 @@ func _internal_attacking_state_entered() -> void:
 		attack_pos = wall_detec_point
 	else:
 		attack_pos = global_position + vec
-	move_to(attack_pos)
+	move_to(attack_pos, 10)
 
 
 func _internal_attack_physics_processing(_delta: float) -> void:
-	move_to(attack_pos)
 	if (global_position - attack_pos).length() < 10:
 		stop(0.3)
 		state_chart.send_event("Finished_Attack")

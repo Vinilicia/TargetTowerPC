@@ -104,6 +104,7 @@ func _physics_process(delta: float) -> void:
 		#dodge_roll()
 	if update_flying_dir:
 		current_arrow.set_flying_direction(shoot_direction)
+		current_arrow.position = arrow_spawn_point
 	velocity = v_component.get_total_velocity()
 	corner_correction(7, delta)
 	move_and_slide()
@@ -270,7 +271,7 @@ func _grounded_state_entered() -> void:
 		v_component.set_proper_velocity(0.0, 2)
 
 func _standing_physics_processing(delta: float) -> void:
-	if Input.is_action_pressed("down"):
+	if Input.is_action_pressed("down") and velocity.x == 0:
 		state_chart.set_expression_property("crouching", true)
 		state_chart.send_event("Crouched")
 
@@ -278,10 +279,6 @@ func crouch():
 	move_speed = 0
 	up_col.disabled = true
 	arrow_spawn_point = Vector2(0, 4)
-	if is_holding:
-		for node in get_children():
-			if node is Arrow:
-				node.position = arrow_spawn_point
 
 func _crouched_entered() -> void:
 	crouch()
@@ -294,10 +291,6 @@ func stand() -> void:
 	move_speed = 120.0
 	up_col.disabled = false
 	arrow_spawn_point = Vector2.ZERO
-	if is_holding:
-		for node in get_children():
-			if node is Arrow:
-				node.position = arrow_spawn_point
 
 func _crouched_exited() -> void:
 	move_speed = 120.0

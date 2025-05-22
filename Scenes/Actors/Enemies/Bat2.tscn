@@ -1,0 +1,263 @@
+[gd_scene load_steps=14 format=3 uid="uid://41fkn0141wpc"]
+
+[ext_resource type="Script" uid="uid://5ij1cw084ngu" path="res://Scripts/Actors/Enemies/Bat2.gd" id="1_mfbr2"]
+[ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="2_3frmm"]
+[ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_fe8qe"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_fe8qe"]
+[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="4_2wur5"]
+[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="5_5k3ma"]
+[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="6_abc0m"]
+[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="7_4v10x"]
+[ext_resource type="Script" uid="uid://cvnxhkjma2q88" path="res://addons/godot_state_charts/history_state.gd" id="8_f4mp1"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="9_r0lmx"]
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="10_k1tc8"]
+[ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="11_dchfn"]
+[ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="12_5cfxj"]
+
+[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "flinch_timer", "line_of_sight", "wall_detector", "ceiling_detector", "navigator", "dash_area", "contact_hitbox", "v_component")]
+scale = Vector2(16, 16)
+collision_layer = 8
+collision_mask = 22
+motion_mode = 1
+wall_min_slide_angle = 0.0
+script = ExtResource("1_mfbr2")
+chasing_timer = NodePath("Timers/ChasingTimer")
+giving_up_timer = NodePath("Timers/GivingUpTimer")
+flinch_timer = NodePath("Timers/FlinchTimer")
+line_of_sight = NodePath("BehaviorChanging/LineOfSight")
+wall_detector = NodePath("BehaviorChanging/DashWallDetector")
+ceiling_detector = NodePath("BehaviorChanging/CeilingDetector")
+navigator = NodePath("Navigator")
+dash_area = NodePath("BehaviorChanging/DashAttackArea")
+contact_hitbox = NodePath("DamageBoxes/ContactHitbox")
+v_component = NodePath("VelocityComponent")
+backtracking_speed = 70.0
+chase_flying_speed = 80.0
+starting_give_up_delay = 1.0
+chasing_give_up_delay = 2.0
+dash_speed = 250.0
+dash_distance = 120.0
+dash_delay = 0.3
+dash_hitbox_increase = 1.5
+
+[node name="VelocityComponent" parent="." instance=ExtResource("2_fe8qe")]
+
+[node name="HealthManager" type="Node" parent="."]
+script = ExtResource("2_3frmm")
+max_health = 2.0
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+shape = ExtResource("3_fe8qe")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("4_2wur5")
+
+[node name="State_Tree" type="Node" parent="StateChart"]
+script = ExtResource("5_5k3ma")
+initial_state = NodePath("Idle")
+
+[node name="Idle" type="Node" parent="StateChart/State_Tree"]
+script = ExtResource("6_abc0m")
+
+[node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Idle"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../SeeingPlayer")
+event = &"SawPlayer"
+
+[node name="SeeingPlayer" type="Node" parent="StateChart/State_Tree"]
+script = ExtResource("5_5k3ma")
+initial_state = NodePath("StartingChase")
+
+[node name="StartingChase" type="Node" parent="StateChart/State_Tree/SeeingPlayer"]
+script = ExtResource("6_abc0m")
+
+[node name="ToChasing" type="Node" parent="StateChart/State_Tree/SeeingPlayer/StartingChase"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../Chasing")
+event = &"Started_Chase"
+
+[node name="ToIdle" type="Node" parent="StateChart/State_Tree/SeeingPlayer/StartingChase"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../../Idle")
+event = &"Player_Got_Away"
+
+[node name="Chasing" type="Node" parent="StateChart/State_Tree/SeeingPlayer"]
+script = ExtResource("6_abc0m")
+
+[node name="ToBacktracking" type="Node" parent="StateChart/State_Tree/SeeingPlayer/Chasing"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../../Backtracking")
+event = &"Player_Got_Away"
+
+[node name="ToAttacking" type="Node" parent="StateChart/State_Tree/SeeingPlayer/Chasing"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../../Attacking")
+event = &"Player_Entered_Range"
+
+[node name="LastState" type="Node" parent="StateChart/State_Tree/SeeingPlayer"]
+script = ExtResource("8_f4mp1")
+default_state = NodePath("../StartingChase")
+
+[node name="ToAttacking" type="Node" parent="StateChart/State_Tree/SeeingPlayer"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../Attacking")
+event = &"Player_Got_In_Range"
+
+[node name="Backtracking" type="Node" parent="StateChart/State_Tree"]
+script = ExtResource("6_abc0m")
+
+[node name="ToIdle" type="Node" parent="StateChart/State_Tree/Backtracking"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../Idle")
+event = &"Got_On_Idling_Spot"
+
+[node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Backtracking"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../SeeingPlayer/LastState")
+event = &"Saw_Player"
+
+[node name="Attacking" type="Node" parent="StateChart/State_Tree"]
+script = ExtResource("5_5k3ma")
+initial_state = NodePath("Preparing")
+
+[node name="Preparing" type="Node" parent="StateChart/State_Tree/Attacking"]
+script = ExtResource("6_abc0m")
+
+[node name="ToAttacking" type="Node" parent="StateChart/State_Tree/Attacking/Preparing"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../Attacking")
+event = &"Prepared_Attack"
+
+[node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Attacking/Preparing"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../../SeeingPlayer/LastState")
+event = &"Player_Moved_Away"
+
+[node name="Attacking" type="Node" parent="StateChart/State_Tree/Attacking"]
+script = ExtResource("6_abc0m")
+
+[node name="ToRecovering" type="Node" parent="StateChart/State_Tree/Attacking/Attacking"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../Recovering")
+event = &"Finished_Attack"
+
+[node name="Recovering" type="Node" parent="StateChart/State_Tree/Attacking"]
+script = ExtResource("6_abc0m")
+
+[node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Attacking/Recovering"]
+script = ExtResource("7_4v10x")
+to = NodePath("../../../SeeingPlayer/LastState")
+event = &"Recovered"
+
+[node name="BehaviorChanging" type="Node2D" parent="."]
+scale = Vector2(0.063, 0.063)
+
+[node name="SightArea" type="Area2D" parent="BehaviorChanging"]
+position = Vector2(0, 50)
+scale = Vector2(300, 170)
+collision_layer = 0
+
+[node name="SightAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/SightArea"]
+shape = ExtResource("9_r0lmx")
+debug_color = Color(0, 1, 0.34902, 0.419608)
+
+[node name="DashAttackArea" type="Area2D" parent="BehaviorChanging"]
+position = Vector2(40, 0)
+scale = Vector2(65, 30)
+collision_layer = 0
+monitorable = false
+
+[node name="DashAttackAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/DashAttackArea"]
+shape = ExtResource("9_r0lmx")
+debug_color = Color(0.678431, 0.313726, 0.0627451, 0.419608)
+
+[node name="LineOfSight" type="RayCast2D" parent="BehaviorChanging"]
+target_position = Vector2(0, 0)
+collision_mask = 21
+
+[node name="DashWallDetector" type="RayCast2D" parent="BehaviorChanging"]
+modulate = Color(0.137255, 0, 0.294118, 1)
+target_position = Vector2(0, 0)
+collision_mask = 20
+collide_with_areas = true
+
+[node name="CeilingDetector" type="RayCast2D" parent="BehaviorChanging"]
+collision_mask = 4
+
+[node name="DamageBoxes" type="Node2D" parent="."]
+scale = Vector2(0.063, 0.063)
+
+[node name="Hurtbox" parent="DamageBoxes" node_paths=PackedStringArray("parent") instance=ExtResource("10_k1tc8")]
+scale = Vector2(20, 20)
+collision_mask = 2560
+parent = NodePath("../..")
+invincibility_time = 0.2
+
+[node name="Coll" type="CollisionShape2D" parent="DamageBoxes/Hurtbox"]
+shape = ExtResource("3_fe8qe")
+
+[node name="ContactHitbox" type="Area2D" parent="DamageBoxes" node_paths=PackedStringArray("parent")]
+scale = Vector2(20, 20)
+collision_layer = 1024
+collision_mask = 0
+monitoring = false
+script = ExtResource("11_dchfn")
+parent = NodePath("../..")
+Damage = 1.0
+Knockback_force = 300.0
+Knockback_angle = -70.0
+
+[node name="Coll" type="CollisionShape2D" parent="DamageBoxes/ContactHitbox"]
+shape = ExtResource("3_fe8qe")
+
+[node name="Timers" type="Node" parent="."]
+
+[node name="ChasingTimer" type="Timer" parent="Timers"]
+wait_time = 0.5
+one_shot = true
+
+[node name="GivingUpTimer" type="Timer" parent="Timers"]
+one_shot = true
+
+[node name="FlinchTimer" type="Timer" parent="Timers"]
+wait_time = 0.3
+one_shot = true
+
+[node name="Navigator" type="NavigationAgent2D" parent="."]
+avoidance_enabled = true
+avoidance_layers = 0
+avoidance_mask = 2
+debug_enabled = true
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0.490196, 0, 0.572549, 1)
+scale = Vector2(0.006, 0.006)
+texture = ExtResource("12_5cfxj")
+
+[connection signal="lost_health" from="HealthManager" to="." method="_took_damage"]
+[connection signal="ran_out" from="HealthManager" to="." method="_ran_out_of_health"]
+[connection signal="state_entered" from="StateChart/State_Tree/Idle" to="." method="_idle_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/SeeingPlayer" to="." method="_seeing_player_physics_processing"]
+[connection signal="state_entered" from="StateChart/State_Tree/SeeingPlayer/StartingChase" to="." method="_starting_chase_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/SeeingPlayer/StartingChase" to="." method="_starting_chase_physics_processing"]
+[connection signal="taken" from="StateChart/State_Tree/SeeingPlayer/StartingChase/ToIdle" to="." method="_on_to_idle_taken"]
+[connection signal="state_entered" from="StateChart/State_Tree/SeeingPlayer/Chasing" to="." method="_chasing_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/SeeingPlayer/Chasing" to="." method="_chasing_state_physics_processing"]
+[connection signal="state_entered" from="StateChart/State_Tree/Backtracking" to="." method="_on_backtracking_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Backtracking" to="." method="_backtracking_physics_processing"]
+[connection signal="state_exited" from="StateChart/State_Tree/Attacking" to="." method="_external_attacking_state_exited"]
+[connection signal="state_entered" from="StateChart/State_Tree/Attacking/Preparing" to="." method="_preparing_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Attacking/Preparing" to="." method="_preparing_attack_physics_processing"]
+[connection signal="state_entered" from="StateChart/State_Tree/Attacking/Attacking" to="." method="_internal_attacking_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Attacking/Attacking" to="." method="_internal_attack_physics_processing"]
+[connection signal="state_entered" from="StateChart/State_Tree/Attacking/Recovering" to="." method="_recovering_state_entered"]
+[connection signal="body_entered" from="BehaviorChanging/SightArea" to="." method="_player_entered_area"]
+[connection signal="body_exited" from="BehaviorChanging/SightArea" to="." method="_player_exited_area"]
+[connection signal="body_entered" from="BehaviorChanging/DashAttackArea" to="." method="_dash_area_body_entered"]
+[connection signal="body_exited" from="BehaviorChanging/DashAttackArea" to="." method="_dash_area_body_exited"]
+[connection signal="got_knocked" from="DamageBoxes/Hurtbox" to="." method="_hurtbox_got_knocked"]
+[connection signal="took_damage" from="DamageBoxes/Hurtbox" to="HealthManager" method="lose_health"]
+[connection signal="timeout" from="Timers/ChasingTimer" to="." method="start_chase"]
+[connection signal="timeout" from="Timers/GivingUpTimer" to="." method="give_up_chase"]
+[connection signal="timeout" from="Timers/FlinchTimer" to="." method="_flinch_timer_timeout"]
+[connection signal="target_reached" from="Navigator" to="." method="_navigator_target_reached"]

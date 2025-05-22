@@ -140,13 +140,9 @@ parent = NodePath("..")
 shape = ExtResource("11_cdutm")
 
 [node name="Remote" type="RemoteTransform2D" parent="."]
+position = Vector2(0, -30)
 update_rotation = false
 update_scale = false
-
-[node name="Archer" parent="." instance=ExtResource("9_26aeq")]
-position = Vector2(-28, -28)
-offset = Vector2(22, 18)
-region_rect = Rect2(65, 86, 15, 20)
 
 [node name="HealthManager" type="Node" parent="."]
 script = ExtResource("11_jfvij")
@@ -162,6 +158,11 @@ shape = ExtResource("4_26aeq")
 position = Vector2(0, 4)
 scale = Vector2(10, 10)
 shape = ExtResource("4_26aeq")
+
+[node name="Archer" parent="." instance=ExtResource("9_26aeq")]
+position = Vector2(-28, -28)
+offset = Vector2(22, 18)
+region_rect = Rect2(65, 86, 15, 20)
 
 [connection signal="state_entered" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_physics_processing"]
