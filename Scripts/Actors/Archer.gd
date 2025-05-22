@@ -16,7 +16,6 @@ class_name Player
 @export var shoot_delay : float
 
 @export_group("Physics")
-@export var v_component : VelocityComponent
 @export var move_speed : float
 @export var jump_force : float
 @export var default_knockback : Vector2 = Vector2(170, 0)
@@ -24,6 +23,10 @@ class_name Player
 @export var jump_queuing_time : float
 @export var air_stall_velocity : float
 @export var coyote_time_timer : float
+@export_subgroup("Nodes")
+@export var v_component : VelocityComponent
+@export var up_col : CollisionShape2D
+@export var down_col : CollisionShape2D
  
 var gravity : float = ProjectSettings.get_setting("physics/2d/default_gravity")
 var can_shoot : bool = true
@@ -41,6 +44,7 @@ var dodge_direction : Vector2
 var coyote_time : bool = false
 var jump_queued : bool = false
 var jumping : bool = false
+var arrow_spawn_point : Vector2 = Vector2.ZERO
 
 @export_category("Para debugar")
 @export_range(0 , 8) var initial_arrow_index : int
@@ -120,7 +124,9 @@ func die():
 	get_tree().call_deferred("reload_current_scene")
 
 func equip_arrow(array_position : int) -> Arrow:
-	return load(arrow_paths[array_position]).instantiate() 
+	var arrow : Arrow = load(arrow_paths[array_position]).instantiate()
+	arrow.position = arrow_spawn_point
+	return arrow
 
 func get_current_gravity(velocity_in_y : float) -> float:
 	if velocity_in_y < 0:
@@ -207,7 +213,7 @@ func air_stall() -> void:
 func shoot() -> void:
 	update_flying_dir = false
 	current_arrow.top_level = true
-	current_arrow.global_position = global_position
+	current_arrow.global_position = global_position + arrow_spawn_point
 	if holding_time > max_hold_time:
 		current_arrow.fly(true, self)
 	else:
@@ -262,3 +268,40 @@ func _grounded_state_entered() -> void:
 		jump()
 	else:
 		v_component.set_proper_velocity(0.0, 2)
+
+func _standing_physics_processing(delta: float) -> void:
+	if Input.is_action_pressed("down"):
+		state_chart.set_expression_property("crouching", true)
+		state_chart.send_event("Crouched")
+
+func crouch():
+	move_speed = 0
+	up_col.disabled = true
+	arrow_spawn_point = Vector2(0, 4)
+	if is_holding:
+		for node in get_children():
+			if node is Arrow:
+				node.position = arrow_spawn_point
+
+func _crouched_entered() -> void:
+	crouch()
+
+func _crouched_physics_processing(delta: float) -> void:
+	if Input.is_action_just_released("down"):
+		state_chart.send_event("Standing")
+
+func stand() -> void:
+	move_speed = 120.0
+	up_col.disabled = false
+	arrow_spawn_point = Vector2.ZERO
+	if is_holding:
+		for node in get_children():
+			if node is Arrow:
+				node.position = arrow_spawn_point
+
+func _crouched_exited() -> void:
+	move_speed = 120.0
+	stand()
+
+func _standing_entered() -> void:
+	state_chart.set_expression_property("crouching", false)

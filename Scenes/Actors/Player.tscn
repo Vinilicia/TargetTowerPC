@@ -1,4 +1,4 @@
-[gd_scene load_steps=13 format=3 uid="uid://ev1c8jc3dq42"]
+[gd_scene load_steps=15 format=3 uid="uid://ev1c8jc3dq42"]
 
 [ext_resource type="Script" uid="uid://du36t4pvcn4ic" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
@@ -8,12 +8,18 @@
 [ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="6_26aeq"]
 [ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="7_wypxn"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_26aeq"]
+[ext_resource type="Script" uid="uid://dmfyse5ubg5m5" path="res://addons/godot_state_charts/expression_guard.gd" id="8_r2kji"]
 [ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
 [ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Archer.tscn" id="9_26aeq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
 [ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component")]
+[sub_resource type="Resource" id="Resource_rbeol"]
+script = ExtResource("8_r2kji")
+expression = "!crouching"
+metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
+
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "up_col", "down_col")]
 collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("StateChart")
@@ -23,13 +29,15 @@ camera_remote = NodePath("Remote")
 arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4"])
 max_hold_time = 1.5
 shoot_delay = 0.5
-v_component = NodePath("VelocityComponent")
 move_speed = 120.0
 jump_force = -340.0
 gravity_multiplier = 1.2
 jump_queuing_time = 0.1
 air_stall_velocity = 40.0
 coyote_time_timer = 0.07
+v_component = NodePath("VelocityComponent")
+up_col = NodePath("UpColl")
+down_col = NodePath("DownColl")
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
 [node name="VelocityComponent" parent="." instance=ExtResource("2_8nfcn")]
@@ -45,19 +53,6 @@ script = ExtResource("5_wypxn")
 [node name="Memes" type="Node" parent="StateChart/Root"]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("Grounded")
-
-[node name="Grounded" type="Node" parent="StateChart/Root/Memes"]
-script = ExtResource("7_wypxn")
-
-[node name="ToFalling" type="Node" parent="StateChart/Root/Memes/Grounded"]
-script = ExtResource("9_12lv1")
-to = NodePath("../../Airborne/Falling")
-event = &"Falling"
-
-[node name="ToRising" type="Node" parent="StateChart/Root/Memes/Grounded"]
-script = ExtResource("9_12lv1")
-to = NodePath("../../Airborne/Rising")
-event = &"Rising"
 
 [node name="Airborne" type="Node" parent="StateChart/Root/Memes"]
 script = ExtResource("6_26aeq")
@@ -82,6 +77,37 @@ event = &"Grounded"
 [node name="ToRising" type="Node" parent="StateChart/Root/Memes/Airborne/Falling"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Rising")
+event = &"Rising"
+
+[node name="Grounded" type="Node" parent="StateChart/Root/Memes"]
+script = ExtResource("6_26aeq")
+initial_state = NodePath("Standing")
+
+[node name="Standing" type="Node" parent="StateChart/Root/Memes/Grounded"]
+script = ExtResource("7_wypxn")
+
+[node name="ToCrouched" type="Node" parent="StateChart/Root/Memes/Grounded/Standing"]
+script = ExtResource("9_12lv1")
+to = NodePath("../../Crouched")
+event = &"Crouched"
+
+[node name="Crouched" type="Node" parent="StateChart/Root/Memes/Grounded"]
+script = ExtResource("7_wypxn")
+
+[node name="ToStanding" type="Node" parent="StateChart/Root/Memes/Grounded/Crouched"]
+script = ExtResource("9_12lv1")
+to = NodePath("../../Standing")
+event = &"Standing"
+
+[node name="ToFalling" type="Node" parent="StateChart/Root/Memes/Grounded"]
+script = ExtResource("9_12lv1")
+to = NodePath("../../Airborne/Falling")
+event = &"Falling"
+guard = SubResource("Resource_rbeol")
+
+[node name="ToRising" type="Node" parent="StateChart/Root/Memes/Grounded"]
+script = ExtResource("9_12lv1")
+to = NodePath("../../Airborne/Rising")
 event = &"Rising"
 
 [node name="Shooting" type="Node" parent="StateChart/Root"]
@@ -117,13 +143,6 @@ shape = ExtResource("11_cdutm")
 update_rotation = false
 update_scale = false
 
-[node name="Coll" type="CollisionShape2D" parent="."]
-scale = Vector2(10, 18)
-shape = ExtResource("4_26aeq")
-
-[node name="Marker2D" type="Marker2D" parent="."]
-position = Vector2(2, 2)
-
 [node name="Archer" parent="." instance=ExtResource("9_26aeq")]
 position = Vector2(-28, -28)
 offset = Vector2(22, 18)
@@ -134,16 +153,31 @@ script = ExtResource("11_jfvij")
 max_health = 20.0
 metadata/_custom_type_script = "uid://d4da8yc41448k"
 
-[connection signal="state_entered" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_physics_processing"]
-[connection signal="taken" from="StateChart/Root/Memes/Grounded/ToFalling" to="." method="_grounded_to_falling_taken"]
-[connection signal="taken" from="StateChart/Root/Memes/Grounded/ToRising" to="." method="_grounded_to_rising_taken"]
+[node name="UpColl" type="CollisionShape2D" parent="."]
+position = Vector2(0, -4)
+scale = Vector2(10, 10)
+shape = ExtResource("4_26aeq")
+
+[node name="DownColl" type="CollisionShape2D" parent="."]
+position = Vector2(0, 4)
+scale = Vector2(10, 10)
+shape = ExtResource("4_26aeq")
+
 [connection signal="state_entered" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_physics_processing"]
 [connection signal="taken" from="StateChart/Root/Memes/Airborne/Rising/ToFalling" to="." method="_rising_to_falling_taken"]
 [connection signal="state_entered" from="StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_processing"]
 [connection signal="taken" from="StateChart/Root/Memes/Airborne/Falling/ToGrounded" to="." method="_falling_to_grounded_taken"]
+[connection signal="state_entered" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_state_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_physics_processing"]
+[connection signal="state_entered" from="StateChart/Root/Memes/Grounded/Standing" to="." method="_standing_entered"]
+[connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded/Standing" to="." method="_standing_physics_processing"]
+[connection signal="state_entered" from="StateChart/Root/Memes/Grounded/Crouched" to="." method="_crouched_entered"]
+[connection signal="state_exited" from="StateChart/Root/Memes/Grounded/Crouched" to="." method="_crouched_exited"]
+[connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded/Crouched" to="." method="_crouched_physics_processing"]
+[connection signal="taken" from="StateChart/Root/Memes/Grounded/ToFalling" to="." method="_grounded_to_falling_taken"]
+[connection signal="taken" from="StateChart/Root/Memes/Grounded/ToRising" to="." method="_grounded_to_rising_taken"]
 [connection signal="state_entered" from="StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_physics_processing"]
 [connection signal="state_entered" from="StateChart/Root/Shooting/CantShoot" to="." method="_cannot_shoot_state_entered"]
