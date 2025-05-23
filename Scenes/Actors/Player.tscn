@@ -140,7 +140,7 @@ parent = NodePath("..")
 shape = ExtResource("11_cdutm")
 
 [node name="Remote" type="RemoteTransform2D" parent="."]
-position = Vector2(0, -30)
+position = Vector2(0, -35)
 update_rotation = false
 update_scale = false
 

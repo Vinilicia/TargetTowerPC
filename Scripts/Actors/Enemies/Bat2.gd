@@ -11,6 +11,7 @@ extends CharacterBody2D
 @export var ceiling_detector : RayCast2D
 @export var navigator : NavigationAgent2D
 @export var dash_area : Area2D
+@export var sight_area : Area2D
 @export var contact_hitbox : Hitbox
 @export var v_component : VelocityComponent
 
@@ -41,9 +42,11 @@ var distance_to_target : float
 
 var player_is_nearby : bool = false
 var saw_player : bool = false
+var moving : bool = false
 var player_relative_position : Vector2
 var player_target : CharacterBody2D
 var chasing_target_position : Vector2 = Vector2(0, 0)
+var current_to_do : Callable = func (): pass
 
 var remaining_time_for_chase : float = -1
 var give_up_time : float
@@ -64,8 +67,9 @@ func _physics_process(_delta: float) -> void:
 			state_chart.send_event("SawPlayer")
 			saw_player = true
 	
-	if (move_target - global_position).length() < current_tolerance:
+	if ((move_target - global_position).length() < current_tolerance) and moving:
 		stop(0.2)
+		current_to_do.call()
 	
 	velocity = v_component.get_total_velocity()
 	move_and_slide()
@@ -83,11 +87,15 @@ func _player_exited_area(_player: Node2D) -> void:
 
 #region Usadas sempre
 #funções essenciais que podem ser usadas a qualquer momento
-func move_to(pos : Vector2, tol : float) -> void:
+func move_to(pos : Vector2, tolerance : float, todo : Callable = func (): pass) -> void:
+	current_to_do = todo
+	if stopping_tween != null and stopping_tween.is_running():
+		stopping_tween.kill()
 	move_target = pos
-	current_tolerance = tol
+	current_tolerance = tolerance
 	var movement_vector = (pos - global_position).normalized()
 	v_component.set_proper_velocity(current_speed * movement_vector)
+	moving = true
 
 func turn_around() -> void:
 	facing_direction *= -1
@@ -95,12 +103,18 @@ func turn_around() -> void:
 		child.position = Vector2(child.position.x * -1, child.position.y)
 
 func stop(duration : float) -> void:
+	moving = false
 	stopping_tween = create_tween()
 	stopping_tween.tween_property(v_component, "proper_velocity", Vector2.ZERO, duration).set_ease(Tween.EASE_IN)
 #endregion
 
 func _idle_entered() -> void:
-	stop(0.1)
+	sight_area.scale = Vector2(300, 170)
+	sight_area.position = Vector2(0, 50)
+
+func _idle_exited() -> void:
+	sight_area.scale = Vector2(400, 300)
+	sight_area.position = Vector2.ZERO
 
 #region Estado Starting_Chase
 #Existe mais para rodar a lógica do delay antes da perseguição começar
@@ -108,7 +122,7 @@ func _starting_chase_state_entered() -> void:
 	give_up_time = starting_give_up_delay
 	remaining_time_for_chase = chasing_timer.wait_time
 	chasing_timer.start()
-	current_speed = backtracking_speed/2
+	current_speed = backtracking_speed
 	move_to(global_position + Vector2(0, 30), 3)
 
 func _starting_chase_physics_processing(_delta: float) -> void:
@@ -153,10 +167,10 @@ func _chasing_state_physics_processing(_delta : float) -> void:
 #region Estado Backtracking
 
 func _on_backtracking_state_entered() -> void:
-	stop(0.5)
+	current_tolerance = -10
 	current_speed = backtracking_speed
-	var start_angle : float = 155
-	var end_angle : float = 25
+	var start_angle : float = 160
+	var end_angle : float = 20
 	var step : int = -10
 	var radius : int = 500
 	var best_distance : float = 500
@@ -190,16 +204,13 @@ func _on_backtracking_state_entered() -> void:
 					best_distance = current_distance
 					best_point = ceiling_detector.get_collision_point()
 					ceiling_point = false
-	
-	ceiling_detector.target_position = best_point
-	
-	navigator.target_position = best_point
+	move_to(best_point, 10, func(): state_chart.send_event("Got_On_Idling_Spot"))
 
-func _backtracking_physics_processing(_delta: float) -> void:
-	move_to(navigator.get_next_path_position(), 10)
+#func _backtracking_physics_processing(_delta: float) -> void:
+	#move_to(move_target, 10, func(): state_chart.send_event("Got_On_Idling_Spot"))
 
-func _navigator_target_reached() -> void:
-	state_chart.send_event("Got_On_Idling_Spot")
+#func _navigator_target_reached() -> void:
+	#state_chart.send_event("Got_On_Idling_Spot")
 
 #endregion
 
@@ -212,6 +223,7 @@ func _preparing_state_entered() -> void:
 	stop(0.1)
 	contact_hitbox.scale *= dash_hitbox_increase
 	wall_detector.target_position = facing_direction * Vector2(dash_distance, 0)
+	wall_detector.force_raycast_update()
 	await get_tree().create_timer(dash_delay).timeout
 	dash_area.monitoring = false
 	state_chart.send_event("Prepared_Attack")
@@ -226,14 +238,10 @@ func _internal_attacking_state_entered() -> void:
 		attack_pos = wall_detec_point
 	else:
 		attack_pos = global_position + vec
-	move_to(attack_pos, 10)
+	move_to(attack_pos, 10, func (): state_chart.send_event("Finished_Attack"))
 
-
-func _internal_attack_physics_processing(_delta: float) -> void:
-	if (global_position - attack_pos).length() < 10:
-		stop(0.3)
-		state_chart.send_event("Finished_Attack")
-
+#func finish_attack() -> void:
+	#state_chart.send_event("Finished_Attack")
 
 func _recovering_state_entered() -> void:
 	contact_hitbox.scale *= (1 / dash_hitbox_increase)

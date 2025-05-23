@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="11_dchfn"]
 [ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="12_5cfxj"]
 
-[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "flinch_timer", "line_of_sight", "wall_detector", "ceiling_detector", "navigator", "dash_area", "contact_hitbox", "v_component")]
+[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "flinch_timer", "line_of_sight", "wall_detector", "ceiling_detector", "navigator", "dash_area", "sight_area", "contact_hitbox", "v_component")]
 scale = Vector2(16, 16)
 collision_layer = 8
 collision_mask = 22
@@ -29,10 +29,11 @@ wall_detector = NodePath("BehaviorChanging/DashWallDetector")
 ceiling_detector = NodePath("BehaviorChanging/CeilingDetector")
 navigator = NodePath("Navigator")
 dash_area = NodePath("BehaviorChanging/DashAttackArea")
+sight_area = NodePath("BehaviorChanging/SightArea")
 contact_hitbox = NodePath("DamageBoxes/ContactHitbox")
 v_component = NodePath("VelocityComponent")
-backtracking_speed = 70.0
-chase_flying_speed = 80.0
+backtracking_speed = 30.0
+chase_flying_speed = 90.0
 starting_give_up_delay = 1.0
 chasing_give_up_delay = 2.0
 dash_speed = 250.0
@@ -76,9 +77,9 @@ script = ExtResource("7_4v10x")
 to = NodePath("../../Chasing")
 event = &"Started_Chase"
 
-[node name="ToIdle" type="Node" parent="StateChart/State_Tree/SeeingPlayer/StartingChase"]
+[node name="ToBacktracking" type="Node" parent="StateChart/State_Tree/SeeingPlayer/StartingChase"]
 script = ExtResource("7_4v10x")
-to = NodePath("../../../Idle")
+to = NodePath("../../../Backtracking")
 event = &"Player_Got_Away"
 
 [node name="Chasing" type="Node" parent="StateChart/State_Tree/SeeingPlayer"]
@@ -114,7 +115,7 @@ event = &"Got_On_Idling_Spot"
 [node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Backtracking"]
 script = ExtResource("7_4v10x")
 to = NodePath("../../SeeingPlayer/LastState")
-event = &"Saw_Player"
+event = &"SawPlayer"
 
 [node name="Attacking" type="Node" parent="StateChart/State_Tree"]
 script = ExtResource("5_5k3ma")
@@ -237,10 +238,10 @@ texture = ExtResource("12_5cfxj")
 [connection signal="lost_health" from="HealthManager" to="." method="_took_damage"]
 [connection signal="ran_out" from="HealthManager" to="." method="_ran_out_of_health"]
 [connection signal="state_entered" from="StateChart/State_Tree/Idle" to="." method="_idle_entered"]
-[connection signal="state_physics_processing" from="StateChart/State_Tree/SeeingPlayer" to="." method="_seeing_player_physics_processing"]
+[connection signal="state_exited" from="StateChart/State_Tree/Idle" to="." method="_idle_exited"]
 [connection signal="state_entered" from="StateChart/State_Tree/SeeingPlayer/StartingChase" to="." method="_starting_chase_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/State_Tree/SeeingPlayer/StartingChase" to="." method="_starting_chase_physics_processing"]
-[connection signal="taken" from="StateChart/State_Tree/SeeingPlayer/StartingChase/ToIdle" to="." method="_on_to_idle_taken"]
+[connection signal="taken" from="StateChart/State_Tree/SeeingPlayer/StartingChase/ToBacktracking" to="." method="_on_to_idle_taken"]
 [connection signal="state_entered" from="StateChart/State_Tree/SeeingPlayer/Chasing" to="." method="_chasing_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/State_Tree/SeeingPlayer/Chasing" to="." method="_chasing_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/State_Tree/Backtracking" to="." method="_on_backtracking_state_entered"]
