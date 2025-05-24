@@ -11,6 +11,7 @@ extends CharacterBody2D
 @export var ceiling_detector : RayCast2D
 @export var navigator : NavigationAgent2D
 @export var dash_area : Area2D
+@export var dive_area : Area2D
 @export var sight_area : Area2D
 @export var contact_hitbox : Hitbox
 @export var v_component : VelocityComponent
@@ -70,7 +71,6 @@ func _physics_process(_delta: float) -> void:
 	if ((move_target - global_position).length() < current_tolerance) and moving:
 		stop(0.2)
 		current_to_do.call()
-	
 	velocity = v_component.get_total_velocity()
 	move_and_slide()
 
@@ -87,6 +87,11 @@ func _player_exited_area(_player: Node2D) -> void:
 
 #region Usadas sempre
 #funções essenciais que podem ser usadas a qualquer momento
+func turn_around() -> void:
+	facing_direction *= -1
+	for child in $BehaviorChanging.get_children():
+		child.position = Vector2(child.position.x * -1, child.position.y)
+
 func move_to(pos : Vector2, tolerance : float, todo : Callable = func (): pass) -> void:
 	current_to_do = todo
 	if stopping_tween != null and stopping_tween.is_running():
@@ -96,11 +101,6 @@ func move_to(pos : Vector2, tolerance : float, todo : Callable = func (): pass) 
 	var movement_vector = (pos - global_position).normalized()
 	v_component.set_proper_velocity(current_speed * movement_vector)
 	moving = true
-
-func turn_around() -> void:
-	facing_direction *= -1
-	for child in $BehaviorChanging.get_children():
-		child.position = Vector2(child.position.x * -1, child.position.y)
 
 func stop(duration : float) -> void:
 	moving = false
@@ -123,7 +123,7 @@ func _starting_chase_state_entered() -> void:
 	remaining_time_for_chase = chasing_timer.wait_time
 	chasing_timer.start()
 	current_speed = backtracking_speed
-	move_to(global_position + Vector2(0, 30), 3)
+	move_to(global_position + Vector2(0, 30), 10)
 
 func _starting_chase_physics_processing(_delta: float) -> void:
 	if line_of_sight.get_collider() != player_target:
@@ -188,23 +188,23 @@ func _on_backtracking_state_entered() -> void:
 
 		if ceiling_detector.is_colliding():
 			var normal = ceiling_detector.get_collision_normal()
-
+			var increase = 0
 			if normal.dot(Vector2.DOWN) > 0.7:
 				current_distance = (ceiling_detector.get_collision_point() - global_position).length()
-				if current_distance < best_distance:
+				if !ceiling_point:
+					increase = best_distance + max(best_distance * 0.3, 100)
+				if current_distance < (best_distance + increase):
 					best_distance = current_distance
 					best_point = ceiling_detector.get_collision_point()
 					ceiling_point = true
 			elif abs(normal.dot(Vector2.RIGHT)) > 0.7:
-				multiplier = 1
 				if ceiling_point:
-					multiplier = 1.3
-					current_distance = (ceiling_detector.get_collision_point() - global_position).length() * multiplier
-				if current_distance < best_distance:
+					increase = min((ceiling_detector.get_collision_point() - global_position).length() * 0.3, 100)
+				if (current_distance + increase) < best_distance:
 					best_distance = current_distance
 					best_point = ceiling_detector.get_collision_point()
 					ceiling_point = false
-	move_to(best_point, 10, func(): state_chart.send_event("Got_On_Idling_Spot"))
+	move_to(best_point, 15, func(): state_chart.send_event("Got_On_Idling_Spot"))
 
 #func _backtracking_physics_processing(_delta: float) -> void:
 	#move_to(move_target, 10, func(): state_chart.send_event("Got_On_Idling_Spot"))
@@ -214,40 +214,50 @@ func _on_backtracking_state_entered() -> void:
 
 #endregion
 
+var current_attack : Callable = dash
+
+func dash() -> void:
+	current_speed = dash_speed
+	var attack_pos : Vector2 = global_position + (facing_direction * Vector2(dash_distance, 0))
+	move_to(attack_pos, 20, func (): state_chart.send_event("Finished_Attack"))
+
+func dive() -> void:
+	current_speed = dash_speed
+	var attack_pos : Vector2 = global_position + Vector2(0, dash_distance)
+	move_to(attack_pos, 20, func (): state_chart.send_event("Finished_Attack"))
 
 func _dash_area_body_entered(_body: Node2D) -> void:
+	current_attack = dash
 	state_chart.send_event("Player_Got_In_Range")
 
+func _dive_area_body_entered(_body: Node2D) -> void:
+	current_attack = dive
+	state_chart.send_event("Player_Got_In_Range")
 
 func _preparing_state_entered() -> void:
 	stop(0.1)
 	contact_hitbox.scale *= dash_hitbox_increase
-	wall_detector.target_position = facing_direction * Vector2(dash_distance, 0)
-	wall_detector.force_raycast_update()
+	#wall_detector.target_position = facing_direction * Vector2(dash_distance, 0)
+	#wall_detector.force_raycast_update()
 	await get_tree().create_timer(dash_delay).timeout
 	dash_area.monitoring = false
+	dive_area.monitoring = false
 	state_chart.send_event("Prepared_Attack")
 
-var attack_pos
 
 func _internal_attacking_state_entered() -> void:
-	current_speed = dash_speed
-	var vec = facing_direction * Vector2(dash_distance, 0)
-	var wall_detec_point : Vector2 = wall_detector.get_collision_point()
-	if wall_detector.is_colliding():
-		attack_pos = wall_detec_point
-	else:
-		attack_pos = global_position + vec
-	move_to(attack_pos, 10, func (): state_chart.send_event("Finished_Attack"))
+	current_attack.call()
 
-#func finish_attack() -> void:
-	#state_chart.send_event("Finished_Attack")
+func _internal_attack_physics_processing(delta: float) -> void:
+	if (is_on_wall() and is_zero_approx(get_real_velocity().x)) or (is_on_floor() and is_zero_approx(get_real_velocity().y)):
+		move_target = global_position
 
 func _recovering_state_entered() -> void:
 	contact_hitbox.scale *= (1 / dash_hitbox_increase)
 	wall_detector.target_position = Vector2.ZERO
 	await get_tree().create_timer(dash_delay * 3).timeout
 	dash_area.monitoring = true
+	dive_area.monitoring = true
 	state_chart.send_event("Recovered")
 
 #func flinch() -> void:

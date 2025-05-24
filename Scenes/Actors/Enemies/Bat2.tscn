@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="11_dchfn"]
 [ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="12_5cfxj"]
 
-[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "flinch_timer", "line_of_sight", "wall_detector", "ceiling_detector", "navigator", "dash_area", "sight_area", "contact_hitbox", "v_component")]
+[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "flinch_timer", "line_of_sight", "wall_detector", "ceiling_detector", "navigator", "dash_area", "dive_area", "sight_area", "contact_hitbox", "v_component")]
 scale = Vector2(16, 16)
 collision_layer = 8
 collision_mask = 22
@@ -29,6 +29,7 @@ wall_detector = NodePath("BehaviorChanging/DashWallDetector")
 ceiling_detector = NodePath("BehaviorChanging/CeilingDetector")
 navigator = NodePath("Navigator")
 dash_area = NodePath("BehaviorChanging/DashAttackArea")
+dive_area = NodePath("BehaviorChanging/DiveAttackArea")
 sight_area = NodePath("BehaviorChanging/SightArea")
 contact_hitbox = NodePath("DamageBoxes/ContactHitbox")
 v_component = NodePath("VelocityComponent")
@@ -164,11 +165,21 @@ debug_color = Color(0, 1, 0.34902, 0.419608)
 
 [node name="DashAttackArea" type="Area2D" parent="BehaviorChanging"]
 position = Vector2(40, 0)
-scale = Vector2(65, 30)
+scale = Vector2(65, 10)
 collision_layer = 0
 monitorable = false
 
 [node name="DashAttackAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/DashAttackArea"]
+shape = ExtResource("9_r0lmx")
+debug_color = Color(0.678431, 0.313726, 0.0627451, 0.419608)
+
+[node name="DiveAttackArea" type="Area2D" parent="BehaviorChanging"]
+position = Vector2(0, 30)
+scale = Vector2(20, 50)
+collision_layer = 0
+monitorable = false
+
+[node name="DiveAttackAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/DiveAttackArea"]
 shape = ExtResource("9_r0lmx")
 debug_color = Color(0.678431, 0.313726, 0.0627451, 0.419608)
 
@@ -256,6 +267,8 @@ texture = ExtResource("12_5cfxj")
 [connection signal="body_exited" from="BehaviorChanging/SightArea" to="." method="_player_exited_area"]
 [connection signal="body_entered" from="BehaviorChanging/DashAttackArea" to="." method="_dash_area_body_entered"]
 [connection signal="body_exited" from="BehaviorChanging/DashAttackArea" to="." method="_dash_area_body_exited"]
+[connection signal="body_entered" from="BehaviorChanging/DiveAttackArea" to="." method="_dive_area_body_entered"]
+[connection signal="body_exited" from="BehaviorChanging/DiveAttackArea" to="." method="_dash_area_body_exited"]
 [connection signal="got_knocked" from="DamageBoxes/Hurtbox" to="." method="_hurtbox_got_knocked"]
 [connection signal="took_damage" from="DamageBoxes/Hurtbox" to="HealthManager" method="lose_health"]
 [connection signal="timeout" from="Timers/ChasingTimer" to="." method="start_chase"]
