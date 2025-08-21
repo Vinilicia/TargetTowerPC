@@ -3,18 +3,21 @@ extends CharacterBody2D
 @onready var state_chart = $StateChart as StateChart
 
 @export_group("Nodes")
+@export var v_component : VelocityComponent
+@export var navigator : NavigationAgent2D
+@export_subgroup("Timers")
 @export var chasing_timer : Timer
 @export var giving_up_timer : Timer
 @export var flinch_timer : Timer
+@export_subgroup("Raycasts")
 @export var line_of_sight : RayCast2D
 @export var wall_detector : RayCast2D
 @export var ceiling_detector : RayCast2D
-@export var navigator : NavigationAgent2D
+@export_subgroup("Areas")
 @export var dash_area : Area2D
 @export var dive_area : Area2D
 @export var sight_area : Area2D
 @export var contact_hitbox : Hitbox
-@export var v_component : VelocityComponent
 
 @export_group("Behaviourial")
 @export var backtracking_speed : float

@@ -14,25 +14,25 @@
 [ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="11_dchfn"]
 [ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="12_5cfxj"]
 
-[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "flinch_timer", "line_of_sight", "wall_detector", "ceiling_detector", "navigator", "dash_area", "dive_area", "sight_area", "contact_hitbox", "v_component")]
+[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "navigator", "chasing_timer", "giving_up_timer", "flinch_timer", "line_of_sight", "wall_detector", "ceiling_detector", "dash_area", "dive_area", "sight_area", "contact_hitbox")]
 scale = Vector2(16, 16)
 collision_layer = 8
 collision_mask = 22
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_mfbr2")
+v_component = NodePath("VelocityComponent")
+navigator = NodePath("Navigator")
 chasing_timer = NodePath("Timers/ChasingTimer")
 giving_up_timer = NodePath("Timers/GivingUpTimer")
 flinch_timer = NodePath("Timers/FlinchTimer")
 line_of_sight = NodePath("BehaviorChanging/LineOfSight")
 wall_detector = NodePath("BehaviorChanging/DashWallDetector")
 ceiling_detector = NodePath("BehaviorChanging/CeilingDetector")
-navigator = NodePath("Navigator")
 dash_area = NodePath("BehaviorChanging/DashAttackArea")
 dive_area = NodePath("BehaviorChanging/DiveAttackArea")
 sight_area = NodePath("BehaviorChanging/SightArea")
 contact_hitbox = NodePath("DamageBoxes/ContactHitbox")
-v_component = NodePath("VelocityComponent")
 backtracking_speed = 30.0
 chase_flying_speed = 90.0
 starting_give_up_delay = 1.0

@@ -19,8 +19,11 @@ func got_hit(area : Hitbox) -> void:
 	area.hit_something(parent)
 	get_invincible()
 
-func get_invincible() -> void:
+func get_invincible(duration_override : float = -1) -> void:
 	set_deferred("monitoring", false)
-	invincibility_timer.start(invincibility_time)
+	if duration_override != -1:
+		invincibility_timer.start(duration_override)
+	else:
+		invincibility_timer.start(invincibility_time)
 	await invincibility_timer.timeout
 	set_deferred("monitoring", true)

@@ -19,7 +19,7 @@ script = ExtResource("8_r2kji")
 expression = "!crouching"
 metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "up_col", "down_col")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "up_col", "down_col", "hurtbox", "dodge_cancel_timer")]
 collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("StateChart")
@@ -29,7 +29,10 @@ camera_remote = NodePath("Remote")
 arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4"])
 max_hold_time = 1.5
 shoot_delay = 0.5
-move_speed = 120.0
+dodge_horizontal_speed = 200.0
+dodge_up_speed = -100.0
+dodge_down_speed = 135.0
+dodge_cancel_portion = 0.6
 jump_force = -340.0
 gravity_multiplier = 1.2
 jump_queuing_time = 0.1
@@ -38,7 +41,12 @@ coyote_time_timer = 0.07
 v_component = NodePath("VelocityComponent")
 up_col = NodePath("UpColl")
 down_col = NodePath("DownColl")
+hurtbox = NodePath("Hurtbox")
+dodge_cancel_timer = NodePath("DodgeCancelTimer")
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
+
+[node name="DodgeCancelTimer" type="Timer" parent="."]
+one_shot = true
 
 [node name="VelocityComponent" parent="." instance=ExtResource("2_8nfcn")]
 knockback_susceptability = 6
@@ -130,15 +138,6 @@ script = ExtResource("9_12lv1")
 to = NodePath("../../CanShoot")
 event = &"CanShoot"
 
-[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
-visible = false
-scale = Vector2(12, 19)
-collision_mask = 3072
-parent = NodePath("..")
-
-[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
-shape = ExtResource("11_cdutm")
-
 [node name="Remote" type="RemoteTransform2D" parent="."]
 position = Vector2(0, -35)
 update_rotation = false
@@ -148,6 +147,14 @@ update_scale = false
 script = ExtResource("11_jfvij")
 max_health = 20.0
 metadata/_custom_type_script = "uid://d4da8yc41448k"
+
+[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
+scale = Vector2(10, 17)
+collision_mask = 3072
+parent = NodePath("..")
+
+[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
+shape = ExtResource("11_cdutm")
 
 [node name="UpColl" type="CollisionShape2D" parent="."]
 position = Vector2(0, -4)
@@ -164,6 +171,7 @@ position = Vector2(-28, -28)
 offset = Vector2(22, 18)
 region_rect = Rect2(65, 86, 15, 20)
 
+[connection signal="timeout" from="DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
 [connection signal="state_entered" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_physics_processing"]
 [connection signal="taken" from="StateChart/Root/Memes/Airborne/Rising/ToFalling" to="." method="_rising_to_falling_taken"]
@@ -183,8 +191,8 @@ region_rect = Rect2(65, 86, 15, 20)
 [connection signal="state_physics_processing" from="StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_physics_processing"]
 [connection signal="state_entered" from="StateChart/Root/Shooting/CantShoot" to="." method="_cannot_shoot_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Shooting/CantShoot" to="." method="_cant_shoot_physics_processing"]
-[connection signal="took_damage" from="Hurtbox" to="HealthManager" method="lose_health"]
 [connection signal="lost_health" from="HealthManager" to="." method="_on_health_lost_health"]
 [connection signal="ran_out" from="HealthManager" to="." method="die"]
+[connection signal="took_damage" from="Hurtbox" to="HealthManager" method="lose_health"]
 
 [editable path="Archer"]
