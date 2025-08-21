@@ -51,6 +51,7 @@ const DODGE_VERTICAL_VELOCITY := 0.0
 @export var down_col: CollisionShape2D
 @export var hurtbox: Hurtbox
 @export var dodge_cancel_timer : Timer
+@export var ledge_detector : RayCast2D
 
 @export_category("Para debugar")
 @export_range(0, 8) var initial_arrow_index: int
@@ -86,6 +87,8 @@ var current_arrow_index: int
 var arrow_spawn_point: Vector2 = Vector2.ZERO
 var pos: Vector2
 var tween: Tween
+var dodged_this_frame: bool = false
+var dodge_started_off_ledge: bool = false
 
 # ============================================================
 # READY
@@ -110,6 +113,7 @@ func _physics_process(delta: float) -> void:
 	velocity = v_component.get_total_velocity()
 	corner_correction(7, delta)
 	move_and_slide()
+	dodged_this_frame = false
 
 # ============================================================
 # INPUT E COMBATE
@@ -150,6 +154,7 @@ func handle_combat_inputs() -> void:
 	
 	if Input.is_action_just_pressed("dodge") and combat.can_dodge:
 		combat.can_dodge = false
+		dodged_this_frame = true
 		try_dodge()
 		await get_tree().create_timer(dodge_cooldown).timeout
 		combat.can_dodge = true
@@ -187,8 +192,9 @@ func dodge(dodge_dir : Vector2, duration_multiplier : float) -> void:
 	v_component.add_proper_velocity(dodge_dir)
 	hurtbox.get_invincible(dodge_duration * duration_multiplier)
 	if duration_multiplier == 1:
+		if !is_ledge_ahead():
+			dodge_started_off_ledge = true
 		dodge_cancel_timer.start(dodge_duration * dodge_cancel_portion)
-		print(dodge_duration, dodge_duration * dodge_cancel_portion)
 	await get_tree().create_timer(dodge_duration * duration_multiplier).timeout
 	if combat.is_dodging:
 		end_dodge()
@@ -197,6 +203,7 @@ func end_dodge() -> void:
 	combat.is_dodging = false
 	combat.dodge_cancelled = false
 	combat.dodge_can_cancel = false
+	dodge_started_off_ledge = false
 	if jump_state.jump_queued and is_on_floor():
 		move_speed = dodge_horizontal_speed
 		state_chart.find_child("ToGrounded").taken.connect(func() : move_speed = DEFAULT_MOVE_SPEED)
@@ -218,14 +225,21 @@ func apply_gravity(delta: float) -> void:
 		v_component.add_proper_velocity(Vector2(0, get_current_gravity(velocity.y) * delta))
 		state_chart.send_event("Falling" if velocity.y >= 0 else "Rising")
 
+func is_ledge_ahead() -> bool:
+	return is_on_floor() and !ledge_detector.is_colliding()
+
 func handle_movement() -> void:
 	if combat.is_dodging:
-		if Input.is_action_just_pressed("jump") and is_on_floor():
+		if Input.is_action_pressed("jump") and is_on_floor():
 			jump_state.jump_queued = true
 		if Input.is_action_just_released("jump"):
 			jump_state.jump_queued = false
 		
-		if Input.is_action_just_pressed("dodge"):
+		var dir : int = int(Input.get_axis("left", "right"))
+		if is_ledge_ahead() and dir != facing_direction and dodge_started_off_ledge:
+			v_component.set_proper_velocity(Vector2.ZERO)
+		
+		if Input.is_action_just_pressed("dodge") and !dodged_this_frame:
 			combat.dodge_cancelled = true
 		if combat.dodge_cancelled and combat.dodge_can_cancel:
 			end_dodge()
@@ -263,6 +277,7 @@ func get_current_gravity(velocity_in_y: float) -> float:
 func turn(facing_dir: int) -> void:
 	$Archer.scale.x = facing_dir
 	$Archer.position.x = -ARCHER_OFFSET_X * facing_dir
+	ledge_detector.position.x = 8 * facing_dir
 	pos = camera_remote.position
 	var final_pos = Vector2(camera_distance * facing_dir, pos.y)
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT)

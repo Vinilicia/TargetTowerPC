@@ -19,7 +19,7 @@ script = ExtResource("8_r2kji")
 expression = "!crouching"
 metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "up_col", "down_col", "hurtbox", "dodge_cancel_timer")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "up_col", "down_col", "hurtbox", "dodge_cancel_timer", "ledge_detector")]
 collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("StateChart")
@@ -29,6 +29,7 @@ camera_remote = NodePath("Remote")
 arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4"])
 max_hold_time = 1.5
 shoot_delay = 0.5
+dodge_cooldown = 0.7
 dodge_horizontal_speed = 200.0
 dodge_up_speed = -100.0
 dodge_down_speed = 135.0
@@ -43,7 +44,13 @@ up_col = NodePath("UpColl")
 down_col = NodePath("DownColl")
 hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("DodgeCancelTimer")
+ledge_detector = NodePath("LedgeDetector")
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
+
+[node name="LedgeDetector" type="RayCast2D" parent="."]
+position = Vector2(8, 0)
+target_position = Vector2(0, 12)
+collision_mask = 20
 
 [node name="DodgeCancelTimer" type="Timer" parent="."]
 one_shot = true
