@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://wkr5vvc6juys"]
+[gd_scene load_steps=14 format=3 uid="uid://wkr5vvc6juys"]
 
 [ext_resource type="Script" uid="uid://dihwtmdgfkujj" path="res://Scripts/Actors/Enemies/normal_goblin.gd" id="1_lcxwn"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_qs8xc"]
@@ -11,89 +11,102 @@
 [ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="9_jgpfp"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="10_jabsr"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_3ax3k"]
+[ext_resource type="Script" uid="uid://b3ucjfdhlhrc8" path="res://Scripts/Components/Velocity_component.gd" id="12_3ax3k"]
 
 [sub_resource type="CircleShape2D" id="CircleShape2D_db406"]
 radius = 8.0
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_tticn"]
-radius = 33.6702
-height = 104.378
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_571o4"]
-
-[node name="Normal Goblin" type="CharacterBody2D" node_paths=PackedStringArray("hurtbox", "attack")]
+[node name="NormalGoblin" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "lines_of_sight", "hurtbox", "attack")]
 collision_layer = 8
 collision_mask = 22
 script = ExtResource("1_lcxwn")
+v_component = NodePath("VelocityComponent")
+lines_of_sight = [NodePath("LinesOfSight/LineOfSight"), NodePath("LinesOfSight/LineOfSight2"), NodePath("LinesOfSight/LineOfSight3")]
 hurtbox = NodePath("Boxes/Hurtbox")
 attack = NodePath("Boxes/AttackHitbox")
 
-[node name="coll" type="CollisionShape2D" parent="."]
+[node name="Coll" type="CollisionShape2D" parent="."]
 scale = Vector2(16, 16)
 shape = ExtResource("2_qs8xc")
 
 [node name="Detectors" type="Node2D" parent="."]
 
-[node name="Wall_Detector" type="RayCast2D" parent="Detectors"]
+[node name="WallDetector" type="RayCast2D" parent="Detectors"]
 target_position = Vector2(-32, 0)
 collision_mask = 20
 
-[node name="Ground_Detector" type="RayCast2D" parent="Detectors"]
+[node name="GroundDetector" type="RayCast2D" parent="Detectors"]
 position = Vector2(-11, 0)
 target_position = Vector2(0, 12)
 collision_mask = 20
 
-[node name="Attack_Area" type="Area2D" parent="."]
-position = Vector2(-11, 0)
-collision_layer = 0
+[node name="Areas" type="Node2D" parent="."]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack_Area"]
-shape = SubResource("CircleShape2D_db406")
-debug_color = Color(0.941452, 0.102353, 0.546891, 0.42)
-
-[node name="Sight_Area" type="Area2D" parent="."]
-collision_layer = 0
-
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sight_Area"]
-position = Vector2(-37, -10)
-scale = Vector2(1.92171, 0.593997)
-shape = SubResource("CapsuleShape2D_tticn")
-debug_color = Color(0.307514, 0.904886, 0.469353, 0.42)
-
-[node name="Arrow_Detector" type="Area2D" parent="."]
-position = Vector2(-92, 0)
+[node name="OuterArrowDetector" type="Area2D" parent="Areas"]
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Arrow_Detector"]
-rotation = -4.71239
-shape = SubResource("CapsuleShape2D_571o4")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/OuterArrowDetector"]
+scale = Vector2(180, 100)
+shape = ExtResource("11_3ax3k")
+debug_color = Color(0.0196078, 0.576471, 0.811765, 0.623529)
+
+[node name="InnerArrowDetector" type="Area2D" parent="Areas"]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/InnerArrowDetector"]
+scale = Vector2(140, 70)
+shape = ExtResource("11_3ax3k")
+debug_color = Color(0.560784, 0.396078, 1, 0.631373)
+
+[node name="SightArea" type="Area2D" parent="Areas"]
+position = Vector2(-55, -10)
+scale = Vector2(230, 110)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/SightArea"]
+shape = ExtResource("2_qs8xc")
+debug_color = Color(0.307514, 0.904886, 0.469353, 0.42)
+
+[node name="AttackArea" type="Area2D" parent="Areas"]
+position = Vector2(-11, 0)
+collision_layer = 0
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/AttackArea"]
+shape = SubResource("CircleShape2D_db406")
+debug_color = Color(0.941452, 0.102353, 0.546891, 0.42)
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("3_wqmh0")
 
-[node name="State_Tree" type="Node" parent="StateChart"]
+[node name="StateTree" type="Node" parent="StateChart"]
 script = ExtResource("4_mqlfr")
 initial_state = NodePath("Guarding")
 
-[node name="Guarding" type="Node" parent="StateChart/State_Tree"]
+[node name="Guarding" type="Node" parent="StateChart/StateTree"]
 script = ExtResource("5_esu5x")
 
-[node name="To_Chasing" type="Node" parent="StateChart/State_Tree/Guarding"]
+[node name="ToChasing" type="Node" parent="StateChart/StateTree/Guarding"]
 script = ExtResource("6_787da")
 to = NodePath("../../Chasing")
 event = &"Chase_Player"
 
-[node name="Chasing" type="Node" parent="StateChart/State_Tree"]
+[node name="Chasing" type="Node" parent="StateChart/StateTree"]
 script = ExtResource("5_esu5x")
 
-[node name="To_Guarding" type="Node" parent="StateChart/State_Tree/Chasing"]
+[node name="ToGuarding" type="Node" parent="StateChart/StateTree/Chasing"]
 script = ExtResource("6_787da")
 to = NodePath("../../Guarding")
 event = &"Guard"
 
-[node name="Line_Of_Sight" type="RayCast2D" parent="."]
-collision_mask = 21
+[node name="Attack" type="Node" parent="StateChart/StateTree"]
+script = ExtResource("5_esu5x")
+
+[node name="ToChasing" type="Node" parent="StateChart/StateTree/Attack"]
+script = ExtResource("6_787da")
+to = NodePath("../../Chasing")
+event = &"Chase_Player"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0, 1, 0, 1)
@@ -119,7 +132,7 @@ shape = ExtResource("2_qs8xc")
 [node name="AttackHitbox" parent="Boxes" node_paths=PackedStringArray("parent") instance=ExtResource("10_jabsr")]
 visible = false
 position = Vector2(-11, 0)
-scale = Vector2(25, 20)
+scale = Vector2(25, 25)
 collision_layer = 1024
 monitorable = false
 parent = NodePath("../..")
@@ -140,12 +153,31 @@ Damage = 1.0
 [node name="Coll" type="CollisionShape2D" parent="Boxes/ContactHitbox"]
 shape = ExtResource("2_qs8xc")
 
-[connection signal="body_entered" from="Attack_Area" to="." method="_player_entered_attack_area"]
-[connection signal="body_exited" from="Attack_Area" to="." method="_player_exited_attack_area"]
-[connection signal="body_entered" from="Sight_Area" to="." method="_player_entered_sight_area"]
-[connection signal="body_exited" from="Sight_Area" to="." method="_player_exited_sight_area"]
-[connection signal="area_entered" from="Arrow_Detector" to="." method="_on_arrow_entered"]
-[connection signal="state_physics_processing" from="StateChart/State_Tree/Chasing" to="." method="_on_chasing_state_physics_processing"]
+[node name="VelocityComponent" type="Node" parent="."]
+script = ExtResource("12_3ax3k")
+metadata/_custom_type_script = "uid://b3ucjfdhlhrc8"
+
+[node name="LinesOfSight" type="Node2D" parent="."]
+
+[node name="LineOfSight" type="RayCast2D" parent="LinesOfSight"]
+collision_mask = 21
+
+[node name="LineOfSight2" type="RayCast2D" parent="LinesOfSight"]
+position = Vector2(0, -10)
+collision_mask = 21
+
+[node name="LineOfSight3" type="RayCast2D" parent="LinesOfSight"]
+position = Vector2(-9, 0)
+collision_mask = 21
+
+[connection signal="area_entered" from="Areas/OuterArrowDetector" to="." method="_on_arrow_entered"]
+[connection signal="area_entered" from="Areas/InnerArrowDetector" to="." method="_on_arrow_entered"]
+[connection signal="body_entered" from="Areas/SightArea" to="." method="_player_entered_sight_area"]
+[connection signal="body_exited" from="Areas/SightArea" to="." method="_player_exited_sight_area"]
+[connection signal="body_entered" from="Areas/AttackArea" to="." method="_player_entered_attack_area"]
+[connection signal="body_exited" from="Areas/AttackArea" to="." method="_player_exited_attack_area"]
+[connection signal="state_physics_processing" from="StateChart/StateTree/Guarding" to="." method="_on_guarding_state_physics_processing"]
+[connection signal="state_physics_processing" from="StateChart/StateTree/Chasing" to="." method="_on_chasing_state_physics_processing"]
 [connection signal="lost_health" from="HealthManager" to="." method="_on_health_lost_health"]
 [connection signal="ran_out" from="HealthManager" to="." method="_on_health_ran_out"]
 [connection signal="took_damage" from="Boxes/Hurtbox" to="HealthManager" method="lose_health"]

@@ -3,8 +3,8 @@ extends CharacterBody2D
 @export_enum("Left", "Right") var direction : int
 @export var sight_area_scale : Vector2 = Vector2(320, 150)
 
-@onready var rock = load("res://Scenes/Actors/Enemies/Throwable_rock.tscn")
-@onready var sight_area := $Sight_Area as Area2D
+@onready var rock = preload("res://Scenes/Actors/Enemies/Throwable_rock.tscn")
+@onready var sight_area := $SightArea as Area2D
 @onready var rock_spawner = $RockSpawner as Marker2D
 
 var player_is_nearby : bool = false
