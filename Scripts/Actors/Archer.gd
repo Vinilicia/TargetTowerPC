@@ -92,7 +92,8 @@ var tween: Tween
 var dodged_this_frame: bool = false
 var dodge_started_off_ledge: bool = false
 var aim_enemy_pos: Vector2
-var enemy_target: Node2D
+var enemy_target: CharacterBody2D
+var enemies_on_target: Array = []
 
 # ============================================================
 # READY
@@ -223,15 +224,25 @@ func _on_dodge_cancel_timer_timeout() -> void:
 	combat.dodge_can_cancel = true
 
 func _on_aim_sight_enemy_entered(enemy: Node2D) -> void:
-	enemy_target = enemy
+	enemies_on_target.append(enemy)
 	
-func _on_aim_sight_enemy_exited(_enemy: Node2D) -> void:
-	enemy_target = null
+func _on_aim_sight_enemy_exited(enemy: Node2D) -> void:
+	enemies_on_target.erase(enemy)
 	
 func handle_aim_enemy() -> void:
-	if enemy_target:
-		aim_enemy_pos = enemy_target.global_position - global_position
-		enemy_tracker.target_position = aim_enemy_pos
+	var closest: CharacterBody2D = null
+	var min_dist: float = INF
+	for enemy in enemies_on_target:
+		if not is_instance_valid(enemy):
+			continue
+		var dist = global_position.distance_to(enemy.global_position)
+		if dist < min_dist:
+			min_dist = dist
+			closest = enemy
+	if closest:
+		aim_enemy_pos = closest.global_position - global_position
+	enemy_tracker.target_position = aim_enemy_pos
+	enemy_target = closest
 
 func handle_arrow_updates() -> void:
 	if combat.update_flying_dir:
