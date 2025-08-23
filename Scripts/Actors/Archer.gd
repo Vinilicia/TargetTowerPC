@@ -156,6 +156,8 @@ func handle_combat_inputs() -> void:
 		combat.shoot_direction = Vector2(dir_x, dir_y).normalized()
 	combat.dodge_direction = Vector2(dodge_dir_x, dodge_dir_y)
 	
+	aim_enemy.rotation = Vector2(dir_x, dir_y).normalized().angle()
+	
 	if Input.is_action_just_released("shoot"):
 		combat.is_holding = false
 		combat.update_flying_dir = false
@@ -301,7 +303,7 @@ func turn(facing_dir: int) -> void:
 	var final_pos = Vector2(camera_distance * facing_dir, pos.y)
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(camera_remote, "position", final_pos, camera_move_duration)
-	aim_enemy.scale.x = facing_dir
+	#aim_enemy.scale.x = facing_dir
 
 func setup_camera() -> void:
 	camera_remote.remote_path = get_parent().get_camera().get_path()

@@ -194,8 +194,8 @@ script = ExtResource("14_rbeol")
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="AimEnemy/AimSight"]
-position = Vector2(94, -5.00001)
-scale = Vector2(200, 30)
+position = Vector2(94, 0)
+scale = Vector2(200, 20)
 shape = ExtResource("4_26aeq")
 
 [node name="EnemyTracker" type="RayCast2D" parent="AimEnemy"]
