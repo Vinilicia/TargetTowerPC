@@ -13,6 +13,8 @@ const DODGE_VERTICAL_VELOCITY := 0.0
 # EXPORTS E NODES
 # ============================================================
 @onready var anim: AnimationPlayer = $Archer/AnimationPlayer
+@onready var enemy_tracker: RayCast2D = $AimEnemy/EnemyTracker
+@onready var aim_enemy: Node2D = $AimEnemy
 
 @export var state_chart: StateChart
 
@@ -89,6 +91,8 @@ var pos: Vector2
 var tween: Tween
 var dodged_this_frame: bool = false
 var dodge_started_off_ledge: bool = false
+var aim_enemy_pos: Vector2
+var enemy_target: Node2D
 
 # ============================================================
 # READY
@@ -109,6 +113,7 @@ func _physics_process(delta: float) -> void:
 	apply_gravity(delta)
 	handle_combat_inputs()
 	handle_movement()
+	handle_aim_enemy()
 	handle_arrow_updates()
 	velocity = v_component.get_total_velocity()
 	corner_correction(7, delta)
@@ -145,7 +150,10 @@ func handle_combat_inputs() -> void:
 	elif Input.is_action_pressed("right"):
 		dodge_dir_x = 1
 
-	combat.shoot_direction = Vector2(dir_x, dir_y).normalized()
+	if enemy_target and enemy_tracker.get_collider() == enemy_target:
+		combat.shoot_direction = aim_enemy_pos.normalized()
+	else:
+		combat.shoot_direction = Vector2(dir_x, dir_y).normalized()
 	combat.dodge_direction = Vector2(dodge_dir_x, dodge_dir_y)
 	
 	if Input.is_action_just_released("shoot"):
@@ -211,6 +219,17 @@ func end_dodge() -> void:
 
 func _on_dodge_cancel_timer_timeout() -> void:
 	combat.dodge_can_cancel = true
+
+func _on_aim_sight_enemy_entered(enemy: Node2D) -> void:
+	enemy_target = enemy
+	
+func _on_aim_sight_enemy_exited(_enemy: Node2D) -> void:
+	enemy_target = null
+	
+func handle_aim_enemy() -> void:
+	if enemy_target:
+		aim_enemy_pos = enemy_target.global_position - global_position
+		enemy_tracker.target_position = aim_enemy_pos
 
 func handle_arrow_updates() -> void:
 	if combat.update_flying_dir:
@@ -282,6 +301,7 @@ func turn(facing_dir: int) -> void:
 	var final_pos = Vector2(camera_distance * facing_dir, pos.y)
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(camera_remote, "position", final_pos, camera_move_duration)
+	aim_enemy.scale.x = facing_dir
 
 func setup_camera() -> void:
 	camera_remote.remote_path = get_parent().get_camera().get_path()
