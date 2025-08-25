@@ -29,36 +29,24 @@ attack = NodePath("Boxes/AttackHitbox")
 scale = Vector2(16, 16)
 shape = ExtResource("2_qs8xc")
 
-[node name="Detectors" type="Node2D" parent="."]
-
-[node name="WallDetector" type="RayCast2D" parent="Detectors"]
-target_position = Vector2(-32, 0)
-collision_mask = 20
-
-[node name="GroundDetector" type="RayCast2D" parent="Detectors"]
-position = Vector2(-11, 0)
-target_position = Vector2(0, 12)
-collision_mask = 20
-
 [node name="Areas" type="Node2D" parent="."]
 
 [node name="OuterArrowDetector" type="Area2D" parent="Areas"]
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/OuterArrowDetector"]
-scale = Vector2(180, 100)
-shape = ExtResource("11_3ax3k")
-debug_color = Color(0.0196078, 0.576471, 0.811765, 0.623529)
+[node name="CollisionPolygon2D" type="CollisionPolygon2D" parent="Areas/OuterArrowDetector"]
+modulate = Color(0, 0, 1, 1)
+polygon = PackedVector2Array(-90, 0, -50, -40, 0, -50, 0, 50, -50, 40, -90, 0)
 
 [node name="InnerArrowDetector" type="Area2D" parent="Areas"]
+position = Vector2(1, 0)
 collision_layer = 0
 collision_mask = 2
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/InnerArrowDetector"]
-scale = Vector2(140, 70)
-shape = ExtResource("11_3ax3k")
-debug_color = Color(0.560784, 0.396078, 1, 0.631373)
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="Areas/InnerArrowDetector"]
+modulate = Color(1, 0.988235, 0, 1)
+polygon = PackedVector2Array(-70, 0, -45, -25, 0, -35, 0, 35, -45, 25, -70, 0)
 
 [node name="SightArea" type="Area2D" parent="Areas"]
 position = Vector2(-55, -10)
@@ -170,8 +158,20 @@ collision_mask = 21
 position = Vector2(-9, 0)
 collision_mask = 21
 
-[connection signal="area_entered" from="Areas/OuterArrowDetector" to="." method="_on_arrow_entered"]
-[connection signal="area_entered" from="Areas/InnerArrowDetector" to="." method="_on_arrow_entered"]
+[node name="Detectors" type="Node2D" parent="."]
+
+[node name="WallDetector" type="RayCast2D" parent="Detectors"]
+target_position = Vector2(-32, 0)
+collision_mask = 20
+
+[node name="GroundDetector" type="RayCast2D" parent="Detectors"]
+position = Vector2(-11, 0)
+target_position = Vector2(0, 12)
+collision_mask = 20
+
+[connection signal="area_entered" from="Areas/OuterArrowDetector" to="." method="_on_outer_detector_entered"]
+[connection signal="area_entered" from="Areas/InnerArrowDetector" to="." method="_on_inner_detector_entered"]
+[connection signal="area_exited" from="Areas/InnerArrowDetector" to="." method="_on_inner_detector_exited"]
 [connection signal="body_entered" from="Areas/SightArea" to="." method="_player_entered_sight_area"]
 [connection signal="body_exited" from="Areas/SightArea" to="." method="_player_exited_sight_area"]
 [connection signal="body_entered" from="Areas/AttackArea" to="." method="_player_entered_attack_area"]
@@ -180,4 +180,5 @@ collision_mask = 21
 [connection signal="state_physics_processing" from="StateChart/StateTree/Chasing" to="." method="_on_chasing_state_physics_processing"]
 [connection signal="lost_health" from="HealthManager" to="." method="_on_health_lost_health"]
 [connection signal="ran_out" from="HealthManager" to="." method="_on_health_ran_out"]
+[connection signal="got_hit_by" from="Boxes/Hurtbox" to="." method="_on_hurtbox_got_hit_by"]
 [connection signal="took_damage" from="Boxes/Hurtbox" to="HealthManager" method="lose_health"]

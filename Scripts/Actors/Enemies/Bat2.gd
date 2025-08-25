@@ -286,5 +286,5 @@ func _ran_out_of_health() -> void:
 	stop(0.1)
 	call_deferred("free")
 
-func _hurtbox_got_knocked(knockback_vector: Vector2) -> void:
+func _hurtbox_got_knocked(hitbox : Hitbox) -> void:
 	pass

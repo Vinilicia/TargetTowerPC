@@ -6,7 +6,7 @@ class_name Hurtbox
 @export var invincibility_time : float
 
 signal took_damage(amount : float)
-signal got_knocked(knockback_vector : Vector2)
+signal got_hit_by(hitbox : Hitbox)
 
 #Basicamente o Node que tiver isso como filho deve conectar esse sinal Took_Damage com alguma função, recebendo 
 #esses dois floats como argumento.
@@ -14,7 +14,7 @@ signal got_knocked(knockback_vector : Vector2)
 func got_hit(area : Hitbox) -> void:
 	var damage_amount : float = area.Damage
 	var knockback_vector : Vector2 = area.get_knockback_vector()
-	got_knocked.emit(knockback_vector)
+	got_hit_by.emit(area)
 	took_damage.emit(damage_amount)
 	area.hit_something(parent)
 	get_invincible()
