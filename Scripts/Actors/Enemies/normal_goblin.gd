@@ -22,14 +22,15 @@ const ARROW_AVOID_DELAY : float = 0.15
 @onready var jump_detector: RayCast2D = $Detectors/JumpDetector
 @onready var fall_detector: RayCast2D = $Detectors/FallDetector
 @onready var ground_detector: RayCast2D = $Detectors/GroundDetector
-@onready var attack_area: Area2D = $Areas/AttackArea
+@onready var jump_attack_area: Area2D = $Areas/JumpAttackArea
+@onready var stab_attack_area: Area2D = $Areas/StabAttackArea
 @onready var sight_area: Area2D = $Areas/SightArea
 @onready var outer_arrow_detec: Area2D = $Areas/OuterArrowDetector
 @onready var inner_arrow_detec: Area2D = $Areas/InnerArrowDetector
 @onready var coll: CollisionShape2D = $Coll
 
 @export var hurtbox: Hurtbox
-@export var attack: Hitbox
+@export var slash_hitbox: Hitbox
 
 var player_target: CharacterBody2D
 var player_relative_position: Vector2
@@ -45,7 +46,7 @@ var is_changing_direction := false
 var is_jumping : bool = false
 var still_cant_react : bool = false
 var saw_arrow : bool = false
-
+var attacking : bool = false
 
 func _ready() -> void:
 	
@@ -54,10 +55,15 @@ func _ready() -> void:
 	if direction == 1:
 		flip()
 
+func get_current_gravity() -> Vector2:
+	if attacking:
+		return get_gravity() / 2
+	else:
+		return get_gravity()
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
-		v_component.add_proper_velocity(get_gravity() * delta)
+		v_component.add_proper_velocity(get_current_gravity() * delta)
 	else:
 		if is_jumping:
 			is_jumping = false
@@ -123,13 +129,36 @@ func look_for_player() -> void:
 # ATAQUE
 # ======================
 
-func _player_entered_attack_area(_body: Node2D) -> void:
-	attack.set_deferred("monitorable", true)
-	attack.visible = true
-	await get_tree().create_timer(0.5).timeout
-	attack.visible = false
-	attack.set_deferred("monitorable", false)
+func _player_entered_jump_attack_area(_body: Node2D) -> void:
+	if is_on_floor():
+		jump_attack()
 
+func jump_attack() -> void:
+	attacking = true
+	v_component.set_proper_velocity(Vector2(100 * direction, -80))
+	slash_hitbox.set_deferred("monitorable", true)
+	slash_hitbox.visible = true
+	await get_tree().create_timer(0.5).timeout
+	attacking = false
+	slash_hitbox.visible = false
+	slash_hitbox.set_deferred("monitorable", false)
+
+func _player_entered_stab_attack_area(_body: Node2D) -> void:
+	if is_on_floor():
+		stab_attack()
+
+func stab_attack() -> void:
+	attacking = true
+	slash_hitbox.set_deferred("monitorable", true)
+	slash_hitbox.visible = true
+	await get_tree().create_timer(0.5).timeout
+	attacking = false
+	slash_hitbox.visible = false
+	slash_hitbox.set_deferred("monitorable", false)
+
+func _on_attack_state_physics_processing(delta: float) -> void:
+	if is_on_floor():
+		v_component.set_proper_velocity(0.0, 1)
 
 # ======================
 # ESTADOS
@@ -197,9 +226,10 @@ func flip() -> void:
 	jump_detector.scale.x *= -1
 	ground_detector.position.x *= -1
 	fall_detector.position.x *= -1
-	attack_area.position.x *= -1
+	jump_attack_area.position.x *= -1
+	stab_attack_area.position.x *= -1
 	sight_area.position.x *= -1
-	attack.position.x *= -1
+	slash_hitbox.position.x *= -1
 	lines_of_sight[2].position.x *= -1
 	outer_arrow_detec.scale.x *= -1
 	inner_arrow_detec.scale.x *= -1
@@ -226,6 +256,9 @@ func _on_outer_detector_entered(_area: Area2D) -> void:
 func _on_inner_detector_entered(_area: Area2D) -> void:
 	if saw_arrow:
 		avoid_arrow()
+
+func _on_inner_detector_exited(area: Area2D) -> void:
+	inner_detector = false
 
 func avoid_arrow() -> void:
 	if not can_dash:
@@ -257,6 +290,3 @@ func _on_health_lost_health(amount: float) -> void:
 func _on_hurtbox_got_hit_by(hitbox: Hitbox) -> void:
 	if hitbox.get_collision_layer_value(10) and !saw_player:
 		look_for_player()
-
-func _on_inner_detector_exited(area: Area2D) -> void:
-	inner_detector = false
