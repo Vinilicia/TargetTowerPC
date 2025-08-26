@@ -3,19 +3,23 @@ extends CharacterBody2D
 const DASH_DURATION : float = 0.4
 const DASH_SPEED_MULTIPLIER : float = 2.0
 const CHASE_PERSISTENCE_TIME : float = 1.0
-const LOOK_AROUND_TIME : float = 2.0	
+const LOOK_AROUND_TIME : float = 2.0
 const LOOK_AROUND_AREA_INCREASE : float = 1.5
+const GIVING_UP_CHASE_TIME : float = 2.0
 
 @export_enum("Esquerda", "Direita") var start_direction: int
-@export var walk_speed: float = 70.0
-@export var chase_speed: float = 105.0
+@export var walk_speed: float
+@export var chase_speed: float
+@export var jump_force : float
 @export var v_component : VelocityComponent
 @export var direction_change_delay : float = 0.3
-@export var lines_of_sight : Array[RayCast2D]   # vários raycasts
+@export var lines_of_sight : Array[RayCast2D]
 
 @onready var state_chart: StateChart = $StateChart
 
 @onready var wall_detector: RayCast2D = $Detectors/WallDetector
+@onready var jump_detector: RayCast2D = $Detectors/JumpDetector
+@onready var fall_detector: RayCast2D = $Detectors/FallDetector
 @onready var ground_detector: RayCast2D = $Detectors/GroundDetector
 @onready var attack_area: Area2D = $Areas/AttackArea
 @onready var sight_area: Area2D = $Areas/SightArea
@@ -37,6 +41,7 @@ var can_dash: bool = true
 var outer_detector : bool = false
 var inner_detector : bool = false
 var is_changing_direction := false
+var is_jumping : bool = false
 
 
 func _ready() -> void:
@@ -49,21 +54,18 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
-		velocity += get_gravity() * delta
-
-	var hit_wall := wall_detector.is_colliding()
-	ground_detector.force_raycast_update()
-	var no_ground := !ground_detector.is_colliding()
-
-	if (hit_wall or no_ground) and !saw_player:	
-		_change_direction()
+		v_component.add_proper_velocity(get_gravity() * delta)
+	else:
+		if is_jumping:
+			is_jumping = false
+		v_component.set_proper_velocity(0, 2)
 
 	if player_is_nearby:
 		_update_lines_of_sight()
 		if not saw_player and _player_visible_in_sight():
 			_start_chase()
 
-	if !((hit_wall or no_ground) and saw_player) and !is_changing_direction:
+	if !is_changing_direction:
 		velocity = v_component.get_total_velocity()
 		move_and_slide()
 
@@ -130,20 +132,57 @@ func _player_entered_attack_area(_body: Node2D) -> void:
 # ESTADOS
 # ======================
 
+func jump() -> void:
+	is_jumping = true
+	v_component.set_proper_velocity(jump_force, 2)
+
 func _on_chasing_state_physics_processing(_delta: float) -> void:
 	v_component.set_proper_velocity(chase_speed * direction, 1)
 	
+	wall_detector.force_raycast_update()
+	ground_detector.force_raycast_update()
+	jump_detector.force_raycast_update()
+	fall_detector.force_raycast_update()
+	var hit_wall := wall_detector.is_colliding()
+	var can_jump := !jump_detector.is_colliding()
+	var no_ground := !ground_detector.is_colliding()
+	var can_fall := fall_detector.is_colliding()
+	if (hit_wall or no_ground):
+		if hit_wall and can_jump and !is_jumping and abs(player_target.global_position.y - global_position.y) > 10  :
+			jump()
+		elif no_ground and can_fall:
+			pass
+		else:
+			v_component.set_proper_velocity(0.0, 1)
+	
 	if not _player_visible_in_sight() and saw_player:
-		saw_player = false
-		state_chart.send_event("Guard")
-
-	var target_dir : int = sign(player_target.position.x - position.x)
-	if target_dir != direction:
+		var giving_up_timer : Timer = Timer.new()
+		giving_up_timer.one_shot = true
+		giving_up_timer.autostart = false
+		giving_up_timer.wait_time = GIVING_UP_CHASE_TIME
+		giving_up_timer.timeout.connect(func():
+			saw_player = false
+			state_chart.send_event("Guard")
+			)
+		add_child(giving_up_timer)
+		giving_up_timer.start()
+	
+	var position_difference = player_target.position.x - position.x
+	var target_dir : int = sign(position_difference)
+	if target_dir != direction and is_on_floor() and abs(position_difference) > 10:
 		_change_direction()
 
 
 func _on_guarding_state_physics_processing(delta: float) -> void:
 	v_component.set_proper_velocity(walk_speed * direction, 1)
+	
+	wall_detector.force_raycast_update()
+	var hit_wall := wall_detector.is_colliding()
+	ground_detector.force_raycast_update()
+	var no_ground := !ground_detector.is_colliding()
+	
+	if (hit_wall or no_ground) and is_on_floor():
+		_change_direction()
 
 
 # ======================
@@ -152,7 +191,9 @@ func _on_guarding_state_physics_processing(delta: float) -> void:
 
 func flip() -> void:
 	wall_detector.scale.x *= -1
+	jump_detector.scale.x *= -1
 	ground_detector.position.x *= -1
+	fall_detector.position.x *= -1
 	attack_area.position.x *= -1
 	sight_area.position.x *= -1
 	attack.position.x *= -1
