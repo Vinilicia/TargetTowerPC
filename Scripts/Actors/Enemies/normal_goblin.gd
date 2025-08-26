@@ -4,8 +4,9 @@ const DASH_DURATION : float = 0.4
 const DASH_SPEED_MULTIPLIER : float = 2.0
 const CHASE_PERSISTENCE_TIME : float = 1.0
 const LOOK_AROUND_TIME : float = 2.0
-const LOOK_AROUND_AREA_INCREASE : float = 1.5
+const LOOK_AROUND_AREA_INCREASE : float = 2
 const GIVING_UP_CHASE_TIME : float = 2.0
+const ARROW_AVOID_DELAY : float = 0.15
 
 @export_enum("Esquerda", "Direita") var start_direction: int
 @export var walk_speed: float
@@ -42,6 +43,8 @@ var outer_detector : bool = false
 var inner_detector : bool = false
 var is_changing_direction := false
 var is_jumping : bool = false
+var still_cant_react : bool = false
+var saw_arrow : bool = false
 
 
 func _ready() -> void:
@@ -198,8 +201,8 @@ func flip() -> void:
 	sight_area.position.x *= -1
 	attack.position.x *= -1
 	lines_of_sight[2].position.x *= -1
-	outer_arrow_detec.scale *= -1
-	inner_arrow_detec.scale *= -1
+	outer_arrow_detec.scale.x *= -1
+	inner_arrow_detec.scale.x *= -1
 
 
 func _change_direction() -> void:
@@ -215,16 +218,13 @@ func _change_direction() -> void:
 
 	is_changing_direction = false
 
-
 func _on_outer_detector_entered(_area: Area2D) -> void:
-	outer_detector = true
-	call_deferred("try_avoid")
+	saw_arrow = true
+	await get_tree().create_timer(1.5).timeout
+	saw_arrow = false
 
 func _on_inner_detector_entered(_area: Area2D) -> void:
-	inner_detector = true
-
-func try_avoid() -> void:
-	if outer_detector and !inner_detector:
+	if saw_arrow:
 		avoid_arrow()
 
 func avoid_arrow() -> void:

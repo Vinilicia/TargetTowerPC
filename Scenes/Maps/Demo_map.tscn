@@ -1939,7 +1939,7 @@ process_mode = 3
 visible = false
 
 [node name="Player" parent="." instance=ExtResource("8_pjtoa")]
-position = Vector2(12, 49)
+position = Vector2(8, 56)
 
 [node name="Enemies" type="Node2D" parent="."]
 
