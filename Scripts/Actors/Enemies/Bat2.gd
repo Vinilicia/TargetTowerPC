@@ -180,7 +180,6 @@ func _on_backtracking_state_entered() -> void:
 	var best_point : Vector2
 	var current_distance : float = 500
 	var ceiling_point : bool = false
-	var multiplier : float = 1
 	
 	for angle_deg in range(start_angle, end_angle - 1, step):
 		var angle_rad = deg_to_rad(angle_deg)
@@ -251,7 +250,7 @@ func _preparing_state_entered() -> void:
 func _internal_attacking_state_entered() -> void:
 	current_attack.call()
 
-func _internal_attack_physics_processing(delta: float) -> void:
+func _internal_attack_physics_processing(_delta: float) -> void:
 	if (is_on_wall() and is_zero_approx(get_real_velocity().x)) or (is_on_floor() and is_zero_approx(get_real_velocity().y)):
 		move_target = global_position
 
@@ -278,7 +277,7 @@ func _recovering_state_entered() -> void:
 	#if !flinch_timer.is_stopped():
 		#flinch_timer.stop()
 
-func _took_damage(amount: float) -> void:
+func _took_damage(_amount: float) -> void:
 	#print("The bat took ", amount, " damage!")
 	pass
 
@@ -286,5 +285,5 @@ func _ran_out_of_health() -> void:
 	stop(0.1)
 	call_deferred("free")
 
-func _hurtbox_got_knocked(hitbox : Hitbox) -> void:
+func _hurtbox_got_knocked(_hitbox : Hitbox) -> void:
 	pass

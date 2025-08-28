@@ -155,7 +155,7 @@ func _player_entered_jump_attack_area(_body: Node2D) -> void:
 	else:
 		start_attack = true
 
-func _player_exited_jump_attack_area(body: Node2D) -> void:
+func _player_exited_jump_attack_area(_body: Node2D) -> void:
 	start_attack = false
 
 func _player_entered_stab_attack_area(_body: Node2D) -> void:
@@ -209,7 +209,7 @@ func jump() -> void:
 	is_jumping = true
 	v_component.set_proper_velocity(jump_force, 2)
 
-func _on_attack_state_physics_processing(delta: float) -> void:
+func _on_attack_state_physics_processing(_delta: float) -> void:
 	if is_on_floor():
 		v_component.set_proper_velocity(0.0, 1)
 		if player_in_range and can_stab_attack:
@@ -255,7 +255,7 @@ func _on_chasing_state_physics_processing(_delta: float) -> void:
 func _on_giving_up_timer_timeout() -> void:
 	unnasign_player()
 
-func _on_guarding_state_physics_processing(delta: float) -> void:
+func _on_guarding_state_physics_processing(_delta: float) -> void:
 	v_component.set_proper_velocity(walk_speed * direction, 1)
 
 	wall_detector.force_raycast_update()
@@ -304,7 +304,7 @@ func _on_inner_detector_entered(_area: Area2D) -> void:
 	if saw_arrow:
 		avoid_arrow()
 
-func _on_inner_detector_exited(area: Area2D) -> void:
+func _on_inner_detector_exited(_area: Area2D) -> void:
 	inner_detector = false
 
 func avoid_arrow() -> void:

@@ -348,7 +348,7 @@ func _falling_to_grounded_taken() -> void:
 	anim.play("Landing")
 	
 
-func _grounded_physics_processing(delta: float) -> void:
+func _grounded_physics_processing(_delta: float) -> void:
 	if velocity.x == 0:
 		if anim.current_animation != "Idle":
 			anim.play("Idle")
@@ -362,7 +362,7 @@ func _rising_state_entered() -> void:
 	anim.clear_queue()
 	anim.play("Jump")
 
-func _rising_physics_processing(delta: float) -> void:
+func _rising_physics_processing(_delta: float) -> void:
 	if !Input.is_action_pressed("jump") and jump_state.jumping:
 		jump_state.jumping = false
 		dampen_jump(0.75)
@@ -374,7 +374,7 @@ func _can_shoot_state_entered() -> void:
 		combat.is_holding = false
 		hold_arrow()
 
-func _can_shoot_physics_processing(delta: float) -> void:
+func _can_shoot_physics_processing(_delta: float) -> void:
 	if Input.is_action_just_released("shoot"):
 		shoot()
 	if Input.is_action_just_pressed("shoot"):
@@ -385,7 +385,7 @@ func _cannot_shoot_state_entered() -> void:
 	await get_tree().create_timer(shoot_delay).timeout
 	state_chart.send_event("CanShoot")
 
-func _cant_shoot_physics_processing(delta: float) -> void:
+func _cant_shoot_physics_processing(_delta: float) -> void:
 	if Input.is_action_pressed("shoot"):
 		combat.is_holding = true
 
@@ -395,7 +395,7 @@ func _on_health_lost_health(_amount: float) -> void:
 	await get_tree().create_timer(0.3).timeout
 	modulate = Color(1, 1, 1, 1)
 
-func _falling_state_processing(delta: float) -> void:
+func _falling_state_processing(_delta: float) -> void:
 	if is_on_floor():
 		state_chart.send_event("Grounded")
 	if Input.is_action_just_pressed("jump"):
@@ -410,7 +410,7 @@ func _grounded_state_entered() -> void:
 	else:
 		v_component.set_proper_velocity(0.0, 2)
 
-func _standing_physics_processing(delta: float) -> void:
+func _standing_physics_processing(_delta: float) -> void:
 	if Input.is_action_pressed("down") and velocity.x == 0:
 		state_chart.set_expression_property("crouching", true)
 		state_chart.send_event("Crouched")
@@ -423,7 +423,7 @@ func crouch():
 func _crouched_entered() -> void:
 	crouch()
 
-func _crouched_physics_processing(delta: float) -> void:
+func _crouched_physics_processing(_delta: float) -> void:
 	if Input.is_action_just_released("down"):
 		state_chart.send_event("Standing")
 

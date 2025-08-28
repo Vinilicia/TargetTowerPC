@@ -52,7 +52,7 @@ func _player_entered_sight_area(player: Node2D) -> void:
 	player_target = player
 	player_is_nearby = true
 
-func _player_exited_sight_area(player: Node2D) -> void:
+func _player_exited_sight_area(_player: Node2D) -> void:
 	player_is_nearby = false
 
 func flip() -> void:
