@@ -109,7 +109,7 @@ script = ExtResource("5_esu5x")
 [node name="ToChasing" type="Node" parent="StateChart/StateTree/Attack"]
 script = ExtResource("6_787da")
 to = NodePath("../../Chasing")
-event = &"Chase_Player"
+event = &"Chase"
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0, 1, 0, 1)
@@ -127,7 +127,7 @@ metadata/_custom_type_script = "uid://d4da8yc41448k"
 scale = Vector2(16, 16)
 collision_mask = 2560
 parent = NodePath("../..")
-invincibility_time = 0.1
+invincibility_time = 0.2
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Boxes/Hurtbox"]
 shape = ExtResource("2_qs8xc")
@@ -194,6 +194,20 @@ position = Vector2(-11, 0)
 target_position = Vector2(0, 12)
 collision_mask = 20
 
+[node name="Timers" type="Node" parent="."]
+
+[node name="GivingUpTimer" type="Timer" parent="Timers"]
+wait_time = 2.0
+one_shot = true
+
+[node name="JumpAttackTimer" type="Timer" parent="Timers"]
+wait_time = 5.0
+one_shot = true
+
+[node name="StabAttackTimer" type="Timer" parent="Timers"]
+wait_time = 1.5
+one_shot = true
+
 [connection signal="area_entered" from="Areas/OuterArrowDetector" to="." method="_on_outer_detector_entered"]
 [connection signal="area_exited" from="Areas/OuterArrowDetector" to="." method="_on_outer_detector_exited"]
 [connection signal="area_entered" from="Areas/InnerArrowDetector" to="." method="_on_inner_detector_entered"]
@@ -201,9 +215,9 @@ collision_mask = 20
 [connection signal="body_entered" from="Areas/SightArea" to="." method="_player_entered_sight_area"]
 [connection signal="body_exited" from="Areas/SightArea" to="." method="_player_exited_sight_area"]
 [connection signal="body_entered" from="Areas/JumpAttackArea" to="." method="_player_entered_jump_attack_area"]
-[connection signal="body_exited" from="Areas/JumpAttackArea" to="." method="_player_exited_attack_area"]
+[connection signal="body_exited" from="Areas/JumpAttackArea" to="." method="_player_exited_jump_attack_area"]
 [connection signal="body_entered" from="Areas/StabAttackArea" to="." method="_player_entered_stab_attack_area"]
-[connection signal="body_exited" from="Areas/StabAttackArea" to="." method="_player_exited_attack_area"]
+[connection signal="body_exited" from="Areas/StabAttackArea" to="." method="_player_exited_stab_attack_area"]
 [connection signal="state_physics_processing" from="StateChart/StateTree/Guarding" to="." method="_on_guarding_state_physics_processing"]
 [connection signal="state_physics_processing" from="StateChart/StateTree/Chasing" to="." method="_on_chasing_state_physics_processing"]
 [connection signal="state_physics_processing" from="StateChart/StateTree/Attack" to="." method="_on_attack_state_physics_processing"]
@@ -211,3 +225,6 @@ collision_mask = 20
 [connection signal="ran_out" from="HealthManager" to="." method="_on_health_ran_out"]
 [connection signal="got_hit_by" from="Boxes/Hurtbox" to="." method="_on_hurtbox_got_hit_by"]
 [connection signal="took_damage" from="Boxes/Hurtbox" to="HealthManager" method="lose_health"]
+[connection signal="timeout" from="Timers/GivingUpTimer" to="." method="_on_giving_up_timer_timeout"]
+[connection signal="timeout" from="Timers/JumpAttackTimer" to="." method="_on_jump_attack_timer_timeout"]
+[connection signal="timeout" from="Timers/StabAttackTimer" to="." method="_on_stab_attack_timer_timeout"]
