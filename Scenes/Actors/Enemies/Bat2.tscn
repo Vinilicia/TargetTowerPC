@@ -203,7 +203,7 @@ scale = Vector2(0.063, 0.063)
 scale = Vector2(20, 20)
 collision_mask = 2560
 parent = NodePath("../..")
-invincibility_time = 0.2
+can_be_invincible = false
 
 [node name="Coll" type="CollisionShape2D" parent="DamageBoxes/Hurtbox"]
 shape = ExtResource("3_fe8qe")

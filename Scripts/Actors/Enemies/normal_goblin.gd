@@ -39,7 +39,7 @@ const ARROW_AVOID_DELAY : float = 0.15
 @onready var inner_arrow_detec: Area2D = $Areas/InnerArrowDetector
 
 @onready var coll: CollisionShape2D = $Coll
-@onready var giving_up_timer : Timer = $Timers/GivingUpTimer
+@export var giving_up_timer : Timer
 @onready var jump_attack_timer : Timer = $Timers/JumpAttackTimer
 @onready var stab_attack_timer : Timer = $Timers/StabAttackTimer
 
@@ -135,7 +135,7 @@ func unnasign_player() -> void:
 
 func _player_exited_sight_area(_player: Node2D) -> void:
 	player_is_nearby = false
-	if giving_up_timer.is_stopped():
+	if giving_up_timer.is_stopped() and giving_up_timer.is_inside_tree():
 		giving_up_timer.start()
 
 func look_for_player() -> void:
@@ -166,7 +166,6 @@ func _player_exited_stab_attack_area(_body: Node2D) -> void:
 	player_in_range = false
 
 func attack() -> void:
-	print("__________")
 	attacking = true
 	slash_hitbox.set_deferred("monitorable", true)
 	slash_hitbox.visible = true
