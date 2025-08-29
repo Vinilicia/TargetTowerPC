@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="11_dchfn"]
 [ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="12_5cfxj"]
 
-[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "navigator", "chasing_timer", "giving_up_timer", "flinch_timer", "line_of_sight", "wall_detector", "ceiling_detector", "dash_area", "dive_area", "sight_area", "contact_hitbox")]
+[node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "chasing_timer", "giving_up_timer", "flinch_timer", "line_of_sight", "wall_detector", "ceiling_detector", "dash_area", "dive_area", "sight_area", "contact_hitbox")]
 scale = Vector2(16, 16)
 collision_layer = 8
 collision_mask = 22
@@ -22,7 +22,6 @@ motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_mfbr2")
 v_component = NodePath("VelocityComponent")
-navigator = NodePath("Navigator")
 chasing_timer = NodePath("Timers/ChasingTimer")
 giving_up_timer = NodePath("Timers/GivingUpTimer")
 flinch_timer = NodePath("Timers/FlinchTimer")
@@ -235,12 +234,6 @@ one_shot = true
 wait_time = 0.3
 one_shot = true
 
-[node name="Navigator" type="NavigationAgent2D" parent="."]
-avoidance_enabled = true
-avoidance_layers = 0
-avoidance_mask = 2
-debug_enabled = true
-
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0.490196, 0, 0.572549, 1)
 scale = Vector2(0.006, 0.006)
@@ -273,4 +266,3 @@ texture = ExtResource("12_5cfxj")
 [connection signal="timeout" from="Timers/ChasingTimer" to="." method="start_chase"]
 [connection signal="timeout" from="Timers/GivingUpTimer" to="." method="give_up_chase"]
 [connection signal="timeout" from="Timers/FlinchTimer" to="." method="_flinch_timer_timeout"]
-[connection signal="target_reached" from="Navigator" to="." method="_navigator_target_reached"]
