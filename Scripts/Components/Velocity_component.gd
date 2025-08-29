@@ -9,7 +9,7 @@ var ground_velocity : Vector2
 var wind_velocity : Vector2
 
 signal knockback_changed
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if knockback_velocity != Vector2.ZERO:
 		var reduction := knockback_velocity.length() / knockback_susceptability
 		if reduction < 10:

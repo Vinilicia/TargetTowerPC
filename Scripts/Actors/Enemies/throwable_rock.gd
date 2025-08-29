@@ -23,6 +23,6 @@ func throw(position_target : Vector2) -> void:
 	var vx = (xf-x0)/(t1+t2)
 	linear_velocity = Vector2(vx, -vy)
 
-func _on_hit_something(target : Node2D) -> void:
+func _on_hit_something(_target : Node2D) -> void:
 	print("Hitei")
 	queue_free()

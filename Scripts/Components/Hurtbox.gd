@@ -3,27 +3,31 @@ class_name Hurtbox
 
 @export var parent : Node2D
 @export var invincibility_timer : Timer
-@export var invincibility_time : float
+@export var invincibility_time : float = 1.0
+@export var can_be_invincible : bool = true
 
 signal took_damage(amount : float)
-signal got_knocked(knockback_vector : Vector2)
+signal got_hit_by(hitbox : Hitbox)
 
-#Basicamente o Node que tiver isso como filho deve conectar esse sinal Took_Damage com alguma função, recebendo 
-#esses dois floats como argumento.
 
 func got_hit(area : Hitbox) -> void:
-	var damage_amount : float = area.Damage
-	var knockback_vector : Vector2 = area.get_knockback_vector()
-	got_knocked.emit(knockback_vector)
-	took_damage.emit(damage_amount)
+	got_hit_by.emit(area)
+	took_damage.emit(area.Damage)
 	area.hit_something(parent)
 	get_invincible()
 
-func get_invincible(duration_override : float = -1) -> void:
+
+func get_invincible(duration_override : float = -1.0) -> void:
+	if not can_be_invincible:
+		return
+	
 	set_deferred("monitoring", false)
-	if duration_override != -1:
-		invincibility_timer.start(duration_override)
-	else:
-		invincibility_timer.start(invincibility_time)
+
+	var duration = duration_override if duration_override > 0 else invincibility_time
+	if duration <= 0:
+		push_warning("Invincibility time inválido! Usando fallback de 0.2s")
+		duration = 0.2
+
+	invincibility_timer.start(duration)
 	await invincibility_timer.timeout
 	set_deferred("monitoring", true)

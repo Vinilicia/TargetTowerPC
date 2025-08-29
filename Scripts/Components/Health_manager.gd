@@ -24,5 +24,5 @@ func check_if_alive() -> void:
 		ran_out.emit()
 
 
-func _on_hurtbox_took_damage(amount: float) -> void:
+func _on_hurtbox_took_damage(_amount: float) -> void:
 	pass # Replace with function body.

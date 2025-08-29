@@ -203,7 +203,7 @@ scale = Vector2(0.063, 0.063)
 scale = Vector2(20, 20)
 collision_mask = 2560
 parent = NodePath("../..")
-invincibility_time = 0.2
+can_be_invincible = false
 
 [node name="Coll" type="CollisionShape2D" parent="DamageBoxes/Hurtbox"]
 shape = ExtResource("3_fe8qe")
@@ -269,7 +269,6 @@ texture = ExtResource("12_5cfxj")
 [connection signal="body_exited" from="BehaviorChanging/DashAttackArea" to="." method="_dash_area_body_exited"]
 [connection signal="body_entered" from="BehaviorChanging/DiveAttackArea" to="." method="_dive_area_body_entered"]
 [connection signal="body_exited" from="BehaviorChanging/DiveAttackArea" to="." method="_dash_area_body_exited"]
-[connection signal="got_knocked" from="DamageBoxes/Hurtbox" to="." method="_hurtbox_got_knocked"]
 [connection signal="took_damage" from="DamageBoxes/Hurtbox" to="HealthManager" method="lose_health"]
 [connection signal="timeout" from="Timers/ChasingTimer" to="." method="start_chase"]
 [connection signal="timeout" from="Timers/GivingUpTimer" to="." method="give_up_chase"]

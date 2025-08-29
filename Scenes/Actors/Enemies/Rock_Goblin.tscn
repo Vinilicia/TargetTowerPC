@@ -17,12 +17,12 @@ script = ExtResource("1_kcf3v")
 scale = Vector2(16, 16)
 shape = ExtResource("1_nn6wd")
 
-[node name="Sight_Area" type="Area2D" parent="."]
+[node name="SightArea" type="Area2D" parent="."]
 position = Vector2(-63, -46)
 collision_layer = 0
 monitorable = false
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Sight_Area"]
+[node name="CollisionShape2D" type="CollisionShape2D" parent="SightArea"]
 shape = ExtResource("2_cbwjt")
 debug_color = Color(0.234089, 0.629159, 0.300647, 0.42)
 
@@ -61,7 +61,7 @@ script = ExtResource("6_mss5r")
 max_health = 4.0
 metadata/_custom_type_script = "uid://d4da8yc41448k"
 
-[connection signal="body_entered" from="Sight_Area" to="." method="_player_entered_sight_area"]
-[connection signal="body_exited" from="Sight_Area" to="." method="_player_exited_sight_area"]
+[connection signal="body_entered" from="SightArea" to="." method="_player_entered_sight_area"]
+[connection signal="body_exited" from="SightArea" to="." method="_player_exited_sight_area"]
 [connection signal="took_damage" from="DamageBoxes/Hurtbox" to="HealthManager" method="lose_health"]
 [connection signal="ran_out" from="HealthManager" to="." method="ran_out_of_health"]
