@@ -30,6 +30,11 @@ extends CharacterBody2D
 @export var dash_delay: float
 @export var dash_hitbox_increase: float
 
+# Ajustes de chasing
+@export_group("Chase Tuning")
+@export var chase_retarget_frames: int = 5       # atualiza alvo a cada N frames
+@export var chase_retarget_epsilon: float = 6.0  # px: só move_to se mudou além disso
+@export var facing_flip_deadzone: float = 2.0    # px: evita flip jitter
 
 # Estado atual
 var current_speed: float
@@ -51,6 +56,8 @@ var current_attack: Callable = dash
 var give_up_time: float
 var remaining_time_for_chase: float = -1
 
+# controle do retarget
+var _chase_frame_accum: int = 0
 
 
 #region Built-In
@@ -66,8 +73,12 @@ func _physics_process(_delta: float) -> void:
 	move_and_slide()
 
 func _update_facing_direction() -> void:
-	if sign(velocity.x) != facing_direction and sign(velocity.x) != 0:
-		turn_around()
+	if moving:
+		var dx := move_target.x - global_position.x
+		if abs(dx) > facing_flip_deadzone:
+			var dir_x : int = sign(dx)
+			if dir_x != 0 and dir_x != facing_direction:
+				turn_around()
 
 func _update_line_of_sight() -> void:
 	if player_is_nearby:
@@ -79,12 +90,10 @@ func _update_line_of_sight() -> void:
 
 func _check_reached_target() -> void:
 	if moving and (move_target - global_position).length() < current_tolerance:
+		print("Peanuts")
 		stop(0.2)
 		current_to_do.call()
 
-#Na função physics_process, como o processo de checar a linha de visão com o player é ligado à variável
-#"player_is_nearby", em ambos esses casos abaixo, o inimigo começará ou deixará de ver o player quando ele
-#entrar ou sair da área. A saída é usada tanto em Starting_Chase quanto em Chasing
 func _player_entered_area(player: Node2D) -> void:
 	player_target = player
 	player_is_nearby = true
@@ -94,7 +103,6 @@ func _player_exited_area(_player: Node2D) -> void:
 #endregion
 
 #region Usadas sempre
-#funções essenciais que podem ser usadas a qualquer momento
 func turn_around() -> void:
 	facing_direction *= -1
 	for child in $BehaviorChanging.get_children():
@@ -112,7 +120,6 @@ func move_to(pos: Vector2, tolerance: float, todo: Callable = Callable()) -> voi
 	v_component.set_proper_velocity(current_speed * dir)
 	moving = true
 
-
 func stop(duration : float) -> void:
 	moving = false
 	stopping_tween = create_tween()
@@ -128,7 +135,6 @@ func _idle_exited() -> void:
 	sight_area.position = Vector2.ZERO
 
 #region Estado Starting_Chase
-#Existe mais para rodar a lógica do delay antes da perseguição começar
 func _starting_chase_state_entered() -> void:
 	give_up_time = starting_give_up_delay
 	remaining_time_for_chase = chasing_timer.wait_time
@@ -149,37 +155,45 @@ func _starting_chase_physics_processing(_delta: float) -> void:
 		if giving_up_timer.is_stopped():
 			giving_up_timer.start(give_up_time)
 
-
-#Essas duas abaixo são conectadas aos nós chasing e giving_up timers
 func start_chase() -> void:
-	state_chart.send_event("Started_Chase") #Var pro estado Chasing
+	state_chart.send_event("Started_Chase")
 
 func give_up_chase() -> void:
 	saw_player = false
-	state_chart.send_event("Player_Got_Away") #Vai pro estado Idle ( caso em Starting ) ou para Backtracing
-	# ( Chasing )
-
+	state_chart.send_event("Player_Got_Away")
 #endregion
 
 #region Estado Chasing
-
 func _chasing_state_entered() -> void:
 	current_speed = chase_flying_speed
 	give_up_time = chasing_give_up_delay
+	_chase_frame_accum = 0
+
+	if is_instance_valid(player_target) and player_is_nearby and line_of_sight.get_collider() == player_target:
+		chasing_target_position = player_target.position
+	
+	move_to(chasing_target_position, 10)
 
 func _chasing_state_physics_processing(_delta : float) -> void:
-	if line_of_sight.get_collider() == player_target:
+	var sees_player := line_of_sight.get_collider() == player_target
+
+	if sees_player:
 		giving_up_timer.stop()
-		chasing_target_position = player_target.position
 	else:
 		if giving_up_timer.is_stopped():
 			giving_up_timer.start(give_up_time)
-	
-	move_to(chasing_target_position, 10)
+
+	# só atualiza a cada N frames
+	_chase_frame_accum += 1
+	if sees_player and _chase_frame_accum >= chase_retarget_frames:
+		_chase_frame_accum = 0
+		var new_target := player_target.position
+		if new_target.distance_to(chasing_target_position) >= chase_retarget_epsilon:
+			chasing_target_position = new_target
+			move_to(chasing_target_position, 10)
 #endregion
 
 #region Estado Backtracking
-
 func _on_backtracking_state_entered() -> void:
 	current_speed = backtracking_speed
 	current_tolerance = -10
@@ -203,7 +217,6 @@ func _find_best_ceiling_spot() -> Vector2:
 				best_point = ceiling_detector.get_collision_point()
 	
 	return best_point
-
 #endregion
 
 func dash() -> void:
@@ -229,13 +242,10 @@ func _dive_area_body_entered(_body: Node2D) -> void:
 func _preparing_state_entered() -> void:
 	stop(0.1)
 	contact_hitbox.scale *= dash_hitbox_increase
-	#wall_detector.target_position = facing_direction * Vector2(dash_distance, 0)
-	#wall_detector.force_raycast_update()
 	await get_tree().create_timer(dash_delay).timeout
 	dash_area.monitoring = false
 	dive_area.monitoring = false
 	state_chart.send_event("Prepared_Attack")
-
 
 func _internal_attacking_state_entered() -> void:
 	current_attack.call()
@@ -254,23 +264,7 @@ func _recovering_state_entered() -> void:
 	dive_area.monitoring = true
 	state_chart.send_event("Recovered")
 
-#func flinch() -> void:
-	#if speed_before_flinch == 0:
-		#speed_before_flinch = current_speed
-		#current_speed = 0
-	#flinch_timer.start()
-
-#func _flinch_timer_timeout() -> void:
-	#current_speed = speed_before_flinch
-	#speed_before_flinch = 0
-#
-#
-#func _external_attacking_state_exited() -> void:
-	#if !flinch_timer.is_stopped():
-		#flinch_timer.stop()
-
 func _took_damage(_amount: float) -> void:
-	#print("The bat took ", amount, " damage!")
 	pass
 
 func _ran_out_of_health() -> void:
