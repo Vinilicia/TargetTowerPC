@@ -35,6 +35,7 @@ extends CharacterBody2D
 @export var chase_retarget_frames: int = 5       # atualiza alvo a cada N frames
 @export var chase_retarget_epsilon: float = 6.0  # px: só move_to se mudou além disso
 @export var facing_flip_deadzone: float = 2.0    # px: evita flip jitter
+@export var wander_strength : float = 15.0
 
 # Estado atual
 var current_speed: float
@@ -141,6 +142,7 @@ func _starting_chase_state_entered() -> void:
 	chasing_timer.start()
 	current_speed = backtracking_speed
 	move_to(global_position + Vector2(0, 30), 10)
+	_apply_wander_variation()
 
 func _starting_chase_physics_processing(_delta: float) -> void:
 	var sees_player := line_of_sight.get_collider() == player_target
@@ -174,6 +176,14 @@ func _chasing_state_entered() -> void:
 	
 	move_to(chasing_target_position, 10)
 
+func _apply_wander_variation() -> void:
+	var random_offset := Vector2(randf_range(-1, 1), randf_range(-1, 1)).normalized() * wander_strength
+	v_component.add_proper_velocity(random_offset)
+
+	var v : Vector2 = v_component.get_proper_velocity().normalized() * current_speed
+	v_component.set_proper_velocity(v)
+
+
 func _chasing_state_physics_processing(_delta : float) -> void:
 	var sees_player := line_of_sight.get_collider() == player_target
 
@@ -188,9 +198,9 @@ func _chasing_state_physics_processing(_delta : float) -> void:
 	if sees_player and _chase_frame_accum >= chase_retarget_frames:
 		_chase_frame_accum = 0
 		var new_target := player_target.position
-		if new_target.distance_to(chasing_target_position) >= chase_retarget_epsilon:
-			chasing_target_position = new_target
-			move_to(chasing_target_position, 10)
+		chasing_target_position = new_target
+		move_to(chasing_target_position, 10)
+		_apply_wander_variation()
 #endregion
 
 #region Estado Backtracking
@@ -242,10 +252,12 @@ func _dive_area_body_entered(_body: Node2D) -> void:
 func _preparing_state_entered() -> void:
 	stop(0.1)
 	contact_hitbox.scale *= dash_hitbox_increase
-	await get_tree().create_timer(dash_delay).timeout
 	dash_area.monitoring = false
 	dive_area.monitoring = false
-	state_chart.send_event("Prepared_Attack")
+	current_speed = backtracking_speed - 10
+	move_to(global_position + Vector2(-15 * facing_direction, 0), 1, func() :
+		state_chart.send_event("Prepared_Attack"))
+	
 
 func _internal_attacking_state_entered() -> void:
 	current_attack.call()

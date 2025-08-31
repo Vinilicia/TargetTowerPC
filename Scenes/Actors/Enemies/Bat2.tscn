@@ -33,7 +33,7 @@ dive_area = NodePath("BehaviorChanging/DiveAttackArea")
 sight_area = NodePath("BehaviorChanging/SightArea")
 contact_hitbox = NodePath("DamageBoxes/ContactHitbox")
 backtracking_speed = 30.0
-chase_flying_speed = 90.0
+chase_flying_speed = 60.0
 starting_give_up_delay = 1.0
 chasing_give_up_delay = 2.0
 dash_speed = 250.0
@@ -163,8 +163,8 @@ shape = ExtResource("9_r0lmx")
 debug_color = Color(0, 1, 0.34902, 0.419608)
 
 [node name="DashAttackArea" type="Area2D" parent="BehaviorChanging"]
-position = Vector2(40, 0)
-scale = Vector2(65, 10)
+position = Vector2(35, 0)
+scale = Vector2(55, 6)
 collision_layer = 0
 monitorable = false
 
@@ -173,8 +173,8 @@ shape = ExtResource("9_r0lmx")
 debug_color = Color(0.678431, 0.313726, 0.0627451, 0.419608)
 
 [node name="DiveAttackArea" type="Area2D" parent="BehaviorChanging"]
-position = Vector2(0, 30)
-scale = Vector2(20, 50)
+position = Vector2(0, 25)
+scale = Vector2(12, 45)
 collision_layer = 0
 monitorable = false
 
