@@ -14,7 +14,7 @@ const DODGE_VERTICAL_VELOCITY := 0.0
 # ============================================================
 @onready var anim: AnimationPlayer = $Archer/AnimationPlayer
 @onready var enemy_tracker: RayCast2D = $AimEnemy/EnemyTracker
-@onready var aim_enemy: Node2D = $AimEnemy
+@onready var aim_enemy: Area2D = $AimEnemy/AimSight
 
 @export var state_chart: StateChart
 
