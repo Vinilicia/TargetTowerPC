@@ -223,6 +223,7 @@ func end_dodge() -> void:
 			move_speed = dodge_horizontal_speed
 		state_chart.find_child("ToGrounded").taken.connect(func() : move_speed = DEFAULT_MOVE_SPEED)
 		jump()
+	jump_state.jump_queued = false
 
 func _on_dodge_cancel_timer_timeout() -> void:
 	combat.dodge_can_cancel = true
@@ -277,11 +278,8 @@ func handle_movement() -> void:
 		if Input.is_action_just_released("jump"):
 			jump_state.jump_queued = false
 		
-		var dir : int = int(Input.get_axis("left", "right"))
 		if is_ledge_ahead():
-			if dir != facing_direction and dodge_started_off_ledge:
-				v_component.set_proper_velocity(Vector2.ZERO)
-			elif dir == facing_direction and jump_state.jump_queued:
+			if jump_state.jump_queued or dodge_started_off_ledge:
 				end_dodge()
 		
 		if Input.is_action_just_pressed("dodge") and !dodged_this_frame:
