@@ -1,0 +1,42 @@
+[gd_scene load_steps=7 format=3 uid="uid://l0kny3w6cbg4"]
+
+[ext_resource type="Script" uid="uid://c340tfff8ejnu" path="res://Scripts/Arrows/Platform_Arrow.gd" id="1_a3nj1"]
+[ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_ftbuc"]
+[ext_resource type="PackedScene" uid="uid://trih87ps31u" path="res://Scenes/Interactibles/Objects/Platform.tscn" id="3_xmhof"]
+[ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="4_5kcse"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_h84jg"]
+size = Vector2(5.57763, 1)
+
+[sub_resource type="Gradient" id="Gradient_fvltu"]
+resource_local_to_scene = true
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
+
+[node name="Arrow" type="Area2D" node_paths=PackedStringArray("anim", "sprite", "coll")]
+collision_layer = 2
+collision_mask = 28
+script = ExtResource("1_a3nj1")
+Flying_Speed = 500.0
+Charge_Multiplier = null
+Despawn_Time = 3.0
+Cost = null
+anim = NodePath("Anim_Player")
+sprite = NodePath("Sprite")
+coll = NodePath("Coll")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture_filter = 1
+texture = ExtResource("2_ftbuc")
+
+[node name="Anim_Player" type="AnimationPlayer" parent="."]
+
+[node name="Platform" parent="." instance=ExtResource("3_xmhof")]
+position = Vector2(5, -0.5)
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+position = Vector2(5, -0.5)
+scale = Vector2(0.359, -1)
+shape = SubResource("RectangleShape2D_h84jg")
+
+[node name="Arrow_Trail" parent="." instance=ExtResource("4_5kcse")]
+gradient = SubResource("Gradient_fvltu")

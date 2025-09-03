@@ -1,0 +1,9 @@
+[gd_scene load_steps=3 format=3 uid="uid://bd5krujpcucd0"]
+
+[ext_resource type="Script" uid="uid://bimuxa05sa8qy" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/Receptor.gd" id="1_mho2j"]
+[ext_resource type="Texture2D" uid="uid://kehvdkjwoldu" path="res://Assets/Home_bred/Mechanisms/Targets/Receptor.aseprite" id="2_sgvjb"]
+
+[node name="ReceptorSprite" type="Sprite2D"]
+texture = ExtResource("2_sgvjb")
+script = ExtResource("1_mho2j")
+Receptor_Color = "Red"

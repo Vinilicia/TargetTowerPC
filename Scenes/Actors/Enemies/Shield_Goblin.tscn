@@ -1,0 +1,135 @@
+[gd_scene load_steps=13 format=3 uid="uid://24o2ouhrj1ll"]
+
+[ext_resource type="Script" uid="uid://ctxjkn1n24ck5" path="res://Scripts/Actors/Enemies/shield_goblin.gd" id="1_pivhh"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_xbm6f"]
+[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="2_vqykb"]
+[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="4_bo1xe"]
+[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="5_jmfj7"]
+[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="6_r4ilv"]
+[ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="7_lfgxc"]
+
+[sub_resource type="CircleShape2D" id="CircleShape2D_abxyc"]
+radius = 8.0
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_s5liu"]
+radius = 33.67
+height = 104.38
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_ojwqb"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_i5j0s"]
+size = Vector2(15, 29)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_mndhr"]
+size = Vector2(14, 28)
+
+[node name="Shield Goblin" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 22
+script = ExtResource("1_pivhh")
+
+[node name="coll" type="CollisionShape2D" parent="."]
+scale = Vector2(16, 16)
+shape = ExtResource("1_xbm6f")
+
+[node name="Detectors" type="Node2D" parent="."]
+
+[node name="Wall_Detector" type="RayCast2D" parent="Detectors"]
+target_position = Vector2(-32, 0)
+collision_mask = 20
+
+[node name="Ground_Detector" type="RayCast2D" parent="Detectors"]
+position = Vector2(-11, 0)
+target_position = Vector2(0, 12)
+collision_mask = 20
+
+[node name="Attack_Area" type="Area2D" parent="."]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Attack_Area"]
+position = Vector2(-11, 0)
+shape = SubResource("CircleShape2D_abxyc")
+debug_color = Color(0.820145, 0.326938, 0.609052, 0.42)
+
+[node name="Sight_Area" type="Area2D" parent="."]
+collision_layer = 8
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Sight_Area"]
+position = Vector2(-37, -10)
+scale = Vector2(1.922, 0.594)
+shape = SubResource("CapsuleShape2D_s5liu")
+debug_color = Color(0.263109, 0.625039, 0.307426, 0.42)
+
+[node name="Arrow_Detector" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Arrow_Detector"]
+position = Vector2(-92, 0)
+rotation = -4.71239
+shape = SubResource("CapsuleShape2D_ojwqb")
+
+[node name="StateChart" type="Node" parent="."]
+script = ExtResource("2_vqykb")
+
+[node name="State_Tree" type="Node" parent="StateChart"]
+script = ExtResource("4_bo1xe")
+initial_state = NodePath("Shielding")
+
+[node name="Guarding" type="Node" parent="StateChart/State_Tree"]
+script = ExtResource("5_jmfj7")
+
+[node name="To_Chasing" type="Node" parent="StateChart/State_Tree/Guarding"]
+script = ExtResource("6_r4ilv")
+to = NodePath("../../Chasing")
+event = &"Chase_Player"
+
+[node name="Chasing" type="Node" parent="StateChart/State_Tree"]
+script = ExtResource("5_jmfj7")
+
+[node name="To_Guarding" type="Node" parent="StateChart/State_Tree/Chasing"]
+script = ExtResource("6_r4ilv")
+to = NodePath("../../Guarding")
+event = &"Guard"
+
+[node name="Shielding" type="Node" parent="StateChart/State_Tree"]
+script = ExtResource("5_jmfj7")
+
+[node name="To_Guarding" type="Node" parent="StateChart/State_Tree/Shielding"]
+script = ExtResource("6_r4ilv")
+to = NodePath("../../Guarding")
+event = &"Guard"
+
+[node name="Line_Of_Sight" type="RayCast2D" parent="."]
+collision_mask = 21
+
+[node name="Shield" type="StaticBody2D" parent="."]
+collision_layer = 8
+collision_mask = 23
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Shield"]
+position = Vector2(-16, -6)
+shape = SubResource("RectangleShape2D_i5j0s")
+debug_color = Color(0.366631, 0.503912, 0.926738, 0.42)
+
+[node name="Area_Shield" type="Area2D" parent="."]
+collision_layer = 8
+collision_mask = 2
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Area_Shield"]
+position = Vector2(-18, -6)
+shape = SubResource("RectangleShape2D_mndhr")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+modulate = Color(0, 1, 0.741176, 1)
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("7_lfgxc")
+
+[connection signal="body_entered" from="Attack_Area" to="." method="_player_entered_attack_area"]
+[connection signal="body_exited" from="Attack_Area" to="." method="_player_exited_attack_area"]
+[connection signal="body_entered" from="Sight_Area" to="." method="_player_entered_sight_area"]
+[connection signal="body_exited" from="Sight_Area" to="." method="_player_exited_sight_area"]
+[connection signal="area_entered" from="Arrow_Detector" to="." method="_on_arrow_entered"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Chasing" to="." method="_on_chasing_state_physics_processing"]
+[connection signal="state_physics_processing" from="StateChart/State_Tree/Shielding" to="." method="_on_shielding_state_physics_processing"]
+[connection signal="area_entered" from="Area_Shield" to="." method="_arrow_entered_area_shield"]

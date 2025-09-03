@@ -1,0 +1,25 @@
+[remap]
+
+importer="Aseprite AnimatedSprite2D Import"
+type="PackedScene"
+uid="uid://ba783vogsqvlh"
+path="res://.godot/imported/RedTarget.aseprite-84d76311d4aaba77fe1318f4faef049d.scn"
+
+[deps]
+
+source_file="res://Assets/Home_bred/Mechanisms/Targets/RedTarget.aseprite"
+dest_files=["res://.godot/imported/RedTarget.aseprite-84d76311d4aaba77fe1318f4faef049d.scn"]
+
+[params]
+
+spritesheet/layout=0
+spritesheet/fixed_rows_count=1
+spritesheet/fixed_columns_count=1
+spritesheet/border_type=0
+spritesheet/trim=false
+spritesheet/ignore_empty=false
+spritesheet/merge_duplicates=false
+animation/default/name="default"
+animation/default/direction=0
+animation/default/repeat_count=0
+animation/autoplay=""

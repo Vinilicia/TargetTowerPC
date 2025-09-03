@@ -1,0 +1,72 @@
+[gd_scene load_steps=4 format=3 uid="uid://d10c6lchlequ6"]
+
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="1_f17vu"]
+
+[sub_resource type="GDScript" id="GDScript_qbg16"]
+script/source = "extends Node2D
+
+@export_category(\"Nodes\")
+@export var path_to_target : Path2D
+@export var path_follower : PathFollow2D
+@export var world_detector : Area2D
+
+@export_category(\"Variables\")
+@export var area_scale : float
+@export var jump : float
+
+var target : Node2D
+var detected_world : bool = false
+var tween : Tween
+
+signal got_LOS
+
+func _ready() -> void:
+	world_detector.scale = Vector2.ONE * area_scale
+
+func initialize(target_to_follow : Node2D, func_to_connect : Callable) -> void:
+	target = target_to_follow
+	connect(\"got_LOS\", func_to_connect)
+	tween = create_tween()
+
+func _on_body_entered(body) -> void:
+	detected_world = true
+
+func has_line_of_sight(parent_node_pos : Vector2, tween_duration : float) -> void:
+	var target_relative_pos := target.global_position - parent_node_pos
+	path_follower.progress_ratio = 0
+	path_to_target.curve.set_point_position(1, target_relative_pos)
+	tween.tween_property(path_follower, \"progress_ratio\", 1, tween_duration)
+	
+"
+
+[sub_resource type="Curve2D" id="Curve2D_1r6bm"]
+_data = {
+"points": PackedVector2Array(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0)
+}
+point_count = 2
+
+[node name="Line_Of_Sight_Detector" type="Node2D" node_paths=PackedStringArray("path_to_target", "path_follower", "world_detector")]
+script = SubResource("GDScript_qbg16")
+path_to_target = NodePath("Path_To_Target")
+path_follower = NodePath("Path_To_Target/PathFollow")
+world_detector = NodePath("Path_To_Target/PathFollow/World_Detector")
+area_scale = 4.0
+jump = 6.0
+
+[node name="Path_To_Target" type="Path2D" parent="."]
+curve = SubResource("Curve2D_1r6bm")
+
+[node name="PathFollow" type="PathFollow2D" parent="Path_To_Target"]
+rotates = false
+loop = false
+
+[node name="World_Detector" type="Area2D" parent="Path_To_Target/PathFollow"]
+scale = Vector2(4, 4)
+collision_layer = 0
+collision_mask = 4
+monitoring = false
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="Path_To_Target/PathFollow/World_Detector"]
+shape = ExtResource("1_f17vu")
+debug_color = Color(0.211389, 0.000519716, 0.381838, 1)

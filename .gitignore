@@ -1,3 +1,9 @@
 # Godot 4+ specific ignores
+project.godot
 .godot/
 token.txt
+addons/
+ai/
+godot_state_charts_examples/
+*.x86_64
+

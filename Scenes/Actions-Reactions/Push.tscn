@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://6n5bosmdjh61"]
+
+[ext_resource type="Script" uid="uid://dub7gs2m8pfsb" path="res://Scripts/Actions-Reactions/Push.gd" id="1_1xjl8"]
+
+[node name="Push" type="Node2D"]
+script = ExtResource("1_1xjl8")

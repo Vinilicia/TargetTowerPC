@@ -1,0 +1,245 @@
+[gd_scene load_steps=12 format=3 uid="uid://cyfg1sluqqde"]
+
+[ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_ogvy8"]
+[ext_resource type="Script" uid="uid://b8op6pbjsbahl" path="res://Scripts/Menus&UI/Audio_options.gd" id="2_j1rd4"]
+[ext_resource type="Texture2D" uid="uid://cp8h7loo0im2a" path="res://Assets/Home_bred/UI/Audio/MuteButton.aseprite" id="3_xpixj"]
+[ext_resource type="Texture2D" uid="uid://cjifu368f4k71" path="res://Assets/Home_bred/UI/Audio/FullVolumeButton.aseprite" id="4_alvlx"]
+[ext_resource type="Texture2D" uid="uid://ckhuyfjwgi2lq" path="res://Assets/Home_bred/UI/Audio/Minus.aseprite" id="5_2q1sr"]
+[ext_resource type="Texture2D" uid="uid://b5taftcdb8p0u" path="res://Assets/Home_bred/UI/Audio/UnderTexture.aseprite" id="6_l45i1"]
+[ext_resource type="Texture2D" uid="uid://bn81mpv2lt7cw" path="res://Assets/Home_bred/UI/Audio/OverTexture.aseprite" id="7_3gh6g"]
+[ext_resource type="Texture2D" uid="uid://bm556uiydcj2o" path="res://Assets/Home_bred/UI/Audio/ProgressTexture.aseprite" id="8_m71xl"]
+[ext_resource type="Texture2D" uid="uid://b61g3m1bokp6o" path="res://Assets/Home_bred/UI/Audio/Plus.aseprite" id="9_ragjo"]
+[ext_resource type="AudioStream" uid="uid://cv5qf13ysmnnk" path="res://Assets/Stickerbush Symphony.mp3" id="10_8qbqp"]
+[ext_resource type="AudioStream" uid="uid://bndqffh7fiawr" path="res://Assets/Failure.mp3" id="11_8edlo"]
+
+[node name="AudioMenu" type="Control" node_paths=PackedStringArray("master_container", "music_container", "sfx_container", "master_bar", "music_bar", "sfx_bar")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_ogvy8")
+script = ExtResource("2_j1rd4")
+master_container = NodePath("VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer")
+music_container = NodePath("VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer")
+sfx_container = NodePath("VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer")
+master_bar = NodePath("VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/SliderContainer/VolumeSlider")
+music_bar = NodePath("VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer/SliderContainer/VolumeSlider")
+sfx_bar = NodePath("VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer/SliderContainer/VolumeSlider")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="MasterVolumeContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MasterVolumeContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer"]
+layout_mode = 2
+text = "Master: "
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 25
+
+[node name="MasterButtonsContainer" type="VBoxContainer" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SliderContainer" type="HBoxContainer" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer"]
+layout_mode = 2
+
+[node name="MinusButton" type="Button" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/SliderContainer"]
+layout_mode = 2
+icon = ExtResource("5_2q1sr")
+
+[node name="VolumeSlider" type="TextureProgressBar" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/SliderContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+nine_patch_stretch = true
+stretch_margin_left = 1
+stretch_margin_top = 1
+stretch_margin_right = 1
+stretch_margin_bottom = 1
+texture_under = ExtResource("6_l45i1")
+texture_over = ExtResource("7_3gh6g")
+texture_progress = ExtResource("8_m71xl")
+
+[node name="PlusButton" type="Button" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/SliderContainer"]
+layout_mode = 2
+icon = ExtResource("9_ragjo")
+
+[node name="BigBoysContainer" type="HBoxContainer" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer"]
+layout_mode = 2
+
+[node name="MuteButton" type="Button" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+icon = ExtResource("3_xpixj")
+
+[node name="Separator" type="Control" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FullVolumeButton" type="Button" parent="VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+icon = ExtResource("4_alvlx")
+
+[node name="Separator2" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="MusicVolumeContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/MusicVolumeContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer"]
+layout_mode = 2
+text = "Music:"
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 25
+
+[node name="MusicButtonsContainer" type="VBoxContainer" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SliderContainer" type="HBoxContainer" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer"]
+layout_mode = 2
+
+[node name="MinusButton" type="Button" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer/SliderContainer"]
+layout_mode = 2
+icon = ExtResource("5_2q1sr")
+
+[node name="VolumeSlider" type="TextureProgressBar" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer/SliderContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+nine_patch_stretch = true
+stretch_margin_left = 1
+stretch_margin_top = 1
+stretch_margin_right = 1
+stretch_margin_bottom = 1
+texture_under = ExtResource("6_l45i1")
+texture_over = ExtResource("7_3gh6g")
+texture_progress = ExtResource("8_m71xl")
+
+[node name="PlusButton" type="Button" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer/SliderContainer"]
+layout_mode = 2
+icon = ExtResource("9_ragjo")
+
+[node name="BigBoysContainer" type="HBoxContainer" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer"]
+layout_mode = 2
+
+[node name="MuteButton" type="Button" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+icon = ExtResource("3_xpixj")
+
+[node name="Separator" type="Control" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FullVolumeButton" type="Button" parent="VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+icon = ExtResource("4_alvlx")
+
+[node name="Separator" type="Control" parent="VBoxContainer"]
+custom_minimum_size = Vector2(0, 5)
+layout_mode = 2
+
+[node name="SFXVolumeContainer" type="HBoxContainer" parent="VBoxContainer"]
+layout_mode = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="VBoxContainer/SFXVolumeContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer"]
+layout_mode = 2
+text = "Sound effects: "
+
+[node name="MarginContainer" type="MarginContainer" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 25
+
+[node name="SFXButtonsContainer" type="VBoxContainer" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SliderContainer" type="HBoxContainer" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer"]
+layout_mode = 2
+
+[node name="MinusButton" type="Button" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer/SliderContainer"]
+layout_mode = 2
+icon = ExtResource("5_2q1sr")
+
+[node name="VolumeSlider" type="TextureProgressBar" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer/SliderContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+max_value = 1.0
+step = 0.05
+nine_patch_stretch = true
+stretch_margin_left = 1
+stretch_margin_top = 1
+stretch_margin_right = 1
+stretch_margin_bottom = 1
+texture_under = ExtResource("6_l45i1")
+texture_over = ExtResource("7_3gh6g")
+texture_progress = ExtResource("8_m71xl")
+
+[node name="PlusButton" type="Button" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer/SliderContainer"]
+layout_mode = 2
+icon = ExtResource("9_ragjo")
+
+[node name="BigBoysContainer" type="HBoxContainer" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer"]
+layout_mode = 2
+
+[node name="MuteButton" type="Button" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+icon = ExtResource("3_xpixj")
+
+[node name="Separator" type="Control" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="FullVolumeButton" type="Button" parent="VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+icon = ExtResource("4_alvlx")
+
+[node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("10_8qbqp")
+bus = &"Music"
+parameters/looping = true
+
+[node name="AudioStreamPlayer2" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("11_8edlo")
+bus = &"SFX"
+parameters/looping = true
+
+[connection signal="value_changed" from="VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/SliderContainer/VolumeSlider" to="." method="_on_master_bar_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer/SliderContainer/VolumeSlider" to="." method="_on_music_bar_value_changed"]
+[connection signal="value_changed" from="VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer/SliderContainer/VolumeSlider" to="." method="_on_sfx_bar_value_changed"]

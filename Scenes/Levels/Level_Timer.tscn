@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://b01ldwvgorj28"]
+
+[ext_resource type="Script" uid="uid://48fa7wbwt70q" path="res://Scripts/Menus&UI/Level_timer.gd" id="1_v8n0v"]
+
+[node name="Level_Timer" type="Timer"]
+script = ExtResource("1_v8n0v")
