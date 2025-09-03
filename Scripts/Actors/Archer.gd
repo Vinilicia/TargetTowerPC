@@ -99,6 +99,7 @@ var enemies_on_target: Array = []
 # READY
 # ============================================================
 func _ready():
+	
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 	velocity = Vector2.ZERO
@@ -216,7 +217,9 @@ func end_dodge() -> void:
 	combat.dodge_can_cancel = false
 	dodge_started_off_ledge = false
 	if jump_state.jump_queued and is_on_floor():
-		move_speed = dodge_horizontal_speed
+		var dir = int(Input.get_axis("left", "right"))
+		if dir == facing_direction:
+			move_speed = dodge_horizontal_speed
 		state_chart.find_child("ToGrounded").taken.connect(func() : move_speed = DEFAULT_MOVE_SPEED)
 		jump()
 
@@ -268,8 +271,11 @@ func handle_movement() -> void:
 			jump_state.jump_queued = false
 		
 		var dir : int = int(Input.get_axis("left", "right"))
-		if is_ledge_ahead() and dir != facing_direction and dodge_started_off_ledge:
-			v_component.set_proper_velocity(Vector2.ZERO)
+		if is_ledge_ahead():
+			if dir != facing_direction and dodge_started_off_ledge:
+				v_component.set_proper_velocity(Vector2.ZERO)
+			elif dir == facing_direction and jump_state.jump_queued:
+				end_dodge()
 		
 		if Input.is_action_just_pressed("dodge") and !dodged_this_frame:
 			combat.dodge_cancelled = true
@@ -423,7 +429,6 @@ func _cant_shoot_physics_processing(_delta: float) -> void:
 		combat.is_holding = true
 
 func _on_health_lost_health(_amount: float) -> void:
-	print("OUCH!!!")
 	modulate = Color(1, 0, 0, 1)
 	await get_tree().create_timer(0.3).timeout
 	modulate = Color(1, 1, 1, 1)
