@@ -20,7 +20,7 @@ script = ExtResource("8_r2kji")
 expression = "!crouching"
 metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "up_col", "down_col", "hurtbox", "dodge_cancel_timer", "ledge_detector")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "up_col", "down_col", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector")]
 collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("StateChart")
@@ -46,11 +46,16 @@ down_col = NodePath("DownColl")
 hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("DodgeCancelTimer")
 ledge_detector = NodePath("LedgeDetector")
+wall_detector = NodePath("WallDetector")
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
 [node name="LedgeDetector" type="RayCast2D" parent="."]
 position = Vector2(8, 0)
 target_position = Vector2(0, 12)
+collision_mask = 20
+
+[node name="WallDetector" type="RayCast2D" parent="."]
+target_position = Vector2(6, 0)
 collision_mask = 20
 
 [node name="DodgeCancelTimer" type="Timer" parent="."]
@@ -185,7 +190,7 @@ script = ExtResource("14_rbeol")
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="AimEnemy/AimSight"]
-polygon = PackedVector2Array(0, -8, 192, -24, 200, -16, 200, 16, 192, 24, 0, 8)
+polygon = PackedVector2Array(0, -8, 176, -40, 200, -24, 200, 24, 176, 40, 0, 8)
 
 [node name="EnemyTracker" type="RayCast2D" parent="AimEnemy"]
 target_position = Vector2(15, 0)

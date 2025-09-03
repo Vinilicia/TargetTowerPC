@@ -47,13 +47,14 @@ const DODGE_VERTICAL_VELOCITY := 0.0
 @export var air_stall_velocity: float
 @export var coyote_time_timer: float
 
-@export_subgroup("Nodes")
+@export_group("Nodes")
 @export var v_component: VelocityComponent
 @export var up_col: CollisionShape2D
 @export var down_col: CollisionShape2D
 @export var hurtbox: Hurtbox
 @export var dodge_cancel_timer : Timer
 @export var ledge_detector : RayCast2D
+@export var wall_detector : RayCast2D
 
 @export_category("Para debugar")
 @export_range(0, 8) var initial_arrow_index: int
@@ -99,6 +100,7 @@ var enemies_on_target: Array = []
 # READY
 # ============================================================
 func _ready():
+	
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 	velocity = Vector2.ZERO
@@ -216,9 +218,12 @@ func end_dodge() -> void:
 	combat.dodge_can_cancel = false
 	dodge_started_off_ledge = false
 	if jump_state.jump_queued and is_on_floor():
-		move_speed = dodge_horizontal_speed
+		var dir = int(Input.get_axis("left", "right"))
+		if dir == facing_direction and !is_wall_ahead():
+			move_speed = dodge_horizontal_speed
 		state_chart.find_child("ToGrounded").taken.connect(func() : move_speed = DEFAULT_MOVE_SPEED)
 		jump()
+	jump_state.jump_queued = false
 
 func _on_dodge_cancel_timer_timeout() -> void:
 	combat.dodge_can_cancel = true
@@ -260,6 +265,12 @@ func apply_gravity(delta: float) -> void:
 func is_ledge_ahead() -> bool:
 	return is_on_floor() and !ledge_detector.is_colliding()
 
+func is_wall_ahead() -> bool:
+	var response := is_on_floor() and wall_detector.is_colliding()
+	if response:
+		print("AAAA")
+	return response
+
 func handle_movement() -> void:
 	if combat.is_dodging:
 		if Input.is_action_pressed("jump") and is_on_floor():
@@ -267,9 +278,9 @@ func handle_movement() -> void:
 		if Input.is_action_just_released("jump"):
 			jump_state.jump_queued = false
 		
-		var dir : int = int(Input.get_axis("left", "right"))
-		if is_ledge_ahead() and dir != facing_direction and dodge_started_off_ledge:
-			v_component.set_proper_velocity(Vector2.ZERO)
+		if is_ledge_ahead():
+			if jump_state.jump_queued or dodge_started_off_ledge:
+				end_dodge()
 		
 		if Input.is_action_just_pressed("dodge") and !dodged_this_frame:
 			combat.dodge_cancelled = true
@@ -423,7 +434,6 @@ func _cant_shoot_physics_processing(_delta: float) -> void:
 		combat.is_holding = true
 
 func _on_health_lost_health(_amount: float) -> void:
-	print("OUCH!!!")
 	modulate = Color(1, 0, 0, 1)
 	await get_tree().create_timer(0.3).timeout
 	modulate = Color(1, 1, 1, 1)
