@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=3 uid="uid://ev1c8jc3dq42"]
+[gd_scene load_steps=16 format=3 uid="uid://ev1c8jc3dq42"]
 
 [ext_resource type="Script" uid="uid://du36t4pvcn4ic" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
@@ -13,6 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Actors/Archer.tscn" id="9_26aeq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
 [ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
+[ext_resource type="Script" uid="uid://4evypv5km8px" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
 
 [sub_resource type="Resource" id="Resource_rbeol"]
 script = ExtResource("8_r2kji")
@@ -60,7 +61,6 @@ knockback_susceptability = 6
 
 [node name="StateChart" type="Node" parent="."]
 script = ExtResource("4_r6772")
-metadata/_custom_type_script = "uid://beo34a6qi0ttu"
 
 [node name="Root" type="Node" parent="StateChart"]
 script = ExtResource("5_wypxn")
@@ -178,6 +178,19 @@ position = Vector2(-28, -28)
 offset = Vector2(22, 18)
 region_rect = Rect2(65, 86, 15, 20)
 
+[node name="AimEnemy" type="Node2D" parent="."]
+script = ExtResource("14_rbeol")
+
+[node name="AimSight" type="Area2D" parent="AimEnemy"]
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="AimEnemy/AimSight"]
+polygon = PackedVector2Array(0, -8, 192, -24, 200, -16, 200, 16, 192, 24, 0, 8)
+
+[node name="EnemyTracker" type="RayCast2D" parent="AimEnemy"]
+target_position = Vector2(15, 0)
+collision_mask = 28
+
 [connection signal="timeout" from="DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
 [connection signal="state_entered" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_physics_processing"]
@@ -201,5 +214,7 @@ region_rect = Rect2(65, 86, 15, 20)
 [connection signal="lost_health" from="HealthManager" to="." method="_on_health_lost_health"]
 [connection signal="ran_out" from="HealthManager" to="." method="die"]
 [connection signal="took_damage" from="Hurtbox" to="HealthManager" method="lose_health"]
+[connection signal="body_entered" from="AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
+[connection signal="body_exited" from="AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
 
 [editable path="Archer"]
