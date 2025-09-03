@@ -185,7 +185,7 @@ script = ExtResource("14_rbeol")
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="AimEnemy/AimSight"]
-polygon = PackedVector2Array(0, -8, 192, -24, 200, -16, 200, 16, 192, 24, 0, 8)
+polygon = PackedVector2Array(0, -8, 176, -40, 200, -24, 200, 24, 176, 40, 0, 8)
 
 [node name="EnemyTracker" type="RayCast2D" parent="AimEnemy"]
 target_position = Vector2(15, 0)
