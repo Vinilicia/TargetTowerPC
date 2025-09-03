@@ -267,8 +267,6 @@ func is_ledge_ahead() -> bool:
 
 func is_wall_ahead() -> bool:
 	var response := is_on_floor() and wall_detector.is_colliding()
-	if response:
-		print("AAAA")
 	return response
 
 func handle_movement() -> void:
