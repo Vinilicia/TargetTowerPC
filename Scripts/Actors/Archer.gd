@@ -47,13 +47,14 @@ const DODGE_VERTICAL_VELOCITY := 0.0
 @export var air_stall_velocity: float
 @export var coyote_time_timer: float
 
-@export_subgroup("Nodes")
+@export_group("Nodes")
 @export var v_component: VelocityComponent
 @export var up_col: CollisionShape2D
 @export var down_col: CollisionShape2D
 @export var hurtbox: Hurtbox
 @export var dodge_cancel_timer : Timer
 @export var ledge_detector : RayCast2D
+@export var wall_detector : RayCast2D
 
 @export_category("Para debugar")
 @export_range(0, 8) var initial_arrow_index: int
@@ -218,7 +219,7 @@ func end_dodge() -> void:
 	dodge_started_off_ledge = false
 	if jump_state.jump_queued and is_on_floor():
 		var dir = int(Input.get_axis("left", "right"))
-		if dir == facing_direction:
+		if dir == facing_direction and !is_wall_ahead():
 			move_speed = dodge_horizontal_speed
 		state_chart.find_child("ToGrounded").taken.connect(func() : move_speed = DEFAULT_MOVE_SPEED)
 		jump()
@@ -262,6 +263,12 @@ func apply_gravity(delta: float) -> void:
 
 func is_ledge_ahead() -> bool:
 	return is_on_floor() and !ledge_detector.is_colliding()
+
+func is_wall_ahead() -> bool:
+	var response := is_on_floor() and wall_detector.is_colliding()
+	if response:
+		print("AAAA")
+	return response
 
 func handle_movement() -> void:
 	if combat.is_dodging:
