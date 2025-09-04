@@ -220,8 +220,9 @@ func end_dodge() -> void:
 	if jump_state.jump_queued and is_on_floor():
 		var dir = int(Input.get_axis("left", "right"))
 		if dir == facing_direction and !is_wall_ahead():
+			print("AAAAAA")
 			move_speed = dodge_horizontal_speed
-		state_chart.find_child("ToGrounded").taken.connect(func() : move_speed = DEFAULT_MOVE_SPEED)
+			state_chart.find_child("ToGrounded").taken.connect(func() : move_speed = DEFAULT_MOVE_SPEED)
 		jump()
 	jump_state.jump_queued = false
 
@@ -319,6 +320,7 @@ func turn(facing_dir: int) -> void:
 	$Archer.scale.x = facing_dir
 	$Archer.position.x = -ARCHER_OFFSET_X * facing_dir
 	ledge_detector.position.x = 8 * facing_dir
+	wall_detector.scale.x = facing_dir
 	pos = camera_remote.position
 	var final_pos = Vector2(camera_distance * facing_dir, pos.y)
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT)

@@ -3,7 +3,7 @@ extends CharacterBody2D
 # ======================
 # CONSTANTES
 # ======================
-const DASH_DURATION : float = 0.4
+const DASH_DURATION : float = 0.6
 const DASH_SPEED_MULTIPLIER : float = 2.0
 const LOOK_AROUND_TIME : float = 2.0
 const LOOK_AROUND_AREA_INCREASE : float = 2
@@ -50,13 +50,12 @@ var player_target: CharacterBody2D
 var player_relative_position: Vector2
 
 var direction: int = 1
+var current_speed : float
 var is_player_inside: bool = false
 var player_is_nearby: bool = false
 var saw_player: bool = false
 
 var can_dash: bool = true
-var outer_detector : bool = false
-var inner_detector : bool = false
 var is_changing_direction := false
 var is_jumping : bool = false
 var still_cant_react : bool = false
@@ -67,6 +66,7 @@ var can_jump_attack : bool = true
 var can_stab_attack : bool = true
 var player_in_range : bool = false
 var start_attack : bool = false
+var current_speed_multiplier : float = 1.0
 
 
 # ======================
@@ -78,6 +78,9 @@ func _ready() -> void:
 		flip()
 
 func _physics_process(delta: float) -> void:
+	if not (attacking or player_in_range):
+		v_component.set_proper_velocity(current_speed * direction * current_speed_multiplier, 1)
+	
 	if not is_on_floor():
 		v_component.add_proper_velocity(get_current_gravity() * delta)
 	else:
@@ -219,7 +222,6 @@ func _on_attack_state_physics_processing(_delta: float) -> void:
 		state_chart.send_event("Chase")
 
 func _on_chasing_state_physics_processing(_delta: float) -> void:
-	v_component.set_proper_velocity(chase_speed * direction, 1)
 
 	# detectores
 	wall_detector.force_raycast_update()
@@ -256,7 +258,6 @@ func _on_giving_up_timer_timeout() -> void:
 	unnasign_player()
 
 func _on_guarding_state_physics_processing(_delta: float) -> void:
-	v_component.set_proper_velocity(walk_speed * direction, 1)
 
 	wall_detector.force_raycast_update()
 	ground_detector.force_raycast_update()
@@ -304,9 +305,6 @@ func _on_inner_detector_entered(_area: Area2D) -> void:
 	if saw_arrow:
 		dash()
 
-func _on_inner_detector_exited(_area: Area2D) -> void:
-	inner_detector = false
-
 func dash() -> void:
 	if not can_dash:
 		return
@@ -315,17 +313,14 @@ func dash() -> void:
 	can_stab_attack = false
 	hurtbox.get_invincible(DASH_DURATION)
 
-	walk_speed *= DASH_SPEED_MULTIPLIER
-	chase_speed *= DASH_SPEED_MULTIPLIER
+	current_speed_multiplier = DASH_SPEED_MULTIPLIER
 	
-	await get_tree().create_timer(DASH_DURATION * 2).timeout
-	walk_speed /= DASH_SPEED_MULTIPLIER
-	chase_speed /= DASH_SPEED_MULTIPLIER
+	await get_tree().create_timer(DASH_DURATION).timeout
+	
+	current_speed_multiplier = 1.0
 
 	can_jump_attack = true
 	can_stab_attack = true
-	outer_detector = false
-	inner_detector = false
 	can_dash = true
 	can_jump_attack = true
 	can_stab_attack = true
@@ -341,5 +336,11 @@ func _on_health_lost_health(amount: float) -> void:
 	print("Took ", amount, " damage.")
 
 func _on_hurtbox_got_hit_by(hitbox: Hitbox) -> void:
-	if hitbox.get_collision_layer_value(9) and !saw_player:
+	if hitbox.get_collision_layer_value(9) and !saw_player and !saw_arrow:
 		look_for_player()
+
+func _on_guarding_state_entered() -> void:
+	current_speed = walk_speed
+
+func _on_chasing_state_entered() -> void:
+	current_speed = chase_speed
