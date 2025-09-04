@@ -4,6 +4,7 @@ class_name Arrow
 @export var anim : AnimationPlayer
 @export var sprite : Sprite2D
 @export var trail : Trail
+@export var hitbox : Hitbox
 
 @export var Flying_Speed : float = 400
 @export var Charge_Multiplier : float = 2
@@ -21,6 +22,7 @@ func _physics_process(delta):
 
 func fly(is_charged: bool, _player: CharacterBody2D) -> void:
 	set_deferred("monitoring", true)
+	hitbox.set_deferred("monitorable", true)
 	if is_charged:
 		charged = true
 		velocity = flying_direction.normalized() * Flying_Speed * Charge_Multiplier
@@ -51,7 +53,7 @@ func despawn() -> void:
 func get_frozen() -> void:
 	velocity = Vector2.ZERO
 
-func hit_wall(body: Node2D) -> void:
+func _on_body_entered(body: Node2D) -> void:
 	get_frozen()
 	if body.is_in_group("Attachables"):
 		spawn_joint(body)

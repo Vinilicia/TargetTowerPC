@@ -341,5 +341,5 @@ func _on_health_lost_health(amount: float) -> void:
 	print("Took ", amount, " damage.")
 
 func _on_hurtbox_got_hit_by(hitbox: Hitbox) -> void:
-	if hitbox.get_collision_layer_value(10) and !saw_player:
+	if hitbox.get_collision_layer_value(9) and !saw_player:
 		look_for_player()
