@@ -26,13 +26,16 @@ texture = ExtResource("1_jx316")
 process_mode = 4
 gradient = SubResource("Gradient_rhvf2")
 
-[node name="Hitbox" parent="." instance=ExtResource("6_y72ry")]
+[node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("6_y72ry")]
 position = Vector2(2, -0.5)
 scale = Vector2(18, 7)
-collision_layer = 512
+collision_layer = 256
+parent = NodePath("..")
+Damage = 1.0
 
 [node name="Coll" type="CollisionShape2D" parent="Hitbox"]
 shape = ExtResource("3_3qgj2")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 
+[connection signal="dealt_damage" from="Hitbox" to="." method="hit_wall"]
 [connection signal="hit" from="Hitbox" to="." method="hit_wall"]

@@ -12,10 +12,10 @@ signal took_damage(amount : float)
 signal got_hit_by(hitbox : Hitbox)
 
 
-func got_hit(area : Hitbox) -> void:
-	got_hit_by.emit(area)
-	took_damage.emit(area.Damage)
-	area.hit_something(parent)
+func got_hit(hitbox : Hitbox) -> void:
+	got_hit_by.emit(hitbox)
+	took_damage.emit(hitbox.Damage)
+	hitbox.hit_something(parent)
 	get_invincible()
 
 
