@@ -7,7 +7,7 @@ class_name Hitbox
 @export var Knockback_force : float
 @export var Knockback_angle : float
 
-signal hit(target : Node2D)
+signal dealt_damage(target : Node2D)
 
 #Uma área usa esse script. Então se define o dano e as layers de colisão ( General, Enemy ou Player )
 func get_knockback_vector() -> Vector2:
@@ -18,4 +18,4 @@ func get_knockback_vector() -> Vector2:
 	return knockback_vector
 
 func hit_something(target : Node2D) -> void:
-	hit.emit(target)
+	dealt_damage.emit(target)

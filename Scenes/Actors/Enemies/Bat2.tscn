@@ -198,7 +198,7 @@ scale = Vector2(0.063, 0.063)
 
 [node name="Hurtbox" parent="DamageBoxes" node_paths=PackedStringArray("parent") instance=ExtResource("10_k1tc8")]
 scale = Vector2(20, 20)
-collision_mask = 2560
+collision_mask = 2816
 parent = NodePath("../..")
 can_be_invincible = false
 

@@ -327,6 +327,8 @@ func dash() -> void:
 	outer_detector = false
 	inner_detector = false
 	can_dash = true
+	can_jump_attack = true
+	can_stab_attack = true
 
 
 # ======================

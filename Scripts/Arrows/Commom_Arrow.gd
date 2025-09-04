@@ -1,9 +1,8 @@
-extends Area2D
+extends Node2D
 class_name Arrow
 
 @export var anim : AnimationPlayer
 @export var sprite : Sprite2D
-@export var coll : CollisionShape2D
 @export var trail : Trail
 
 @export var Flying_Speed : float = 400
@@ -17,9 +16,6 @@ var charged : bool = false
 var downward : bool = false
 var velocity := Vector2.ZERO 
 
-func _ready():
-	body_entered.connect(_on_body_entered) 
-	
 func _physics_process(delta):
 	position += velocity * delta
 
@@ -54,9 +50,8 @@ func despawn() -> void:
 
 func get_frozen() -> void:
 	velocity = Vector2.ZERO
-	coll.call_deferred("set_disabled", true)
 
-func _on_body_entered(body: Node2D) -> void:
+func hit_wall(body: Node2D) -> void:
 	get_frozen()
 	if body.is_in_group("Attachables"):
 		spawn_joint(body)
