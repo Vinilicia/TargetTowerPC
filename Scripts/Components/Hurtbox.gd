@@ -6,6 +6,8 @@ class_name Hurtbox
 @export var invincibility_time : float = 1.0
 @export var can_be_invincible : bool = true
 
+var absorb_hits : bool
+
 signal took_damage(amount : float)
 signal got_hit_by(hitbox : Hitbox)
 

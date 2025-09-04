@@ -311,6 +311,8 @@ func avoid_arrow() -> void:
 	if not can_dash:
 		return
 	can_dash = false
+	can_jump_attack = false
+	can_stab_attack = false
 	hurtbox.get_invincible(DASH_DURATION)
 
 	walk_speed *= DASH_SPEED_MULTIPLIER
@@ -323,6 +325,8 @@ func avoid_arrow() -> void:
 	outer_detector = false
 	inner_detector = false
 	can_dash = true
+	can_jump_attack = true
+	can_stab_attack = true
 
 
 # ======================
