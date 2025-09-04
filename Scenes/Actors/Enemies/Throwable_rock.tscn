@@ -30,4 +30,4 @@ Knockback_angle = -70.0
 shape = ExtResource("2_foqvr")
 debug_color = Color(1, 0.6, 0.701961, 0.498039)
 
-[connection signal="hit" from="Hitbox" to="." method="_on_hit_something"]
+[connection signal="dealt_damage" from="Hitbox" to="." method="_on_hit_something"]
