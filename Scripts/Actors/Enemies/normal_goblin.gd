@@ -302,15 +302,17 @@ func _on_outer_detector_entered(_area: Area2D) -> void:
 
 func _on_inner_detector_entered(_area: Area2D) -> void:
 	if saw_arrow:
-		avoid_arrow()
+		dash()
 
 func _on_inner_detector_exited(_area: Area2D) -> void:
 	inner_detector = false
 
-func avoid_arrow() -> void:
+func dash() -> void:
 	if not can_dash:
 		return
 	can_dash = false
+	can_jump_attack = false
+	can_stab_attack = false
 	hurtbox.get_invincible(DASH_DURATION)
 
 	walk_speed *= DASH_SPEED_MULTIPLIER
@@ -320,9 +322,13 @@ func avoid_arrow() -> void:
 	walk_speed /= DASH_SPEED_MULTIPLIER
 	chase_speed /= DASH_SPEED_MULTIPLIER
 
+	can_jump_attack = true
+	can_stab_attack = true
 	outer_detector = false
 	inner_detector = false
 	can_dash = true
+	can_jump_attack = true
+	can_stab_attack = true
 
 
 # ======================
@@ -335,5 +341,5 @@ func _on_health_lost_health(amount: float) -> void:
 	print("Took ", amount, " damage.")
 
 func _on_hurtbox_got_hit_by(hitbox: Hitbox) -> void:
-	if hitbox.get_collision_layer_value(10) and !saw_player:
+	if hitbox.get_collision_layer_value(9) and !saw_player:
 		look_for_player()

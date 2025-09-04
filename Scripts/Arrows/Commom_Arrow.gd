@@ -1,10 +1,10 @@
-extends Area2D
+extends Node2D
 class_name Arrow
 
 @export var anim : AnimationPlayer
 @export var sprite : Sprite2D
-@export var coll : CollisionShape2D
 @export var trail : Trail
+@export var hitbox : Hitbox
 
 @export var Flying_Speed : float = 400
 @export var Charge_Multiplier : float = 2
@@ -17,14 +17,12 @@ var charged : bool = false
 var downward : bool = false
 var velocity := Vector2.ZERO 
 
-func _ready():
-	body_entered.connect(_on_body_entered) 
-	
 func _physics_process(delta):
 	position += velocity * delta
 
 func fly(is_charged: bool, _player: CharacterBody2D) -> void:
 	set_deferred("monitoring", true)
+	hitbox.set_deferred("monitorable", true)
 	if is_charged:
 		charged = true
 		velocity = flying_direction.normalized() * Flying_Speed * Charge_Multiplier
@@ -54,7 +52,6 @@ func despawn() -> void:
 
 func get_frozen() -> void:
 	velocity = Vector2.ZERO
-	coll.call_deferred("set_disabled", true)
 
 func _on_body_entered(body: Node2D) -> void:
 	get_frozen()

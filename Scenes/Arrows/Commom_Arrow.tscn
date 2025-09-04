@@ -10,15 +10,20 @@
 resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 0.984314, 1, 0.505882)
 
-[node name="Arrow" type="Area2D" node_paths=PackedStringArray("anim", "sprite", "coll", "trail")]
+[node name="Arrow" type="Area2D" node_paths=PackedStringArray("anim", "sprite", "trail", "hitbox")]
 collision_layer = 2
-collision_mask = 28
+collision_mask = 20
 monitoring = false
 script = ExtResource("1_g5uwg")
 anim = NodePath("Anim_Player")
 sprite = NodePath("Sprite")
-coll = NodePath("Coll")
 trail = NodePath("Arrow_Trail")
+hitbox = NodePath("Hitbox")
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+position = Vector2(6, -0.5)
+scale = Vector2(4, 3)
+shape = ExtResource("3_3qgj2")
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1
@@ -26,22 +31,21 @@ texture = ExtResource("1_jx316")
 
 [node name="Anim_Player" type="AnimationPlayer" parent="."]
 
-[node name="Coll" type="CollisionShape2D" parent="."]
-position = Vector2(3.5, -0.5)
-scale = Vector2(6, 5)
-shape = ExtResource("3_3qgj2")
-
 [node name="Arrow_Trail" parent="." instance=ExtResource("3_wms8w")]
 process_mode = 4
 gradient = SubResource("Gradient_rhvf2")
 
 [node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_2so76")]
-position = Vector2(2, -0.5)
-scale = Vector2(18, 7)
-collision_layer = 512
+collision_layer = 256
+monitorable = false
 parent = NodePath("..")
 Damage = 1.0
 
 [node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+position = Vector2(2, -0.5)
+scale = Vector2(18, 7)
 shape = ExtResource("3_3qgj2")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="hit" from="Hitbox" to="." method="_on_body_entered"]
