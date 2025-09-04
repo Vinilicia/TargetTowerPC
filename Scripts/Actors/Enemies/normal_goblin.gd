@@ -302,12 +302,12 @@ func _on_outer_detector_entered(_area: Area2D) -> void:
 
 func _on_inner_detector_entered(_area: Area2D) -> void:
 	if saw_arrow:
-		avoid_arrow()
+		dash()
 
 func _on_inner_detector_exited(_area: Area2D) -> void:
 	inner_detector = false
 
-func avoid_arrow() -> void:
+func dash() -> void:
 	if not can_dash:
 		return
 	can_dash = false
@@ -322,6 +322,8 @@ func avoid_arrow() -> void:
 	walk_speed /= DASH_SPEED_MULTIPLIER
 	chase_speed /= DASH_SPEED_MULTIPLIER
 
+	can_jump_attack = true
+	can_stab_attack = true
 	outer_detector = false
 	inner_detector = false
 	can_dash = true
