@@ -94,7 +94,7 @@ var dodged_this_frame: bool = false
 var dodge_started_off_ledge: bool = false
 var aim_enemy_pos: Vector2
 var enemy_target: CharacterBody2D
-var enemies_on_target: Array = []
+var enemies_on_sight: Array = []
 
 # ============================================================
 # READY
@@ -220,7 +220,6 @@ func end_dodge() -> void:
 	if jump_state.jump_queued and is_on_floor():
 		var dir = int(Input.get_axis("left", "right"))
 		if dir == facing_direction and !is_wall_ahead():
-			print("AAAAAA")
 			move_speed = dodge_horizontal_speed
 			state_chart.find_child("ToGrounded").taken.connect(func() : move_speed = DEFAULT_MOVE_SPEED)
 		jump()
@@ -230,15 +229,15 @@ func _on_dodge_cancel_timer_timeout() -> void:
 	combat.dodge_can_cancel = true
 
 func _on_aim_sight_enemy_entered(enemy: Node2D) -> void:
-	enemies_on_target.append(enemy)
+	enemies_on_sight.append(enemy)
 	
 func _on_aim_sight_enemy_exited(enemy: Node2D) -> void:
-	enemies_on_target.erase(enemy)
+	enemies_on_sight.erase(enemy)
 	
 func handle_aim_enemy() -> void:
 	var closest: CharacterBody2D = null
 	var min_dist: float = INF
-	for enemy in enemies_on_target:
+	for enemy in enemies_on_sight:
 		if not is_instance_valid(enemy):
 			continue
 		var dist = global_position.distance_to(enemy.global_position)

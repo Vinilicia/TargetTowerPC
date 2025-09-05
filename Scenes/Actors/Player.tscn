@@ -24,7 +24,7 @@ metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("StateChart")
-camera_distance = 60.0
+camera_distance = 45.0
 camera_move_duration = 1.0
 camera_remote = NodePath("Remote")
 arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4"])
@@ -190,7 +190,7 @@ script = ExtResource("14_rbeol")
 collision_mask = 8
 
 [node name="CollisionShape2D" type="CollisionPolygon2D" parent="AimEnemy/AimSight"]
-polygon = PackedVector2Array(0, -8, 176, -40, 200, -24, 200, 24, 176, 40, 0, 8)
+polygon = PackedVector2Array(0, -8, 184, -24, 200, -8, 200, 8, 200, 8, 184, 24, 0, 8)
 
 [node name="EnemyTracker" type="RayCast2D" parent="AimEnemy"]
 target_position = Vector2(15, 0)
