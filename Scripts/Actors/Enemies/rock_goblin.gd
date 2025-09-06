@@ -27,6 +27,9 @@ func _physics_process(delta: float) -> void:
 	if not is_on_floor():
 		velocity += get_gravity() * delta
 		move_and_slide()
+	
+	if player_is_nearby:
+		handle_attack()
 
 func _throw_rock() -> void:
 	timer_off = false
@@ -58,7 +61,7 @@ func ran_out_of_health() -> void:
 func _on_look_around_timer_timeout() -> void:
 	flip()
 
-func _on_attacking_state_physics_processing(_delta: float) -> void:
+func handle_attack() -> void:
 	if position.x - player_target.position.x > 0:
 		if direction != -1:
 			direction = -1
