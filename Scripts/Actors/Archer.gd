@@ -106,7 +106,7 @@ func _ready():
 	velocity = Vector2.ZERO
 	setup_camera()
 	UiHandler.equiped_arrow_index = initial_arrow_index
-	#Engine.time_scale = 0.5
+	Engine.time_scale = 0.5
 
 # ============================================================
 # MAIN LOOP
@@ -221,9 +221,13 @@ func end_dodge() -> void:
 		var dir = int(Input.get_axis("left", "right"))
 		if dir == facing_direction and !is_wall_ahead():
 			move_speed = dodge_horizontal_speed
-			state_chart.find_child("ToGrounded").taken.connect(func() : move_speed = DEFAULT_MOVE_SPEED)
+			$StateChart/Root/Memes/Grounded.state_entered.connect(reset_speed)
 		jump()
 	jump_state.jump_queued = false
+
+func reset_speed() -> void:
+	move_speed = DEFAULT_MOVE_SPEED
+	$StateChart/Root/Memes/Grounded.state_entered.disconnect(reset_speed)
 
 func _on_dodge_cancel_timer_timeout() -> void:
 	combat.dodge_can_cancel = true
@@ -271,7 +275,7 @@ func is_wall_ahead() -> bool:
 
 func handle_movement() -> void:
 	if combat.is_dodging:
-		if Input.is_action_pressed("jump") and is_on_floor():
+		if Input.is_action_just_pressed("jump") and is_on_floor():
 			jump_state.jump_queued = true
 		if Input.is_action_just_released("jump"):
 			jump_state.jump_queued = false
@@ -324,7 +328,6 @@ func turn(facing_dir: int) -> void:
 	var final_pos = Vector2(camera_distance * facing_dir, pos.y)
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(camera_remote, "position", final_pos, camera_move_duration)
-	#aim_enemy.scale.x = facing_dir
 
 func setup_camera() -> void:
 	camera_remote.remote_path = get_parent().get_camera().get_path()
@@ -373,6 +376,7 @@ func corner_correction(amount: int, delta: float) -> void:
 # ESTADOS (mantidos com nomes originais)
 # ============================================================
 #region ESTADOS
+
 func _rising_to_falling_taken() -> void:
 	anim.clear_queue()
 	anim.play("Jump Apex")
@@ -446,7 +450,6 @@ func _falling_state_processing(_delta: float) -> void:
 		jump_state.jump_queued = false
 
 func _grounded_state_entered() -> void:
-	
 	if jump_state.jump_queued:
 		jump()
 	else:
