@@ -14,7 +14,6 @@ class_name Arrow
 var flying_direction : Vector2 = Vector2(1, 0)
 var facing_direction : int = 1
 var charged : bool = false
-var downward : bool = false
 var velocity := Vector2.ZERO 
 
 func _physics_process(delta):

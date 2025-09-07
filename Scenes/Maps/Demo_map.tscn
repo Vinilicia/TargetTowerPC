@@ -1955,11 +1955,9 @@ direction = 1
 
 [node name="Rock Goblin3" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
 position = Vector2(1145, 5)
-direction = 0
 
 [node name="Rock Goblin4" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
 position = Vector2(567, -625)
-direction = 0
 
 [node name="Rock Goblin5" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
 position = Vector2(-352, -813)

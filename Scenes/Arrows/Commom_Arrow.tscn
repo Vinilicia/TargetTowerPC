@@ -36,14 +36,14 @@ process_mode = 4
 gradient = SubResource("Gradient_rhvf2")
 
 [node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_2so76")]
+position = Vector2(2, -0.5)
+scale = Vector2(18, 7)
 collision_layer = 256
 monitorable = false
 parent = NodePath("..")
 Damage = 1.0
 
 [node name="Coll" type="CollisionShape2D" parent="Hitbox"]
-position = Vector2(2, -0.5)
-scale = Vector2(18, 7)
 shape = ExtResource("3_3qgj2")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 

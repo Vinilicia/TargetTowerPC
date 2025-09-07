@@ -17,3 +17,6 @@ func _on_body_entered(body) -> void:
 		despawn()
 	if !body.is_in_group("Attachables"):
 		bounce()
+
+func _on_hitbox_hit(target: Node2D) -> void:
+	_on_body_entered(target)
