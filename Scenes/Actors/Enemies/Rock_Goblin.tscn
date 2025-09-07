@@ -18,7 +18,7 @@ scale = Vector2(16, 16)
 shape = ExtResource("1_nn6wd")
 
 [node name="SightArea" type="Area2D" parent="."]
-position = Vector2(-63, -46)
+scale = Vector2(300, 200)
 collision_layer = 0
 monitorable = false
 
@@ -67,9 +67,14 @@ wait_time = 4.0
 [node name="AttackTimer" type="Timer" parent="."]
 wait_time = 2.0
 
+[node name="LooseSightTimer" type="Timer" parent="."]
+wait_time = 3.0
+one_shot = true
+
 [connection signal="body_entered" from="SightArea" to="." method="_player_entered_sight_area"]
 [connection signal="body_exited" from="SightArea" to="." method="_player_exited_sight_area"]
 [connection signal="took_damage" from="DamageBoxes/Hurtbox" to="HealthManager" method="lose_health"]
 [connection signal="ran_out" from="HealthManager" to="." method="ran_out_of_health"]
 [connection signal="timeout" from="LookAroundTimer" to="." method="_on_look_around_timer_timeout"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
+[connection signal="timeout" from="LooseSightTimer" to="." method="_on_loose_sight_timer_timeout"]

@@ -1939,7 +1939,7 @@ process_mode = 3
 visible = false
 
 [node name="Player" parent="." instance=ExtResource("8_pjtoa")]
-position = Vector2(32, 32)
+position = Vector2(776, 48)
 
 [node name="Enemies" type="Node2D" parent="."]
 
@@ -1952,35 +1952,31 @@ visible = false
 [node name="Rock Goblin2" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
 position = Vector2(-576, -128)
 direction = 1
-sight_area_scale = Vector2(400, 400)
 
 [node name="Rock Goblin3" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
 position = Vector2(1145, 5)
-sight_area_scale = Vector2(320, 300)
+direction = 0
 
 [node name="Rock Goblin4" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
 position = Vector2(567, -625)
-sight_area_scale = Vector2(280, 200)
+direction = 0
 
 [node name="Rock Goblin5" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
 position = Vector2(-352, -813)
 direction = 1
-sight_area_scale = Vector2(435, 300)
 
 [node name="Rock Goblin6" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
 position = Vector2(-235, -858)
 direction = 1
-sight_area_scale = Vector2(230, 320)
 
 [node name="Rock Goblin7" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
 position = Vector2(-327, -907)
 direction = 1
-sight_area_scale = Vector2(420, 450)
 
 [node name="Goblins" type="Node2D" parent="Enemies"]
 
 [node name="NormalGoblin" parent="Enemies/Goblins" instance=ExtResource("10_0qeml")]
-position = Vector2(488, 8)
+position = Vector2(472, -112)
 
 [node name="Bat" parent="Enemies" instance=ExtResource("10_lkwqp")]
 position = Vector2(256, -296)
