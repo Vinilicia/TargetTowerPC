@@ -9,7 +9,7 @@ func throw(position_target : Vector2) -> void:
 	var y0 = position.y
 	var xf = position_target.x
 	var yf = position_target.y - 7
-	var g = 980
+	var g = 784
 	var yMax
 	if round(yf - y0) == 3:
 		yMax = y0 - 20
@@ -24,5 +24,4 @@ func throw(position_target : Vector2) -> void:
 	linear_velocity = Vector2(vx, -vy)
 
 func _on_hit_something(_target : Node2D) -> void:
-	print("Hitei")
 	queue_free()

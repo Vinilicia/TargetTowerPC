@@ -94,7 +94,7 @@ var dodged_this_frame: bool = false
 var dodge_started_off_ledge: bool = false
 var aim_enemy_pos: Vector2
 var enemy_target: CharacterBody2D
-var enemies_on_target: Array = []
+var enemies_on_sight: Array = []
 
 # ============================================================
 # READY
@@ -221,23 +221,27 @@ func end_dodge() -> void:
 		var dir = int(Input.get_axis("left", "right"))
 		if dir == facing_direction and !is_wall_ahead():
 			move_speed = dodge_horizontal_speed
-		state_chart.find_child("ToGrounded").taken.connect(func() : move_speed = DEFAULT_MOVE_SPEED)
+			$StateChart/Root/Memes/Grounded.state_entered.connect(reset_speed)
 		jump()
 	jump_state.jump_queued = false
+
+func reset_speed() -> void:
+	move_speed = DEFAULT_MOVE_SPEED
+	$StateChart/Root/Memes/Grounded.state_entered.disconnect(reset_speed)
 
 func _on_dodge_cancel_timer_timeout() -> void:
 	combat.dodge_can_cancel = true
 
 func _on_aim_sight_enemy_entered(enemy: Node2D) -> void:
-	enemies_on_target.append(enemy)
+	enemies_on_sight.append(enemy)
 	
 func _on_aim_sight_enemy_exited(enemy: Node2D) -> void:
-	enemies_on_target.erase(enemy)
+	enemies_on_sight.erase(enemy)
 	
 func handle_aim_enemy() -> void:
 	var closest: CharacterBody2D = null
 	var min_dist: float = INF
-	for enemy in enemies_on_target:
+	for enemy in enemies_on_sight:
 		if not is_instance_valid(enemy):
 			continue
 		var dist = global_position.distance_to(enemy.global_position)
@@ -271,7 +275,7 @@ func is_wall_ahead() -> bool:
 
 func handle_movement() -> void:
 	if combat.is_dodging:
-		if Input.is_action_pressed("jump") and is_on_floor():
+		if Input.is_action_just_pressed("jump") and is_on_floor():
 			jump_state.jump_queued = true
 		if Input.is_action_just_released("jump"):
 			jump_state.jump_queued = false
@@ -319,11 +323,11 @@ func turn(facing_dir: int) -> void:
 	$Archer.scale.x = facing_dir
 	$Archer.position.x = -ARCHER_OFFSET_X * facing_dir
 	ledge_detector.position.x = 8 * facing_dir
+	wall_detector.scale.x = facing_dir
 	pos = camera_remote.position
 	var final_pos = Vector2(camera_distance * facing_dir, pos.y)
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(camera_remote, "position", final_pos, camera_move_duration)
-	#aim_enemy.scale.x = facing_dir
 
 func setup_camera() -> void:
 	camera_remote.remote_path = get_parent().get_camera().get_path()
@@ -372,6 +376,7 @@ func corner_correction(amount: int, delta: float) -> void:
 # ESTADOS (mantidos com nomes originais)
 # ============================================================
 #region ESTADOS
+
 func _rising_to_falling_taken() -> void:
 	anim.clear_queue()
 	anim.play("Jump Apex")
@@ -445,7 +450,6 @@ func _falling_state_processing(_delta: float) -> void:
 		jump_state.jump_queued = false
 
 func _grounded_state_entered() -> void:
-	
 	if jump_state.jump_queued:
 		jump()
 	else:
