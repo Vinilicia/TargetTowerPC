@@ -1,21 +1,20 @@
 [gd_scene load_steps=3 format=3 uid="uid://trih87ps31u"]
 
 [ext_resource type="Script" uid="uid://3vjeb5i7qx0b" path="res://Scripts/Interactibles/Objects/Platform.gd" id="1_4arru"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_tnn8w"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_6op5a"]
 
 [node name="Platform_Spawner" type="Node2D"]
 script = ExtResource("1_4arru")
 spawning_time = 0.6
 
 [node name="Platform" type="StaticBody2D" parent="."]
-collision_layer = 4
-collision_mask = 31
+collision_layer = 16
+collision_mask = 27
 
 [node name="Platform_Col" type="CollisionShape2D" parent="Platform"]
+visible = false
 rotation = 3.14159
-scale = Vector2(1e-05, -0.2)
-shape = SubResource("RectangleShape2D_tnn8w")
+shape = ExtResource("2_6op5a")
 disabled = true
 one_way_collision = true
 debug_color = Color(0.956863, 0.0784314, 0.486275, 0.733333)
@@ -25,5 +24,7 @@ debug_color = Color(0.956863, 0.0784314, 0.486275, 0.733333)
 [node name="Sprite" type="Sprite2D" parent="."]
 
 [node name="Timer" type="Timer" parent="."]
+wait_time = 0.1
+one_shot = true
 
 [connection signal="timeout" from="Timer" to="." method="spawn"]
