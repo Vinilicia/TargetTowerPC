@@ -25,6 +25,7 @@ func _physics_process(delta):
 
 	var collision := move_and_collide(velocity * delta)
 	if collision:
+		print("Velocidade: ", velocity, "Delta: ", delta)
 		var normal := collision.get_normal()
 		var contact_point := collision.get_position()
 
@@ -32,11 +33,20 @@ func _physics_process(delta):
 		var contacts := _get_contacts_at_position($Coll.global_position)
 
 		if contacts.size() >= 2:
-			print("Bananas")
+			print("AA")
+			collision = get_real_collision(delta)
+			if !collision:
+				print("BB")
+				return
 
 		# Lógica de impacto (spawn, prender, etc.)
 		_handle_collision(collision)
 
+func get_real_collision(delta : float) -> KinematicCollision2D:
+	print(global_position)
+	position -= velocity * delta
+	print(global_position)
+	return move_and_collide(velocity * delta, true)
 
 func _get_contacts_at_position(pos: Vector2) -> Array:
 	var shape_node: CollisionShape2D = $Coll
@@ -45,72 +55,15 @@ func _get_contacts_at_position(pos: Vector2) -> Array:
 
 	var params := PhysicsShapeQueryParameters2D.new()
 	params.shape = shape_node.shape
-	params.transform = Transform2D(rotation, pos)
-	params.exclude = [self]
+	params.transform = Transform2D(rotation, shape_node.scale, 0.0, pos)
+	params.collision_mask = 1 << 2
+	params.exclude = [self, get_parent()]
 	params.collide_with_bodies = true
 	params.collide_with_areas = false
 
 	var space := get_world_2d().direct_space_state
 	# Importante: collide_shape retorna múltiplos contatos (inclusive do mesmo collider/tilemap)
-	return space.collide_shape(params, 16) # pega até 16 contatos
-
-
-func _is_position_free_at(pos: Vector2) -> bool:
-	var shape_node: CollisionShape2D = $Coll
-	if not is_instance_valid(shape_node) or shape_node.shape == null:
-		return true
-
-	var params := PhysicsShapeQueryParameters2D.new()
-	params.shape = shape_node.shape
-	params.transform = Transform2D(rotation, pos)
-	params.exclude = [self]
-	params.collide_with_bodies = true
-	params.collide_with_areas = false
-
-	var space := get_world_2d().direct_space_state
-	var res := space.intersect_shape(params, 1) # aqui basta saber se há 1 interseção
-	return res.size() == 0
-
-
-func _try_push_out(contact_point: Vector2, normal: Vector2) -> bool:
-	var push_dist := 4.0
-	var candidates := [
-		contact_point + normal * push_dist,
-		contact_point + Vector2(1, 0) * push_dist,
-		contact_point + Vector2(0, 1) * push_dist,
-		contact_point - flying_direction.normalized() * push_dist
-	]
-
-	for cand in candidates:
-		if _is_position_free_at(cand):
-			global_position = cand
-			return true
-
-	var max_push := 48.0
-	var step := 4.0
-	var d := push_dist
-	while d <= max_push:
-		var cand := contact_point + normal * d
-		if _is_position_free_at(cand):
-			global_position = cand
-			return true
-		d += step
-
-	d = push_dist
-	while d <= max_push:
-		var candx := contact_point + Vector2(sign(normal.y), 0) * d
-		if _is_position_free_at(candx):
-			global_position = candx
-			return true
-		var candy := contact_point + Vector2(0, sign(normal.x)) * d
-		if _is_position_free_at(candy):
-			global_position = candy
-			return true
-		d += step
-
-	return false
-
-
+	return space.intersect_shape(params, 16) # pega até 16 contatos
 
 func fly(is_charged: bool, _player: CharacterBody2D) -> void:
 	_enable_collision()
