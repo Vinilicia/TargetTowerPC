@@ -22,9 +22,94 @@ var has_bounced : bool = false    # novo: indica se já deu o bounce
 func _physics_process(delta):
 	if bouncing:
 		velocity.y += 980 * delta
-	var collision = move_and_collide(velocity * delta)
+	var collision := move_and_collide(velocity * delta)
 	if collision:
+		var body = collision.get_collider()
+		var normal = collision.get_normal()
+		var contact_point = collision.get_position()
+
+		# primeiro tenta corrigir a posição usando o helper
+		var pushed_ok := _try_push_out(contact_point, normal)
+		if not pushed_ok:
+			# fallback simples: joga um pouco na direção oposta à normal
+			global_position = contact_point - normal * 4.0
+
+		# agora executa a lógica de impacto (spawn de plataforma, prender flecha, etc.)
 		_handle_collision(collision)
+
+
+
+
+# === helper para empurrar a flecha pra fora da geometria válida ===
+# retorna true se conseguiu encontrar/ajustar, false caso contrário
+func _try_push_out(contact_point: Vector2, normal: Vector2) -> bool:
+	var shape_node: CollisionShape2D = $Coll
+	if not is_instance_valid(shape_node) or shape_node.shape == null:
+		return false
+
+	var space := get_world_2d().direct_space_state
+	var shape := shape_node.shape
+
+	# funções utilitárias
+	var _is_position_free := func(candidate_pos: Vector2) -> bool:
+		var params = PhysicsShapeQueryParameters2D.new()
+		params.shape = shape
+		params.transform = Transform2D(rotation, candidate_pos)
+		params.exclude = [self]
+		params.collide_with_bodies = true
+		params.collide_with_areas = false
+		var res = space.intersect_shape(params, 1)
+		return res.size() == 0
+
+
+	# lista de candidatos iniciais (experimentais e rápidos)
+	var push_dist := 4.0
+	var candidates := [
+		# preferir sair exatamente pela normal (para fora da superfície)
+		contact_point - normal * push_dist,
+		# tentativa separando apenas por eixo X
+		contact_point - Vector2(sign(normal.x), 0) * push_dist,
+		# tentativa separando apenas por eixo Y
+		contact_point - Vector2(0, sign(normal.y)) * push_dist,
+		# tentar a partir da posição atual da flecha (pequeno deslocamento)
+		global_position - normal * push_dist,
+		# tentar mover um pouco para frente / para trás na direção de voo
+		global_position + flying_direction.normalized() * push_dist,
+		global_position - flying_direction.normalized() * push_dist
+	]
+
+	for cand in candidates:
+		if _is_position_free.call(cand):
+			global_position = cand
+			return true
+
+	# se nada passou, faz um empurrão incremental ao longo da normal
+	var max_push := 48.0
+	var step := 4.0
+	var d := push_dist
+	while d <= max_push:
+		var cand := contact_point - normal * d
+		if _is_position_free.call(cand):
+			global_position = cand
+			return true
+		d += step
+
+	# fallback: tenta deslocar perpendicularmente (só para não ficar preso)
+	d = push_dist
+	while d <= max_push:
+		var candx := contact_point + Vector2(sign(normal.y), 0) * d
+		if _is_position_free.call(candx):
+			global_position = candx
+			return true
+		var candy := contact_point + Vector2(0, sign(normal.x)) * d
+		if _is_position_free.call(candy):
+			global_position = candy
+			return true
+		d += step
+
+	# não conseguiu achar posição livre
+	return false
+
 
 func fly(is_charged: bool, _player: CharacterBody2D) -> void:
 	_enable_collision()
@@ -34,9 +119,9 @@ func fly(is_charged: bool, _player: CharacterBody2D) -> void:
 		velocity = flying_direction.normalized() * Flying_Speed * Charge_Multiplier
 	else:
 		velocity = flying_direction.normalized() * Flying_Speed
-	#var collision = move_and_collide(velocity.normalized() * 2)
-	#if collision:
-		#global_position = collision.get_position() - collision.get_normal() * 2 * facing_direction
+	var collision := move_and_collide(velocity.normalized() * 2)
+	if collision:
+		global_position += collision.get_normal() * 5
 
 func flip_children() -> void:
 	rotation = deg_to_rad(90)
