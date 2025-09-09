@@ -12,7 +12,6 @@ collision_layer = 16
 collision_mask = 27
 
 [node name="Platform_Col" type="CollisionShape2D" parent="Platform"]
-visible = false
 rotation = 3.14159
 shape = ExtResource("2_6op5a")
 disabled = true

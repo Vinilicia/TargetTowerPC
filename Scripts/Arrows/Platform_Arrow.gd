@@ -6,8 +6,12 @@ extends Arrow
 var can_spawn : bool = true 
 
 func _on_body_entered(body: Node2D) -> void:
+	if has_collided:
+		return
+	has_collided = true
 	get_frozen()
-	if can_spawn:
+	if can_spawn and body.is_in_group("Attachables"):
+		print("A")
 		can_spawn = false
 
 		if raycast.is_colliding():
@@ -18,26 +22,18 @@ func _on_body_entered(body: Node2D) -> void:
 			body.call_deferred("add_child", platform)
 			platform.global_position = contact_point - body.global_position
 
-			# Decide orientação pelo vetor normal
 			if abs(normal.y) > abs(normal.x):
-				# É chão ou teto
+				
 				if normal.y < 0:
-					# colisão veio de cima → chão
 					platform.call_deferred("activate", 0, false)
 				else:
-					# colisão veio de baixo → teto
 					platform.call_deferred("activate", 0, true)
 			else:
-				# É parede
 				if normal.x > 0:
-					# colisão veio da direita
-					platform.call_deferred("activate",-1, false)
+					platform.call_deferred("activate", -1, false)
 				else:
-					# colisão veio da esquerda
-					platform.call_deferred("activate",1, false)
-
-	# lógica original
-	if body.is_in_group("Attachables"):
+					platform.call_deferred("activate", 1, false)
+			
 		spawn_joint(body)
 		despawn()
 	else:

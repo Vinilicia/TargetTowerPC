@@ -15,6 +15,7 @@ var flying_direction : Vector2 = Vector2(1, 0)
 var facing_direction : int = 1
 var charged : bool = false
 var velocity := Vector2.ZERO 
+var has_collided : bool = false
 
 func _physics_process(delta):
 	position += velocity * delta
@@ -43,7 +44,7 @@ func spawn_joint(body) -> void:
 	self.position = pos_relativa
 
 func bounce() -> void:
-	despawn()
+	queue_free()
 
 func despawn() -> void:
 	await get_tree().create_timer(Despawn_Time).timeout
@@ -53,6 +54,9 @@ func get_frozen() -> void:
 	velocity = Vector2.ZERO
 
 func _on_body_entered(body: Node2D) -> void:
+	if has_collided:
+		return
+	has_collided = true
 	get_frozen()
 	if body.is_in_group("Attachables"):
 		spawn_joint(body)

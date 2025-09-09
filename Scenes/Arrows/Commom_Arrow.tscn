@@ -19,6 +19,7 @@ anim = NodePath("Anim_Player")
 sprite = NodePath("Sprite")
 trail = NodePath("Arrow_Trail")
 hitbox = NodePath("Hitbox")
+Despawn_Time = 3.0
 
 [node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_2so76")]
 position = Vector2(2, 0)
