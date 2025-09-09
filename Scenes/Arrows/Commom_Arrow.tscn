@@ -20,12 +20,11 @@ trail = NodePath("Arrow_Trail")
 hitbox = NodePath("Hitbox")
 Despawn_Time = 3.0
 
-[node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_2so76")]
+[node name="Hitbox" parent="." instance=ExtResource("5_2so76")]
 position = Vector2(2, 0)
 scale = Vector2(18, 7)
 collision_layer = 256
 monitorable = false
-parent = NodePath("")
 Damage = 1.0
 
 [node name="Coll" type="CollisionShape2D" parent="Hitbox"]
