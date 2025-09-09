@@ -1,42 +1,62 @@
-[gd_scene load_steps=7 format=3 uid="uid://l0kny3w6cbg4"]
+[gd_scene load_steps=9 format=3 uid="uid://l0kny3w6cbg4"]
 
 [ext_resource type="Script" uid="uid://c340tfff8ejnu" path="res://Scripts/Arrows/Platform_Arrow.gd" id="1_a3nj1"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_ftbuc"]
 [ext_resource type="PackedScene" uid="uid://trih87ps31u" path="res://Scenes/Interactibles/Objects/Platform.tscn" id="3_xmhof"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="4_5kcse"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_h84jg"]
-size = Vector2(5.57763, 1)
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="4_sgxhr"]
+[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="5_fh7sq"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="6_sgxhr"]
 
 [sub_resource type="Gradient" id="Gradient_fvltu"]
 resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
 
-[node name="Arrow" type="Area2D" node_paths=PackedStringArray("anim", "sprite", "coll")]
-collision_layer = 2
-collision_mask = 28
+[node name="Arrow" type="CharacterBody2D" node_paths=PackedStringArray("raycast", "anim", "sprite", "hitbox")]
+collision_layer = 0
+collision_mask = 0
+safe_margin = 1.0
 script = ExtResource("1_a3nj1")
-Flying_Speed = 500.0
-Charge_Multiplier = null
-Despawn_Time = 3.0
-Cost = null
+raycast = NodePath("NormalDetector")
 anim = NodePath("Anim_Player")
 sprite = NodePath("Sprite")
-coll = NodePath("Coll")
+hitbox = NodePath("Hitbox")
+Despawn_Time = 3.0
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture_filter = 1
 texture = ExtResource("2_ftbuc")
+offset = Vector2(0, 0.5)
 
 [node name="Anim_Player" type="AnimationPlayer" parent="."]
 
 [node name="Platform" parent="." instance=ExtResource("3_xmhof")]
+visible = false
 position = Vector2(5, -0.5)
 
 [node name="Coll" type="CollisionShape2D" parent="."]
-position = Vector2(5, -0.5)
-scale = Vector2(0.359, -1)
-shape = SubResource("RectangleShape2D_h84jg")
+position = Vector2(6, 0)
+scale = Vector2(4, 3)
+shape = ExtResource("4_sgxhr")
 
 [node name="Arrow_Trail" parent="." instance=ExtResource("4_5kcse")]
 gradient = SubResource("Gradient_fvltu")
+
+[node name="Hitbox" parent="." instance=ExtResource("5_fh7sq")]
+visible = false
+position = Vector2(2, 0)
+scale = Vector2(18, 7)
+collision_layer = 256
+monitorable = false
+Damage = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+shape = ExtResource("6_sgxhr")
+debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
+
+[node name="NormalDetector" type="RayCast2D" parent="."]
+visible = false
+target_position = Vector2(9, 0)
+collision_mask = 20
+
+[connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]
