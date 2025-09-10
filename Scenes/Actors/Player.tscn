@@ -181,7 +181,6 @@ scale = Vector2(10, 10)
 shape = ExtResource("4_26aeq")
 
 [node name="Archer" parent="." instance=ExtResource("9_26aeq")]
-visible = false
 position = Vector2(-28, -28)
 offset = Vector2(22, 18)
 region_rect = Rect2(65, 86, 15, 20)

@@ -18,29 +18,33 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 		return
 
 	# cria plataforma
-	var platform = plat_spawner.instantiate()
-	var local_pos = body.to_local(contact_point)
-	body.add_child(platform)
-	platform.position = local_pos
+	if body.is_in_group("Attachables"):
+		var platform = plat_spawner.instantiate()
+		var local_pos = body.to_local(contact_point)
+		body.add_child(platform)
+		platform.position = local_pos
+		
+		if has_bounced or (flying_direction.y > 0) :
+			platform.set_spawning_time(0.1)
 
-	if abs(normal.y) > abs(normal.x):
-		if normal.y < 0:
-			platform.activate(0, false) # chão
+		if abs(normal.y) > abs(normal.x):
+			if normal.y < 0:
+				platform.activate(0, false) # chão
+			else:
+				platform.activate(0, true)  # teto
 		else:
-			platform.activate(0, true)  # teto
-	else:
-		if normal.x > 0:
-			platform.activate(-1, false) # parede direita
-		else:
-			platform.activate(1, false)  # parede esquerda
+			if normal.x > 0:
+				platform.activate(-1, false) # parede direita
+			else:
+				platform.activate(1, false)  # parede esquerda
 
-	has_collided = true
+		has_collided = true
 	queue_free()
 
 
 func _on_hitbox_hit(target: Node2D) -> void:
 	velocity = Vector2.ZERO
-	queue_free()
+	bounce()
 
 func try_make_platform(body : Node2D) -> bool:
 	if not can_spawn:

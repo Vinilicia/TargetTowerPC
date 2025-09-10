@@ -77,7 +77,5 @@ func _on_loose_sight_timer_timeout() -> void:
 	player_is_nearby = false
 	if attack_timer.is_inside_tree():
 		attack_timer.stop()
-	print("Anal")
 	if look_around_timer.is_inside_tree():
-		print("Sex")
 		look_around_timer.start()

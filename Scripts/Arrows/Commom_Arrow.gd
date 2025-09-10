@@ -25,7 +25,6 @@ func _physics_process(delta):
 
 	var collision := move_and_collide(velocity * delta)
 	if collision:
-		print("Velocidade: ", velocity, "Delta: ", delta)
 		var normal := collision.get_normal()
 		var contact_point := collision.get_position()
 
@@ -33,19 +32,15 @@ func _physics_process(delta):
 		var contacts := _get_contacts_at_position($Coll.global_position)
 
 		if contacts.size() >= 2:
-			print("AA")
 			collision = get_real_collision(delta)
 			if !collision:
-				print("BB")
 				return
 
 		# Lógica de impacto (spawn, prender, etc.)
 		_handle_collision(collision)
 
 func get_real_collision(delta : float) -> KinematicCollision2D:
-	print(global_position)
 	position -= velocity * delta
-	print(global_position)
 	return move_and_collide(velocity * delta, true)
 
 func _get_contacts_at_position(pos: Vector2) -> Array:
