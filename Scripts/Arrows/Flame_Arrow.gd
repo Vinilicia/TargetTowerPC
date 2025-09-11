@@ -1,20 +1,6 @@
 extends Arrow
 
-@export var Charge_Inten_Mod : float = 2
-
-@onready var fire = $Fire
+@onready var fire : Fire = $Fire
 
 func _ready():
-	body_entered.connect(_on_body_entered)
-	fire.parent_node = self
-	if charged:
-		fire.set_collision(coll.shape, 10)
-		fire.Intensity *= 2
-	else:
-		fire.set_collision(coll.shape, 1.2)
- 
-func get_frozen() -> void:
-	queue_free()
-
-func _on_body_entered(_body) -> void:
-	get_frozen()
+	fire._activate()

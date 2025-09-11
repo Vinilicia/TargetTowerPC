@@ -25,8 +25,6 @@ func _physics_process(delta):
 
 	var collision := move_and_collide(velocity * delta)
 	if collision:
-		var normal := collision.get_normal()
-		var contact_point := collision.get_position()
 
 		# Pega múltiplos contatos na POSIÇÃO ATUAL usando collide_shape
 		var contacts := _get_contacts_at_position($Coll.global_position)
@@ -62,7 +60,7 @@ func _get_contacts_at_position(pos: Vector2) -> Array:
 
 func fly(is_charged: bool, _player: CharacterBody2D) -> void:
 	_enable_collision()
-	hitbox.set_deferred("monitorable", true)
+	#hitbox.set_deferred("monitorable", true)
 	if is_charged:
 		charged = true
 		velocity = flying_direction.normalized() * Flying_Speed * Charge_Multiplier
@@ -118,8 +116,6 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 		return
 
 	var body = collision.get_collider()
-	var normal = collision.get_normal()
-	var contact_point = collision.get_position()
 
 	if body.is_in_group("Attachables"):
 		has_collided = true
@@ -134,6 +130,6 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 		spawn_joint(body)
 		despawn()
 
-func _on_hitbox_hit(target: Node2D) -> void:
+func _on_hitbox_hit(_target: Node2D) -> void:
 	velocity = Vector2.ZERO
 	queue_free()

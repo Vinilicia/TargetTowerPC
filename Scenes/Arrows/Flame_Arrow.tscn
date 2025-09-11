@@ -1,41 +1,68 @@
-[gd_scene load_steps=7 format=3 uid="uid://dos8syduy35sk"]
+[gd_scene load_steps=8 format=3 uid="uid://dos8syduy35sk"]
 
 [ext_resource type="Script" uid="uid://co4js5cxxb3v8" path="res://Scripts/Arrows/Flame_Arrow.gd" id="1_t00ne"]
+[ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="2_khijo"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_sre6a"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="3_khijo"]
 [ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Scenes/Actions-Reactions/Fire.tscn" id="4_334qw"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="4_stov7"]
 
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_2ri8v"]
-size = Vector2(2, 1)
-
-[sub_resource type="Gradient" id="Gradient_8dxse"]
+[sub_resource type="Gradient" id="Gradient_wcnxp"]
 resource_local_to_scene = true
-colors = PackedColorArray(1, 0.258824, 0.156863, 1, 1, 0.258824, 0.156863, 0.505882)
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
 
-[node name="Arrow" type="Area2D" node_paths=PackedStringArray("anim", "sprite", "coll")]
-collision_layer = 2
-collision_mask = 28
+[node name="Arrow" type="CharacterBody2D" node_paths=PackedStringArray("anim", "sprite", "hitbox")]
+collision_layer = 0
+collision_mask = 0
 script = ExtResource("1_t00ne")
-anim = NodePath("Anim_Player")
+anim = NodePath("Anim")
 sprite = NodePath("Sprite")
-coll = NodePath("Coll")
-Flying_Speed = 500.0
-Despawn_Time = 2.0
+trail = NodePath("Arrow_Trail")
+hitbox = NodePath("Hitbox")
+metadata/_custom_type_script = "uid://cdxa4sa0e3u2o"
 
 [node name="Sprite" type="Sprite2D" parent="."]
-texture_filter = 1
 texture = ExtResource("2_sre6a")
+offset = Vector2(0, 0.5)
 
-[node name="Anim_Player" type="AnimationPlayer" parent="."]
+[node name="Anim" type="AnimationPlayer" parent="."]
 
-[node name="Fire" parent="." instance=ExtResource("4_334qw")]
-Intensity = 10.0
-Instant = true
+[node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("parent")]
+position = Vector2(2, 0)
+scale = Vector2(18, 7)
+collision_layer = 256
+collision_mask = 0
+monitoring = false
+monitorable = false
+script = ExtResource("2_khijo")
+parent = NodePath("..")
+Damage = 1.0
+metadata/_custom_type_script = "uid://dj6mgwavv4r6f"
 
-[node name="Coll" type="CollisionShape2D" parent="."]
-position = Vector2(5, -0.5)
-shape = SubResource("RectangleShape2D_2ri8v")
+[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+shape = ExtResource("3_khijo")
+debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 
 [node name="Arrow_Trail" parent="." instance=ExtResource("4_stov7")]
-default_color = Color(0.850526, 0.312986, 0.23553, 1)
-gradient = SubResource("Gradient_8dxse")
+process_mode = 4
+gradient = SubResource("Gradient_wcnxp")
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+position = Vector2(6, 0)
+scale = Vector2(4, 3)
+shape = ExtResource("3_khijo")
+
+[node name="Fire" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("4_334qw")]
+position = Vector2(6, 0)
+instant = true
+collision = NodePath("../Coll")
+
+[node name="Hitbox" parent="Fire" index="0" node_paths=PackedStringArray("parent")]
+collision_layer = 4096
+collision_mask = 0
+parent = NodePath("..")
+Damage = 1.0
+
+[connection signal="hit" from="Fire/Hitbox" to="Fire" method="_on_hitbox_hit"]
+
+[editable path="Fire"]
