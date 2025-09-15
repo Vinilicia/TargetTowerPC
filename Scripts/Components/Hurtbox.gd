@@ -15,7 +15,6 @@ signal got_hit_by(hitbox : Hitbox)
 func got_hit(hitbox : Hitbox) -> void:
 	if hitbox.parent == parent:
 		return
-	print("Poggers ", parent.name, " ", hitbox.parent.name, " ", hitbox.monitorable )
 	got_hit_by.emit(hitbox)
 	took_damage.emit(hitbox.Damage)
 	hitbox.hit_something(parent)

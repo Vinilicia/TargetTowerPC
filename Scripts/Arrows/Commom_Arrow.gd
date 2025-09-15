@@ -88,9 +88,11 @@ func _enable_collision() -> void:
 func spawn_joint(body) -> void:
 	_disable_collision()
 	velocity = Vector2.ZERO
-	#var pos_relativa = global_position - body.global_position
-	#body.call_deferred("add_child", self)
-	#position = pos_relativa
+	var pos_relativa = global_position - body.global_position
+	var remote_pos : RemoteTransform2D = RemoteTransform2D.new()
+	body.add_child(remote_pos)
+	remote_pos.set_deferred("position", pos_relativa)
+	remote_pos.set_deferred("remote_path", remote_pos.get_path_to(self))
 
 func bounce() -> void:
 	var dir = -int(sign(flying_direction.x))
