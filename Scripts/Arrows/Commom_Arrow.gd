@@ -88,11 +88,9 @@ func _enable_collision() -> void:
 func spawn_joint(body) -> void:
 	_disable_collision()
 	velocity = Vector2.ZERO
-	var pos_relativa = global_position - body.global_position
-	# remover da hierarquia atual e adicionar ao novo parent
-	get_parent().call_deferred("remove_child", self)
-	body.call_deferred("add_child", self)
-	position = pos_relativa
+	#var pos_relativa = global_position - body.global_position
+	#body.call_deferred("add_child", self)
+	#position = pos_relativa
 
 func bounce() -> void:
 	var dir = -int(sign(flying_direction.x))

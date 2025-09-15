@@ -1,7 +1,6 @@
 extends Node
 class_name FireManager
 
-@export var instant : bool
 @export var has_fire : bool = true
 @export_group("Nodes")
 @export var fire : Fire

@@ -1,10 +1,10 @@
-[gd_scene load_steps=4 format=3 uid="uid://xhwqoiulihut"]
+[gd_scene load_steps=6 format=3 uid="uid://xhwqoiulihut"]
 
 [ext_resource type="Script" uid="uid://d2qgirks8dg0i" path="res://Scripts/Interactibles/Objects/Box.gd" id="1_yd07j"]
-[ext_resource type="PackedScene" uid="uid://d7m0k4hcddd7" path="res://Scenes/Actions-Reactions/React.tscn" id="2_nghxj"]
-
-[sub_resource type="RectangleShape2D" id="RectangleShape2D_o308p"]
-size = Vector2(32, 32)
+[ext_resource type="Script" uid="uid://166phhwsbtdf" path="res://Scripts/Actions-Reactions/Fire_manager.gd" id="2_hinrc"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_vfhko"]
+[ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Scenes/Actions-Reactions/Fire.tscn" id="3_1iocv"]
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="5_vfhko"]
 
 [node name="Box" type="CharacterBody2D" groups=["Attachables"]]
 collision_layer = 16
@@ -12,14 +12,30 @@ collision_mask = 23
 script = ExtResource("1_yd07j")
 
 [node name="Coll" type="CollisionShape2D" parent="."]
-shape = SubResource("RectangleShape2D_o308p")
+scale = Vector2(32, 32)
+shape = ExtResource("2_vfhko")
 
-[node name="React" parent="." instance=ExtResource("2_nghxj")]
-Is_freezable = true
-Is_flammable = true
-Fire_Resistance = 1
-Time_To_Fire = 2.0
-Burn_Type = "Cool_off"
-Emanates_Heat = true
-Fire_Intensity = 1.0
-Fire_Scale = 1.4
+[node name="FireManager" type="Node" parent="." node_paths=PackedStringArray("fire")]
+script = ExtResource("2_hinrc")
+fire = NodePath("../Fire")
+metadata/_custom_type_script = "uid://166phhwsbtdf"
+
+[node name="Fire" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("3_1iocv")]
+collision = NodePath("../Coll")
+
+[node name="Hitbox" parent="Fire" index="0" node_paths=PackedStringArray("parent")]
+parent = NodePath("../..")
+
+[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_vfhko")]
+position = Vector2(1, 0)
+collision_mask = 4096
+parent = NodePath("..")
+can_be_invincible = false
+
+[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
+scale = Vector2(48, 48)
+shape = ExtResource("2_vfhko")
+
+[connection signal="got_hit_by" from="Hurtbox" to="FireManager" method="_hurtbox_got_hit"]
+
+[editable path="Fire"]

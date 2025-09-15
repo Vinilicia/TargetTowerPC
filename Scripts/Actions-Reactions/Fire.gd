@@ -15,8 +15,8 @@ func _ready() -> void:
 	$Hitbox.set_deferred("visible", false)
 
 func _activate() -> void:
-	$Hitbox.set_deferred("monitorable", true)
 	$Hitbox.set_deferred("process_mode", PROCESS_MODE_INHERIT)
+	$Hitbox.set_deferred("monitorable", true)
 	$Hitbox.set_deferred("visible", true)
 
 func _on_hitbox_hit(_target: Node2D) -> void:

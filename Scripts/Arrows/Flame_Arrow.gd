@@ -2,5 +2,5 @@ extends Arrow
 
 @onready var fire : Fire = $Fire
 
-func _ready():
+func _ready() -> void:
 	fire._activate()

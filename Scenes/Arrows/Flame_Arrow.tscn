@@ -19,6 +19,7 @@ anim = NodePath("Anim")
 sprite = NodePath("Sprite")
 trail = NodePath("Arrow_Trail")
 hitbox = NodePath("Hitbox")
+Despawn_Time = 3.0
 metadata/_custom_type_script = "uid://cdxa4sa0e3u2o"
 
 [node name="Sprite" type="Sprite2D" parent="."]
@@ -33,7 +34,6 @@ scale = Vector2(18, 7)
 collision_layer = 256
 collision_mask = 0
 monitoring = false
-monitorable = false
 script = ExtResource("2_khijo")
 parent = NodePath("..")
 Damage = 1.0
@@ -58,10 +58,7 @@ instant = true
 collision = NodePath("../Coll")
 
 [node name="Hitbox" parent="Fire" index="0" node_paths=PackedStringArray("parent")]
-collision_layer = 4096
-collision_mask = 0
 parent = NodePath("..")
-Damage = 1.0
 
 [connection signal="hit" from="Fire/Hitbox" to="Fire" method="_on_hitbox_hit"]
 

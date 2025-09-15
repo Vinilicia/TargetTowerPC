@@ -106,7 +106,7 @@ func _ready():
 	velocity = Vector2.ZERO
 	setup_camera()
 	UiHandler.equiped_arrow_index = initial_arrow_index
-	#Engine.time_scale = 0.5
+	Engine.time_scale = 0.2
 
 # ============================================================
 # MAIN LOOP
