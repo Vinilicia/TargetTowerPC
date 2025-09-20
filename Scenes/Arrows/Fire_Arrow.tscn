@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://dos8syduy35sk"]
 
-[ext_resource type="Script" uid="uid://co4js5cxxb3v8" path="res://Scripts/Arrows/Flame_Arrow.gd" id="1_t00ne"]
-[ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="2_khijo"]
-[ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_sre6a"]
-[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="3_khijo"]
-[ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Scenes/Actions-Reactions/Fire.tscn" id="4_334qw"]
-[ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="4_stov7"]
+[ext_resource type="Script" uid="uid://co4js5cxxb3v8" path="res://Scripts/Arrows/Fire_Arrow.gd" id="1_futqs"]
+[ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_1pd68"]
+[ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="3_mwrs1"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="4_55mib"]
+[ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="5_x8nla"]
+[ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Scenes/Actions-Reactions/Fire.tscn" id="6_p51ot"]
 
 [sub_resource type="Gradient" id="Gradient_wcnxp"]
 resource_local_to_scene = true
@@ -14,7 +14,7 @@ colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
 [node name="Arrow" type="CharacterBody2D" node_paths=PackedStringArray("anim", "sprite", "hitbox")]
 collision_layer = 0
 collision_mask = 0
-script = ExtResource("1_t00ne")
+script = ExtResource("1_futqs")
 anim = NodePath("Anim")
 sprite = NodePath("Sprite")
 trail = NodePath("Arrow_Trail")
@@ -23,36 +23,38 @@ Despawn_Time = 3.0
 metadata/_custom_type_script = "uid://cdxa4sa0e3u2o"
 
 [node name="Sprite" type="Sprite2D" parent="."]
-texture = ExtResource("2_sre6a")
+texture = ExtResource("2_1pd68")
 offset = Vector2(0, 0.5)
 
 [node name="Anim" type="AnimationPlayer" parent="."]
 
 [node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("parent")]
+visible = false
 position = Vector2(2, 0)
 scale = Vector2(18, 7)
 collision_layer = 256
 collision_mask = 0
 monitoring = false
-script = ExtResource("2_khijo")
+script = ExtResource("3_mwrs1")
 parent = NodePath("..")
 Damage = 1.0
 metadata/_custom_type_script = "uid://dj6mgwavv4r6f"
 
 [node name="Coll" type="CollisionShape2D" parent="Hitbox"]
-shape = ExtResource("3_khijo")
+shape = ExtResource("4_55mib")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 
-[node name="Arrow_Trail" parent="." instance=ExtResource("4_stov7")]
+[node name="Arrow_Trail" parent="." instance=ExtResource("5_x8nla")]
 process_mode = 4
 gradient = SubResource("Gradient_wcnxp")
 
 [node name="Coll" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(6, 0)
 scale = Vector2(4, 3)
-shape = ExtResource("3_khijo")
+shape = ExtResource("4_55mib")
 
-[node name="Fire" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("4_334qw")]
+[node name="Fire" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("6_p51ot")]
 position = Vector2(6, 0)
 instant = true
 collision = NodePath("../Coll")

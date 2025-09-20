@@ -90,6 +90,7 @@ func spawn_joint(body) -> void:
 	velocity = Vector2.ZERO
 	var pos_relativa = global_position - body.global_position
 	var remote_pos : RemoteTransform2D = RemoteTransform2D.new()
+	remote_pos.update_rotation = false
 	body.add_child(remote_pos)
 	remote_pos.set_deferred("position", pos_relativa)
 	remote_pos.set_deferred("remote_path", remote_pos.get_path_to(self))

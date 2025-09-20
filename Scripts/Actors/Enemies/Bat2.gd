@@ -320,5 +320,6 @@ func _hurtbox_got_knocked(_hitbox : Hitbox) -> void:
 	pass
 
 func _on_fire_manager_caught_fire() -> void:
+	print("Ouch")
 	var health_man : HealthManager = $HealthManager
 	health_man.start_burning(4, 0.5)
