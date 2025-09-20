@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://dbmux1c4ct4hu"]
+[gd_scene load_steps=19 format=4 uid="uid://dbmux1c4ct4hu"]
 
 [ext_resource type="Script" uid="uid://bi7ajwk42n3cg" path="res://Scenes/Levels/level.gd" id="1_uc4dq"]
 [ext_resource type="Texture2D" uid="uid://da58dobtmu48v" path="res://Assets/Home_bred/Tilemap/area-inicial.aseprite" id="3_tgyxi"]
@@ -12,6 +12,7 @@
 [ext_resource type="PackedScene" uid="uid://dm11p43b6up60" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Block-01.tscn" id="10_tgyxi"]
 [ext_resource type="PackedScene" uid="uid://w2pw765x6aql" path="res://Scenes/Actors/Enemies/Rock_Goblin.tscn" id="11_0qeml"]
 [ext_resource type="PackedScene" uid="uid://cjd68laeibaxd" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/RedTarget.tscn" id="11_cv115"]
+[ext_resource type="PackedScene" uid="uid://xhwqoiulihut" path="res://Scenes/Interactibles/Objects/Box.tscn" id="13_0qeml"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_tgyxi"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -1941,13 +1942,14 @@ process_mode = 3
 visible = false
 
 [node name="Player" parent="." instance=ExtResource("8_pjtoa")]
-position = Vector2(776, 48)
+position = Vector2(215, 5)
 
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Bats" type="Node2D" parent="Enemies"]
-process_mode = 4
-visible = false
+
+[node name="Bat" parent="Enemies/Bats" instance=ExtResource("10_lkwqp")]
+position = Vector2(-41, -57)
 
 [node name="RockGoblins" type="Node2D" parent="Enemies"]
 
@@ -1976,10 +1978,7 @@ direction = 1
 [node name="Goblins" type="Node2D" parent="Enemies"]
 
 [node name="NormalGoblin" parent="Enemies/Goblins" instance=ExtResource("10_0qeml")]
-position = Vector2(472, -112)
-
-[node name="Bat" parent="Enemies" instance=ExtResource("10_lkwqp")]
-position = Vector2(256, -296)
+position = Vector2(684, -213)
 
 [node name="Mechanisms" type="Node2D" parent="."]
 
@@ -2021,6 +2020,12 @@ rotation = -1.5708
 [node name="RedTarget" parent="Mechanisms/TargetBlock3" instance=ExtResource("11_cv115")]
 position = Vector2(476, -306)
 rotation = -1.5708
+
+[node name="Box" parent="." instance=ExtResource("13_0qeml")]
+position = Vector2(357, -1)
+
+[node name="Box2" parent="." instance=ExtResource("13_0qeml")]
+position = Vector2(321, 0)
 
 [connection signal="activated" from="Mechanisms/TargetBlock/RedTarget" to="Mechanisms/TargetBlock/Block" method="was_deactivated"]
 [connection signal="activated" from="Mechanisms/TargetBlock4/RedTarget" to="Mechanisms/TargetBlock4/Block" method="was_activated"]
