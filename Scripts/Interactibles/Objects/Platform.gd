@@ -39,14 +39,13 @@ func spawn() -> void:
 	platform_col.set_deferred("disabled", false)
 	if vertical:
 		platform_col.set_deferred("one_way_collision", false)
-		if down: # vindo do teto
+		if down: 
 			tween.tween_property($Platform, "scale", Vector2(platform_width, platform_length), time_to_pop_up)
 			tween.parallel().tween_property($Platform, "position", Vector2(0, 12), time_to_pop_up)
-		else: # vindo do chão
+		else: 
 			tween.tween_property($Platform, "scale", Vector2(platform_width, platform_length), time_to_pop_up)
 			tween.parallel().tween_property($Platform, "position", Vector2(0, -12), time_to_pop_up)
 	else:
-		# horizontal
 		tween.tween_property($Platform, "scale", Vector2(platform_length * dir, -platform_width), time_to_pop_up)
 		tween.parallel().tween_property($Platform, "position", Vector2(12 * -dir, 0), time_to_pop_up)
 		tween.finished.connect(func():
@@ -57,14 +56,13 @@ func spawn() -> void:
 func shrink() -> void:
 	var tween = create_tween()
 	if vertical:
-		if down: # vindo do teto
+		if down:
 			tween.tween_property($Platform, "scale", Vector2(1, 1), TIME_TO_SHRINK)
 			tween.parallel().tween_property($Platform, "position", Vector2(0, 0), TIME_TO_SHRINK)
-		else: # vindo do chão
+		else:
 			tween.tween_property($Platform, "scale", Vector2(1, 1), TIME_TO_SHRINK)
 			tween.parallel().tween_property($Platform, "position", Vector2(0, 0), TIME_TO_SHRINK)
 	else:
-		# horizontal
 		tween.tween_property($Platform, "scale", Vector2(1, 1), TIME_TO_SHRINK)
 		tween.parallel().tween_property($Platform, "position", Vector2(0, 0), TIME_TO_SHRINK)
 	await tween.finished

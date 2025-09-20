@@ -4,6 +4,7 @@ class_name Hitbox
 @export var parent : Node2D
 
 @export var Damage : float
+@export_group("Knockback")
 @export var Knockback_force : float
 @export var Knockback_angle : float
 

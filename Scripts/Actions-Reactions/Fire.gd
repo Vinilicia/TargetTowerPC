@@ -1,43 +1,28 @@
-extends Area2D
+extends Node2D
+class_name Fire
 
-@export var Intensity : float
-@export var Instant : bool 
+@export var instant : bool = false
+@export var scale_increase : Vector2 = Vector2(1.4, 1.6)
+@export_group("Nodes")
+@export var collision : CollisionShape2D
 
-var duration : float
-var parent_node : Node2D
-
-var timer : Timer
-var coll : CollisionShape2D
-
-signal extinguished
-
-
-func set_collision(collision_shape : Shape2D, collision_scale : float) -> void:
-	coll = $Coll
-	coll.call_deferred("set_shape", collision_shape)
-	coll.call_deferred("set_scale", Vector2(1, 1) * collision_scale)
-
-func connect_extinguish_signal(function : Callable) -> void:
-	extinguished.connect(function)
 
 func _ready() -> void:
-	if duration != 0:
-		start_timer()
+	var hitbox_coll : CollisionShape2D = $Hitbox/Coll
+	hitbox_coll.set_deferred("shape", collision.shape)
+	var new_scale : Vector2 = Vector2( collision.scale.x * scale_increase.x, collision.scale.y * scale_increase.y)
+	hitbox_coll.set_deferred("scale", new_scale)
+	_deactivate()
 
-func start_timer() -> void:
-	if timer != null:
-		timer.free()
-	timer = Timer.new()
-	timer.one_shot = true
-	timer.autostart = false
-	add_child(timer)
-	timer.start(duration)
-	await timer.timeout
-	extinguish()
+func _deactivate() -> void:
+	$Hitbox.set_deferred("monitorable", false)
+	$Hitbox.set_deferred("process_mode", PROCESS_MODE_DISABLED)
+	$Hitbox.set_deferred("visible", false)
 
-func _on_timer_timeout() -> void:
-	extinguish()
+func _activate() -> void:
+	$Hitbox.set_deferred("process_mode", PROCESS_MODE_INHERIT)
+	$Hitbox.set_deferred("monitorable", true)
+	$Hitbox.set_deferred("visible", true)
 
-func extinguish() -> void:
-	extinguished.emit()
-	queue_free()
+func _on_hitbox_hit(_target: Node2D) -> void:
+	pass

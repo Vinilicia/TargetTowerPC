@@ -48,7 +48,7 @@ hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("DodgeCancelTimer")
 ledge_detector = NodePath("LedgeDetector")
 wall_detector = NodePath("WallDetector")
-initial_arrow_index = 2
+initial_arrow_index = 1
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
 [node name="LedgeDetector" type="RayCast2D" parent="."]

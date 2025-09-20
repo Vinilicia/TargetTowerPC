@@ -13,6 +13,8 @@ signal got_hit_by(hitbox : Hitbox)
 
 
 func got_hit(hitbox : Hitbox) -> void:
+	if hitbox.parent == parent:
+		return
 	got_hit_by.emit(hitbox)
 	took_damage.emit(hitbox.Damage)
 	hitbox.hit_something(parent)
@@ -22,7 +24,6 @@ func got_hit(hitbox : Hitbox) -> void:
 func get_invincible(duration_override : float = -1.0) -> void:
 	if not can_be_invincible:
 		return
-	
 	set_deferred("monitoring", false)
 
 	var duration = duration_override if duration_override > 0 else invincibility_time

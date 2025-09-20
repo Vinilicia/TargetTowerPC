@@ -65,6 +65,7 @@ func _ready():
 	current_arrow = equip_arrow(current_arrow_index)
 	turn(-facing_direction)
 	turn(facing_direction)
+	Engine.time_scale = 0.5
 
 func _process(delta):
 	_handle_animation()
