@@ -236,6 +236,7 @@ one_shot = true
 
 [node name="FireManager" parent="." node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("14_fe8qe")]
 time_to_burn = 0.5
+can_stack = true
 ref_hurtbox = NodePath("../DamageBoxes/Hurtbox")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]

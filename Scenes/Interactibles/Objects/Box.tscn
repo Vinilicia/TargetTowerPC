@@ -17,6 +17,7 @@ shape = ExtResource("2_vfhko")
 
 [node name="FireManager" parent="." node_paths=PackedStringArray("fire", "ref_hurtbox") instance=ExtResource("3_vfhko")]
 has_fire = true
+burn_duration = 6.0
 fire = NodePath("../Fire")
 ref_hurtbox = NodePath("../Hurtbox")
 
@@ -39,6 +40,8 @@ can_be_invincible = false
 [node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
 scale = Vector2(48, 48)
 shape = ExtResource("2_vfhko")
+
+[connection signal="extinguished" from="FireManager" to="." method="burn_out"]
 
 [editable path="FireManager"]
 [editable path="Fire"]

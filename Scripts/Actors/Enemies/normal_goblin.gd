@@ -25,12 +25,12 @@ const ARROW_AVOID_DELAY : float = 0.15
 # ======================
 # ONREADY
 # ======================
-@onready var state_chart: StateChart = $StateChart
+@onready var state_chart: StateChart = $WhiteNodes/StateChart
 
-@onready var wall_detector: RayCast2D = $Detectors/WallDetector
-@onready var jump_detector: RayCast2D = $Detectors/JumpDetector
-@onready var fall_detector: RayCast2D = $Detectors/FallDetector
-@onready var ground_detector: RayCast2D = $Detectors/GroundDetector
+@onready var wall_detector: RayCast2D = $Raycasts/Detectors/WallDetector
+@onready var jump_detector: RayCast2D = $Raycasts/Detectors/JumpDetector
+@onready var fall_detector: RayCast2D = $Raycasts/Detectors/FallDetector
+@onready var ground_detector: RayCast2D = $Raycasts/Detectors/GroundDetector
 
 @onready var jump_attack_area: Area2D = $Areas/JumpAttackArea
 @onready var stab_attack_area: Area2D = $Areas/StabAttackArea
@@ -39,9 +39,9 @@ const ARROW_AVOID_DELAY : float = 0.15
 @onready var inner_arrow_detec: Area2D = $Areas/InnerArrowDetector
 
 @onready var coll: CollisionShape2D = $Coll
-@export var giving_up_timer : Timer
-@onready var jump_attack_timer : Timer = $Timers/JumpAttackTimer
-@onready var stab_attack_timer : Timer = $Timers/StabAttackTimer
+@onready var giving_up_timer : Timer = $WhiteNodes/Timers/GivingUpTimer
+@onready var jump_attack_timer : Timer = $WhiteNodes/Timers/JumpAttackTimer
+@onready var stab_attack_timer : Timer = $WhiteNodes/Timers/StabAttackTimer
 
 # ======================
 # VARIÁVEIS DE ESTADO
@@ -77,6 +77,8 @@ func _ready() -> void:
 	if direction == 1:
 		flip()
 
+var is_falling : bool = false
+
 func _physics_process(delta: float) -> void:
 	if not (attacking or player_in_range):
 		v_component.set_proper_velocity(current_speed * direction * current_speed_multiplier, 1)
@@ -85,8 +87,16 @@ func _physics_process(delta: float) -> void:
 		v_component.add_proper_velocity(get_current_gravity() * delta)
 	else:
 		if is_jumping:
-			is_jumping = false
-		v_component.set_proper_velocity(0, 2)
+			if is_falling:
+				is_jumping = false
+				is_falling = false
+				v_component.set_proper_velocity(0.0, 2)
+		else:
+			is_falling = false
+			v_component.set_proper_velocity(0.0, 2)
+	
+	if v_component.get_total_velocity().y > 0.0:
+		is_falling = true
 
 	if player_is_nearby:
 		_update_lines_of_sight()
@@ -103,7 +113,6 @@ func _physics_process(delta: float) -> void:
 # ======================
 func get_current_gravity() -> Vector2:
 	return get_gravity() / 2 if attacking else get_gravity()
-
 
 # ======================
 # DETECÇÃO DO PLAYER
@@ -235,7 +244,10 @@ func _on_chasing_state_physics_processing(_delta: float) -> void:
 	var can_fall := fall_detector.is_colliding()
 
 	if (hit_wall or no_ground):
-		if hit_wall and can_jump and !is_jumping and abs(player_target.global_position.y - global_position.y) > 10:
+		var can_jump_now : bool = can_jump and !is_jumping and is_on_floor()
+		var enough_y_dist = (player_target.global_position.y - global_position.y) < -10
+		var enough_x_dist = (player_target.global_position.x - global_position.x) * direction > 15 * direction
+		if hit_wall and can_jump_now and enough_x_dist and enough_y_dist:
 			jump()
 		elif no_ground and can_fall:
 			pass
@@ -344,3 +356,10 @@ func _on_guarding_state_entered() -> void:
 
 func _on_chasing_state_entered() -> void:
 	current_speed = chase_speed
+
+func _on_fire_manager_caught_fire() -> void:
+	var health_man : HealthManager = $WhiteNodes/HealthManager
+	var fire_man : FireManager = $FireManager
+	if not fire_man.extinguished.is_connected(health_man.stop_burning):
+		fire_man.extinguished.connect(health_man.stop_burning, 4)
+		health_man.start_burning(0.5)
