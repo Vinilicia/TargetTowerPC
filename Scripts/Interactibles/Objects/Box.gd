@@ -22,3 +22,6 @@ func _physics_process(delta):
 #
 #func stop_burning() -> void:
 	#queue_free()
+
+func burn_out() -> void:
+	queue_free()

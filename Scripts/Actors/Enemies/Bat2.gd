@@ -320,6 +320,8 @@ func _hurtbox_got_knocked(_hitbox : Hitbox) -> void:
 	pass
 
 func _on_fire_manager_caught_fire() -> void:
-	print("Ouch")
 	var health_man : HealthManager = $HealthManager
-	health_man.start_burning(4, 0.5)
+	var fire_man : FireManager = $FireManager
+	if not fire_man.extinguished.is_connected(health_man.stop_burning):
+		fire_man.extinguished.connect(health_man.stop_burning, 4)
+		health_man.start_burning(0.5)
