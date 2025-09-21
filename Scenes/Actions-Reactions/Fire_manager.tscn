@@ -18,4 +18,4 @@ one_shot = true
 
 [connection signal="area_exited" from="Hurtbox" to="." method="_on_hurtbox_fire_exited"]
 [connection signal="got_hit_by" from="Hurtbox" to="." method="_hurtbox_got_hit"]
-[connection signal="timeout" from="BurningTimer" to="." method="_on_burning_timer_timeout"]
+[connection signal="timeout" from="BurningTimer" to="." method="catch_fire"]

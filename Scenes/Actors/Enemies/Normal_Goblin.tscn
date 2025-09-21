@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=3 uid="uid://wkr5vvc6juys"]
+[gd_scene load_steps=15 format=3 uid="uid://wkr5vvc6juys"]
 
 [ext_resource type="Script" uid="uid://dihwtmdgfkujj" path="res://Scripts/Actors/Enemies/normal_goblin.gd" id="1_lcxwn"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_qs8xc"]
@@ -13,19 +13,19 @@
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="10_jabsr"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_3ax3k"]
 [ext_resource type="Script" uid="uid://b3ucjfdhlhrc8" path="res://Scripts/Components/Velocity_component.gd" id="12_3ax3k"]
+[ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="14_vxjof"]
 
-[node name="NormalGoblin" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "lines_of_sight", "hurtbox", "slash_hitbox", "giving_up_timer")]
+[node name="NormalGoblin" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "lines_of_sight", "hurtbox", "slash_hitbox")]
 collision_layer = 8
 collision_mask = 22
 script = ExtResource("1_lcxwn")
 walk_speed = 70.0
 chase_speed = 105.0
 jump_force = -300.0
-v_component = NodePath("VelocityComponent")
-lines_of_sight = [NodePath("LinesOfSight/LineOfSight"), NodePath("LinesOfSight/LineOfSight2"), NodePath("LinesOfSight/LineOfSight3")]
-hurtbox = NodePath("Boxes/Hurtbox")
-slash_hitbox = NodePath("Boxes/AttackHitbox")
-giving_up_timer = NodePath("Timers/GivingUpTimer")
+v_component = NodePath("WhiteNodes/VelocityComponent")
+lines_of_sight = [NodePath("Raycasts/LinesOfSight/LineOfSight"), NodePath("Raycasts/LinesOfSight/LineOfSight2"), NodePath("Raycasts/LinesOfSight/LineOfSight3")]
+hurtbox = NodePath("Areas/Boxes/Hurtbox")
+slash_hitbox = NodePath("Areas/Boxes/AttackHitbox")
 
 [node name="Coll" type="CollisionShape2D" parent="."]
 scale = Vector2(16, 16)
@@ -76,138 +76,147 @@ collision_layer = 0
 shape = ExtResource("3_o035q")
 debug_color = Color(0.941452, 0.102353, 0.546891, 0.42)
 
-[node name="StateChart" type="Node" parent="."]
-script = ExtResource("3_wqmh0")
+[node name="Boxes" type="Node2D" parent="Areas"]
 
-[node name="StateTree" type="Node" parent="StateChart"]
-script = ExtResource("4_mqlfr")
-initial_state = NodePath("Guarding")
+[node name="Hurtbox" parent="Areas/Boxes" node_paths=PackedStringArray("parent") instance=ExtResource("8_7fg1c")]
+scale = Vector2(16, 16)
+collision_mask = 2816
+parent = NodePath("../../..")
+can_be_invincible = false
 
-[node name="Guarding" type="Node" parent="StateChart/StateTree"]
-script = ExtResource("5_esu5x")
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/Boxes/Hurtbox"]
+shape = ExtResource("2_qs8xc")
 
-[node name="ToChasing" type="Node" parent="StateChart/StateTree/Guarding"]
-script = ExtResource("6_787da")
-to = NodePath("../../Chasing")
-event = &"Chase_Player"
+[node name="AttackHitbox" parent="Areas/Boxes" node_paths=PackedStringArray("parent") instance=ExtResource("10_jabsr")]
+visible = false
+position = Vector2(-16, 0)
+scale = Vector2(24, 20)
+collision_layer = 1024
+monitorable = false
+parent = NodePath("../../..")
+Damage = 1.0
+Knockback_force = 120.0
+Knockback_angle = 30.0
 
-[node name="Chasing" type="Node" parent="StateChart/StateTree"]
-script = ExtResource("5_esu5x")
+[node name="Coll" type="CollisionShape2D" parent="Areas/Boxes/AttackHitbox"]
+shape = ExtResource("11_3ax3k")
+debug_color = Color(1, 0.6, 0.701961, 0.419608)
 
-[node name="ToGuarding" type="Node" parent="StateChart/StateTree/Chasing"]
-script = ExtResource("6_787da")
-to = NodePath("../../Guarding")
-event = &"Guard"
+[node name="ContactHitbox" parent="Areas/Boxes" node_paths=PackedStringArray("parent") instance=ExtResource("10_jabsr")]
+scale = Vector2(16, 16)
+collision_layer = 1024
+parent = NodePath("../../..")
+Damage = 1.0
 
-[node name="ToAttack" type="Node" parent="StateChart/StateTree/Chasing"]
-script = ExtResource("6_787da")
-to = NodePath("../../Attack")
-event = &"Attack"
-
-[node name="Attack" type="Node" parent="StateChart/StateTree"]
-script = ExtResource("5_esu5x")
-
-[node name="ToChasing" type="Node" parent="StateChart/StateTree/Attack"]
-script = ExtResource("6_787da")
-to = NodePath("../../Chasing")
-event = &"Chase"
+[node name="Coll" type="CollisionShape2D" parent="Areas/Boxes/ContactHitbox"]
+shape = ExtResource("2_qs8xc")
 
 [node name="Sprite2D" type="Sprite2D" parent="."]
 modulate = Color(0, 1, 0, 1)
 scale = Vector2(0.12, 0.12)
 texture = ExtResource("7_rg2yg")
 
-[node name="HealthManager" type="Node" parent="."]
-script = ExtResource("9_jgpfp")
-max_health = 5.0
-metadata/_custom_type_script = "uid://d4da8yc41448k"
+[node name="FireManager" parent="." node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("14_vxjof")]
+time_to_burn = 0.5
+can_stack = true
+ref_hurtbox = NodePath("../Areas/Boxes/Hurtbox")
 
-[node name="Boxes" type="Node2D" parent="."]
+[node name="Raycasts" type="Node2D" parent="."]
 
-[node name="Hurtbox" parent="Boxes" node_paths=PackedStringArray("parent") instance=ExtResource("8_7fg1c")]
-scale = Vector2(16, 16)
-collision_mask = 2816
-parent = NodePath("../..")
-can_be_invincible = false
+[node name="LinesOfSight" type="Node2D" parent="Raycasts"]
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="Boxes/Hurtbox"]
-shape = ExtResource("2_qs8xc")
-
-[node name="AttackHitbox" parent="Boxes" node_paths=PackedStringArray("parent") instance=ExtResource("10_jabsr")]
-visible = false
-position = Vector2(-16, 0)
-scale = Vector2(24, 20)
-collision_layer = 1024
-monitorable = false
-parent = NodePath("../..")
-Damage = 1.0
-Knockback_force = 120.0
-Knockback_angle = 30.0
-
-[node name="Coll" type="CollisionShape2D" parent="Boxes/AttackHitbox"]
-shape = ExtResource("11_3ax3k")
-debug_color = Color(1, 0.6, 0.701961, 0.419608)
-
-[node name="ContactHitbox" parent="Boxes" node_paths=PackedStringArray("parent") instance=ExtResource("10_jabsr")]
-scale = Vector2(16, 16)
-collision_layer = 1024
-parent = NodePath("../..")
-Damage = 1.0
-
-[node name="Coll" type="CollisionShape2D" parent="Boxes/ContactHitbox"]
-shape = ExtResource("2_qs8xc")
-
-[node name="VelocityComponent" type="Node" parent="."]
-script = ExtResource("12_3ax3k")
-metadata/_custom_type_script = "uid://b3ucjfdhlhrc8"
-
-[node name="LinesOfSight" type="Node2D" parent="."]
-
-[node name="LineOfSight" type="RayCast2D" parent="LinesOfSight"]
+[node name="LineOfSight" type="RayCast2D" parent="Raycasts/LinesOfSight"]
 collision_mask = 21
 
-[node name="LineOfSight2" type="RayCast2D" parent="LinesOfSight"]
+[node name="LineOfSight2" type="RayCast2D" parent="Raycasts/LinesOfSight"]
 position = Vector2(0, -10)
 collision_mask = 21
 
-[node name="LineOfSight3" type="RayCast2D" parent="LinesOfSight"]
+[node name="LineOfSight3" type="RayCast2D" parent="Raycasts/LinesOfSight"]
 position = Vector2(-9, 0)
 collision_mask = 21
 
-[node name="Detectors" type="Node2D" parent="."]
+[node name="Detectors" type="Node2D" parent="Raycasts"]
 
-[node name="WallDetector" type="RayCast2D" parent="Detectors"]
+[node name="WallDetector" type="RayCast2D" parent="Raycasts/Detectors"]
 target_position = Vector2(-20, 0)
 collision_mask = 20
 
-[node name="JumpDetector" type="RayCast2D" parent="Detectors"]
+[node name="JumpDetector" type="RayCast2D" parent="Raycasts/Detectors"]
 position = Vector2(0, -50)
 target_position = Vector2(-20, 0)
 collision_mask = 20
 
-[node name="FallDetector" type="RayCast2D" parent="Detectors"]
+[node name="FallDetector" type="RayCast2D" parent="Raycasts/Detectors"]
 position = Vector2(-11, 0)
 target_position = Vector2(0, 80)
 collision_mask = 20
 
-[node name="GroundDetector" type="RayCast2D" parent="Detectors"]
+[node name="GroundDetector" type="RayCast2D" parent="Raycasts/Detectors"]
 position = Vector2(-11, 0)
 target_position = Vector2(0, 12)
 collision_mask = 20
 
-[node name="Timers" type="Node" parent="."]
+[node name="WhiteNodes" type="Node" parent="."]
 
-[node name="GivingUpTimer" type="Timer" parent="Timers"]
+[node name="HealthManager" type="Node" parent="WhiteNodes"]
+script = ExtResource("9_jgpfp")
+max_health = 8.0
+metadata/_custom_type_script = "uid://d4da8yc41448k"
+
+[node name="VelocityComponent" type="Node" parent="WhiteNodes"]
+script = ExtResource("12_3ax3k")
+metadata/_custom_type_script = "uid://b3ucjfdhlhrc8"
+
+[node name="Timers" type="Node" parent="WhiteNodes"]
+
+[node name="GivingUpTimer" type="Timer" parent="WhiteNodes/Timers"]
 wait_time = 2.0
 one_shot = true
 
-[node name="JumpAttackTimer" type="Timer" parent="Timers"]
+[node name="JumpAttackTimer" type="Timer" parent="WhiteNodes/Timers"]
 wait_time = 3.5
 one_shot = true
 
-[node name="StabAttackTimer" type="Timer" parent="Timers"]
+[node name="StabAttackTimer" type="Timer" parent="WhiteNodes/Timers"]
 wait_time = 1.5
 one_shot = true
+
+[node name="StateChart" type="Node" parent="WhiteNodes"]
+script = ExtResource("3_wqmh0")
+
+[node name="StateTree" type="Node" parent="WhiteNodes/StateChart"]
+script = ExtResource("4_mqlfr")
+initial_state = NodePath("Guarding")
+
+[node name="Guarding" type="Node" parent="WhiteNodes/StateChart/StateTree"]
+script = ExtResource("5_esu5x")
+
+[node name="ToChasing" type="Node" parent="WhiteNodes/StateChart/StateTree/Guarding"]
+script = ExtResource("6_787da")
+to = NodePath("../../Chasing")
+event = &"Chase_Player"
+
+[node name="Chasing" type="Node" parent="WhiteNodes/StateChart/StateTree"]
+script = ExtResource("5_esu5x")
+
+[node name="ToGuarding" type="Node" parent="WhiteNodes/StateChart/StateTree/Chasing"]
+script = ExtResource("6_787da")
+to = NodePath("../../Guarding")
+event = &"Guard"
+
+[node name="ToAttack" type="Node" parent="WhiteNodes/StateChart/StateTree/Chasing"]
+script = ExtResource("6_787da")
+to = NodePath("../../Attack")
+event = &"Attack"
+
+[node name="Attack" type="Node" parent="WhiteNodes/StateChart/StateTree"]
+script = ExtResource("5_esu5x")
+
+[node name="ToChasing" type="Node" parent="WhiteNodes/StateChart/StateTree/Attack"]
+script = ExtResource("6_787da")
+to = NodePath("../../Chasing")
+event = &"Chase"
 
 [connection signal="area_entered" from="Areas/OuterArrowDetector" to="." method="_on_outer_detector_entered"]
 [connection signal="area_exited" from="Areas/OuterArrowDetector" to="." method="_on_outer_detector_exited"]
@@ -219,15 +228,16 @@ one_shot = true
 [connection signal="body_exited" from="Areas/JumpAttackArea" to="." method="_player_exited_jump_attack_area"]
 [connection signal="body_entered" from="Areas/StabAttackArea" to="." method="_player_entered_stab_attack_area"]
 [connection signal="body_exited" from="Areas/StabAttackArea" to="." method="_player_exited_stab_attack_area"]
-[connection signal="state_entered" from="StateChart/StateTree/Guarding" to="." method="_on_guarding_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/StateTree/Guarding" to="." method="_on_guarding_state_physics_processing"]
-[connection signal="state_entered" from="StateChart/StateTree/Chasing" to="." method="_on_chasing_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/StateTree/Chasing" to="." method="_on_chasing_state_physics_processing"]
-[connection signal="state_physics_processing" from="StateChart/StateTree/Attack" to="." method="_on_attack_state_physics_processing"]
-[connection signal="lost_health" from="HealthManager" to="." method="_on_health_lost_health"]
-[connection signal="ran_out" from="HealthManager" to="." method="_on_health_ran_out"]
-[connection signal="got_hit_by" from="Boxes/Hurtbox" to="." method="_on_hurtbox_got_hit_by"]
-[connection signal="took_damage" from="Boxes/Hurtbox" to="HealthManager" method="lose_health"]
-[connection signal="timeout" from="Timers/GivingUpTimer" to="." method="_on_giving_up_timer_timeout"]
-[connection signal="timeout" from="Timers/JumpAttackTimer" to="." method="_on_jump_attack_timer_timeout"]
-[connection signal="timeout" from="Timers/StabAttackTimer" to="." method="_on_stab_attack_timer_timeout"]
+[connection signal="got_hit_by" from="Areas/Boxes/Hurtbox" to="." method="_on_hurtbox_got_hit_by"]
+[connection signal="took_damage" from="Areas/Boxes/Hurtbox" to="WhiteNodes/HealthManager" method="lose_health"]
+[connection signal="caught_fire" from="FireManager" to="." method="_on_fire_manager_caught_fire"]
+[connection signal="lost_health" from="WhiteNodes/HealthManager" to="." method="_on_health_lost_health"]
+[connection signal="ran_out" from="WhiteNodes/HealthManager" to="." method="_on_health_ran_out"]
+[connection signal="timeout" from="WhiteNodes/Timers/GivingUpTimer" to="." method="_on_giving_up_timer_timeout"]
+[connection signal="timeout" from="WhiteNodes/Timers/JumpAttackTimer" to="." method="_on_jump_attack_timer_timeout"]
+[connection signal="timeout" from="WhiteNodes/Timers/StabAttackTimer" to="." method="_on_stab_attack_timer_timeout"]
+[connection signal="state_entered" from="WhiteNodes/StateChart/StateTree/Guarding" to="." method="_on_guarding_state_entered"]
+[connection signal="state_physics_processing" from="WhiteNodes/StateChart/StateTree/Guarding" to="." method="_on_guarding_state_physics_processing"]
+[connection signal="state_entered" from="WhiteNodes/StateChart/StateTree/Chasing" to="." method="_on_chasing_state_entered"]
+[connection signal="state_physics_processing" from="WhiteNodes/StateChart/StateTree/Chasing" to="." method="_on_chasing_state_physics_processing"]
+[connection signal="state_physics_processing" from="WhiteNodes/StateChart/StateTree/Attack" to="." method="_on_attack_state_physics_processing"]

@@ -57,11 +57,13 @@ shape = ExtResource("4_55mib")
 [node name="Fire" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("6_p51ot")]
 position = Vector2(6, 0)
 instant = true
+scale_increase = Vector2(3, 2)
 collision = NodePath("../Coll")
 
 [node name="Hitbox" parent="Fire" index="0" node_paths=PackedStringArray("parent")]
 parent = NodePath("..")
 
+[connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]
 [connection signal="hit" from="Fire/Hitbox" to="Fire" method="_on_hitbox_hit"]
 
 [editable path="Fire"]
