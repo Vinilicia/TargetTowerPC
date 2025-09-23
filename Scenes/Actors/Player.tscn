@@ -13,7 +13,7 @@
 [ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Actors/SpriteImports/ArcherSprite.tscn" id="9_26aeq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
 [ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
-[ext_resource type="Script" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
+[ext_resource type="Script" uid="uid://4evypv5km8px" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
 
 [sub_resource type="Resource" id="Resource_rbeol"]
 script = ExtResource("8_r2kji")
@@ -24,10 +24,10 @@ metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 position = Vector2(-2, 0)
 collision_mask = 20
 script = ExtResource("1_8nfcn")
-state_chart = NodePath("StateChart")
+state_chart = NodePath("Misc/StateChart")
 camera_distance = 45.0
 camera_move_duration = 1.0
-camera_remote = NodePath("Remote")
+camera_remote = NodePath("Utilities/Remote")
 arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4"])
 max_hold_time = 1.5
 shoot_delay = 0.5
@@ -41,121 +41,109 @@ gravity_multiplier = 1.2
 jump_queuing_time = 0.1
 air_stall_velocity = 40.0
 coyote_time_timer = 0.07
-v_component = NodePath("VelocityComponent")
+v_component = NodePath("Misc/VelocityComponent")
 hurtbox = NodePath("Hurtbox")
-dodge_cancel_timer = NodePath("DodgeCancelTimer")
-ledge_detector = NodePath("LedgeDetector")
-wall_detector = NodePath("WallDetector")
+dodge_cancel_timer = NodePath("Misc/DodgeCancelTimer")
+ledge_detector = NodePath("Utilities/LedgeDetector")
+wall_detector = NodePath("Utilities/WallDetector")
 initial_arrow_index = 2
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
-[node name="LedgeDetector" type="RayCast2D" parent="."]
-position = Vector2(8, 0)
-target_position = Vector2(0, 12)
-collision_mask = 20
+[node name="Misc" type="Node" parent="."]
 
-[node name="WallDetector" type="RayCast2D" parent="."]
-target_position = Vector2(7, 0)
-collision_mask = 20
-
-[node name="DodgeCancelTimer" type="Timer" parent="."]
+[node name="DodgeCancelTimer" type="Timer" parent="Misc"]
 one_shot = true
 
-[node name="VelocityComponent" parent="." instance=ExtResource("2_8nfcn")]
+[node name="VelocityComponent" parent="Misc" instance=ExtResource("2_8nfcn")]
 knockback_susceptability = 6
 
-[node name="StateChart" type="Node" parent="."]
+[node name="StateChart" type="Node" parent="Misc"]
 script = ExtResource("4_r6772")
 
-[node name="Root" type="Node" parent="StateChart"]
+[node name="Root" type="Node" parent="Misc/StateChart"]
 script = ExtResource("5_wypxn")
 
-[node name="Memes" type="Node" parent="StateChart/Root"]
+[node name="Memes" type="Node" parent="Misc/StateChart/Root"]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("Grounded")
 
-[node name="Airborne" type="Node" parent="StateChart/Root/Memes"]
+[node name="Airborne" type="Node" parent="Misc/StateChart/Root/Memes"]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("Rising")
 
-[node name="Rising" type="Node" parent="StateChart/Root/Memes/Airborne"]
+[node name="Rising" type="Node" parent="Misc/StateChart/Root/Memes/Airborne"]
 script = ExtResource("7_wypxn")
 
-[node name="ToFalling" type="Node" parent="StateChart/Root/Memes/Airborne/Rising"]
+[node name="ToFalling" type="Node" parent="Misc/StateChart/Root/Memes/Airborne/Rising"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Falling")
 event = &"Falling"
 
-[node name="Falling" type="Node" parent="StateChart/Root/Memes/Airborne"]
+[node name="Falling" type="Node" parent="Misc/StateChart/Root/Memes/Airborne"]
 script = ExtResource("7_wypxn")
 
-[node name="ToGrounded" type="Node" parent="StateChart/Root/Memes/Airborne/Falling"]
+[node name="ToGrounded" type="Node" parent="Misc/StateChart/Root/Memes/Airborne/Falling"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../../Grounded")
 event = &"Grounded"
 
-[node name="ToRising" type="Node" parent="StateChart/Root/Memes/Airborne/Falling"]
+[node name="ToRising" type="Node" parent="Misc/StateChart/Root/Memes/Airborne/Falling"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Rising")
 event = &"Rising"
 
-[node name="Grounded" type="Node" parent="StateChart/Root/Memes"]
+[node name="Grounded" type="Node" parent="Misc/StateChart/Root/Memes"]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("Standing")
 
-[node name="Standing" type="Node" parent="StateChart/Root/Memes/Grounded"]
+[node name="Standing" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
 script = ExtResource("7_wypxn")
 
-[node name="ToCrouched" type="Node" parent="StateChart/Root/Memes/Grounded/Standing"]
+[node name="ToCrouched" type="Node" parent="Misc/StateChart/Root/Memes/Grounded/Standing"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Crouched")
 event = &"Crouched"
 
-[node name="Crouched" type="Node" parent="StateChart/Root/Memes/Grounded"]
+[node name="Crouched" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
 script = ExtResource("7_wypxn")
 
-[node name="ToStanding" type="Node" parent="StateChart/Root/Memes/Grounded/Crouched"]
+[node name="ToStanding" type="Node" parent="Misc/StateChart/Root/Memes/Grounded/Crouched"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Standing")
 event = &"Standing"
 
-[node name="ToFalling" type="Node" parent="StateChart/Root/Memes/Grounded"]
+[node name="ToFalling" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Airborne/Falling")
 event = &"Falling"
 guard = SubResource("Resource_rbeol")
 
-[node name="ToRising" type="Node" parent="StateChart/Root/Memes/Grounded"]
+[node name="ToRising" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Airborne/Rising")
 event = &"Rising"
 
-[node name="Shooting" type="Node" parent="StateChart/Root"]
+[node name="Shooting" type="Node" parent="Misc/StateChart/Root"]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("CanShoot")
 
-[node name="CanShoot" type="Node" parent="StateChart/Root/Shooting"]
+[node name="CanShoot" type="Node" parent="Misc/StateChart/Root/Shooting"]
 script = ExtResource("7_wypxn")
 
-[node name="ToCant" type="Node" parent="StateChart/Root/Shooting/CanShoot"]
+[node name="ToCant" type="Node" parent="Misc/StateChart/Root/Shooting/CanShoot"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../CantShoot")
 event = &"CantShoot"
 
-[node name="CantShoot" type="Node" parent="StateChart/Root/Shooting"]
+[node name="CantShoot" type="Node" parent="Misc/StateChart/Root/Shooting"]
 script = ExtResource("7_wypxn")
 
-[node name="ToCan" type="Node" parent="StateChart/Root/Shooting/CantShoot"]
+[node name="ToCan" type="Node" parent="Misc/StateChart/Root/Shooting/CantShoot"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../CanShoot")
 event = &"CanShoot"
 
-[node name="Remote" type="RemoteTransform2D" parent="."]
-position = Vector2(0, -35)
-update_rotation = false
-update_scale = false
-
-[node name="HealthManager" type="Node" parent="."]
+[node name="HealthManager" type="Node" parent="Misc"]
 script = ExtResource("11_jfvij")
 max_health = 20.0
 metadata/_custom_type_script = "uid://d4da8yc41448k"
@@ -164,20 +152,6 @@ metadata/_custom_type_script = "uid://d4da8yc41448k"
 position = Vector2(-28, -28)
 offset = Vector2(22, 18)
 region_rect = Rect2(65, 86, 15, 20)
-
-[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
-collision_mask = 3072
-parent = NodePath("..")
-
-[node name="UpColl" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, -4)
-scale = Vector2(10, 12)
-shape = ExtResource("11_cdutm")
-
-[node name="DownColl" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, 4)
-scale = Vector2(10, 12)
-shape = ExtResource("11_cdutm")
 
 [node name="UpColl" type="CollisionShape2D" parent="."]
 visible = false
@@ -191,44 +165,76 @@ position = Vector2(0, 4)
 scale = Vector2(10, 10)
 shape = ExtResource("4_26aeq")
 
-[node name="AimEnemy" type="Node2D" parent="."]
+[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
+visible = false
+collision_mask = 3072
+parent = NodePath("..")
+
+[node name="UpColl" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -4)
+scale = Vector2(10, 12)
+shape = ExtResource("11_cdutm")
+
+[node name="DownColl" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 4)
+scale = Vector2(10, 12)
+shape = ExtResource("11_cdutm")
+
+[node name="Utilities" type="Node2D" parent="."]
+
+[node name="AimEnemy" type="Node2D" parent="Utilities"]
 visible = false
 script = ExtResource("14_rbeol")
 
-[node name="AimSight" type="Area2D" parent="AimEnemy"]
+[node name="AimSight" type="Area2D" parent="Utilities/AimEnemy"]
 collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionPolygon2D" parent="AimEnemy/AimSight"]
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="Utilities/AimEnemy/AimSight"]
 polygon = PackedVector2Array(0, -8, 184, -24, 200, -8, 200, 8, 200, 8, 184, 24, 0, 8)
 
-[node name="EnemyTracker" type="RayCast2D" parent="AimEnemy"]
+[node name="EnemyTracker" type="RayCast2D" parent="Utilities/AimEnemy"]
 target_position = Vector2(15, 0)
 collision_mask = 28
 
-[connection signal="timeout" from="DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
-[connection signal="state_entered" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_physics_processing"]
-[connection signal="taken" from="StateChart/Root/Memes/Airborne/Rising/ToFalling" to="." method="_rising_to_falling_taken"]
-[connection signal="state_entered" from="StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_processing"]
-[connection signal="taken" from="StateChart/Root/Memes/Airborne/Falling/ToGrounded" to="." method="_falling_to_grounded_taken"]
-[connection signal="state_entered" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded" to="." method="_grounded_physics_processing"]
-[connection signal="state_entered" from="StateChart/Root/Memes/Grounded/Standing" to="." method="_standing_entered"]
-[connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded/Standing" to="." method="_standing_physics_processing"]
-[connection signal="state_entered" from="StateChart/Root/Memes/Grounded/Crouched" to="." method="_crouched_entered"]
-[connection signal="state_exited" from="StateChart/Root/Memes/Grounded/Crouched" to="." method="_crouched_exited"]
-[connection signal="state_physics_processing" from="StateChart/Root/Memes/Grounded/Crouched" to="." method="_crouched_physics_processing"]
-[connection signal="taken" from="StateChart/Root/Memes/Grounded/ToFalling" to="." method="_grounded_to_falling_taken"]
-[connection signal="taken" from="StateChart/Root/Memes/Grounded/ToRising" to="." method="_grounded_to_rising_taken"]
-[connection signal="state_entered" from="StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_physics_processing"]
-[connection signal="state_entered" from="StateChart/Root/Shooting/CantShoot" to="." method="_cannot_shoot_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/Root/Shooting/CantShoot" to="." method="_cant_shoot_physics_processing"]
-[connection signal="lost_health" from="HealthManager" to="." method="_on_health_lost_health"]
-[connection signal="ran_out" from="HealthManager" to="." method="die"]
-[connection signal="took_damage" from="Hurtbox" to="HealthManager" method="lose_health"]
-[connection signal="body_entered" from="AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
-[connection signal="body_exited" from="AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
+[node name="Remote" type="RemoteTransform2D" parent="Utilities"]
+position = Vector2(0, -35)
+update_rotation = false
+update_scale = false
+
+[node name="LedgeDetector" type="RayCast2D" parent="Utilities"]
+visible = false
+position = Vector2(8, 0)
+target_position = Vector2(0, 12)
+collision_mask = 20
+
+[node name="WallDetector" type="RayCast2D" parent="Utilities"]
+target_position = Vector2(7, 0)
+collision_mask = 20
+
+[connection signal="timeout" from="Misc/DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
+[connection signal="state_entered" from="Misc/StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_state_entered"]
+[connection signal="state_physics_processing" from="Misc/StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_physics_processing"]
+[connection signal="taken" from="Misc/StateChart/Root/Memes/Airborne/Rising/ToFalling" to="." method="_rising_to_falling_taken"]
+[connection signal="state_entered" from="Misc/StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_entered"]
+[connection signal="state_physics_processing" from="Misc/StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_processing"]
+[connection signal="taken" from="Misc/StateChart/Root/Memes/Airborne/Falling/ToGrounded" to="." method="_falling_to_grounded_taken"]
+[connection signal="state_entered" from="Misc/StateChart/Root/Memes/Grounded" to="." method="_grounded_state_entered"]
+[connection signal="state_physics_processing" from="Misc/StateChart/Root/Memes/Grounded" to="." method="_grounded_physics_processing"]
+[connection signal="state_entered" from="Misc/StateChart/Root/Memes/Grounded/Standing" to="." method="_standing_entered"]
+[connection signal="state_physics_processing" from="Misc/StateChart/Root/Memes/Grounded/Standing" to="." method="_standing_physics_processing"]
+[connection signal="state_entered" from="Misc/StateChart/Root/Memes/Grounded/Crouched" to="." method="_crouched_entered"]
+[connection signal="state_exited" from="Misc/StateChart/Root/Memes/Grounded/Crouched" to="." method="_crouched_exited"]
+[connection signal="state_physics_processing" from="Misc/StateChart/Root/Memes/Grounded/Crouched" to="." method="_crouched_physics_processing"]
+[connection signal="taken" from="Misc/StateChart/Root/Memes/Grounded/ToFalling" to="." method="_grounded_to_falling_taken"]
+[connection signal="taken" from="Misc/StateChart/Root/Memes/Grounded/ToRising" to="." method="_grounded_to_rising_taken"]
+[connection signal="state_entered" from="Misc/StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_state_entered"]
+[connection signal="state_physics_processing" from="Misc/StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_physics_processing"]
+[connection signal="state_entered" from="Misc/StateChart/Root/Shooting/CantShoot" to="." method="_cannot_shoot_state_entered"]
+[connection signal="state_physics_processing" from="Misc/StateChart/Root/Shooting/CantShoot" to="." method="_cant_shoot_physics_processing"]
+[connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_lost_health"]
+[connection signal="ran_out" from="Misc/HealthManager" to="." method="die"]
+[connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
+[connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
+[connection signal="body_exited" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
 
 [editable path="Archer"]

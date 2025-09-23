@@ -8,13 +8,14 @@ const ARCHER_OFFSET_X := 28
 const DEFAULT_MOVE_SPEED := 120.0
 const DODGE_KNOCKBACK := 100
 const DODGE_VERTICAL_VELOCITY := 0.0
+const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 
 # ============================================================
 # EXPORTS E NODES
 # ============================================================
 @onready var anim: AnimationPlayer = $Archer/AnimationPlayer
-@onready var enemy_tracker: RayCast2D = $AimEnemy/EnemyTracker
-@onready var aim_enemy: Area2D = $AimEnemy/AimSight
+@onready var enemy_tracker: RayCast2D = $Utilities/AimEnemy/EnemyTracker
+@onready var aim_enemy: Area2D = $Utilities/AimEnemy/AimSight
 
 @export var state_chart: StateChart
 
@@ -93,6 +94,9 @@ var dodge_started_off_ledge: bool = false
 var aim_enemy_pos: Vector2
 var enemy_target: CharacterBody2D
 var enemies_on_sight: Array = []
+var last_safe_position : Vector2
+var frames_until_check : int = 0
+
 
 # ============================================================
 # READY
@@ -119,7 +123,24 @@ func _physics_process(delta: float) -> void:
 	velocity = v_component.get_total_velocity()
 	corner_correction(7, delta)
 	move_and_slide()
+	update_safe_position()
 	dodged_this_frame = false
+
+func update_safe_position() -> void:
+	if frames_until_check > 0:
+		frames_until_check -= 1
+	return
+
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+
+		if collision.get_normal().y < -0.7:
+			var floor_collider = collision.get_collider()
+
+			if floor_collider is TileMap:
+				last_safe_position = global_position
+				frames_until_check = SAFE_POSITION_CHECK_FRAME_DELAY
+		break
 
 # ============================================================
 # INPUT E COMBATE
@@ -219,13 +240,12 @@ func end_dodge() -> void:
 		var dir = int(Input.get_axis("left", "right"))
 		if dir == facing_direction and !is_wall_ahead():
 			move_speed = dodge_horizontal_speed
-			$StateChart/Root/Memes/Grounded.state_entered.connect(reset_speed)
+			$Misc/StateChart/Root/Memes/Grounded.state_entered.connect(reset_speed, 4)
 		jump()
 	jump_state.jump_queued = false
 
 func reset_speed() -> void:
 	move_speed = DEFAULT_MOVE_SPEED
-	$StateChart/Root/Memes/Grounded.state_entered.disconnect(reset_speed)
 
 func _on_dodge_cancel_timer_timeout() -> void:
 	combat.dodge_can_cancel = true
@@ -394,7 +414,7 @@ func _falling_to_grounded_taken() -> void:
 	
 
 func _grounded_physics_processing(_delta: float) -> void:
-	if velocity.x == 0:
+	if v_component.get_proper_velocity().x == 0:
 		if anim.current_animation != "Idle":
 			anim.play("Idle")
 	else:

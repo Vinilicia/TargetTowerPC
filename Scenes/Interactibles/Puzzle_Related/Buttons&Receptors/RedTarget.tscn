@@ -1,12 +1,13 @@
 [gd_scene load_steps=4 format=3 uid="uid://cjd68laeibaxd"]
 
-[ext_resource type="Script" uid="uid://cs1o1a6sihmab" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/Red_button.gd" id="1_upa32"]
+[ext_resource type="Script" uid="uid://cs1o1a6sihmab" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/red_target.gd" id="1_upa32"]
 [ext_resource type="PackedScene" uid="uid://dnfcq0yact58d" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/RedTargetSprite.tscn" id="2_b2dfq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="3_q608q"]
 
 [node name="RedTarget" type="Area2D"]
-collision_layer = 16
+collision_layer = 0
 collision_mask = 256
+monitorable = false
 script = ExtResource("1_upa32")
 
 [node name="Coll" type="CollisionShape2D" parent="."]
