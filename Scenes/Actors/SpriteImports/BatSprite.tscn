@@ -1,0 +1,5 @@
+[gd_scene load_steps=2 format=3 uid="uid://5eo2pd11j7wo"]
+
+[ext_resource type="PackedScene" uid="uid://dlfwme4cf4ag4" path="res://Assets/Home_bred/Enemies/Bat.aseprite" id="1_dk30t"]
+
+[node name="Bat" instance=ExtResource("1_dk30t")]
