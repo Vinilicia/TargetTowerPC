@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d3tputs5bl4tx"]
 
-[ext_resource type="Script" uid="uid://166phhwsbtdf" path="res://Scripts/Actions-Reactions/Fire_manager.gd" id="1_vq16k"]
+[ext_resource type="Script" path="res://Scripts/Actions-Reactions/Fire_manager.gd" id="1_vq16k"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="2_ebopb"]
 
 [node name="FireManager" type="Node2D" node_paths=PackedStringArray("hurtbox", "burning_timer")]
