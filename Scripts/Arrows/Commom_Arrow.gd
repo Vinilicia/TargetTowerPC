@@ -60,7 +60,7 @@ func _get_contacts_at_position(pos: Vector2) -> Array:
 
 func fly(is_charged: bool, _player: CharacterBody2D) -> void:
 	_enable_collision()
-	#hitbox.set_deferred("monitorable", true)
+	hitbox.set_deferred("monitorable", true)
 	if is_charged:
 		charged = true
 		velocity = flying_direction.normalized() * Flying_Speed * Charge_Multiplier

@@ -20,7 +20,7 @@ script = ExtResource("8_r2kji")
 expression = "!crouching"
 metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "up_col", "down_col", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector")]
 position = Vector2(-2, 0)
 collision_mask = 20
 script = ExtResource("1_8nfcn")
@@ -42,13 +42,10 @@ jump_queuing_time = 0.1
 air_stall_velocity = 40.0
 coyote_time_timer = 0.07
 v_component = NodePath("VelocityComponent")
-up_col = NodePath("UpColl")
-down_col = NodePath("DownColl")
 hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("DodgeCancelTimer")
 ledge_detector = NodePath("LedgeDetector")
 wall_detector = NodePath("WallDetector")
-initial_arrow_index = 1
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
 [node name="LedgeDetector" type="RayCast2D" parent="."]
@@ -162,28 +159,36 @@ script = ExtResource("11_jfvij")
 max_health = 20.0
 metadata/_custom_type_script = "uid://d4da8yc41448k"
 
+[node name="Archer" parent="." instance=ExtResource("9_26aeq")]
+position = Vector2(-28, -28)
+offset = Vector2(22, 18)
+region_rect = Rect2(65, 86, 15, 20)
+
 [node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
-scale = Vector2(10, 17)
 collision_mask = 3072
 parent = NodePath("..")
 
-[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
+[node name="UpColl" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, -4)
+scale = Vector2(10, 12)
+shape = ExtResource("11_cdutm")
+
+[node name="DownColl" type="CollisionShape2D" parent="Hurtbox"]
+position = Vector2(0, 4)
+scale = Vector2(10, 12)
 shape = ExtResource("11_cdutm")
 
 [node name="UpColl" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, -4)
 scale = Vector2(10, 10)
 shape = ExtResource("4_26aeq")
 
 [node name="DownColl" type="CollisionShape2D" parent="."]
+visible = false
 position = Vector2(0, 4)
 scale = Vector2(10, 10)
 shape = ExtResource("4_26aeq")
-
-[node name="Archer" parent="." instance=ExtResource("9_26aeq")]
-position = Vector2(-28, -28)
-offset = Vector2(22, 18)
-region_rect = Rect2(65, 86, 15, 20)
 
 [node name="AimEnemy" type="Node2D" parent="."]
 visible = false

@@ -17,7 +17,7 @@
 
 [node name="Bat" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "dash_area", "dive_area", "sight_area", "contact_hitbox")]
 collision_layer = 8
-collision_mask = 22
+collision_mask = 20
 motion_mode = 1
 wall_min_slide_angle = 0.0
 script = ExtResource("1_mfbr2")
