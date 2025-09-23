@@ -55,6 +55,8 @@ var auto_face: bool = true
 var current_attack_type: String = ""
 var ceiling_retry_timer: Timer
 
+@onready var sprite_anim : AnimationPlayer = $Bat/AnimationPlayer
+
 #region Built-In
 
 func _ready() -> void:
@@ -107,6 +109,7 @@ func _player_exited_area(_player: Node2D) -> void:
 func set_facing(dir: int) -> void:
 	if dir == 0 or dir == facing_direction:
 		return
+	$Bat.flip_h = !($Bat.flip_h)
 	facing_direction = dir
 	for child in $BehaviorChanging.get_children():
 		child.position = Vector2(child.position.x * -1, child.position.y)
@@ -128,6 +131,7 @@ func stop(duration : float) -> void:
 #endregion
 
 func _idle_entered() -> void:
+	sprite_anim.play("Idle")
 	sight_area.scale = Vector2(300, 170)
 	sight_area.position = Vector2(0, 50)
 
@@ -137,6 +141,7 @@ func _idle_exited() -> void:
 
 #region Estado Starting_Chase
 func _starting_chase_state_entered() -> void:
+	sprite_anim.play("StartChase")
 	give_up_time = starting_give_up_delay
 	remaining_time_for_chase = chasing_timer.wait_time
 	chasing_timer.start()
@@ -166,6 +171,8 @@ func give_up_chase() -> void:
 
 #region Estado Chasing
 func _chasing_state_entered() -> void:
+	if not sprite_anim.current_animation == "Flying":
+		sprite_anim.play("Flying")
 	current_speed = chase_flying_speed
 	give_up_time = chasing_give_up_delay
 	_chase_frame_accum = 0
@@ -206,6 +213,7 @@ func _chasing_state_physics_processing(_delta : float) -> void:
 
 #region Estado Backtracking
 func _on_backtracking_state_entered() -> void:
+	sprite_anim.play("Flying")
 	current_speed = backtracking_speed
 	current_tolerance = -10
 	_try_find_ceiling()
@@ -272,6 +280,9 @@ func _dive_area_body_entered(_body: Node2D) -> void:
 
 # Preparação (recuo dependente do ataque)
 func _preparing_state_entered() -> void:
+	"StartChase"
+	sprite_anim.play("StartDash")
+	sprite_anim.queue("Dash")
 	auto_face = false
 	stop(0.1)
 	contact_hitbox.scale *= dash_hitbox_increase
@@ -302,6 +313,7 @@ func _internal_attack_physics_processing(_delta: float) -> void:
 		move_target = global_position
 
 func _recovering_state_entered() -> void:
+	sprite_anim.play("Flying")
 	contact_hitbox.scale *= (1 / dash_hitbox_increase)
 	await get_tree().create_timer(dash_delay * 3).timeout
 	dash_area.set_deferred("monitoring", true)

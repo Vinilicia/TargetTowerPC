@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://dlfwme4cf4ag4"
-path="res://.godot/imported/Bat2.aseprite-8c0b4a0f77d05fdf17754db8d2788c39.ctex"
+uid="uid://cfxop3f285m4l"
+path="res://.godot/imported/Bat.png-17375b0c7021d880ffd3e5fa62f87495.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Home_bred/Enemies/Bat2.aseprite"
-dest_files=["res://.godot/imported/Bat2.aseprite-8c0b4a0f77d05fdf17754db8d2788c39.ctex"]
+source_file="res://Assets/Home_bred/Enemies/Bat.png"
+dest_files=["res://.godot/imported/Bat.png-17375b0c7021d880ffd3e5fa62f87495.ctex"]
 
 [params]
 
