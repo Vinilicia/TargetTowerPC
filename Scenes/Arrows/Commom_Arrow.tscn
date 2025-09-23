@@ -24,6 +24,7 @@ Despawn_Time = 3.0
 position = Vector2(2, 0)
 scale = Vector2(18, 7)
 collision_layer = 256
+monitorable = false
 parent = NodePath("..")
 Damage = 1.0
 

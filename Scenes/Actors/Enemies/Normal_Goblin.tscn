@@ -17,7 +17,7 @@
 
 [node name="NormalGoblin" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "lines_of_sight", "hurtbox", "slash_hitbox")]
 collision_layer = 8
-collision_mask = 22
+collision_mask = 20
 script = ExtResource("1_lcxwn")
 walk_speed = 70.0
 chase_speed = 105.0
@@ -161,7 +161,7 @@ collision_mask = 20
 
 [node name="HealthManager" type="Node" parent="WhiteNodes"]
 script = ExtResource("9_jgpfp")
-max_health = 8.0
+max_health = 5.0
 metadata/_custom_type_script = "uid://d4da8yc41448k"
 
 [node name="VelocityComponent" type="Node" parent="WhiteNodes"]

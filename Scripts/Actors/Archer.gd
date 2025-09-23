@@ -49,8 +49,6 @@ const DODGE_VERTICAL_VELOCITY := 0.0
 
 @export_group("Nodes")
 @export var v_component: VelocityComponent
-@export var up_col: CollisionShape2D
-@export var down_col: CollisionShape2D
 @export var hurtbox: Hurtbox
 @export var dodge_cancel_timer : Timer
 @export var ledge_detector : RayCast2D
@@ -462,7 +460,8 @@ func _standing_physics_processing(_delta: float) -> void:
 
 func crouch():
 	move_speed = 0
-	up_col.disabled = true
+	$UpColl.disabled = true
+	$Hurtbox/UpColl.disabled = true
 	arrow_spawn_point = Vector2(0, 4)
 
 func _crouched_entered() -> void:
@@ -474,7 +473,8 @@ func _crouched_physics_processing(_delta: float) -> void:
 
 func stand() -> void:
 	move_speed = DEFAULT_MOVE_SPEED
-	up_col.disabled = false
+	$UpColl.disabled = false
+	$Hurtbox/UpColl.disabled = false
 	arrow_spawn_point = Vector2.ZERO
 
 func _crouched_exited() -> void:
