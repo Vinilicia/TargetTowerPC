@@ -1,10 +1,9 @@
-[gd_scene load_steps=7 format=3 uid="uid://xhwqoiulihut"]
+[gd_scene load_steps=6 format=3 uid="uid://xhwqoiulihut"]
 
 [ext_resource type="Script" uid="uid://d2qgirks8dg0i" path="res://Scripts/Interactibles/Objects/Box.gd" id="1_yd07j"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_vfhko"]
 [ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Scenes/Actions-Reactions/Fire.tscn" id="3_1iocv"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="3_vfhko"]
-[ext_resource type="Script" path="res://Scripts/Actions-Reactions/Fire_manager.gd" id="4_7u1qh"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="5_vfhko"]
 
 [node name="Box" type="CharacterBody2D" groups=["Attachables"]]
@@ -17,11 +16,8 @@ scale = Vector2(32, 32)
 shape = ExtResource("2_vfhko")
 
 [node name="FireManager" parent="." node_paths=PackedStringArray("fire", "ref_hurtbox") instance=ExtResource("3_vfhko")]
-script = ExtResource("4_7u1qh")
 has_fire = true
-time_to_burn = 2.5
 burn_duration = 6.0
-can_stack = false
 fire = NodePath("../Fire")
 ref_hurtbox = NodePath("../Hurtbox")
 

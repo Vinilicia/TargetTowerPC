@@ -30,16 +30,15 @@ func _physics_process(delta):
 		var contacts := _get_contacts_at_position($Coll.global_position)
 
 		if contacts.size() >= 2:
-			collision = get_real_collision(delta)
-			if !collision:
-				return
+			position -= velocity * delta * 2
+			return
 
 		# Lógica de impacto (spawn, prender, etc.)
 		_handle_collision(collision)
 
 func get_real_collision(delta : float) -> KinematicCollision2D:
-	position -= velocity * delta
-	return move_and_collide(velocity * delta, true)
+	position -= velocity * 2 * delta
+	return move_and_collide(velocity * 2 * delta, true)
 
 func _get_contacts_at_position(pos: Vector2) -> Array:
 	var shape_node: CollisionShape2D = $Coll

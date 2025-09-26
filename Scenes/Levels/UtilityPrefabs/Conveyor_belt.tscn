@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://dgsguis2vqkm7"]
+
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_36qo6"]
+[ext_resource type="Script" uid="uid://c1alum1kjh7oj" path="res://Scripts/Levels/UtilityPrefabs/conveyor_belt.gd" id="1_g3die"]
+[ext_resource type="Texture2D" uid="uid://cxctdctbq2mbg" path="res://Assets/Home_bred/Mechanisms/Conveyor-belt.aseprite" id="3_e8rw6"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_a55bd"]
+texture = ExtResource("3_e8rw6")
+0:0/animation_columns = 4
+0:0/animation_speed = 12.0
+0:0/animation_frame_0/duration = 1.0
+0:0/animation_frame_1/duration = 1.0
+0:0/animation_frame_2/duration = 1.0
+0:0/animation_frame_3/duration = 1.0
+0:0/0 = 0
+0:1/animation_columns = 4
+0:1/animation_speed = 12.0
+0:1/animation_frame_0/duration = 1.0
+0:1/animation_frame_1/duration = 1.0
+0:1/animation_frame_2/duration = 1.0
+0:1/animation_frame_3/duration = 1.0
+0:1/0 = 0
+0:2/animation_columns = 4
+0:2/animation_speed = 12.0
+0:2/animation_frame_0/duration = 1.0
+0:2/animation_frame_1/duration = 1.0
+0:2/animation_frame_2/duration = 1.0
+0:2/animation_frame_3/duration = 1.0
+0:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_qq7po"]
+sources/2 = SubResource("TileSetAtlasSource_a55bd")
+
+[node name="ConveyorBelt" type="Node2D"]
+script = ExtResource("1_g3die")
+
+[node name="Belt" type="Area2D" parent="."]
+position = Vector2(0, -8)
+scale = Vector2(1e-05, 12)
+collision_layer = 0
+collision_mask = 25
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="Belt"]
+shape = ExtResource("1_36qo6")
+
+[node name="StaticBody" type="StaticBody2D" parent="."]
+position = Vector2(0, -6)
+scale = Vector2(1e-05, 12)
+
+[node name="Coll" type="CollisionShape2D" parent="StaticBody"]
+shape = ExtResource("1_36qo6")
+
+[node name="Tilemap" type="TileMapLayer" parent="."]
+position = Vector2(0, 4)
+tile_set = SubResource("TileSet_qq7po")
+
+[connection signal="body_entered" from="Belt" to="." method="_on_belt_body_entered"]
+[connection signal="body_exited" from="Belt" to="." method="_on_belt_body_exited"]

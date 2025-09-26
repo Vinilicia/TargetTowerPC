@@ -1,8 +1,8 @@
 [gd_scene load_steps=18 format=4 uid="uid://dbmux1c4ct4hu"]
 
-[ext_resource type="Script" uid="uid://bi7ajwk42n3cg" path="res://Scenes/Levels/level.gd" id="1_uc4dq"]
+[ext_resource type="Script" uid="uid://bi7ajwk42n3cg" path="res://Scripts/Levels/Maps/Map.gd" id="1_uc4dq"]
 [ext_resource type="Texture2D" uid="uid://da58dobtmu48v" path="res://Assets/Home_bred/Tilemap/area-inicial.aseprite" id="3_tgyxi"]
-[ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Maps/Camera.tscn" id="3_va085"]
+[ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Levels/Camera.tscn" id="3_va085"]
 [ext_resource type="Texture2D" uid="uid://d1hvuiyfkjgb0" path="res://Assets/Home_bred/Tilemap/chao.aseprite" id="4_cv115"]
 [ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="4_m2u3u"]
 [ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Options_Menu.tscn" id="8_dx1k0"]

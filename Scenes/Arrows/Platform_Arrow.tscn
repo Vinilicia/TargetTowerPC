@@ -1,9 +1,10 @@
-[gd_scene load_steps=7 format=3 uid="uid://l0kny3w6cbg4"]
+[gd_scene load_steps=8 format=3 uid="uid://l0kny3w6cbg4"]
 
 [ext_resource type="Script" uid="uid://c340tfff8ejnu" path="res://Scripts/Arrows/Platform_Arrow.gd" id="1_a3nj1"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_ftbuc"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="4_5kcse"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="5_fh7sq"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="6_fh7sq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="6_sgxhr"]
 
 [sub_resource type="Gradient" id="Gradient_fvltu"]
@@ -43,8 +44,8 @@ shape = ExtResource("6_sgxhr")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 
 [node name="Coll" type="CollisionShape2D" parent="."]
-position = Vector2(6, 0)
-scale = Vector2(4, 3)
-shape = ExtResource("6_sgxhr")
+position = Vector2(6, 0.5)
+scale = Vector2(4, 4)
+shape = ExtResource("6_fh7sq")
 
 [connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]
