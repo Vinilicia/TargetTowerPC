@@ -7,6 +7,8 @@
 script = ExtResource("1_8j42x")
 
 [node name="Wind" type="Area2D" parent="."]
+position = Vector2(16, 16)
+scale = Vector2(32, 32)
 collision_layer = 0
 monitorable = false
 
