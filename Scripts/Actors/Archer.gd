@@ -81,6 +81,7 @@ var jump_state := {
 }
 
 var facing_direction: int = 1
+var direction: int = 1
 var move_speed : float = DEFAULT_MOVE_SPEED
 var current_arrow: Arrow
 var current_arrow_index: int
@@ -89,6 +90,7 @@ var pos: Vector2
 var tween: Tween
 var dodged_this_frame: bool = false
 var dodge_started_off_ledge: bool = false
+var locked_walk: bool = false
 
 # ============================================================
 # READY
@@ -125,7 +127,7 @@ func update_hold_time(delta: float) -> void:
 func handle_combat_inputs() -> void:
 	var dir_x : int = facing_direction
 	var dir_y : int = 0
-	var dodge_dir_y : int = 0 
+	var dodge_dir_y : int = 0
 	var dodge_dir_x : int = 0
 
 	if Input.is_action_pressed("angle up"):
@@ -163,7 +165,7 @@ func try_dodge() -> void:
 	var attempt_dodge_dir : Vector2 = combat.dodge_direction
 	var dodge_dir : Vector2
 	if is_on_floor():
-		dodge_dir = Vector2(facing_direction * dodge_horizontal_speed, DODGE_VERTICAL_VELOCITY)
+		dodge_dir = Vector2(direction * dodge_horizontal_speed, DODGE_VERTICAL_VELOCITY)
 		dodge(dodge_dir, 1)
 	else:
 		if attempt_dodge_dir.y != 0:
@@ -229,6 +231,9 @@ func is_ledge_ahead() -> bool:
 	return is_on_floor() and !ledge_detector.is_colliding()
 
 func handle_movement() -> void:
+	if Input.is_action_just_pressed("lock walk"):
+		locked_walk = not locked_walk
+			
 	if combat.is_dodging:
 		if Input.is_action_pressed("jump") and is_on_floor():
 			jump_state.jump_queued = true
@@ -250,10 +255,12 @@ func handle_movement() -> void:
 		v_component.set_proper_velocity(0.0, 1)
 		var dir: int = int(Input.get_axis("left", "right"))
 		if dir:
-			if facing_direction != dir:
-				facing_direction = dir
-				turn(facing_direction)
-			move(facing_direction)
+			if direction != dir:
+				direction = dir
+				if not locked_walk:
+					facing_direction = direction
+					turn(facing_direction)
+			move(direction)
 
 # ============================================================
 # FUNÇÕES DE AÇÃO
