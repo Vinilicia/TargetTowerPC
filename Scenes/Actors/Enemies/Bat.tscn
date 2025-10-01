@@ -151,12 +151,12 @@ to = NodePath("../../../SeeingPlayer/LastState")
 event = &"Recovered"
 
 [node name="BehaviorChanging" type="Node2D" parent="."]
-visible = false
 
 [node name="SightArea" type="Area2D" parent="BehaviorChanging"]
 position = Vector2(0, 50)
 scale = Vector2(300, 170)
 collision_layer = 0
+monitorable = false
 
 [node name="SightAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/SightArea"]
 shape = ExtResource("9_r0lmx")
