@@ -3,3 +3,5 @@
 [ext_resource type="PackedScene" uid="uid://dlfwme4cf4ag4" path="res://Assets/Home_bred/Enemies/Bat.aseprite" id="1_dk30t"]
 
 [node name="Bat" instance=ExtResource("1_dk30t")]
+offset = Vector2(6, 2)
+region_rect = Rect2(0, 52, 9, 11)

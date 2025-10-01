@@ -2,16 +2,16 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cxctdctbq2mbg"
-path="res://.godot/imported/Conveyor-belt.aseprite-13b2678940105356f4f0f8de6e6f0828.ctex"
+uid="uid://bii0bt2yly3nd"
+path="res://.godot/imported/conveyor_belt_left4.png-6bdacbefaddcca9c56b11b034aa3172b.ctex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://Assets/Home_bred/Mechanisms/Conveyor-belt.aseprite"
-dest_files=["res://.godot/imported/Conveyor-belt.aseprite-13b2678940105356f4f0f8de6e6f0828.ctex"]
+source_file="res://Assets/Home_bred/Mechanisms/conveyor_belt/conveyor_belt_left4.png"
+dest_files=["res://.godot/imported/conveyor_belt_left4.png-6bdacbefaddcca9c56b11b034aa3172b.ctex"]
 
 [params]
 
