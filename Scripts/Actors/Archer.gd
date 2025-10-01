@@ -83,6 +83,7 @@ var jump_state := {
 }
 
 var facing_direction: int = 1
+var direction: int = 1
 var move_speed : float = DEFAULT_MOVE_SPEED
 var current_arrow: Arrow
 var current_arrow_index: int
@@ -96,6 +97,7 @@ var enemy_target: CharacterBody2D
 var enemies_on_sight: Array = []
 var last_safe_position : Vector2
 var frames_until_check : int = 0
+var locked_walk: bool = false
 
 
 # ============================================================
@@ -195,7 +197,7 @@ func try_dodge() -> void:
 	var attempt_dodge_dir : Vector2 = combat.dodge_direction
 	var dodge_dir : Vector2
 	if is_on_floor():
-		dodge_dir = Vector2(facing_direction * dodge_horizontal_speed, DODGE_VERTICAL_VELOCITY)
+		dodge_dir = Vector2(direction * dodge_horizontal_speed, DODGE_VERTICAL_VELOCITY)
 		dodge(dodge_dir, 1)
 	else:
 		if attempt_dodge_dir.y != 0:
@@ -209,7 +211,7 @@ func try_dodge() -> void:
 				dodge_dir = Vector2(0, dodge_down_speed)
 			dodge(dodge_dir, 0.6)
 		elif attempt_dodge_dir.x != 0:
-			dodge_dir = Vector2(facing_direction * dodge_horizontal_speed, DODGE_VERTICAL_VELOCITY)
+			dodge_dir = Vector2(direction * dodge_horizontal_speed, DODGE_VERTICAL_VELOCITY)
 			dodge(dodge_dir, 1)
 		else:
 			dodge_dir = Vector2(0, dodge_down_speed)
@@ -292,6 +294,9 @@ func is_wall_ahead() -> bool:
 	return response
 
 func handle_movement() -> void:
+	if Input.is_action_just_pressed("lock walk"):
+		locked_walk = not locked_walk
+		
 	if combat.is_dodging:
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			jump_state.jump_queued = true
@@ -313,10 +318,12 @@ func handle_movement() -> void:
 		v_component.set_proper_velocity(0.0, 1)
 		var dir: int = int(Input.get_axis("left", "right"))
 		if dir:
-			if facing_direction != dir:
-				facing_direction = dir
-				turn(facing_direction)
-			move(facing_direction)
+			if direction != dir:
+				direction = dir
+				if not locked_walk:
+					facing_direction = direction
+					turn(facing_direction)
+			move(direction)
 
 # ============================================================
 # FUNÇÕES DE AÇÃO
