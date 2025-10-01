@@ -183,7 +183,7 @@ func handle_combat_inputs() -> void:
 	aim_enemy.rotation = Vector2(dir_x, dir_y).normalized().angle()
 	
 	if Input.is_action_just_released("shoot"):
-		combat.is_holding = false
+		combat.is_holding = false 
 		combat.update_flying_dir = false
 	
 	if Input.is_action_just_pressed("dodge") and combat.can_dodge:
