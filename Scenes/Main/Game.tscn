@@ -14,7 +14,11 @@ height = 1.0
 script = ExtResource("1_mu4po")
 current_level = NodePath("Demo_Map")
 
+[node name="Demo_Map" parent="." instance=ExtResource("4_337f6")]
+
 [node name="Player" parent="." instance=ExtResource("2_f405u")]
+top_level = true
+position = Vector2(93, -116)
 
 [node name="UpColl" parent="Player/Hurtbox" index="1"]
 shape = SubResource("CapsuleShape2D_337f6")
@@ -26,9 +30,7 @@ shape = SubResource("CapsuleShape2D_337f6")
 remote_path = NodePath("../../../Camera")
 
 [node name="Camera" parent="." instance=ExtResource("3_73cq8")]
-position = Vector2(0, -35)
-
-[node name="Demo_Map" parent="." instance=ExtResource("4_337f6")]
+position = Vector2(93, -151)
 
 [editable path="Player"]
 [editable path="Player/Archer"]
