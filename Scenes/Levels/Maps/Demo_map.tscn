@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://dbmux1c4ct4hu"]
+[gd_scene load_steps=18 format=4 uid="uid://dbmux1c4ct4hu"]
 
 [ext_resource type="Script" uid="uid://bi7ajwk42n3cg" path="res://Scripts/Levels/Maps/Map.gd" id="1_uc4dq"]
 [ext_resource type="Texture2D" uid="uid://da58dobtmu48v" path="res://Assets/Home_bred/Tilemap/area-inicial.aseprite" id="3_tgyxi"]
@@ -11,6 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://dm11p43b6up60" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Block-01.tscn" id="10_tgyxi"]
 [ext_resource type="PackedScene" uid="uid://w2pw765x6aql" path="res://Scenes/Actors/Enemies/Rock_Goblin.tscn" id="11_0qeml"]
 [ext_resource type="PackedScene" uid="uid://cjd68laeibaxd" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/RedTarget.tscn" id="11_cv115"]
+[ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="12_0bt5v"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_tgyxi"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -1912,9 +1913,8 @@ custom_data_layer_0/name = ""
 custom_data_layer_0/type = 0
 sources/0 = SubResource("TileSetAtlasSource_lkwqp")
 
-[node name="Demo_Map" type="Node2D" node_paths=PackedStringArray("camera")]
+[node name="Demo_Map" type="Node2D"]
 script = ExtResource("1_uc4dq")
-camera = NodePath("")
 metadata/_edit_horizontal_guides_ = [-215.0]
 
 [node name="TileMap" type="Node2D" parent="."]
@@ -2014,6 +2014,10 @@ rotation = -1.5708
 [node name="RedTarget" parent="Mechanisms/TargetBlock3" instance=ExtResource("11_cv115")]
 position = Vector2(476, -306)
 rotation = -1.5708
+
+[node name="Portal" parent="." instance=ExtResource("12_0bt5v")]
+position = Vector2(-43, 14)
+next_level = "res://Scenes/Levels/Maps/Demo_map2.tscn"
 
 [connection signal="activated" from="Mechanisms/TargetBlock/RedTarget" to="Mechanisms/TargetBlock/Block" method="was_deactivated"]
 [connection signal="activated" from="Mechanisms/TargetBlock4/RedTarget" to="Mechanisms/TargetBlock4/Block" method="was_activated"]

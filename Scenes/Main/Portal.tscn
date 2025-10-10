@@ -6,7 +6,10 @@
 [node name="Portal" type="Area2D"]
 collision_layer = 64
 script = ExtResource("1_ugh02")
+next_level = null
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 scale = Vector2(10, 100)
 shape = ExtResource("1_m5bqq")
+
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]
