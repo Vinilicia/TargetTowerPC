@@ -21,7 +21,6 @@ expression = "!crouching"
 metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 
 [node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector")]
-position = Vector2(-2, 0)
 collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("Misc/StateChart")
@@ -46,7 +45,7 @@ hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("Misc/DodgeCancelTimer")
 ledge_detector = NodePath("Utilities/LedgeDetector")
 wall_detector = NodePath("Utilities/WallDetector")
-initial_arrow_index = 1
+initial_arrow_index = 2
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
 [node name="Misc" type="Node" parent="."]
@@ -150,8 +149,8 @@ metadata/_custom_type_script = "uid://d4da8yc41448k"
 
 [node name="Archer" parent="." instance=ExtResource("9_26aeq")]
 position = Vector2(-28, -28)
-offset = Vector2(22, 18)
-region_rect = Rect2(65, 86, 15, 20)
+offset = Vector2(21, 17)
+region_rect = Rect2(15, 85, 14, 21)
 
 [node name="UpColl" type="CollisionShape2D" parent="."]
 visible = false
