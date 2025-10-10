@@ -2014,6 +2014,7 @@ rotation = -1.5708
 [node name="Portal" parent="." instance=ExtResource("12_0bt5v")]
 position = Vector2(-43, 14)
 next_level = "res://Scenes/Levels/Maps/Demo_map2.tscn"
+spaw_position = Vector2(93, -116)
 
 [connection signal="activated" from="Mechanisms/TargetBlock/RedTarget" to="Mechanisms/TargetBlock/Block" method="was_deactivated"]
 [connection signal="activated" from="Mechanisms/TargetBlock4/RedTarget" to="Mechanisms/TargetBlock4/Block" method="was_activated"]

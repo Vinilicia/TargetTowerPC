@@ -1911,9 +1911,8 @@ custom_data_layer_0/name = ""
 custom_data_layer_0/type = 0
 sources/0 = SubResource("TileSetAtlasSource_lkwqp")
 
-[node name="Demo_Map" type="Node2D" node_paths=PackedStringArray("camera")]
+[node name="Demo_Map" type="Node2D"]
 script = ExtResource("1_ehj4h")
-camera = NodePath("")
 metadata/_edit_horizontal_guides_ = [-215.0]
 
 [node name="TileMap" type="Node2D" parent="."]
@@ -2011,6 +2010,7 @@ rotation = -1.5708
 [node name="Portal" parent="." instance=ExtResource("13_qhudx")]
 position = Vector2(1231, 41)
 next_level = "res://Scenes/Levels/Maps/Demo_map.tscn"
+spaw_position = Vector2(1000, -100)
 
 [connection signal="activated" from="Mechanisms/TargetBlock/RedTarget" to="Mechanisms/TargetBlock/Block" method="was_deactivated"]
 [connection signal="activated" from="Mechanisms/TargetBlock4/RedTarget" to="Mechanisms/TargetBlock4/Block" method="was_activated"]
