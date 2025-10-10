@@ -1,0 +1,57 @@
+[gd_scene load_steps=5 format=3 uid="uid://ccg2l16c64hgc"]
+
+[ext_resource type="Script" uid="uid://xdrpwie66rqn" path="res://Scripts/Main/game.gd" id="1_mu4po"]
+[ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Scenes/Actors/Player.tscn" id="2_f405u"]
+[ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Levels/Camera.tscn" id="3_73cq8"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_337f6"]
+resource_local_to_scene = true
+radius = 0.5
+height = 1.0
+
+[node name="Game" type="Node2D"]
+script = ExtResource("1_mu4po")
+
+[node name="Player" parent="." instance=ExtResource("2_f405u")]
+
+[node name="ToFalling" parent="Player/Misc/StateChart/Root/Memes/Airborne/Rising" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="ToGrounded" parent="Player/Misc/StateChart/Root/Memes/Airborne/Falling" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="ToRising" parent="Player/Misc/StateChart/Root/Memes/Airborne/Falling" index="1"]
+delay_in_seconds = "0.0"
+
+[node name="ToCrouched" parent="Player/Misc/StateChart/Root/Memes/Grounded/Standing" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="ToStanding" parent="Player/Misc/StateChart/Root/Memes/Grounded/Crouched" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="ToFalling" parent="Player/Misc/StateChart/Root/Memes/Grounded" index="2"]
+delay_in_seconds = "0.0"
+
+[node name="ToRising" parent="Player/Misc/StateChart/Root/Memes/Grounded" index="3"]
+delay_in_seconds = "0.0"
+
+[node name="ToCant" parent="Player/Misc/StateChart/Root/Shooting/CanShoot" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="ToCan" parent="Player/Misc/StateChart/Root/Shooting/CantShoot" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="UpColl" parent="Player/Hurtbox" index="1"]
+shape = SubResource("CapsuleShape2D_337f6")
+
+[node name="DownColl" parent="Player/Hurtbox" index="2"]
+shape = SubResource("CapsuleShape2D_337f6")
+
+[node name="Remote" parent="Player/Utilities" index="1"]
+remote_path = NodePath("../../../Camera")
+
+[node name="Camera" parent="." instance=ExtResource("3_73cq8")]
+position = Vector2(0, -35)
+
+[editable path="Player"]
+[editable path="Player/Archer"]
