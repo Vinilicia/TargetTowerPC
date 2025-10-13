@@ -1,6 +1,6 @@
 extends Control
 
-var res1 : Vector2i = Vector2i(960, 540)
+var res1 : Vector2i = Vector2i(1280, 720)
 var res2 : Vector2i = Vector2i(1440, 810)
 var res3 : Vector2i = Vector2i(1920, 1080)
 var resolution : Vector2i = res1
