@@ -45,7 +45,6 @@ hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("Misc/DodgeCancelTimer")
 ledge_detector = NodePath("Utilities/LedgeDetector")
 wall_detector = NodePath("Utilities/WallDetector")
-initial_arrow_index = 2
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
 [node name="Misc" type="Node" parent="."]
