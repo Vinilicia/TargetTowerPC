@@ -1,0 +1,41 @@
+[gd_scene load_steps=3 format=3 uid="uid://b8pvv620sxl36"]
+
+[ext_resource type="PackedScene" uid="uid://dbmux1c4ct4hu" path="res://Scenes/Levels/Maps/Demo_map.tscn" id="1_yh5la"]
+[ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Options_Menu.tscn" id="2_2w1kt"]
+
+[node name="Main" type="Node2D"]
+
+[node name="GameCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameViewportContainer" type="SubViewportContainer" parent="GameCanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+stretch = true
+stretch_shrink = 2
+
+[node name="GameViewport" type="SubViewport" parent="GameCanvasLayer/GameViewportContainer"]
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(320, 180)
+size_2d_override = Vector2i(340, 180)
+size_2d_override_stretch = true
+render_target_update_mode = 4
+
+[node name="Demo_Map" parent="GameCanvasLayer/GameViewportContainer/GameViewport" instance=ExtResource("1_yh5la")]
+
+[node name="UI" type="Control" parent="GameCanvasLayer"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="OptionsMenu" parent="GameCanvasLayer/UI" instance=ExtResource("2_2w1kt")]
+layout_mode = 1
