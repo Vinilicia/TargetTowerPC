@@ -2,7 +2,7 @@ extends Control
 
 @export var buttons_container : Control
 @export var reset_button : Button
-@export var parent_button : Button
+@export var back_button : Button
 
 var input_button = preload("res://Scenes/Menus&UI/InputMap_button.tscn")
 
@@ -69,14 +69,8 @@ func _create_action_list() -> void:
 		if last_button != null:
 			button.focus_neighbor_top = last_button.get_path()
 		else:
-			reset_button.focus_neighbor_bottom = button.get_path()
-			parent_button.focus_neighbor_right = button.get_path()
-			parent_button.focus_neighbor_left = button.get_path()
-		var parent_path = parent_button.get_path()
-		button.focus_neighbor_left = parent_path
-		button.focus_neighbor_right = parent_path
-		reset_button.focus_neighbor_left = parent_path
-		reset_button.focus_neighbor_right = parent_path
+			button.focus_neighbor_top = back_button.get_path()
+			back_button.focus_neighbor_bottom = button.get_path()
 		
 		last_button = button
 		

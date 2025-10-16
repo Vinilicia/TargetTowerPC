@@ -20,30 +20,29 @@ anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 40
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
 layout_mode = 2
+size_flags_horizontal = 4
 theme_override_constants/separation = 20
-
-[node name="ScreenShakeCheck" type="CheckBox" parent="MarginContainer/VBoxContainer"]
-layout_mode = 2
-text = "Screen shake"
 
 [node name="ModeContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 5
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ModeContainer"]
 layout_mode = 2
 text = "Window mode:"
 
-[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/ModeContainer"]
-custom_minimum_size = Vector2(5, 0)
-layout_mode = 2
-
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/ModeContainer"]
-custom_minimum_size = Vector2(110, 0)
+custom_minimum_size = Vector2(160, 20)
 layout_mode = 2
 size_flags_horizontal = 0
+focus_neighbor_top = NodePath("../../BackButton")
 alignment = 1
 selected = 0
 allow_reselect = true
@@ -61,17 +60,18 @@ popup/item_4/id = 2
 
 [node name="ResolutionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
+size_flags_vertical = 8
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
 layout_mode = 2
-text = "Resultion:"
+text = "Resolution:"
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
 custom_minimum_size = Vector2(5, 0)
 layout_mode = 2
 
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
-custom_minimum_size = Vector2(110, 0)
+custom_minimum_size = Vector2(110, 20)
 layout_mode = 2
 size_flags_horizontal = 0
 alignment = 1
@@ -88,6 +88,14 @@ popup/item_3/id = 4
 popup/item_3/separator = true
 popup/item_4/text = "1920x1080"
 popup/item_4/id = 2
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(160, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+focus_neighbor_bottom = NodePath("../ModeContainer/OptionButton")
+text = "Back"
 
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/ModeContainer/OptionButton" to="." method="_on_window_mode_item_selected"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/ResolutionContainer/OptionButton" to="." method="_on_resolution_item_selected"]
