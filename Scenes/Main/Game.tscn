@@ -32,5 +32,7 @@ remote_path = NodePath("../../../Camera")
 [node name="Camera" parent="." instance=ExtResource("3_73cq8")]
 position = Vector2(93, -151)
 
+[node name="Level_Transition" type="CanvasLayer" parent="."]
+
 [editable path="Player"]
 [editable path="Player/Archer"]
