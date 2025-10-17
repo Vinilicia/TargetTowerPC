@@ -16,7 +16,6 @@ func got_hit(hitbox : Hitbox) -> void:
 	if hitbox.parent == parent:
 		return
 	got_hit_by.emit(hitbox)
-	print("alguma coias")
 	took_damage.emit(hitbox.Damage)
 	hitbox.hit_something(parent)
 	get_invincible()
