@@ -21,6 +21,9 @@ var input_actions = {
 	"angle down": "Angle Down",
 	"shoot": "Shoot",
 	"jump": "Jump",
+	"dodge": "Dodge",
+	"lock walk": "Moonwalk",
+	"map": "Map"
 }
 
 var forbidden_keys = [
