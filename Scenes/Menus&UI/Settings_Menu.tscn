@@ -1,21 +1,21 @@
 [gd_scene load_steps=7 format=3 uid="uid://dwwx3mfj10mny"]
 
-[ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_jwdl5"]
-[ext_resource type="FontFile" uid="uid://we2hkdmwoyf1" path="res://Assets/HandymandiFree.ttf" id="1_nsnvd"]
-[ext_resource type="Script" uid="uid://kmt6mu0uj7iv" path="res://Scripts/Menus&UI/Options_menu.gd" id="2_38gpb"]
-[ext_resource type="PackedScene" uid="uid://da2sx0ksycqcf" path="res://Scenes/Menus&UI/Controls_Options.tscn" id="4_quo3d"]
-[ext_resource type="PackedScene" uid="uid://cyfg1sluqqde" path="res://Scenes/Menus&UI/Audio_Options.tscn" id="5_y2ceo"]
-[ext_resource type="PackedScene" uid="uid://w4qscxieiq2w" path="res://Scenes/Menus&UI/Video_Options.tscn" id="6_4l1aj"]
+[ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_5sxic"]
+[ext_resource type="Script" uid="uid://kmt6mu0uj7iv" path="res://Scripts/Menus&UI/Settings_menu.gd" id="2_42ids"]
+[ext_resource type="FontFile" uid="uid://we2hkdmwoyf1" path="res://Assets/HandymandiFree.ttf" id="3_6ko3e"]
+[ext_resource type="PackedScene" uid="uid://da2sx0ksycqcf" path="res://Scenes/Menus&UI/Controls_Settings.tscn" id="4_8ys5w"]
+[ext_resource type="PackedScene" uid="uid://cyfg1sluqqde" path="res://Scenes/Menus&UI/Audio_Settings.tscn" id="5_8gcye"]
+[ext_resource type="PackedScene" uid="uid://w4qscxieiq2w" path="res://Scenes/Menus&UI/Video_Settings.tscn" id="6_bn18l"]
 
-[node name="OptionsMenu" type="Control" node_paths=PackedStringArray("Menus_Container", "Buttons_Container", "Controls_menu", "Audio_menu", "Video_menu", "Controls_button", "Audio_button", "Video_button")]
+[node name="SettingsMenu" type="Control" node_paths=PackedStringArray("Menus_Container", "Buttons_Container", "Controls_menu", "Audio_menu", "Video_menu", "Controls_button", "Audio_button", "Video_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-theme = ExtResource("1_jwdl5")
-script = ExtResource("2_38gpb")
+theme = ExtResource("1_5sxic")
+script = ExtResource("2_42ids")
 Menus_Container = NodePath("MarginContainer/VBoxContainer/MenusContainer")
 Buttons_Container = NodePath("MarginContainer/VBoxContainer/ButtonsContainer")
 Controls_menu = NodePath("MarginContainer/VBoxContainer/MenusContainer/ControlsMenu")
@@ -44,7 +44,7 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-theme_override_fonts/font = ExtResource("1_nsnvd")
+theme_override_fonts/font = ExtResource("3_6ko3e")
 theme_override_font_sizes/font_size = 32
 text = "Settings"
 
@@ -100,16 +100,16 @@ theme_override_constants/margin_top = 20
 theme_override_constants/margin_right = 30
 theme_override_constants/margin_bottom = 20
 
-[node name="ControlsMenu" parent="MarginContainer/VBoxContainer/MenusContainer" instance=ExtResource("4_quo3d")]
+[node name="ControlsMenu" parent="MarginContainer/VBoxContainer/MenusContainer" instance=ExtResource("4_8ys5w")]
 visible = false
 layout_mode = 2
 
-[node name="AudioMenu" parent="MarginContainer/VBoxContainer/MenusContainer" instance=ExtResource("5_y2ceo")]
+[node name="AudioMenu" parent="MarginContainer/VBoxContainer/MenusContainer" instance=ExtResource("5_8gcye")]
 visible = false
 layout_mode = 2
 size_flags_vertical = 4
 
-[node name="VideoMenu" parent="MarginContainer/VBoxContainer/MenusContainer" instance=ExtResource("6_4l1aj")]
+[node name="VideoMenu" parent="MarginContainer/VBoxContainer/MenusContainer" instance=ExtResource("6_bn18l")]
 visible = false
 layout_mode = 2
 

@@ -1,0 +1,57 @@
+[gd_scene load_steps=4 format=3 uid="uid://b8pvv620sxl36"]
+
+[ext_resource type="PackedScene" uid="uid://drfycye8vmmuq" path="res://Scenes/Menus&UI/Main_menu.tscn" id="1_lixft"]
+[ext_resource type="PackedScene" uid="uid://ccg2l16c64hgc" path="res://Scenes/Main/Game.tscn" id="2_qw60k"]
+
+[sub_resource type="Environment" id="Environment_2w1kt"]
+background_mode = 3
+adjustment_enabled = true
+
+[node name="Main" type="Node2D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2w1kt")
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+process_mode = 3
+layer = 2
+
+[node name="MainMenu" parent="UILayer" instance=ExtResource("1_lixft")]
+visible = false
+
+[node name="Blackout" type="ColorRect" parent="UILayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="GameCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="GameViewportContainer" type="SubViewportContainer" parent="GameCanvasLayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+stretch_shrink = 2
+
+[node name="GameViewport" type="SubViewport" parent="GameCanvasLayer/GameViewportContainer"]
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(320, 180)
+render_target_update_mode = 4
+
+[node name="Game" parent="GameCanvasLayer/GameViewportContainer/GameViewport" node_paths=PackedStringArray("blackout_rect") instance=ExtResource("2_qw60k")]
+blackout_rect = NodePath("../../../../UILayer/Blackout")
+
+[editable path="UILayer/MainMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/ControlsMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/AudioMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/VideoMenu"]
