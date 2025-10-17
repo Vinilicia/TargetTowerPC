@@ -9,4 +9,7 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 
 func _on_hitbox_hit(target: Node2D) -> void:
 	velocity = Vector2.ZERO
+	var target_position = target.global_position
+	target.global_position = get_parent().global_position
+	get_parent().global_position = target_position
 	queue_free()
