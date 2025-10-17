@@ -38,13 +38,12 @@ func is_forbidden(event : InputEventKey) -> bool:
 func _ready() -> void:
 	_create_action_list()
 
-func give_focus() -> void:
-	var buttons = buttons_container.get_children()
-	buttons[0].grab_focus()
-
 func _create_action_list() -> void:
 	var last_button : Button = null
+	var created_buttons : Array[Button] = []
+	
 	InputMap.load_from_project_settings()
+	
 	for button in buttons_container.get_children():
 		if button is Button:
 			button.pressed.disconnect(remap_action)
@@ -65,16 +64,32 @@ func _create_action_list() -> void:
 		
 		buttons_container.add_child(button)
 		button.pressed.connect(remap_action.bind(button, action))
-		if last_button != null:
-			button.focus_neighbor_top = last_button.get_path()
-		else:
-			button.focus_neighbor_top = back_button.get_path()
-			back_button.focus_neighbor_bottom = button.get_path()
 		
 		last_button = button
-		
-	reset_button.focus_neighbor_top = last_button.get_path()
-	last_button.focus_neighbor_bottom = reset_button.get_path()
+		created_buttons.append(button)
+	
+	if last_button:
+		reset_button.focus_neighbor_top = last_button.get_path()
+		last_button.focus_neighbor_bottom = reset_button.get_path()
+	
+	for i in range(0, created_buttons.size(), 2):
+		if i + 1 < created_buttons.size():
+			var left_button = created_buttons[i]
+			var right_button = created_buttons[i + 1]
+			
+			left_button.focus_neighbor_right = right_button.get_path()
+			left_button.focus_neighbor_left = right_button.get_path()
+			right_button.focus_neighbor_left = left_button.get_path()
+			right_button.focus_neighbor_right = left_button.get_path()
+	
+	if created_buttons.size() > 0:
+		created_buttons[0].focus_neighbor_top = back_button.get_path()
+		back_button.focus_neighbor_bottom = created_buttons[0].get_path()
+	
+	if created_buttons.size() > 1:
+		created_buttons[1].focus_neighbor_top = back_button.get_path()
+
+
 
 
 func remap_action(button, action) -> void:

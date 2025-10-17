@@ -43,7 +43,7 @@ theme_override_constants/margin_right = 80
 layout_mode = 2
 theme_override_constants/separation = 5
 
-[node name="MasterVolumeContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MasterVolumeContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 10
 
@@ -108,7 +108,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 icon = ExtResource("4_alvlx")
 
-[node name="MusicVolumeContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="MusicVolumeContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 
@@ -173,7 +173,7 @@ layout_mode = 2
 size_flags_horizontal = 8
 icon = ExtResource("4_alvlx")
 
-[node name="SFXVolumeContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+[node name="SFXVolumeContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
 size_flags_vertical = 8
 

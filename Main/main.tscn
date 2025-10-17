@@ -19,6 +19,9 @@ layer = 2
 [node name="OptionsMenu" parent="UILayer" instance=ExtResource("2_2w1kt")]
 visible = false
 
+[node name="VideoMenu" parent="UILayer/OptionsMenu/MarginContainer/VBoxContainer/MenusContainer" index="2" node_paths=PackedStringArray("environment")]
+environment = NodePath("../../../../../../WorldEnvironment")
+
 [node name="GameCanvasLayer" type="CanvasLayer" parent="."]
 
 [node name="GameViewportContainer" type="SubViewportContainer" parent="GameCanvasLayer"]
@@ -39,3 +42,8 @@ size = Vector2i(320, 180)
 render_target_update_mode = 4
 
 [node name="Demo_Map" parent="GameCanvasLayer/GameViewportContainer/GameViewport" instance=ExtResource("1_yh5la")]
+
+[editable path="UILayer/OptionsMenu"]
+[editable path="UILayer/OptionsMenu/MarginContainer/VBoxContainer/MenusContainer/ControlsMenu"]
+[editable path="UILayer/OptionsMenu/MarginContainer/VBoxContainer/MenusContainer/AudioMenu"]
+[editable path="UILayer/OptionsMenu/MarginContainer/VBoxContainer/MenusContainer/VideoMenu"]

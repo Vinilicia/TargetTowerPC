@@ -1,11 +1,16 @@
-[gd_scene load_steps=7 format=3 uid="uid://dwwx3mfj10mny"]
+[gd_scene load_steps=9 format=3 uid="uid://dwwx3mfj10mny"]
 
 [ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_jwdl5"]
 [ext_resource type="FontFile" uid="uid://we2hkdmwoyf1" path="res://Assets/HandymandiFree.ttf" id="1_nsnvd"]
 [ext_resource type="Script" uid="uid://kmt6mu0uj7iv" path="res://Scripts/Menus&UI/Options_menu.gd" id="2_38gpb"]
+[ext_resource type="Shader" uid="uid://cypc0h3hwrmr8" path="res://Themes/Shaders/blur.gdshader" id="3_atarn"]
 [ext_resource type="PackedScene" uid="uid://da2sx0ksycqcf" path="res://Scenes/Menus&UI/Controls_Options.tscn" id="4_quo3d"]
 [ext_resource type="PackedScene" uid="uid://cyfg1sluqqde" path="res://Scenes/Menus&UI/Audio_Options.tscn" id="5_y2ceo"]
 [ext_resource type="PackedScene" uid="uid://w4qscxieiq2w" path="res://Scenes/Menus&UI/Video_Options.tscn" id="6_4l1aj"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_b8tka"]
+shader = ExtResource("3_atarn")
+shader_parameter/lod = 1.0
 
 [node name="OptionsMenu" type="Control" node_paths=PackedStringArray("Menus_Container", "Buttons_Container", "Controls_menu", "Audio_menu", "Video_menu", "Controls_button", "Audio_button", "Video_button")]
 layout_mode = 3
@@ -24,6 +29,15 @@ Video_menu = NodePath("MarginContainer/VBoxContainer/MenusContainer/VideoMenu")
 Controls_button = NodePath("MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/ControlsButton")
 Audio_button = NodePath("MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/AudioButton")
 Video_button = NodePath("MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/VideoButton")
+
+[node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_b8tka")
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
