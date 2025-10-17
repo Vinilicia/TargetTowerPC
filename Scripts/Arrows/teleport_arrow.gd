@@ -4,7 +4,7 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 	var body = collision.get_collider()
 	var normal = collision.get_normal()
 	var contact_point = collision.get_position()
-	get_parent().global_position = contact_point
+	get_parent().global_position = contact_point + normal * 8
 	queue_free()
 
 func _on_hitbox_hit(target: Node2D) -> void:
