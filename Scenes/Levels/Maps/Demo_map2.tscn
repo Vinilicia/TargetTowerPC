@@ -4,7 +4,7 @@
 [ext_resource type="Texture2D" uid="uid://da58dobtmu48v" path="res://Assets/Home_bred/Tilemap/area-inicial.aseprite" id="2_qhudx"]
 [ext_resource type="Texture2D" uid="uid://d1hvuiyfkjgb0" path="res://Assets/Home_bred/Tilemap/chao.aseprite" id="3_7uoil"]
 [ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="5_hkmdc"]
-[ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Options_Menu.tscn" id="6_dlau7"]
+[ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Settings_Menu.tscn" id="6_dlau7"]
 [ext_resource type="PackedScene" uid="uid://41fkn0141wpc" path="res://Scenes/Actors/Enemies/Bat.tscn" id="8_keybd"]
 [ext_resource type="PackedScene" uid="uid://w2pw765x6aql" path="res://Scenes/Actors/Enemies/Rock_Goblin.tscn" id="9_h5xjt"]
 [ext_resource type="PackedScene" uid="uid://dm11p43b6up60" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Block-01.tscn" id="11_p0cu4"]

@@ -1,7 +1,7 @@
 extends Control
 class_name Main_Menu
 
-@export var options_menu : Control = null
+@export var settings_menu : Control = null
 @export var buttons_container : MarginContainer
 @export var back_to_title_menu : MarginContainer
 
@@ -21,9 +21,9 @@ func open_menu() -> void:
 func open_settings() -> void:
 	last_button_pressed = buttons_container.get_child(0).get_child(1)
 	buttons_container.visible = false
-	options_menu.visible = true
-	options_menu.setup_buttons()
-	options_menu.give_focus()
+	settings_menu.visible = true
+	settings_menu.setup_buttons()
+	settings_menu.give_focus()
 
 func open_back_to_title() -> void:
 	buttons_container.visible = false
@@ -44,8 +44,8 @@ func show_buttons() -> void:
 	last_button_pressed.grab_focus()
 
 func close_settings() -> void:
-	options_menu.setup_buttons()
-	options_menu.visible = false
+	settings_menu.setup_buttons()
+	settings_menu.visible = false
 	show_buttons()
 
 func close_menu() -> void:
