@@ -27,7 +27,7 @@ state_chart = NodePath("Misc/StateChart")
 camera_distance = 45.0
 camera_move_duration = 1.0
 camera_remote = NodePath("Utilities/Remote")
-arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4"])
+arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4", "uid://h5p666cxnxby"])
 max_hold_time = 1.5
 shoot_delay = 0.5
 dodge_cooldown = 0.7
@@ -45,6 +45,7 @@ hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("Misc/DodgeCancelTimer")
 ledge_detector = NodePath("Utilities/LedgeDetector")
 wall_detector = NodePath("Utilities/WallDetector")
+initial_arrow_index = 3
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
 [node name="Misc" type="Node" parent="."]

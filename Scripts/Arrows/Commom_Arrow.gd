@@ -132,4 +132,5 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 
 func _on_hitbox_hit(_target: Node2D) -> void:
 	velocity = Vector2.ZERO
+	print("aloou")
 	queue_free()
