@@ -1,6 +1,30 @@
-[gd_scene load_steps=2 format=3 uid="uid://vc2ghdvugqqc"]
+[gd_scene load_steps=5 format=3 uid="uid://vc2ghdvugqqc"]
 
 [ext_resource type="Script" uid="uid://cuos4bh8j5ee8" path="res://Scripts/Actors/Enemies/base_enemy.gd" id="1_70nws"]
+[ext_resource type="Script" uid="uid://b3ucjfdhlhrc8" path="res://Scripts/Components/Velocity_component.gd" id="2_fg4ni"]
+[ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="3_caemr"]
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="4_caemr"]
 
 [node name="BaseEnemy" type="CharacterBody2D"]
 script = ExtResource("1_70nws")
+
+[node name="VelocityComponent" type="Node" parent="."]
+script = ExtResource("2_fg4ni")
+metadata/_custom_type_script = "uid://b3ucjfdhlhrc8"
+
+[node name="HealthManager" type="Node" parent="."]
+script = ExtResource("3_caemr")
+metadata/_custom_type_script = "uid://d4da8yc41448k"
+
+[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("4_caemr")]
+collision_mask = 2816
+parent = NodePath("..")
+can_be_invincible = false
+
+[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+
+[connection signal="lost_health" from="HealthManager" to="." method="took_damage"]
+[connection signal="ran_out" from="HealthManager" to="." method="run_out_of_health"]
+[connection signal="took_damage" from="Hurtbox" to="HealthManager" method="lose_health"]
