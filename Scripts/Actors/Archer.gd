@@ -108,7 +108,6 @@ func _ready():
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 	velocity = Vector2.ZERO
-	setup_camera()
 	UiHandler.equiped_arrow_index = initial_arrow_index
 	#Engine.time_scale = 0.5
 
@@ -353,9 +352,6 @@ func turn(facing_dir: int) -> void:
 	var final_pos = Vector2(camera_distance * facing_dir, pos.y)
 	tween = create_tween().set_ease(Tween.EASE_IN_OUT)
 	tween.tween_property(camera_remote, "position", final_pos, camera_move_duration)
-
-func setup_camera() -> void:
-	camera_remote.remote_path = get_parent().get_camera().get_path()
 
 func dampen_jump(factor: float) -> void:
 	var decel = -(v_component.get_proper_velocity(2) * factor)
