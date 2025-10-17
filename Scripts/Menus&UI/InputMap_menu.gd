@@ -6,7 +6,6 @@ extends Control
 
 var input_button = preload("res://Scenes/Menus&UI/InputMap_button.tscn")
 
-
 var mapping: bool = false
 var remapping_action = null
 var remapping_button = null

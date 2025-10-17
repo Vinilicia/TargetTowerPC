@@ -12,7 +12,7 @@
 [ext_resource type="AudioStream" uid="uid://cv5qf13ysmnnk" path="res://Assets/Stickerbush Symphony.mp3" id="10_8qbqp"]
 [ext_resource type="AudioStream" uid="uid://bndqffh7fiawr" path="res://Assets/Failure.mp3" id="11_8edlo"]
 
-[node name="AudioMenu" type="Control" node_paths=PackedStringArray("master_container", "music_container", "sfx_container", "master_bar", "music_bar", "sfx_bar")]
+[node name="AudioMenu" type="Control" node_paths=PackedStringArray("master_container", "music_container", "sfx_container", "master_bar", "music_bar", "sfx_bar", "back_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -27,6 +27,7 @@ sfx_container = NodePath("MarginContainer/VBoxContainer/SFXVolumeContainer/VBoxC
 master_bar = NodePath("MarginContainer/VBoxContainer/MasterVolumeContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/SliderContainer/VolumeSlider")
 music_bar = NodePath("MarginContainer/VBoxContainer/MusicVolumeContainer/VBoxContainer/MarginContainer/MusicButtonsContainer/SliderContainer/VolumeSlider")
 sfx_bar = NodePath("MarginContainer/VBoxContainer/SFXVolumeContainer/VBoxContainer/MarginContainer/SFXButtonsContainer/SliderContainer/VolumeSlider")
+back_button = NodePath("MarginContainer/VBoxContainer/BackButton")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -241,7 +242,7 @@ icon = ExtResource("4_alvlx")
 custom_minimum_size = Vector2(0, 15)
 layout_mode = 2
 
-[node name="Button" type="Button" parent="MarginContainer/VBoxContainer"]
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(240, 20)
 layout_mode = 2
 size_flags_horizontal = 4
