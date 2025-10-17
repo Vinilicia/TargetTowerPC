@@ -16,7 +16,7 @@ extends Control
 var last_button_pressed : Button
 
 func _ready() -> void:
-	MenuHandler.set_menu(self)
+	last_button_pressed = Controls_button
 
 func give_focus() -> void:
 	Controls_button.grab_focus()
