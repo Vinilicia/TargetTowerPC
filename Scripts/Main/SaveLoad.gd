@@ -17,10 +17,12 @@ func _save(slot_index: int):
 		"progress_bar_value": SaveFileData.progress_bar_value,
 		"HealthUpgrades": SaveFileData.HealthUpgrades,
 		"ManaUpgrades": SaveFileData.ManaUpgrades,
+		"AvailableArrows": SaveFileData.AvailableArrows,
 		"LastBenchID": SaveFileData.LastBenchID,
 		"MaxHealth": SaveFileData.MaxHealth,
 		"MaxMana": SaveFileData.MaxMana,
-		"AvailableArrows": SaveFileData.AvailableArrows
+		"Money": SaveFileData.Money,
+		"profile_name": SaveFileData.profile_name
 	}
 	
 	var json_ver = JSON.stringify(data_to_save)
@@ -53,6 +55,8 @@ func _load(slot_index: int):
 		SaveFileData.LastBenchID = data.get("LastBenchID", 0)
 		SaveFileData.MaxHealth = data.get("MaxHealth", 100)
 		SaveFileData.MaxMana = data.get("MaxMana", 100)
+		SaveFileData.Money = data.get("Money", 0)
+		SaveFileData.profile_name = data.get("profile_name", "Profile %d" % (slot_index + 1))
 		
 		print("Jogo carregado do Slot ", slot_index)
 		return true
@@ -95,12 +99,14 @@ func is_slot_used(slot_index: int) -> bool:
 	
 func test():
 	SaveFileData.set_max_health(0)
+	SaveFileData.set_money(500)
+	SaveFileData.set_profile_name("Profile Teste")
 	_save(0)
 	SaveFileData.set_max_health(1)
 	_save(1)
 	SaveFileData.set_max_health(99)
 	_load(0)
-	print(SaveFileData.get_max_health())
+	print(SaveFileData.get_max_health(), SaveFileData.get_money(), SaveFileData.get_profile_name())
 	copy_slot(1,0)
 	_load(0)
 	print(SaveFileData.get_max_health())

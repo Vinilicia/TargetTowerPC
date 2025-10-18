@@ -6,9 +6,17 @@ class_name SaveDataResource
 @export var HealthUpgrades: Array[bool] = [false, false, false, false]
 @export var ManaUpgrades: Array[bool] = [false, false, false, false]
 @export var AvailableArrows: Array[bool] = [false, false, false, false]
+
 @export var LastBenchID: int = 0
 @export var MaxHealth: int = 100
 @export var MaxMana: int = 100
+@export var Money: int = 0
+
+@export var profile_name: String = "Profile 1"
+
+# -----------------------------------
+# Métodos de acesso
+# -----------------------------------
 
 func get_health_upgrade(index: int) -> bool:
 	if index >= 0 and index < HealthUpgrades.size():
@@ -63,3 +71,15 @@ func get_max_mana() -> int:
 
 func set_max_mana(value: int):
 	MaxMana = value
+
+func get_money() -> int:
+	return Money
+
+func set_money(value: int):
+	Money = value
+
+func get_profile_name() -> String:
+	return profile_name
+
+func set_profile_name(value: String):
+	profile_name = value
