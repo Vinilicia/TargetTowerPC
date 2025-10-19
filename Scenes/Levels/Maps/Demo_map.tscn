@@ -3,10 +3,10 @@
 [ext_resource type="Script" uid="uid://bi7ajwk42n3cg" path="res://Scripts/Levels/Maps/Map.gd" id="1_uc4dq"]
 [ext_resource type="Texture2D" uid="uid://da58dobtmu48v" path="res://Assets/Home_bred/Tilemap/area-inicial.aseprite" id="3_tgyxi"]
 [ext_resource type="Texture2D" uid="uid://d1hvuiyfkjgb0" path="res://Assets/Home_bred/Tilemap/chao.aseprite" id="4_cv115"]
-[ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Newest_Bat.tscn" id="4_thro2"]
-[ext_resource type="PackedScene" uid="uid://wkr5vvc6juys" path="res://Scenes/Actors/Enemies/Normal_Goblin.tscn" id="10_0qeml"]
+[ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="4_thro2"]
+[ext_resource type="PackedScene" uid="uid://bmrbwy233rwr3" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="5_thro2"]
+[ext_resource type="PackedScene" uid="uid://ducvhgn5hbafe" path="res://Scenes/Actors/Enemies/Slime.tscn" id="6_thro2"]
 [ext_resource type="PackedScene" uid="uid://dm11p43b6up60" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Block-01.tscn" id="10_tgyxi"]
-[ext_resource type="PackedScene" uid="uid://w2pw765x6aql" path="res://Scenes/Actors/Enemies/Rock_Goblin.tscn" id="11_0qeml"]
 [ext_resource type="PackedScene" uid="uid://cjd68laeibaxd" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/RedTarget.tscn" id="11_cv115"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="12_0bt5v"]
 
@@ -1932,34 +1932,24 @@ collision_visibility_mode = 2
 
 [node name="NewBat" parent="Enemies/Bats" instance=ExtResource("4_thro2")]
 
-[node name="RockGoblins" type="Node2D" parent="Enemies"]
-
-[node name="Rock Goblin2" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
-position = Vector2(-576, -128)
-direction = 1
-
-[node name="Rock Goblin3" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
-position = Vector2(1145, 5)
-
-[node name="Rock Goblin4" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
-position = Vector2(567, -625)
-
-[node name="Rock Goblin5" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
-position = Vector2(-352, -813)
-direction = 1
-
-[node name="Rock Goblin6" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
-position = Vector2(-235, -858)
-direction = 1
-
-[node name="Rock Goblin7" parent="Enemies/RockGoblins" instance=ExtResource("11_0qeml")]
-position = Vector2(-327, -907)
-direction = 1
-
 [node name="Goblins" type="Node2D" parent="Enemies"]
 
-[node name="NormalGoblin" parent="Enemies/Goblins" instance=ExtResource("10_0qeml")]
-position = Vector2(462, -108)
+[node name="CommonGoblin" parent="Enemies/Goblins" instance=ExtResource("5_thro2")]
+position = Vector2(480, -104)
+
+[node name="Slimes" type="Node2D" parent="Enemies"]
+
+[node name="Slime" parent="Enemies/Slimes" instance=ExtResource("6_thro2")]
+position = Vector2(88, -848)
+
+[node name="Slime2" parent="Enemies/Slimes" instance=ExtResource("6_thro2")]
+position = Vector2(568, -624)
+
+[node name="Slime3" parent="Enemies/Slimes" instance=ExtResource("6_thro2")]
+position = Vector2(1168, 0)
+
+[node name="Slime4" parent="Enemies/Slimes" instance=ExtResource("6_thro2")]
+position = Vector2(-32, -224)
 
 [node name="Mechanisms" type="Node2D" parent="."]
 

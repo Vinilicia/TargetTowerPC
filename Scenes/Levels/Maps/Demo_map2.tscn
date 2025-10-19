@@ -1,15 +1,13 @@
-[gd_scene load_steps=16 format=4 uid="uid://dys2mrs86ho67"]
+[gd_scene load_steps=14 format=4 uid="uid://dah478k23miw2"]
 
 [ext_resource type="Script" uid="uid://bi7ajwk42n3cg" path="res://Scripts/Levels/Maps/Map.gd" id="1_ehj4h"]
 [ext_resource type="Texture2D" uid="uid://da58dobtmu48v" path="res://Assets/Home_bred/Tilemap/area-inicial.aseprite" id="2_qhudx"]
 [ext_resource type="Texture2D" uid="uid://d1hvuiyfkjgb0" path="res://Assets/Home_bred/Tilemap/chao.aseprite" id="3_7uoil"]
-[ext_resource type="PackedScene" uid="uid://vwrakc6w7pwa" path="res://Scenes/Menus&UI/Playing_UI.tscn" id="5_hkmdc"]
-[ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Settings_Menu.tscn" id="6_dlau7"]
-[ext_resource type="PackedScene" uid="uid://41fkn0141wpc" path="res://Scenes/Actors/Enemies/Bat.tscn" id="8_keybd"]
-[ext_resource type="PackedScene" uid="uid://w2pw765x6aql" path="res://Scenes/Actors/Enemies/Rock_Goblin.tscn" id="9_h5xjt"]
-[ext_resource type="PackedScene" uid="uid://dm11p43b6up60" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Block-01.tscn" id="11_p0cu4"]
-[ext_resource type="PackedScene" uid="uid://cjd68laeibaxd" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/RedTarget.tscn" id="12_1loeg"]
-[ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="13_qhudx"]
+[ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="4_3phwe"]
+[ext_resource type="PackedScene" uid="uid://ducvhgn5hbafe" path="res://Scenes/Actors/Enemies/Slime.tscn" id="6_3phwe"]
+[ext_resource type="PackedScene" uid="uid://dm11p43b6up60" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/Block-01.tscn" id="7_ehj4h"]
+[ext_resource type="PackedScene" uid="uid://cjd68laeibaxd" path="res://Scenes/Interactibles/Puzzle_Related/Buttons&Receptors/RedTarget.tscn" id="8_qhudx"]
+[ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="9_7uoil"]
 
 [sub_resource type="NavigationPolygon" id="NavigationPolygon_tgyxi"]
 vertices = PackedVector2Array(8, 8, -8, 8, -8, -8, 8, -8)
@@ -1927,90 +1925,71 @@ tile_map_data = PackedByteArray("AAD8/wQAAAAGAA4AAAD9/wQAAAAKAAUAAAD+/wQAAAAJAAA
 tile_set = SubResource("TileSet_0qeml")
 collision_visibility_mode = 2
 
-[node name="HUD" parent="." instance=ExtResource("5_hkmdc")]
-
-[node name="OptionsMenu" parent="HUD" instance=ExtResource("6_dlau7")]
-process_mode = 3
-visible = false
-
 [node name="Enemies" type="Node2D" parent="."]
 
 [node name="Bats" type="Node2D" parent="Enemies"]
 
-[node name="Bat" parent="Enemies/Bats" instance=ExtResource("6_hacml")]
-position = Vector2(5, -49)
+[node name="NewBat" parent="Enemies/Bats" instance=ExtResource("4_3phwe")]
 
-[node name="RockGoblins" type="Node2D" parent="Enemies"]
+[node name="Slimes" type="Node2D" parent="Enemies"]
 
-[node name="Rock Goblin2" parent="Enemies/RockGoblins" instance=ExtResource("9_h5xjt")]
-position = Vector2(-576, -128)
-direction = 1
+[node name="Slime" parent="Enemies/Slimes" instance=ExtResource("6_3phwe")]
+position = Vector2(88, -848)
 
-[node name="Rock Goblin3" parent="Enemies/RockGoblins" instance=ExtResource("9_h5xjt")]
-position = Vector2(1145, 5)
+[node name="Slime2" parent="Enemies/Slimes" instance=ExtResource("6_3phwe")]
+position = Vector2(568, -624)
 
-[node name="Rock Goblin4" parent="Enemies/RockGoblins" instance=ExtResource("9_h5xjt")]
-position = Vector2(567, -625)
+[node name="Slime3" parent="Enemies/Slimes" instance=ExtResource("6_3phwe")]
+position = Vector2(1168, 0)
 
-[node name="Rock Goblin5" parent="Enemies/RockGoblins" instance=ExtResource("9_h5xjt")]
-position = Vector2(-352, -813)
-direction = 1
-
-[node name="Rock Goblin6" parent="Enemies/RockGoblins" instance=ExtResource("9_h5xjt")]
-position = Vector2(-235, -858)
-direction = 1
-
-[node name="Rock Goblin7" parent="Enemies/RockGoblins" instance=ExtResource("9_h5xjt")]
-position = Vector2(-327, -907)
-direction = 1
-
-[node name="Goblins" type="Node2D" parent="Enemies"]
+[node name="Slime4" parent="Enemies/Slimes" instance=ExtResource("6_3phwe")]
+position = Vector2(-600, -136)
 
 [node name="Mechanisms" type="Node2D" parent="."]
 
 [node name="TargetBlock" type="Node2D" parent="Mechanisms"]
 
-[node name="Block" parent="Mechanisms/TargetBlock" instance=ExtResource("11_p0cu4")]
+[node name="Block" parent="Mechanisms/TargetBlock" instance=ExtResource("7_ehj4h")]
 position = Vector2(513, -375)
 
-[node name="RedTarget" parent="Mechanisms/TargetBlock" instance=ExtResource("12_1loeg")]
+[node name="RedTarget" parent="Mechanisms/TargetBlock" instance=ExtResource("8_qhudx")]
 position = Vector2(721, -223)
 
 [node name="TargetBlock4" type="Node2D" parent="Mechanisms"]
 position = Vector2(-395, -445)
 
-[node name="Block" parent="Mechanisms/TargetBlock4" instance=ExtResource("11_p0cu4")]
+[node name="Block" parent="Mechanisms/TargetBlock4" instance=ExtResource("7_ehj4h")]
 position = Vector2(513, -375)
 start_state = "Deactivated"
 
-[node name="RedTarget" parent="Mechanisms/TargetBlock4" instance=ExtResource("12_1loeg")]
+[node name="RedTarget" parent="Mechanisms/TargetBlock4" instance=ExtResource("8_qhudx")]
 position = Vector2(487, -353)
 rotation = 3.14159
 
 [node name="TargetBlock2" type="Node2D" parent="Mechanisms"]
 position = Vector2(595, 336)
 
-[node name="Block" parent="Mechanisms/TargetBlock2" instance=ExtResource("11_p0cu4")]
+[node name="Block" parent="Mechanisms/TargetBlock2" instance=ExtResource("7_ehj4h")]
 position = Vector2(513, -375)
 
-[node name="RedTarget" parent="Mechanisms/TargetBlock2" instance=ExtResource("12_1loeg")]
+[node name="RedTarget" parent="Mechanisms/TargetBlock2" instance=ExtResource("8_qhudx")]
 position = Vector2(672, -330)
 
 [node name="TargetBlock3" type="Node2D" parent="Mechanisms"]
 position = Vector2(595, 336)
 
-[node name="Block" parent="Mechanisms/TargetBlock3" instance=ExtResource("11_p0cu4")]
+[node name="Block" parent="Mechanisms/TargetBlock3" instance=ExtResource("7_ehj4h")]
 position = Vector2(582, -277)
 rotation = -1.5708
 
-[node name="RedTarget" parent="Mechanisms/TargetBlock3" instance=ExtResource("12_1loeg")]
+[node name="RedTarget" parent="Mechanisms/TargetBlock3" instance=ExtResource("8_qhudx")]
 position = Vector2(476, -306)
 rotation = -1.5708
 
-[node name="Portal" parent="." instance=ExtResource("13_qhudx")]
-position = Vector2(1231, 41)
+[node name="Portal" parent="." instance=ExtResource("9_7uoil")]
+position = Vector2(-43, 14)
 next_level = "res://Scenes/Levels/Maps/Demo_map.tscn"
-spaw_position = Vector2(1000, -100)
+spaw_position = Vector2(250, -116)
 
 [connection signal="activated" from="Mechanisms/TargetBlock/RedTarget" to="Mechanisms/TargetBlock/Block" method="was_deactivated"]
 [connection signal="activated" from="Mechanisms/TargetBlock4/RedTarget" to="Mechanisms/TargetBlock4/Block" method="was_activated"]

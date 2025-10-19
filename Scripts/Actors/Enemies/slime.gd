@@ -1,13 +1,13 @@
-extends CharacterBody2D
+extends Enemy
 
 @export_enum("Left", "Right") var direction : int
 
-@onready var rock = preload("res://Scenes/Actors/Enemies/Throwable_rock.tscn")
-@onready var sight_area := $SightArea as Area2D
-@onready var rock_spawner = $RockSpawner as Marker2D
-@onready var look_around_timer = $LookAroundTimer as Timer
-@onready var attack_timer = $AttackTimer as Timer
-@onready var loose_sight_timer = $LooseSightTimer as Timer
+@onready var rock = preload("res://Scenes/Actors/Enemies/Slime_Blob.tscn")
+@export var sight_area : Area2D
+@export var rock_spawner : Marker2D
+@export var look_around_timer : Timer
+@export var attack_timer : Timer
+@export var lose_sight_timer : Timer
 
 var player_is_nearby : bool = false
 var player_target : CharacterBody2D
@@ -23,11 +23,13 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if not is_on_floor():
-		velocity += get_gravity() * delta
-		move_and_slide()
-	
+		v_component.add_proper_velocity(get_gravity() * delta)
+	else:
+		v_component.set_proper_velocity(Vector2.ZERO)
 	if player_is_nearby:
 		handle_attack()
+	velocity = v_component.get_total_velocity()
+	move_and_slide()
 
 func _throw_rock() -> void:
 	timer_off = false
@@ -44,12 +46,12 @@ func _player_entered_sight_area(player: Node2D) -> void:
 		look_around_timer.stop()
 	if attack_timer.is_stopped():
 		attack_timer.start()
-	if !loose_sight_timer.is_stopped():
-		loose_sight_timer.stop()
+	if !lose_sight_timer.is_stopped():
+		lose_sight_timer.stop()
 
 func _player_exited_sight_area(_player: Node2D) -> void:
-	if loose_sight_timer.is_inside_tree():
-		loose_sight_timer.start()
+	if lose_sight_timer.is_inside_tree():
+		lose_sight_timer.start()
 
 func flip() -> void:
 	sight_area.position.x *= -1
@@ -73,7 +75,7 @@ func handle_attack() -> void:
 func _on_attack_timer_timeout() -> void:
 	_throw_rock()
 
-func _on_loose_sight_timer_timeout() -> void:
+func _on_lose_sight_timer_timeout() -> void:
 	player_is_nearby = false
 	if attack_timer.is_inside_tree():
 		attack_timer.stop()

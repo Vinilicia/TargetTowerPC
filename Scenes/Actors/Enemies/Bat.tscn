@@ -1,21 +1,19 @@
-[gd_scene load_steps=13 format=3 uid="uid://1ra02226sph7"]
+[gd_scene load_steps=12 format=3 uid="uid://1ra02226sph7"]
 
-[ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_3efqb"]
-[ext_resource type="Script" uid="uid://c5ecapjy3uh2w" path="res://Scripts/Actors/Enemies/new_bat.gd" id="2_kn5oy"]
-[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_7xw5g"]
-[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="4_hlttf"]
-[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="5_rksho"]
-[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="6_tyje3"]
-[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="7_g8dli"]
-[ext_resource type="Script" uid="uid://cvnxhkjma2q88" path="res://addons/godot_state_charts/history_state.gd" id="8_xi5qp"]
-[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="9_q434u"]
-[ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="10_l6hgd"]
-[ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="11_04h7b"]
-[ext_resource type="PackedScene" uid="uid://5eo2pd11j7wo" path="res://Scenes/Actors/SpriteImports/BatSprite.tscn" id="12_q837o"]
+[ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_nstmu"]
+[ext_resource type="Script" uid="uid://c5ecapjy3uh2w" path="res://Scripts/Actors/Enemies/bat.gd" id="2_4cx4r"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_nstmu"]
+[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="4_2tjd0"]
+[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="5_15gtg"]
+[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="6_tyolk"]
+[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="7_gpbq7"]
+[ext_resource type="Script" uid="uid://cvnxhkjma2q88" path="res://addons/godot_state_charts/history_state.gd" id="8_cp3cr"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="9_77jsk"]
+[ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="10_hjvma"]
+[ext_resource type="PackedScene" uid="uid://5eo2pd11j7wo" path="res://Scenes/Actors/SpriteImports/BatSprite.tscn" id="11_l4jld"]
 
-[node name="NewBat" node_paths=PackedStringArray("v_component", "chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "dash_area", "dive_area", "sight_area", "contact_hitbox") instance=ExtResource("1_3efqb")]
-script = ExtResource("2_kn5oy")
-v_component = NodePath("VelocityComponent")
+[node name="Bat" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "dash_area", "dive_area", "sight_area", "contact_hitbox") instance=ExtResource("1_nstmu")]
+script = ExtResource("2_4cx4r")
 chasing_timer = NodePath("Timers/ChasingTimer")
 giving_up_timer = NodePath("Timers/GivingUpTimer")
 line_of_sight = NodePath("BehaviorChanging/LineOfSight")
@@ -23,7 +21,7 @@ ceiling_detector = NodePath("BehaviorChanging/CeilingDetector")
 dash_area = NodePath("BehaviorChanging/DashAttackArea")
 dive_area = NodePath("BehaviorChanging/DiveAttackArea")
 sight_area = NodePath("BehaviorChanging/SightArea")
-contact_hitbox = NodePath("DamageBoxes/ContactHitbox")
+contact_hitbox = NodePath("BaseEnemyStuff/ContactHitbox")
 backtracking_speed = 30.0
 chase_flying_speed = 60.0
 starting_give_up_delay = 1.0
@@ -36,120 +34,126 @@ chase_retarget_frames = 5
 facing_flip_deadzone = 2.0
 wander_strength = 15.0
 
-[node name="HealthManager" parent="." index="1"]
-max_health = 2.0
+[node name="BodyCollision" parent="." index="0"]
+scale = Vector2(11, 10)
+shape = ExtResource("3_nstmu")
 
-[node name="Hurtbox" parent="." index="2"]
+[node name="HealthManager" parent="BaseEnemyStuff" index="1"]
+max_health = 3.0
+
+[node name="Hurtbox" parent="BaseEnemyStuff" index="2"]
 scale = Vector2(14, 13)
 
-[node name="Coll" parent="Hurtbox" index="1"]
-shape = ExtResource("3_7xw5g")
+[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1"]
+shape = ExtResource("3_nstmu")
 
-[node name="Coll" parent="." index="3"]
-scale = Vector2(11, 10)
-shape = ExtResource("3_7xw5g")
+[node name="ContactHitbox" parent="BaseEnemyStuff" index="3"]
+scale = Vector2(15, 13)
 
-[node name="StateChart" type="Node" parent="." index="4"]
-script = ExtResource("4_hlttf")
+[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0"]
+shape = ExtResource("3_nstmu")
+
+[node name="StateChart" type="Node" parent="." index="2"]
+script = ExtResource("4_2tjd0")
 
 [node name="State_Tree" type="Node" parent="StateChart" index="0"]
-script = ExtResource("5_rksho")
+script = ExtResource("5_15gtg")
 initial_state = NodePath("Idle")
 
 [node name="Idle" type="Node" parent="StateChart/State_Tree" index="0"]
-script = ExtResource("6_tyje3")
+script = ExtResource("6_tyolk")
 
 [node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Idle" index="0"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../SeeingPlayer")
 event = &"SawPlayer"
 
 [node name="SeeingPlayer" type="Node" parent="StateChart/State_Tree" index="1"]
-script = ExtResource("5_rksho")
+script = ExtResource("5_15gtg")
 initial_state = NodePath("StartingChase")
 
 [node name="StartingChase" type="Node" parent="StateChart/State_Tree/SeeingPlayer" index="0"]
-script = ExtResource("6_tyje3")
+script = ExtResource("6_tyolk")
 
 [node name="ToChasing" type="Node" parent="StateChart/State_Tree/SeeingPlayer/StartingChase" index="0"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../Chasing")
 event = &"Started_Chase"
 
 [node name="ToBacktracking" type="Node" parent="StateChart/State_Tree/SeeingPlayer/StartingChase" index="1"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../../Backtracking")
 event = &"Player_Got_Away"
 
 [node name="Chasing" type="Node" parent="StateChart/State_Tree/SeeingPlayer" index="1"]
-script = ExtResource("6_tyje3")
+script = ExtResource("6_tyolk")
 
 [node name="ToBacktracking" type="Node" parent="StateChart/State_Tree/SeeingPlayer/Chasing" index="0"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../../Backtracking")
 event = &"Player_Got_Away"
 
 [node name="ToAttacking" type="Node" parent="StateChart/State_Tree/SeeingPlayer/Chasing" index="1"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../../Attacking")
 event = &"Player_Entered_Range"
 
 [node name="LastState" type="Node" parent="StateChart/State_Tree/SeeingPlayer" index="2"]
-script = ExtResource("8_xi5qp")
+script = ExtResource("8_cp3cr")
 default_state = NodePath("../StartingChase")
 
 [node name="ToAttacking" type="Node" parent="StateChart/State_Tree/SeeingPlayer" index="3"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../Attacking")
 event = &"Player_Got_In_Range"
 
 [node name="Backtracking" type="Node" parent="StateChart/State_Tree" index="2"]
-script = ExtResource("6_tyje3")
+script = ExtResource("6_tyolk")
 
 [node name="ToIdle" type="Node" parent="StateChart/State_Tree/Backtracking" index="0"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../Idle")
 event = &"Got_On_Idling_Spot"
 
 [node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Backtracking" index="1"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../SeeingPlayer/LastState")
 event = &"SawPlayer"
 
 [node name="Attacking" type="Node" parent="StateChart/State_Tree" index="3"]
-script = ExtResource("5_rksho")
+script = ExtResource("5_15gtg")
 initial_state = NodePath("Preparing")
 
 [node name="Preparing" type="Node" parent="StateChart/State_Tree/Attacking" index="0"]
-script = ExtResource("6_tyje3")
+script = ExtResource("6_tyolk")
 
 [node name="ToAttacking" type="Node" parent="StateChart/State_Tree/Attacking/Preparing" index="0"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../Attacking")
 event = &"Prepared_Attack"
 
 [node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Attacking/Preparing" index="1"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../../SeeingPlayer/LastState")
 event = &"Player_Moved_Away"
 
 [node name="Attacking" type="Node" parent="StateChart/State_Tree/Attacking" index="1"]
-script = ExtResource("6_tyje3")
+script = ExtResource("6_tyolk")
 
 [node name="ToRecovering" type="Node" parent="StateChart/State_Tree/Attacking/Attacking" index="0"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../Recovering")
 event = &"Finished_Attack"
 
 [node name="Recovering" type="Node" parent="StateChart/State_Tree/Attacking" index="2"]
-script = ExtResource("6_tyje3")
+script = ExtResource("6_tyolk")
 
 [node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Attacking/Recovering" index="0"]
-script = ExtResource("7_g8dli")
+script = ExtResource("7_gpbq7")
 to = NodePath("../../../SeeingPlayer/LastState")
 event = &"Recovered"
 
-[node name="BehaviorChanging" type="Node2D" parent="." index="5"]
+[node name="BehaviorChanging" type="Node2D" parent="." index="3"]
 
 [node name="SightArea" type="Area2D" parent="BehaviorChanging" index="0"]
 position = Vector2(0, 50)
@@ -158,7 +162,7 @@ collision_layer = 0
 monitorable = false
 
 [node name="SightAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/SightArea" index="0"]
-shape = ExtResource("9_q434u")
+shape = ExtResource("9_77jsk")
 debug_color = Color(0, 1, 0.34902, 0.419608)
 
 [node name="DashAttackArea" type="Area2D" parent="BehaviorChanging" index="1"]
@@ -168,7 +172,7 @@ collision_layer = 0
 monitorable = false
 
 [node name="DashAttackAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/DashAttackArea" index="0"]
-shape = ExtResource("9_q434u")
+shape = ExtResource("9_77jsk")
 debug_color = Color(0.678431, 0.313726, 0.0627451, 0.419608)
 
 [node name="DiveAttackArea" type="Area2D" parent="BehaviorChanging" index="2"]
@@ -178,7 +182,7 @@ collision_layer = 0
 monitorable = false
 
 [node name="DiveAttackAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/DiveAttackArea" index="0"]
-shape = ExtResource("9_q434u")
+shape = ExtResource("9_77jsk")
 debug_color = Color(0.678431, 0.313726, 0.0627451, 0.419608)
 
 [node name="LineOfSight" type="RayCast2D" parent="BehaviorChanging" index="3"]
@@ -195,23 +199,7 @@ collide_with_areas = true
 [node name="CeilingDetector" type="RayCast2D" parent="BehaviorChanging" index="5"]
 collision_mask = 4
 
-[node name="DamageBoxes" type="Node2D" parent="." index="6"]
-visible = false
-
-[node name="ContactHitbox" type="Area2D" parent="DamageBoxes" index="0"]
-scale = Vector2(15, 13)
-collision_layer = 1024
-collision_mask = 0
-monitoring = false
-script = ExtResource("10_l6hgd")
-Damage = 1.0
-Knockback_force = 300.0
-Knockback_angle = -70.0
-
-[node name="Coll" type="CollisionShape2D" parent="DamageBoxes/ContactHitbox" index="0"]
-shape = ExtResource("3_7xw5g")
-
-[node name="Timers" type="Node" parent="." index="7"]
+[node name="Timers" type="Node" parent="." index="4"]
 
 [node name="ChasingTimer" type="Timer" parent="Timers" index="0"]
 wait_time = 0.5
@@ -220,13 +208,13 @@ one_shot = true
 [node name="GivingUpTimer" type="Timer" parent="Timers" index="1"]
 one_shot = true
 
-[node name="FireManager" parent="." index="8" node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("11_04h7b")]
+[node name="FireManager" parent="." index="5" node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("10_hjvma")]
 visible = false
 time_to_burn = 0.5
 can_stack = true
-ref_hurtbox = NodePath("../Hurtbox")
+ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
-[node name="Bat" parent="." index="9" instance=ExtResource("12_q837o")]
+[node name="Bat" parent="." index="6" instance=ExtResource("11_l4jld")]
 position = Vector2(-10, -9)
 
 [node name="AnimationPlayer" parent="Bat" index="0"]
@@ -235,7 +223,7 @@ autoplay = "Asleep"
 [connection signal="state_entered" from="StateChart/State_Tree/Idle" to="." method="_idle_entered"]
 [connection signal="state_exited" from="StateChart/State_Tree/Idle" to="." method="_idle_exited"]
 [connection signal="state_entered" from="StateChart/State_Tree/SeeingPlayer/StartingChase" to="." method="_starting_chase_state_entered"]
-[connection signal="state_physics_processing" from="StateChart/State_Tree/SeeingPlayer/StartingChase" to="." method="_starting_chase_physics_processing"]
+[connection signal="state_processing" from="StateChart/State_Tree/SeeingPlayer/StartingChase" to="." method="_starting_chase_physics_processing"]
 [connection signal="state_entered" from="StateChart/State_Tree/SeeingPlayer/Chasing" to="." method="_chasing_state_entered"]
 [connection signal="state_physics_processing" from="StateChart/State_Tree/SeeingPlayer/Chasing" to="." method="_chasing_state_physics_processing"]
 [connection signal="state_entered" from="StateChart/State_Tree/Backtracking" to="." method="_on_backtracking_state_entered"]

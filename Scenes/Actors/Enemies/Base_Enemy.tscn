@@ -1,32 +1,43 @@
-[gd_scene load_steps=5 format=3 uid="uid://vc2ghdvugqqc"]
+[gd_scene load_steps=6 format=3 uid="uid://vc2ghdvugqqc"]
 
-[ext_resource type="Script" uid="uid://cuos4bh8j5ee8" path="res://Scripts/Actors/Enemies/base_enemy.gd" id="1_70nws"]
-[ext_resource type="Script" uid="uid://b3ucjfdhlhrc8" path="res://Scripts/Components/Velocity_component.gd" id="2_fg4ni"]
-[ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="3_caemr"]
+[ext_resource type="Script" uid="uid://cuos4bh8j5ee8" path="res://Scripts/Actors/Enemies/Enemy.gd" id="1_70nws"]
+[ext_resource type="Script" uid="uid://b3ucjfdhlhrc8" path="res://Scripts/Components/Velocity_component.gd" id="2_icbxv"]
+[ext_resource type="Script" uid="uid://bpe6nh7g0ks4t" path="res://Scripts/Components/Health_manager.gd" id="3_caemr"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="4_caemr"]
+[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="5_icbxv"]
 
-[node name="BaseEnemy" type="CharacterBody2D"]
+[node name="BaseEnemy" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "health_man")]
 collision_layer = 8
 collision_mask = 20
 script = ExtResource("1_70nws")
+v_component = NodePath("BaseEnemyStuff/VelocityComponent")
+health_man = NodePath("BaseEnemyStuff/HealthManager")
 
-[node name="VelocityComponent" type="Node" parent="."]
-script = ExtResource("2_fg4ni")
+[node name="BodyCollision" type="CollisionShape2D" parent="."]
+
+[node name="BaseEnemyStuff" type="Node2D" parent="."]
+
+[node name="VelocityComponent" type="Node" parent="BaseEnemyStuff"]
+script = ExtResource("2_icbxv")
 metadata/_custom_type_script = "uid://b3ucjfdhlhrc8"
 
-[node name="HealthManager" type="Node" parent="."]
+[node name="HealthManager" type="Node" parent="BaseEnemyStuff"]
 script = ExtResource("3_caemr")
-metadata/_custom_type_script = "uid://d4da8yc41448k"
 
-[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("4_caemr")]
+[node name="Hurtbox" parent="BaseEnemyStuff" node_paths=PackedStringArray("parent") instance=ExtResource("4_caemr")]
 collision_mask = 2816
-parent = NodePath("..")
+parent = NodePath("../..")
 can_be_invincible = false
 
-[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
+[node name="HurtboxCollision" type="CollisionShape2D" parent="BaseEnemyStuff/Hurtbox"]
 
-[node name="Coll" type="CollisionShape2D" parent="."]
+[node name="ContactHitbox" parent="BaseEnemyStuff" node_paths=PackedStringArray("parent") instance=ExtResource("5_icbxv")]
+collision_layer = 1024
+parent = NodePath("../..")
+Damage = 1.0
 
-[connection signal="lost_health" from="HealthManager" to="." method="took_damage"]
-[connection signal="ran_out" from="HealthManager" to="." method="run_out_of_health"]
-[connection signal="took_damage" from="Hurtbox" to="HealthManager" method="lose_health"]
+[node name="ContactCollision" type="CollisionShape2D" parent="BaseEnemyStuff/ContactHitbox"]
+
+[connection signal="lost_health" from="BaseEnemyStuff/HealthManager" to="." method="took_damage"]
+[connection signal="ran_out" from="BaseEnemyStuff/HealthManager" to="." method="run_out_of_health"]
+[connection signal="took_damage" from="BaseEnemyStuff/Hurtbox" to="BaseEnemyStuff/HealthManager" method="lose_health"]

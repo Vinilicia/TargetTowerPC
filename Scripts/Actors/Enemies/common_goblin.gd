@@ -1,4 +1,4 @@
-extends CharacterBody2D
+extends Enemy
 
 # ======================
 # CONSTANTES
@@ -16,7 +16,6 @@ const ARROW_AVOID_DELAY : float = 0.15
 @export var walk_speed: float
 @export var chase_speed: float
 @export var jump_force : float
-@export var v_component : VelocityComponent
 @export var direction_change_delay : float = 0.3
 @export var lines_of_sight : Array[RayCast2D]
 @export var hurtbox: Hurtbox
@@ -25,23 +24,27 @@ const ARROW_AVOID_DELAY : float = 0.15
 # ======================
 # ONREADY
 # ======================
-@onready var state_chart: StateChart = $WhiteNodes/StateChart
+@export_group("Nodes")
+@export var state_chart: StateChart
+@export var coll: CollisionShape2D
 
-@onready var wall_detector: RayCast2D = $Raycasts/Detectors/WallDetector
-@onready var jump_detector: RayCast2D = $Raycasts/Detectors/JumpDetector
-@onready var fall_detector: RayCast2D = $Raycasts/Detectors/FallDetector
-@onready var ground_detector: RayCast2D = $Raycasts/Detectors/GroundDetector
+@export_subgroup("RayCasts")
+@export var wall_detector: RayCast2D 
+@export var jump_detector: RayCast2D 
+@export var fall_detector: RayCast2D
+@export var ground_detector: RayCast2D 
 
-@onready var jump_attack_area: Area2D = $Areas/JumpAttackArea
-@onready var stab_attack_area: Area2D = $Areas/StabAttackArea
-@onready var sight_area: Area2D = $Areas/SightArea
-@onready var outer_arrow_detec: Area2D = $Areas/OuterArrowDetector
-@onready var inner_arrow_detec: Area2D = $Areas/InnerArrowDetector
+@export_subgroup("Areas")
+@export var jump_attack_area: Area2D 
+@export var stab_attack_area: Area2D 
+@export var sight_area: Area2D
+@export var outer_arrow_detec: Area2D
+@export var inner_arrow_detec: Area2D
 
-@onready var coll: CollisionShape2D = $Coll
-@onready var giving_up_timer : Timer = $WhiteNodes/Timers/GivingUpTimer
-@onready var jump_attack_timer : Timer = $WhiteNodes/Timers/JumpAttackTimer
-@onready var stab_attack_timer : Timer = $WhiteNodes/Timers/StabAttackTimer
+@export_subgroup("Timers")
+@export var giving_up_timer : Timer
+@export var jump_attack_timer : Timer
+@export var stab_attack_timer : Timer
 
 # ======================
 # VARIÁVEIS DE ESTADO
@@ -221,7 +224,7 @@ func jump() -> void:
 	is_jumping = true
 	v_component.set_proper_velocity(jump_force, 2)
 
-func _on_attack_state_physics_processing(_delta: float) -> void:
+func _on_attack_state_physics_processing() -> void:
 	if is_on_floor():
 		v_component.set_proper_velocity(0.0, 1)
 		if player_in_range and can_stab_attack:
@@ -294,8 +297,8 @@ func flip() -> void:
 	sight_area.position.x *= -1
 	slash_hitbox.position.x *= -1
 	lines_of_sight[2].position.x *= -1
-	outer_arrow_detec.scale.x *= -1
-	inner_arrow_detec.scale.x *= -1
+	outer_arrow_detec.position.x *= -1
+	inner_arrow_detec.position.x *= -1
 
 func _change_direction() -> void:
 	if is_changing_direction:
@@ -358,7 +361,6 @@ func _on_chasing_state_entered() -> void:
 	current_speed = chase_speed
 
 func _on_fire_manager_caught_fire() -> void:
-	var health_man : HealthManager = $WhiteNodes/HealthManager
 	var fire_man : FireManager = $FireManager
 	if not fire_man.extinguished.is_connected(health_man.stop_burning):
 		fire_man.extinguished.connect(health_man.stop_burning, 4)
