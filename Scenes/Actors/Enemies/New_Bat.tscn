@@ -4,11 +4,11 @@
 [ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="2_3frmm"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_fe8qe"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_fe8qe"]
-[ext_resource type="Script" uid="uid://c3dea8ukk4f5c" path="res://addons/godot_state_charts/state_chart.gd" id="4_2wur5"]
-[ext_resource type="Script" uid="uid://csj60p0c2v1g6" path="res://addons/godot_state_charts/compound_state.gd" id="5_5k3ma"]
-[ext_resource type="Script" uid="uid://c71cw33hmp6ru" path="res://addons/godot_state_charts/atomic_state.gd" id="6_abc0m"]
-[ext_resource type="Script" uid="uid://oinxiusrjkq7" path="res://addons/godot_state_charts/transition.gd" id="7_4v10x"]
-[ext_resource type="Script" uid="uid://drbjibwqafap" path="res://addons/godot_state_charts/history_state.gd" id="8_f4mp1"]
+[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="4_2wur5"]
+[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="5_5k3ma"]
+[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="6_abc0m"]
+[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="7_4v10x"]
+[ext_resource type="Script" uid="uid://cvnxhkjma2q88" path="res://addons/godot_state_charts/history_state.gd" id="8_f4mp1"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="9_r0lmx"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="10_k1tc8"]
 [ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="11_dchfn"]
@@ -64,7 +64,6 @@ script = ExtResource("6_abc0m")
 script = ExtResource("7_4v10x")
 to = NodePath("../../SeeingPlayer")
 event = &"SawPlayer"
-delay_in_seconds = "0.0"
 
 [node name="SeeingPlayer" type="Node" parent="StateChart/State_Tree"]
 script = ExtResource("5_5k3ma")
@@ -77,13 +76,11 @@ script = ExtResource("6_abc0m")
 script = ExtResource("7_4v10x")
 to = NodePath("../../Chasing")
 event = &"Started_Chase"
-delay_in_seconds = "0.0"
 
 [node name="ToBacktracking" type="Node" parent="StateChart/State_Tree/SeeingPlayer/StartingChase"]
 script = ExtResource("7_4v10x")
 to = NodePath("../../../Backtracking")
 event = &"Player_Got_Away"
-delay_in_seconds = "0.0"
 
 [node name="Chasing" type="Node" parent="StateChart/State_Tree/SeeingPlayer"]
 script = ExtResource("6_abc0m")
@@ -92,13 +89,11 @@ script = ExtResource("6_abc0m")
 script = ExtResource("7_4v10x")
 to = NodePath("../../../Backtracking")
 event = &"Player_Got_Away"
-delay_in_seconds = "0.0"
 
 [node name="ToAttacking" type="Node" parent="StateChart/State_Tree/SeeingPlayer/Chasing"]
 script = ExtResource("7_4v10x")
 to = NodePath("../../../Attacking")
 event = &"Player_Entered_Range"
-delay_in_seconds = "0.0"
 
 [node name="LastState" type="Node" parent="StateChart/State_Tree/SeeingPlayer"]
 script = ExtResource("8_f4mp1")
@@ -108,7 +103,6 @@ default_state = NodePath("../StartingChase")
 script = ExtResource("7_4v10x")
 to = NodePath("../../Attacking")
 event = &"Player_Got_In_Range"
-delay_in_seconds = "0.0"
 
 [node name="Backtracking" type="Node" parent="StateChart/State_Tree"]
 script = ExtResource("6_abc0m")
@@ -117,13 +111,11 @@ script = ExtResource("6_abc0m")
 script = ExtResource("7_4v10x")
 to = NodePath("../../Idle")
 event = &"Got_On_Idling_Spot"
-delay_in_seconds = "0.0"
 
 [node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Backtracking"]
 script = ExtResource("7_4v10x")
 to = NodePath("../../SeeingPlayer/LastState")
 event = &"SawPlayer"
-delay_in_seconds = "0.0"
 
 [node name="Attacking" type="Node" parent="StateChart/State_Tree"]
 script = ExtResource("5_5k3ma")
@@ -136,13 +128,11 @@ script = ExtResource("6_abc0m")
 script = ExtResource("7_4v10x")
 to = NodePath("../../Attacking")
 event = &"Prepared_Attack"
-delay_in_seconds = "0.0"
 
 [node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Attacking/Preparing"]
 script = ExtResource("7_4v10x")
 to = NodePath("../../../SeeingPlayer/LastState")
 event = &"Player_Moved_Away"
-delay_in_seconds = "0.0"
 
 [node name="Attacking" type="Node" parent="StateChart/State_Tree/Attacking"]
 script = ExtResource("6_abc0m")
@@ -151,7 +141,6 @@ script = ExtResource("6_abc0m")
 script = ExtResource("7_4v10x")
 to = NodePath("../../Recovering")
 event = &"Finished_Attack"
-delay_in_seconds = "0.0"
 
 [node name="Recovering" type="Node" parent="StateChart/State_Tree/Attacking"]
 script = ExtResource("6_abc0m")
@@ -160,7 +149,6 @@ script = ExtResource("6_abc0m")
 script = ExtResource("7_4v10x")
 to = NodePath("../../../SeeingPlayer/LastState")
 event = &"Recovered"
-delay_in_seconds = "0.0"
 
 [node name="BehaviorChanging" type="Node2D" parent="."]
 

@@ -6,6 +6,8 @@
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="4_caemr"]
 
 [node name="BaseEnemy" type="CharacterBody2D"]
+collision_layer = 8
+collision_mask = 20
 script = ExtResource("1_70nws")
 
 [node name="VelocityComponent" type="Node" parent="."]

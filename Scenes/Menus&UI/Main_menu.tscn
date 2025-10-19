@@ -1,18 +1,125 @@
-[gd_scene format=3 uid="uid://drfycye8vmmuq"]
+[gd_scene load_steps=6 format=3 uid="uid://drfycye8vmmuq"]
 
-[node name="MainMenu" type="Control"]
+[ext_resource type="Script" uid="uid://bmjywhfymy4xb" path="res://Scenes/Menus&UI/main_menu.gd" id="1_25my1"]
+[ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_asgyp"]
+[ext_resource type="Shader" uid="uid://cypc0h3hwrmr8" path="res://Themes/Shaders/blur.gdshader" id="1_jto2k"]
+[ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Settings_Menu.tscn" id="2_25my1"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_asgyp"]
+shader = ExtResource("1_jto2k")
+shader_parameter/lod = 1.0
+shader_parameter/darkness = 0.4
+
+[node name="MainMenu" type="Control" node_paths=PackedStringArray("settings_menu", "buttons_container", "back_to_title_menu")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_asgyp")
+script = ExtResource("1_25my1")
+settings_menu = NodePath("SettingsMenu")
+buttons_container = NodePath("ButtonsContainer")
+back_to_title_menu = NodePath("BackToTItleMenu")
 
 [node name="ColorRect" type="ColorRect" parent="."]
+material = SubResource("ShaderMaterial_asgyp")
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
-color = Color(0, 0, 0, 0.611765)
+
+[node name="SettingsMenu" parent="." instance=ExtResource("2_25my1")]
+visible = false
+layout_mode = 1
+
+[node name="ButtonsContainer" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="VBoxContainer" type="VBoxContainer" parent="ButtonsContainer"]
+layout_mode = 2
+size_flags_vertical = 4
+theme_override_constants/separation = 15
+
+[node name="ResumeButton" type="Button" parent="ButtonsContainer/VBoxContainer"]
+custom_minimum_size = Vector2(170, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+focus_neighbor_top = NodePath("../BackToTitleButton")
+text = "Resume"
+
+[node name="SettingsButton" type="Button" parent="ButtonsContainer/VBoxContainer"]
+custom_minimum_size = Vector2(170, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "Settings"
+
+[node name="BackToTitleButton" type="Button" parent="ButtonsContainer/VBoxContainer"]
+custom_minimum_size = Vector2(170, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+focus_neighbor_bottom = NodePath("../ResumeButton")
+text = "Back to Title Screen"
+
+[node name="BackToTItleMenu" type="MarginContainer" parent="."]
+visible = false
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 120
+theme_override_constants/margin_right = 120
+
+[node name="VBoxContainer" type="VBoxContainer" parent="BackToTItleMenu"]
+custom_minimum_size = Vector2(0, 100)
+layout_mode = 2
+size_flags_vertical = 4
+
+[node name="QuestionLabel" type="Label" parent="BackToTItleMenu/VBoxContainer"]
+layout_mode = 2
+text = "Are you sure you want to go back?"
+horizontal_alignment = 1
+vertical_alignment = 1
+
+[node name="ButtonsContainer" type="HBoxContainer" parent="BackToTItleMenu/VBoxContainer"]
+custom_minimum_size = Vector2(300, 0)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+
+[node name="YesButton" type="Button" parent="BackToTItleMenu/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+focus_neighbor_left = NodePath("../NoButton")
+text = "Yes"
+
+[node name="NoButton" type="Button" parent="BackToTItleMenu/VBoxContainer/ButtonsContainer"]
+custom_minimum_size = Vector2(40, 20)
+layout_mode = 2
+size_flags_horizontal = 10
+focus_neighbor_right = NodePath("../YesButton")
+text = "No"
+
+[connection signal="pressed" from="SettingsMenu/MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/CloseButton" to="." method="close_settings"]
+[connection signal="pressed" from="ButtonsContainer/VBoxContainer/ResumeButton" to="." method="close_menu"]
+[connection signal="pressed" from="ButtonsContainer/VBoxContainer/SettingsButton" to="." method="open_settings"]
+[connection signal="pressed" from="ButtonsContainer/VBoxContainer/BackToTitleButton" to="." method="open_back_to_title"]
+[connection signal="pressed" from="BackToTItleMenu/VBoxContainer/ButtonsContainer/YesButton" to="." method="go_back_to_title"]
+[connection signal="pressed" from="BackToTItleMenu/VBoxContainer/ButtonsContainer/NoButton" to="." method="close_back_to_title"]
+
+[editable path="SettingsMenu"]
+[editable path="SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/ControlsMenu"]
+[editable path="SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/AudioMenu"]
+[editable path="SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/VideoMenu"]
