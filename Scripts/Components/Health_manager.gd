@@ -44,9 +44,11 @@ func stop_burning() -> void:
 	status_mask &= ~Status.BURNING
 
 func burning_loop(damage : float) -> void:
-	while (status_mask & Status.BURNING):
-		await get_tree().create_timer(SECONDS_PER_TICK).timeout
-		lose_health(damage)
+		while (status_mask & Status.BURNING):
+			if !is_inside_tree():
+				break
+			await get_tree().create_timer(SECONDS_PER_TICK).timeout
+			lose_health(damage)
 
 #func start_poisoned(ticks : int, damage_value : float) -> void:
 	#pass

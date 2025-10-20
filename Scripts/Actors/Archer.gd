@@ -130,7 +130,7 @@ func _physics_process(delta: float) -> void:
 func update_safe_position() -> void:
 	if frames_until_check > 0:
 		frames_until_check -= 1
-	return
+		return
 
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)

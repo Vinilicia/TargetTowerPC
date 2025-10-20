@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
 [ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Actors/SpriteImports/ArcherSprite.tscn" id="9_26aeq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
-[ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
+[ext_resource type="Script" uid="uid://bpe6nh7g0ks4t" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 [ext_resource type="Script" uid="uid://4evypv5km8px" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
 
 [sub_resource type="Resource" id="Resource_rbeol"]
@@ -45,7 +45,7 @@ hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("Misc/DodgeCancelTimer")
 ledge_detector = NodePath("Utilities/LedgeDetector")
 wall_detector = NodePath("Utilities/WallDetector")
-initial_arrow_index = 3
+initial_arrow_index = 1
 metadata/_custom_type_script = "uid://jocsxhht7p0d"
 
 [node name="Misc" type="Node" parent="."]
@@ -145,7 +145,6 @@ event = &"CanShoot"
 [node name="HealthManager" type="Node" parent="Misc"]
 script = ExtResource("11_jfvij")
 max_health = 20.0
-metadata/_custom_type_script = "uid://d4da8yc41448k"
 
 [node name="Archer" parent="." instance=ExtResource("9_26aeq")]
 position = Vector2(-28, -28)

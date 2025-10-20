@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://crq3crt20kp2r"]
 
-[ext_resource type="Script" uid="uid://cq14sacj88uu8" path="res://Scripts/Actors/Enemies/throwable_rock.gd" id="1_yrknf"]
+[ext_resource type="Script" uid="uid://cq14sacj88uu8" path="res://Scripts/Actors/Enemies/slime_blob.gd" id="1_yrknf"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="2_foqvr"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="3_ppbia"]
 [ext_resource type="Texture2D" uid="uid://36rj3bka8vyw" path="res://Assets/Home_bred/Enemies/Rock.aseprite" id="4_ppbia"]

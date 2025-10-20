@@ -1,9 +1,7 @@
-extends CharacterBody2D
+extends Enemy
 
 @onready var state_chart = $StateChart as StateChart
 
-@export_group("Nodes")
-@export var v_component: VelocityComponent
 @export_subgroup("Timers")
 @export var chasing_timer: Timer
 @export var giving_up_timer: Timer
@@ -149,7 +147,7 @@ func _starting_chase_state_entered() -> void:
 	move_to(global_position + Vector2(0, 30), 10)
 	_apply_wander_variation()
 
-func _starting_chase_physics_processing(_delta: float) -> void:
+func _starting_chase_physics_processing() -> void:
 	var sees_player := line_of_sight.get_collider() == player_target
 	if sees_player:
 		giving_up_timer.stop()
@@ -332,7 +330,6 @@ func _hurtbox_got_knocked(_hitbox : Hitbox) -> void:
 	pass
 
 func _on_fire_manager_caught_fire() -> void:
-	var health_man : HealthManager = $HealthManager
 	var fire_man : FireManager = $FireManager
 	if not fire_man.extinguished.is_connected(health_man.stop_burning):
 		fire_man.extinguished.connect(health_man.stop_burning, 4)
