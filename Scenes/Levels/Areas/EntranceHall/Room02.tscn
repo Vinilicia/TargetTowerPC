@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=4 uid="uid://bwktolati234h"]
+[gd_scene load_steps=6 format=4 uid="uid://bwktolati234h"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/EntranceHall/Entrance_Base_Room.tscn" id="1_1ugf0"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_mbjum"]
 [ext_resource type="PackedScene" uid="uid://bmrbwy233rwr3" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="3_q28bx"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="4_mbjum"]
+[ext_resource type="PackedScene" uid="uid://dgsguis2vqkm7" path="res://Scenes/Interactibles/Mechanisms/Conveyor_belt.tscn" id="5_q28bx"]
 
 [node name="Room02" instance=ExtResource("1_1ugf0")]
 
@@ -28,3 +29,8 @@ spaw_position = Vector2(100, -100)
 position = Vector2(248, -64)
 next_level = "res://Scenes/Levels/Areas/EntranceHall/Room03.tscn"
 spaw_position = Vector2(64, -100)
+
+[node name="ConveyorBelt" parent="." index="3" instance=ExtResource("5_q28bx")]
+position = Vector2(432, 144)
+belt_speed = 40.0
+length = 10

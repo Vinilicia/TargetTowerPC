@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=4 uid="uid://p0f35mxovxw1"]
+[gd_scene load_steps=6 format=4 uid="uid://p0f35mxovxw1"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/EntranceHall/Entrance_Base_Room.tscn" id="1_eig4g"]
 [ext_resource type="PackedScene" uid="uid://ducvhgn5hbafe" path="res://Scenes/Actors/Enemies/Slime.tscn" id="2_xo0yc"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="3_bfvno"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="4_xo0yc"]
+[ext_resource type="PackedScene" uid="uid://5y1krmoyg57i" path="res://Scenes/Interactibles/Mechanisms/Windbox.tscn" id="5_bfvno"]
 
 [node name="Room03" instance=ExtResource("1_eig4g")]
 
@@ -40,3 +41,8 @@ spaw_position = Vector2(100, -70)
 position = Vector2(8, -424)
 next_level = "res://Scenes/Levels/Areas/EntranceHall/Room02.tscn"
 spaw_position = Vector2(384, -64)
+
+[node name="Windbox" parent="." index="3" instance=ExtResource("5_bfvno")]
+position = Vector2(240, -144)
+wind_direction = Vector2(-1, 0)
+wind_force = 20.0
