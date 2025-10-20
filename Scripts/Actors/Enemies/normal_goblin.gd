@@ -20,7 +20,7 @@ const ARROW_AVOID_DELAY : float = 0.15
 @export var direction_change_delay : float = 0.3
 @export var lines_of_sight : Array[RayCast2D]
 @export var hurtbox: Hurtbox
-@export var slash_hitbox: Hitbox
+@export var slash_hitbox : Hitbox
 
 # ======================
 # ONREADY
