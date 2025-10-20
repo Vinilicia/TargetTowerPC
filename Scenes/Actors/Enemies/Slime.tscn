@@ -22,6 +22,18 @@ shape = ExtResource("1_nn6wd")
 [node name="HealthManager" parent="BaseEnemyStuff" index="1"]
 max_health = 4.0
 
+[node name="Hurtbox" parent="BaseEnemyStuff" index="2"]
+scale = Vector2(16, 16)
+
+[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1"]
+shape = ExtResource("1_nn6wd")
+
+[node name="ContactHitbox" parent="BaseEnemyStuff" index="3"]
+scale = Vector2(16, 16)
+
+[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0"]
+shape = ExtResource("1_nn6wd")
+
 [node name="SightArea" type="Area2D" parent="." index="2"]
 visible = false
 scale = Vector2(300, 200)

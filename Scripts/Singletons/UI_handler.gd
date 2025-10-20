@@ -16,9 +16,9 @@ func set_swicther(switcher : Node) -> void:
 	arrow_switcher = switcher
 
 func _process(_delta : float) -> void:
-	
-	if Input.is_action_just_pressed("switch arrow"):
-		arrow_switcher.open()
-	
-	if Input.is_action_just_released("switch arrow"):
-		arrow_switcher.close()
+	pass
+	#if Input.is_action_just_pressed("switch arrow"):
+		#arrow_switcher.open()
+	#
+	#if Input.is_action_just_released("switch arrow"):
+		#arrow_switcher.close()

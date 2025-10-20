@@ -10,7 +10,7 @@ enemies_node = NodePath("Enemies")
 
 [node name="Tilemaps" type="Node2D" parent="."]
 
-[node name="Terrain" type="TileMapLayer" parent="Tilemaps"]
+[node name="Terrain" type="TileMapLayer" parent="Tilemaps" groups=["Attachables"]]
 
 [node name="Background" type="TileMapLayer" parent="Tilemaps"]
 
