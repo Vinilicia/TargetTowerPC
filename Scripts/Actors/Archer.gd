@@ -191,6 +191,10 @@ func handle_combat_inputs() -> void:
 		try_dodge()
 		await get_tree().create_timer(dodge_cooldown).timeout
 		combat.can_dodge = true
+	
+	if Input.is_action_just_pressed("switch arrow"):
+		current_arrow_index = (current_arrow_index + 1) % 4
+		current_arrow = equip_arrow(current_arrow_index)
 
 func try_dodge() -> void:
 	var attempt_dodge_dir : Vector2 = combat.dodge_direction
