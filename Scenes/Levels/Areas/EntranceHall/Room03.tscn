@@ -46,3 +46,4 @@ spaw_position = Vector2(384, -64)
 position = Vector2(240, -144)
 wind_direction = Vector2(-1, 0)
 wind_force = 20.0
+size = Vector2i(11, 3)

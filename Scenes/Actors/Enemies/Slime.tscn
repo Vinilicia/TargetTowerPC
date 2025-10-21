@@ -3,7 +3,7 @@
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_nn6wd"]
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_xj0ob"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="2_cbwjt"]
-[ext_resource type="Script" path="res://Scripts/Actors/Enemies/slime.gd" id="2_d83c3"]
+[ext_resource type="Script" uid="uid://dgc5taamac26" path="res://Scripts/Actors/Enemies/slime.gd" id="2_d83c3"]
 [ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="4_jrs23"]
 
 [node name="Slime" node_paths=PackedStringArray("sight_area", "rock_spawner", "look_around_timer", "attack_timer", "lose_sight_timer") instance=ExtResource("1_xj0ob")]
