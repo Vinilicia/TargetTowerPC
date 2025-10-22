@@ -162,7 +162,7 @@ func _idle_entered() -> void:
 	sight_area.position = Vector2(0, 50)
 
 func _idle_exited() -> void:
-	sight_area.scale = Vector2(400, 300)
+	sight_area.scale = Vector2(350, 250)
 	sight_area.position = Vector2.ZERO
 #endregion
 
@@ -241,34 +241,35 @@ func _chasing_state_physics_processing(_delta: float) -> void:
 				set_facing(sign(new_target.x - global_position.x))
 
 	# --- Evitação com raycasts frontais ---
-	var avoidance_force := Vector2.ZERO
-	var active_rays := 0
-	var avoidance_strength := 0.45  # ajuste fino: 0.2 .. 0.6
+	if sees_player:
+		var avoidance_force := Vector2.ZERO
+		var active_rays := 0
+		var avoidance_strength := 0.45  # ajuste fino: 0.2 .. 0.6
 
-	for ray in avoidance_rays:
-		if ray.is_colliding():
-			active_rays += 1
-			var collision_point := ray.get_collision_point()
-			var away := global_position - collision_point
-			if away.length() > 0.0:
-				avoidance_force += away.normalized()
+		for ray in avoidance_rays:
+			if ray.is_colliding():
+				active_rays += 1
+				var collision_point := ray.get_collision_point()
+				var away := global_position - collision_point
+				if away.length() > 0.0:
+					avoidance_force += away.normalized()
 
-	if active_rays > 0:
-		# média das direções de repulsão
-		avoidance_force = (avoidance_force / active_rays).normalized()
-		# escala pela força e pela velocidade atual para ficar proporcional ao comportamento
-		avoidance_force *= avoidance_strength * current_speed
+		if active_rays > 0:
+			# média das direções de repulsão
+			avoidance_force = (avoidance_force / active_rays).normalized()
+			# escala pela força e pela velocidade atual para ficar proporcional ao comportamento
+			avoidance_force *= avoidance_strength * current_speed
 
-		# mistura a repulsão com a desired_velocity
-		# preserva a intenção principal, mas aplica desvio
-		var base_vel := desired_velocity
-		if base_vel.length() == 0:
-			# se não houver direção desejada (por exemplo, ainda não retargetou), use frente
-			base_vel = Vector2(facing_direction, 0) * current_speed
+			# mistura a repulsão com a desired_velocity
+			# preserva a intenção principal, mas aplica desvio
+			var base_vel := desired_velocity
+			if base_vel.length() == 0:
+				# se não houver direção desejada (por exemplo, ainda não retargetou), use frente
+				base_vel = Vector2(facing_direction, 0) * current_speed
 
-		var mixed := base_vel + avoidance_force
-		# limita o comprimento para não extrapolar a speed máxima
-		desired_velocity = mixed.normalized() * current_speed
+			var mixed := base_vel + avoidance_force
+			# limita o comprimento para não extrapolar a speed máxima
+			desired_velocity = mixed.normalized() * current_speed
 
 
 #endregion
@@ -276,6 +277,7 @@ func _chasing_state_physics_processing(_delta: float) -> void:
 #region Estado Backtracking
 func _on_backtracking_state_entered() -> void:
 	sprite_anim.play("Flying")
+	desired_velocity = Vector2.ZERO
 	current_speed = backtracking_speed
 	_try_find_ceiling()
 
@@ -302,7 +304,7 @@ func _find_best_ceiling_spot() -> Vector2:
 		ceiling_detector.force_raycast_update()
 		if ceiling_detector.is_colliding():
 			var normal = ceiling_detector.get_collision_normal()
-			if normal.y > 0.7:
+			if is_zero_approx(normal.y - 1):
 				var dist = (ceiling_detector.get_collision_point() - global_position).length()
 				if dist < best_distance:
 					best_distance = dist

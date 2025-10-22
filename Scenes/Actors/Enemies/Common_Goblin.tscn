@@ -16,10 +16,10 @@
 [node name="CommonGoblin" node_paths=PackedStringArray("lines_of_sight", "hurtbox", "slash_hitbox", "state_chart", "coll", "wall_detector", "jump_detector", "fall_detector", "ground_detector", "jump_attack_area", "stab_attack_area", "sight_area", "outer_arrow_detec", "inner_arrow_detec", "giving_up_timer", "jump_attack_timer", "stab_attack_timer") instance=ExtResource("1_j75sw")]
 script = ExtResource("2_mp5lk")
 start_direction = 1
-walk_speed = 70.0
-chase_speed = 100.0
+walk_speed = 60.0
+chase_speed = 80.0
 jump_force = -300.0
-direction_change_delay = 0.3
+direction_change_delay = 0.5
 lines_of_sight = [NodePath("Raycasts/LinesOfSight/LineOfSight"), NodePath("Raycasts/LinesOfSight/LineOfSight2"), NodePath("Raycasts/LinesOfSight/LineOfSight3")]
 hurtbox = NodePath("BaseEnemyStuff/Hurtbox")
 slash_hitbox = NodePath("Areas/AttackHitbox")
@@ -151,13 +151,14 @@ target_position = Vector2(-20, 0)
 collision_mask = 20
 
 [node name="JumpDetector" type="RayCast2D" parent="Raycasts/Detectors" index="1"]
-position = Vector2(0, -50)
+position = Vector2(0, -45)
 target_position = Vector2(-20, 0)
 collision_mask = 20
 
 [node name="FallDetector" type="RayCast2D" parent="Raycasts/Detectors" index="2"]
+modulate = Color(1, 1, 0, 1)
 position = Vector2(-11, 0)
-target_position = Vector2(0, 80)
+target_position = Vector2(0, 64)
 collision_mask = 20
 
 [node name="GroundDetector" type="RayCast2D" parent="Raycasts/Detectors" index="3"]
