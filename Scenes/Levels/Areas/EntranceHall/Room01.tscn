@@ -3,9 +3,11 @@
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/EntranceHall/Entrance_Base_Room.tscn" id="1_b6jmv"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_jww40"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="3_ksvpm"]
+[ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="4_m6pg1"]
 [ext_resource type="PackedScene" uid="uid://bmrbwy233rwr3" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="4_m6pg1"]
 
-[node name="Room01" instance=ExtResource("1_b6jmv")]
+[node name="Room01" node_paths=PackedStringArray("bench") instance=ExtResource("1_b6jmv")]
+bench = NodePath("Bench")
 
 [node name="Enemies" parent="." index="0"]
 process_mode = 4
@@ -30,3 +32,7 @@ tile_map_data = PackedByteArray("AAAAAP//AAAFAA8AAAAAAP7/AAAFAAwAAAAAAP3/AAAFAAM
 position = Vector2(600, -112)
 next_level = "res://Scenes/Levels/Areas/EntranceHall/Room02.tscn"
 spaw_position = Vector2(100, -100)
+
+[node name="Bench" parent="." index="3" instance=ExtResource("4_m6pg1")]
+position = Vector2(95, -69)
+bench_id = 1

@@ -1,12 +1,14 @@
-[gd_scene load_steps=6 format=4 uid="uid://bwktolati234h"]
+[gd_scene load_steps=7 format=4 uid="uid://bwktolati234h"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/EntranceHall/Entrance_Base_Room.tscn" id="1_1ugf0"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_mbjum"]
-[ext_resource type="PackedScene" uid="uid://bmrbwy233rwr3" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="3_q28bx"]
+[ext_resource type="PackedScene" uid="uid://bps57wjl0501i" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="3_q28bx"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="4_mbjum"]
 [ext_resource type="PackedScene" uid="uid://dgsguis2vqkm7" path="res://Scenes/Interactibles/Mechanisms/Conveyor_belt.tscn" id="5_q28bx"]
+[ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="6_fxdmu"]
 
-[node name="Room02" instance=ExtResource("1_1ugf0")]
+[node name="Room02" node_paths=PackedStringArray("bench") instance=ExtResource("1_1ugf0")]
+bench = NodePath("Bench")
 
 [node name="Bat" parent="Enemies" index="0" instance=ExtResource("2_mbjum")]
 position = Vector2(264, 72)
@@ -34,3 +36,7 @@ spaw_position = Vector2(64, -100)
 position = Vector2(432, 144)
 belt_speed = 40.0
 length = 10
+
+[node name="Bench" parent="." index="4" instance=ExtResource("6_fxdmu")]
+position = Vector2(326, -37)
+bench_id = 2

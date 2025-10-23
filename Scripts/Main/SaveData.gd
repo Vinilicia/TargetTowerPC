@@ -1,14 +1,20 @@
 extends Resource
 class_name SaveDataResource
 
-@export var progress_bar_value: float = 0.0
+@export var SaveVersion : int = 1
 
 @export var HealthUpgrades: Array[bool] = [false, false, false, false]
 @export var ManaUpgrades: Array[bool] = [false, false, false, false]
-@export var AvailableArrows: Array[bool] = [false, false, false, false]
+@export var AvailableArrows: Array[bool] = [false, false, false, false, false, false, false, false]
+
 @export var LastBenchID: int = 0
-@export var MaxHealth: int = 100
-@export var MaxMana: int = 100
+@export var MaxHealth: int = 5
+@export var MaxMana: int = 5
+@export var Money: int = 0
+
+# -----------------------------------
+# Métodos de acesso
+# -----------------------------------
 
 func get_health_upgrade(index: int) -> bool:
 	if index >= 0 and index < HealthUpgrades.size():
@@ -63,3 +69,9 @@ func get_max_mana() -> int:
 
 func set_max_mana(value: int):
 	MaxMana = value
+
+func get_money() -> int:
+	return Money
+
+func set_money(value: int):
+	Money = value

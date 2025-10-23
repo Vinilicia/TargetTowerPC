@@ -1,12 +1,14 @@
-[gd_scene load_steps=6 format=4 uid="uid://p0f35mxovxw1"]
+[gd_scene load_steps=7 format=4 uid="uid://p0f35mxovxw1"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/EntranceHall/Entrance_Base_Room.tscn" id="1_eig4g"]
-[ext_resource type="PackedScene" uid="uid://ducvhgn5hbafe" path="res://Scenes/Actors/Enemies/Slime.tscn" id="2_xo0yc"]
+[ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="2_xo0yc"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="3_bfvno"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="4_xo0yc"]
 [ext_resource type="PackedScene" uid="uid://5y1krmoyg57i" path="res://Scenes/Interactibles/Mechanisms/Windbox.tscn" id="5_bfvno"]
+[ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="6_psho5"]
 
-[node name="Room03" instance=ExtResource("1_eig4g")]
+[node name="Room03" node_paths=PackedStringArray("bench") instance=ExtResource("1_eig4g")]
+bench = NodePath("Bench")
 
 [node name="Slime" parent="Enemies" index="0" instance=ExtResource("2_xo0yc")]
 position = Vector2(424, -136)
@@ -47,3 +49,8 @@ position = Vector2(240, -144)
 wind_direction = Vector2(-1, 0)
 wind_force = 20.0
 size = Vector2i(11, 3)
+
+[node name="Bench" parent="." index="4" instance=ExtResource("6_psho5")]
+position = Vector2(65, -101)
+bench_id = 3
+
