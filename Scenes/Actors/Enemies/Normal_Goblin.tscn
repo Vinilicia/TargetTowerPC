@@ -9,7 +9,7 @@
 [ext_resource type="Script" uid="uid://oinxiusrjkq7" path="res://addons/godot_state_charts/transition.gd" id="6_787da"]
 [ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="7_rg2yg"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_7fg1c"]
-[ext_resource type="Script" uid="uid://d4da8yc41448k" path="res://Scripts/Components/Health_manager.gd" id="9_jgpfp"]
+[ext_resource type="Script" uid="uid://bdlibc1q2ghhl" path="res://Scripts/Components/Health_manager.gd" id="9_jgpfp"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="10_jabsr"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_3ax3k"]
 [ext_resource type="Script" uid="uid://b3ucjfdhlhrc8" path="res://Scripts/Components/Velocity_component.gd" id="12_3ax3k"]

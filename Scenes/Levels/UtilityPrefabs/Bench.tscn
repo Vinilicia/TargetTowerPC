@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://x2pfg4af3syy"]
 
-[ext_resource type="Script" uid="uid://djx23i85e2046" path="res://Scripts/Levels/UtilityPrefabs/bench.gd" id="1_0c15q"]
+[ext_resource type="Script" uid="uid://cvjvyn7evrgi8" path="res://Scripts/Levels/UtilityPrefabs/bench.gd" id="1_0c15q"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_u83t4"]
 
 [node name="Bench" type="Node2D"]
@@ -11,6 +11,7 @@ collision_layer = 0
 monitorable = false
 
 [node name="Coll" type="CollisionShape2D" parent="CollisionArea"]
+scale = Vector2(10, 10)
 shape = ExtResource("1_u83t4")
 
 [connection signal="body_entered" from="CollisionArea" to="." method="_on_player_entered"]
