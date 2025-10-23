@@ -2,6 +2,7 @@ extends Node2D
 class_name Room
 
 @export var enemies_node : Node2D
+@export var bench : Node2D
 
 var is_enemy_alive : Array[bool] = []
 
@@ -25,3 +26,8 @@ func kill_enemies(is_alive : Array[bool]) -> void:
 	for i in range(enemies.size()):
 		if !is_alive[i]:
 			enemies[i].die()
+			
+func get_bench_position() -> Vector2:
+	if bench:
+		return bench.global_position
+	return Vector2.ZERO

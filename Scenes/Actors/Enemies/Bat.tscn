@@ -1,13 +1,13 @@
 [gd_scene load_steps=12 format=3 uid="uid://1ra02226sph7"]
 
-[ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_nstmu"]
-[ext_resource type="Script" uid="uid://c5ecapjy3uh2w" path="res://Scripts/Actors/Enemies/bat.gd" id="2_4cx4r"]
+[ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scripts/Base_Enemy.tscn" id="1_nstmu"]
+[ext_resource type="Script" uid="uid://bdlr5a3fh6eqg" path="res://Scripts/Actors/Enemies/bat.gd" id="2_4cx4r"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_nstmu"]
-[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="4_2tjd0"]
-[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="5_15gtg"]
-[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="6_tyolk"]
-[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="7_gpbq7"]
-[ext_resource type="Script" uid="uid://cvnxhkjma2q88" path="res://addons/godot_state_charts/history_state.gd" id="8_cp3cr"]
+[ext_resource type="Script" uid="uid://c3dea8ukk4f5c" path="res://addons/godot_state_charts/state_chart.gd" id="4_2tjd0"]
+[ext_resource type="Script" uid="uid://csj60p0c2v1g6" path="res://addons/godot_state_charts/compound_state.gd" id="5_15gtg"]
+[ext_resource type="Script" uid="uid://c71cw33hmp6ru" path="res://addons/godot_state_charts/atomic_state.gd" id="6_tyolk"]
+[ext_resource type="Script" uid="uid://oinxiusrjkq7" path="res://addons/godot_state_charts/transition.gd" id="7_gpbq7"]
+[ext_resource type="Script" uid="uid://drbjibwqafap" path="res://addons/godot_state_charts/history_state.gd" id="8_cp3cr"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="9_77jsk"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="10_hjvma"]
 [ext_resource type="PackedScene" uid="uid://5eo2pd11j7wo" path="res://Scenes/Actors/SpriteImports/BatSprite.tscn" id="11_l4jld"]
@@ -67,6 +67,7 @@ script = ExtResource("6_tyolk")
 script = ExtResource("7_gpbq7")
 to = NodePath("../../SeeingPlayer")
 event = &"SawPlayer"
+delay_in_seconds = "0.0"
 
 [node name="SeeingPlayer" type="Node" parent="StateChart/State_Tree" index="1"]
 script = ExtResource("5_15gtg")
@@ -79,11 +80,13 @@ script = ExtResource("6_tyolk")
 script = ExtResource("7_gpbq7")
 to = NodePath("../../Chasing")
 event = &"Started_Chase"
+delay_in_seconds = "0.0"
 
 [node name="ToBacktracking" type="Node" parent="StateChart/State_Tree/SeeingPlayer/StartingChase" index="1"]
 script = ExtResource("7_gpbq7")
 to = NodePath("../../../Backtracking")
 event = &"Player_Got_Away"
+delay_in_seconds = "0.0"
 
 [node name="Chasing" type="Node" parent="StateChart/State_Tree/SeeingPlayer" index="1"]
 script = ExtResource("6_tyolk")
@@ -92,11 +95,13 @@ script = ExtResource("6_tyolk")
 script = ExtResource("7_gpbq7")
 to = NodePath("../../../Backtracking")
 event = &"Player_Got_Away"
+delay_in_seconds = "0.0"
 
 [node name="ToAttacking" type="Node" parent="StateChart/State_Tree/SeeingPlayer/Chasing" index="1"]
 script = ExtResource("7_gpbq7")
 to = NodePath("../../../Attacking")
 event = &"Player_Entered_Range"
+delay_in_seconds = "0.0"
 
 [node name="LastState" type="Node" parent="StateChart/State_Tree/SeeingPlayer" index="2"]
 script = ExtResource("8_cp3cr")
@@ -106,6 +111,7 @@ default_state = NodePath("../StartingChase")
 script = ExtResource("7_gpbq7")
 to = NodePath("../../Attacking")
 event = &"Player_Got_In_Range"
+delay_in_seconds = "0.0"
 
 [node name="Backtracking" type="Node" parent="StateChart/State_Tree" index="2"]
 script = ExtResource("6_tyolk")
@@ -114,11 +120,13 @@ script = ExtResource("6_tyolk")
 script = ExtResource("7_gpbq7")
 to = NodePath("../../Idle")
 event = &"Got_On_Idling_Spot"
+delay_in_seconds = "0.0"
 
 [node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Backtracking" index="1"]
 script = ExtResource("7_gpbq7")
 to = NodePath("../../SeeingPlayer/LastState")
 event = &"SawPlayer"
+delay_in_seconds = "0.0"
 
 [node name="Attacking" type="Node" parent="StateChart/State_Tree" index="3"]
 script = ExtResource("5_15gtg")
@@ -131,11 +139,13 @@ script = ExtResource("6_tyolk")
 script = ExtResource("7_gpbq7")
 to = NodePath("../../Attacking")
 event = &"Prepared_Attack"
+delay_in_seconds = "0.0"
 
 [node name="ToSeeingPlayer" type="Node" parent="StateChart/State_Tree/Attacking/Preparing" index="1"]
 script = ExtResource("7_gpbq7")
 to = NodePath("../../../SeeingPlayer/LastState")
 event = &"Player_Moved_Away"
+delay_in_seconds = "0.0"
 
 [node name="Attacking" type="Node" parent="StateChart/State_Tree/Attacking" index="1"]
 script = ExtResource("6_tyolk")
@@ -144,6 +154,7 @@ script = ExtResource("6_tyolk")
 script = ExtResource("7_gpbq7")
 to = NodePath("../../Recovering")
 event = &"Finished_Attack"
+delay_in_seconds = "0.0"
 
 [node name="Recovering" type="Node" parent="StateChart/State_Tree/Attacking" index="2"]
 script = ExtResource("6_tyolk")
@@ -152,6 +163,7 @@ script = ExtResource("6_tyolk")
 script = ExtResource("7_gpbq7")
 to = NodePath("../../../SeeingPlayer/LastState")
 event = &"Recovered"
+delay_in_seconds = "0.0"
 
 [node name="BehaviorChanging" type="Node2D" parent="." index="3"]
 

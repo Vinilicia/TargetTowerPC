@@ -65,7 +65,7 @@ custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
-focus_neighbor_top = NodePath("../CloseButton")
+focus_neighbor_top = NodePath("../BackButton")
 text = "Controls"
 
 [node name="VideoButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer"]
@@ -83,7 +83,7 @@ size_flags_vertical = 3
 text = "Audio
 "
 
-[node name="CloseButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer"]
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer"]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 4
