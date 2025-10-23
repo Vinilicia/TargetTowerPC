@@ -7,7 +7,7 @@
 [ext_resource type="Script" uid="uid://csj60p0c2v1g6" path="res://addons/godot_state_charts/compound_state.gd" id="4_mqlfr"]
 [ext_resource type="Script" uid="uid://c71cw33hmp6ru" path="res://addons/godot_state_charts/atomic_state.gd" id="5_esu5x"]
 [ext_resource type="Script" uid="uid://oinxiusrjkq7" path="res://addons/godot_state_charts/transition.gd" id="6_787da"]
-[ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="7_rg2yg"]
+[ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="7_rg2yg"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_7fg1c"]
 [ext_resource type="Script" uid="uid://bdlibc1q2ghhl" path="res://Scripts/Components/Health_manager.gd" id="9_jgpfp"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="10_jabsr"]

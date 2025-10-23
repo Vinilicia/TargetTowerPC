@@ -4,7 +4,6 @@ class_name SaveLoadManager
 var save_file_data: SaveDataResource = SaveDataResource.new()
 var current_slot_index: int = 0
 
-
 func get_save_path(slot_index: int) -> String:
 	return "user://SaveFile_%d.json" % slot_index
 
@@ -111,7 +110,7 @@ func _load(slot_index: int):
 	else:
 		for prop_info in default_data.get_property_list():
 			var prop_name = prop_info.name
-			if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path"]:
+			if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path", "script"]:
 				continue
 
 			if not data.has(prop_name):
@@ -123,9 +122,14 @@ func _load(slot_index: int):
 			var default_value = default_data.get(prop_name)
 
 			if typeof(value) != typeof(default_value):
-				print("Tipo incorreto em %s — recriando save." % prop_name)
-				valid = false
-				break
+				# Permite int <-> float, já que o JSON mistura os dois
+				if (typeof(value) in [TYPE_INT, TYPE_FLOAT]) and (typeof(default_value) in [TYPE_INT, TYPE_FLOAT]):
+					pass
+				else:
+					print("Tipo incorreto em %s — recriando save." % prop_name)
+					valid = false
+					break
+
 
 			if typeof(default_value) == TYPE_ARRAY:
 				if typeof(value) != TYPE_ARRAY:

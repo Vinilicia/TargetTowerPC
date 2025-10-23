@@ -1,8 +1,8 @@
 [gd_scene load_steps=5 format=3 uid="uid://b5j3ir5pf6oxw"]
 
 [ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_whle5"]
-[ext_resource type="PackedScene" uid="uid://jqwfpk1kkmyr" path="res://Scenes/Menus&UI/Save_file_button.tscn" id="2_vl33i"]
-[ext_resource type="Script" uid="uid://l84pwrsu8spk" path="res://Scripts/Menus&UI/title_screen.gd" id="2_wie5w"]
+[ext_resource type="PackedScene" uid="uid://jqwfpk1kkmyr" path="res://Scenes/Save_file_button.tscn" id="2_vl33i"]
+[ext_resource type="Script" uid="uid://drtwo6544din5" path="res://Scripts/Menus&UI/title_screen.gd" id="2_wie5w"]
 [ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Settings_Menu.tscn" id="5_fiu88"]
 
 [node name="TitleScreen" type="Control" node_paths=PackedStringArray("title_menu", "settings_menu", "file_select_menu", "quit_menu", "save_file_buttons")]

@@ -3,16 +3,16 @@
 [ext_resource type="Script" uid="uid://du36t4pvcn4ic" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="4_26aeq"]
-[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="4_r6772"]
-[ext_resource type="Script" uid="uid://bhmbxmq633k82" path="res://addons/godot_state_charts/parallel_state.gd" id="5_wypxn"]
-[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="6_26aeq"]
-[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="7_wypxn"]
+[ext_resource type="Script" uid="uid://c3dea8ukk4f5c" path="res://addons/godot_state_charts/state_chart.gd" id="4_r6772"]
+[ext_resource type="Script" uid="uid://i22f180f1ooj" path="res://addons/godot_state_charts/parallel_state.gd" id="5_wypxn"]
+[ext_resource type="Script" uid="uid://csj60p0c2v1g6" path="res://addons/godot_state_charts/compound_state.gd" id="6_26aeq"]
+[ext_resource type="Script" uid="uid://c71cw33hmp6ru" path="res://addons/godot_state_charts/atomic_state.gd" id="7_wypxn"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_26aeq"]
-[ext_resource type="Script" uid="uid://dmfyse5ubg5m5" path="res://addons/godot_state_charts/expression_guard.gd" id="8_r2kji"]
-[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
+[ext_resource type="Script" uid="uid://cecn1q6qyblur" path="res://addons/godot_state_charts/expression_guard.gd" id="8_r2kji"]
+[ext_resource type="Script" uid="uid://oinxiusrjkq7" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
 [ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Actors/SpriteImports/ArcherSprite.tscn" id="9_26aeq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
-[ext_resource type="Script" uid="uid://bpe6nh7g0ks4t" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
+[ext_resource type="Script" uid="uid://bdlibc1q2ghhl" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 [ext_resource type="Script" uid="uid://4evypv5km8px" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
 
 [sub_resource type="Resource" id="Resource_rbeol"]
@@ -76,6 +76,7 @@ script = ExtResource("7_wypxn")
 script = ExtResource("9_12lv1")
 to = NodePath("../../Falling")
 event = &"Falling"
+delay_in_seconds = "0.0"
 
 [node name="Falling" type="Node" parent="Misc/StateChart/Root/Memes/Airborne"]
 script = ExtResource("7_wypxn")
@@ -84,11 +85,13 @@ script = ExtResource("7_wypxn")
 script = ExtResource("9_12lv1")
 to = NodePath("../../../Grounded")
 event = &"Grounded"
+delay_in_seconds = "0.0"
 
 [node name="ToRising" type="Node" parent="Misc/StateChart/Root/Memes/Airborne/Falling"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Rising")
 event = &"Rising"
+delay_in_seconds = "0.0"
 
 [node name="Grounded" type="Node" parent="Misc/StateChart/Root/Memes"]
 script = ExtResource("6_26aeq")
@@ -101,6 +104,7 @@ script = ExtResource("7_wypxn")
 script = ExtResource("9_12lv1")
 to = NodePath("../../Crouched")
 event = &"Crouched"
+delay_in_seconds = "0.0"
 
 [node name="Crouched" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
 script = ExtResource("7_wypxn")
@@ -109,17 +113,20 @@ script = ExtResource("7_wypxn")
 script = ExtResource("9_12lv1")
 to = NodePath("../../Standing")
 event = &"Standing"
+delay_in_seconds = "0.0"
 
 [node name="ToFalling" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Airborne/Falling")
 event = &"Falling"
 guard = SubResource("Resource_rbeol")
+delay_in_seconds = "0.0"
 
 [node name="ToRising" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Airborne/Rising")
 event = &"Rising"
+delay_in_seconds = "0.0"
 
 [node name="Shooting" type="Node" parent="Misc/StateChart/Root"]
 script = ExtResource("6_26aeq")
@@ -132,6 +139,7 @@ script = ExtResource("7_wypxn")
 script = ExtResource("9_12lv1")
 to = NodePath("../../CantShoot")
 event = &"CantShoot"
+delay_in_seconds = "0.0"
 
 [node name="CantShoot" type="Node" parent="Misc/StateChart/Root/Shooting"]
 script = ExtResource("7_wypxn")
@@ -140,6 +148,7 @@ script = ExtResource("7_wypxn")
 script = ExtResource("9_12lv1")
 to = NodePath("../../CanShoot")
 event = &"CanShoot"
+delay_in_seconds = "0.0"
 
 [node name="HealthManager" type="Node" parent="Misc"]
 script = ExtResource("11_jfvij")

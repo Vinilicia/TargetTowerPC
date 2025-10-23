@@ -1,8 +1,8 @@
 [gd_scene load_steps=13 format=3 uid="uid://jqwfpk1kkmyr"]
 
-[ext_resource type="Shader" uid="uid://dhtmkso7pf4uq" path="res://Themes/Shaders/Save_file_button.gdshader" id="1_1j36r"]
+[ext_resource type="Shader" uid="uid://b0qgk6xwag0bn" path="res://Themes/Shaders/Save_file_button.gdshader" id="1_1j36r"]
 [ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_i7cc6"]
-[ext_resource type="Script" uid="uid://ds7ywcevywma3" path="res://Scripts/Menus&UI/save_file_button.gd" id="2_dx1qo"]
+[ext_resource type="Script" uid="uid://7mvgutvi40k7" path="res://Scripts/Menus&UI/save_file_button.gd" id="2_dx1qo"]
 [ext_resource type="Texture2D" uid="uid://bthjxgrpvjtq1" path="res://Assets/Home_bred/UI/SaveFile/Firebox.aseprite" id="3_gsmit"]
 [ext_resource type="Texture2D" uid="uid://cchwp5jljfl7m" path="res://Assets/Home_bred/UI/SaveFile/DefaultBox.aseprite" id="3_jnwko"]
 [ext_resource type="Texture2D" uid="uid://duftv2s24j28y" path="res://Assets/Home_bred/UI/SaveFile/Bow.aseprite" id="4_gsmit"]
@@ -23,7 +23,7 @@ border_width_right = 1
 border_color = Color(1, 1, 1, 1)
 anti_aliasing = false
 
-[node name="SaveFileButton" type="Button" node_paths=PackedStringArray("arrow_texture_nodes")]
+[node name="SaveFileButton" type="Button" node_paths=PackedStringArray("arrow_texture_nodes", "bench_name_label")]
 custom_minimum_size = Vector2(160, 240)
 anchors_preset = 5
 anchor_left = 0.5
@@ -39,6 +39,7 @@ script = ExtResource("2_dx1qo")
 save_slot = 1
 arrow_texture_nodes = [NodePath("BorderPanel/MarginContainer/ContentsContainer/ArrowsContainer/FireTexture"), NodePath("BorderPanel/MarginContainer/ContentsContainer/ArrowsContainer/TeleportTexture"), NodePath("BorderPanel/MarginContainer/ContentsContainer/ArrowsContainer/PlatformTexture"), NodePath("BorderPanel/MarginContainer/ContentsContainer/ArrowsContainer/ElectricTexture"), NodePath("BorderPanel/MarginContainer/ContentsContainer/ArrowsContainer/VinesTexture"), NodePath("BorderPanel/MarginContainer/ContentsContainer/ArrowsContainer/IceTexture"), NodePath("BorderPanel/MarginContainer/ContentsContainer/ArrowsContainer/GhostTexture"), NodePath("BorderPanel/MarginContainer/ContentsContainer/ArrowsContainer/WindTexture")]
 arrow_textures = Array[Texture2D]([ExtResource("3_gsmit"), ExtResource("4_q1q17"), ExtResource("5_kdfvg"), ExtResource("6_pvg2m"), ExtResource("8_dx1qo"), null, null, null])
+bench_name_label = NodePath("BorderPanel/MarginContainer/ContentsContainer/BenchName")
 
 [node name="GradientPanel" type="Panel" parent="."]
 material = SubResource("ShaderMaterial_1j36r")
@@ -138,3 +139,6 @@ layout_mode = 2
 size_flags_horizontal = 0
 size_flags_vertical = 0
 texture = ExtResource("3_jnwko")
+
+[node name="BenchName" type="Label" parent="BorderPanel/MarginContainer/ContentsContainer"]
+layout_mode = 2

@@ -3,7 +3,7 @@ extends Node2D
 @export var bench_id: int = 0
 
 var player: Player = null
-var SaveLoad
+var saveLoad : SaveLoadManager = SaveLoadManager.new()
 
 func _physics_process(_delta: float) -> void:
 	if player and Input.is_action_just_pressed("down"):
@@ -19,15 +19,6 @@ func _on_player_exited(body: Node2D) -> void:
 
 func bench_used() -> void:
 	print("Jogador sentou no banco ID:", bench_id)
-	
-	# Atualiza o ID do último banco usado
-	SaveLoad.SaveFileData.set_last_bench_id(bench_id)
-	
-	# Aqui você pode atualizar outras coisas do jogador, se quiser
-	# Ex: SaveLoad.SaveFileData.set_money(player.money)
-	# Ex: SaveLoad.SaveFileData.set_max_health(player.max_health)
-	
-	# Salva o jogo no slot atual (por exemplo, 0)
-	SaveLoad._save(0)
-	
+	saveLoad.save_file_data.set_last_bench_id(bench_id)
+	saveLoad._save(1)
 	print("Jogo salvo com sucesso no banco", bench_id)
