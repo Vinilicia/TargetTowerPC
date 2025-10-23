@@ -168,8 +168,8 @@ shape = ExtResource("9_77jsk")
 debug_color = Color(0, 1, 0.34902, 0.419608)
 
 [node name="DashAttackArea" type="Area2D" parent="BehaviorChanging" index="1"]
-position = Vector2(50, 0)
-scale = Vector2(80, 4)
+position = Vector2(40, 0)
+scale = Vector2(70, 4)
 collision_layer = 0
 monitorable = false
 
