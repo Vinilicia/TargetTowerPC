@@ -18,6 +18,7 @@ layer = 2
 
 [node name="MainMenu" parent="UILayer" instance=ExtResource("1_qtv3y")]
 visible = false
+script = null
 
 [node name="VideoMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="2" node_paths=PackedStringArray("environment")]
 environment = NodePath("../../../../../../../WorldEnvironment")
