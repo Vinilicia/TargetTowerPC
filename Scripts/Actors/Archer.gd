@@ -130,7 +130,7 @@ func _physics_process(delta: float) -> void:
 func update_safe_position() -> void:
 	if frames_until_check > 0:
 		frames_until_check -= 1
-	return
+		return
 
 	for i in get_slide_collision_count():
 		var collision = get_slide_collision(i)
@@ -191,6 +191,10 @@ func handle_combat_inputs() -> void:
 		try_dodge()
 		await get_tree().create_timer(dodge_cooldown).timeout
 		combat.can_dodge = true
+	
+	if Input.is_action_just_pressed("switch arrow"):
+		current_arrow_index = (current_arrow_index + 1) % 4
+		current_arrow = equip_arrow(current_arrow_index)
 
 func try_dodge() -> void:
 	var attempt_dodge_dir : Vector2 = combat.dodge_direction

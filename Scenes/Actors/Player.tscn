@@ -12,7 +12,7 @@
 [ext_resource type="Script" uid="uid://oinxiusrjkq7" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
 [ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Actors/SpriteImports/ArcherSprite.tscn" id="9_26aeq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
-[ext_resource type="Script" uid="uid://bdlibc1q2ghhl" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
+[ext_resource type="Script" uid="uid://bpe6nh7g0ks4t" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 [ext_resource type="Script" uid="uid://4evypv5km8px" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
 
 [sub_resource type="Resource" id="Resource_rbeol"]
@@ -27,7 +27,7 @@ state_chart = NodePath("Misc/StateChart")
 camera_distance = 45.0
 camera_move_duration = 1.0
 camera_remote = NodePath("Utilities/Remote")
-arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4"])
+arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4", "uid://h5p666cxnxby"])
 max_hold_time = 1.5
 shoot_delay = 0.5
 dodge_cooldown = 0.7
@@ -153,7 +153,6 @@ delay_in_seconds = "0.0"
 [node name="HealthManager" type="Node" parent="Misc"]
 script = ExtResource("11_jfvij")
 max_health = 20.0
-metadata/_custom_type_script = "uid://d4da8yc41448k"
 
 [node name="Archer" parent="." instance=ExtResource("9_26aeq")]
 position = Vector2(-28, -28)

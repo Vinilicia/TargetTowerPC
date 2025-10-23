@@ -19,6 +19,9 @@ layer = 2
 [node name="MainMenu" parent="UILayer" instance=ExtResource("1_qtv3y")]
 visible = false
 
+[node name="VideoMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="2" node_paths=PackedStringArray("environment")]
+environment = NodePath("../../../../../../../WorldEnvironment")
+
 [node name="Blackout" type="ColorRect" parent="UILayer"]
 modulate = Color(1, 1, 1, 0)
 anchors_preset = 15
