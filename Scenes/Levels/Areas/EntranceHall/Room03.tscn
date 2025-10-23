@@ -7,7 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://5y1krmoyg57i" path="res://Scenes/Interactibles/Mechanisms/Windbox.tscn" id="5_bfvno"]
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="6_psho5"]
 
-[node name="Room03" instance=ExtResource("1_eig4g")]
+[node name="Room03" node_paths=PackedStringArray("bench") instance=ExtResource("1_eig4g")]
+bench = NodePath("Bench")
 
 [node name="Slime" parent="Enemies" index="0" instance=ExtResource("2_xo0yc")]
 position = Vector2(424, -136)

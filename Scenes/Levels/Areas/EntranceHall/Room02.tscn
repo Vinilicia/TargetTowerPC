@@ -7,7 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://dgsguis2vqkm7" path="res://Scenes/Interactibles/Mechanisms/Conveyor_belt.tscn" id="5_q28bx"]
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="6_fxdmu"]
 
-[node name="Room02" instance=ExtResource("1_1ugf0")]
+[node name="Room02" node_paths=PackedStringArray("bench") instance=ExtResource("1_1ugf0")]
+bench = NodePath("Bench")
 
 [node name="Bat" parent="Enemies" index="0" instance=ExtResource("2_mbjum")]
 position = Vector2(264, 72)

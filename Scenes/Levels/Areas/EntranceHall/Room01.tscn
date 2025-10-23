@@ -5,7 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="3_ksvpm"]
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="4_m6pg1"]
 
-[node name="Room01" instance=ExtResource("1_b6jmv")]
+[node name="Room01" node_paths=PackedStringArray("bench") instance=ExtResource("1_b6jmv")]
+bench = NodePath("Bench")
 
 [node name="Bat" parent="Enemies" index="0" instance=ExtResource("2_jww40")]
 position = Vector2(296, -184)
