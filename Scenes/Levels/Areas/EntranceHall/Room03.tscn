@@ -48,7 +48,9 @@ spaw_position = Vector2(384, -64)
 position = Vector2(240, -144)
 wind_direction = Vector2(-1, 0)
 wind_force = 20.0
+size = Vector2i(11, 3)
 
 [node name="Bench" parent="." index="4" instance=ExtResource("6_psho5")]
 position = Vector2(65, -101)
 bench_id = 3
+

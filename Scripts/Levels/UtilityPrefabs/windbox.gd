@@ -1,7 +1,7 @@
 @tool
 extends Node2D
 
-@onready var area : Area2D = $Wind
+@export var area : Area2D
 
 @export var wind_direction : Vector2
 @export var wind_force : float
