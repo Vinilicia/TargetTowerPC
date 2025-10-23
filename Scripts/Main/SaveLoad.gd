@@ -1,6 +1,7 @@
 extends Node
+class_name SaveLoadManager
 
-var SaveFileData: SaveDataResource = SaveDataResource.new()
+var save_file_data: SaveDataResource = SaveDataResource.new()
 var current_slot_index: int = 0
 
 func _ready() -> void:
@@ -14,15 +15,15 @@ func _save(slot_index: int):
 	var file = FileAccess.open_encrypted_with_pass(save_path, FileAccess.WRITE, "1n1c19a436")
 	
 	var data_to_save = {
-		"progress_bar_value": SaveFileData.progress_bar_value,
-		"HealthUpgrades": SaveFileData.HealthUpgrades,
-		"ManaUpgrades": SaveFileData.ManaUpgrades,
-		"AvailableArrows": SaveFileData.AvailableArrows,
-		"LastBenchID": SaveFileData.LastBenchID,
-		"MaxHealth": SaveFileData.MaxHealth,
-		"MaxMana": SaveFileData.MaxMana,
-		"Money": SaveFileData.Money,
-		"profile_name": SaveFileData.profile_name
+		"progress_bar_value": save_file_data.progress_bar_value,
+		"HealthUpgrades": save_file_data.HealthUpgrades,
+		"ManaUpgrades": save_file_data.ManaUpgrades,
+		"AvailableArrows": save_file_data.AvailableArrows,
+		"LastBenchID": save_file_data.LastBenchID,
+		"MaxHealth": save_file_data.MaxHealth,
+		"MaxMana": save_file_data.MaxMana,
+		"Money": save_file_data.Money,
+		"profile_name": save_file_data.profile_name
 	}
 	
 	var json_ver = JSON.stringify(data_to_save)
@@ -40,29 +41,36 @@ func _load(slot_index: int):
 		var data = JSON.parse_string(file.get_as_text())
 		file.close()
 		
-		SaveFileData = SaveDataResource.new()
-		SaveFileData.progress_bar_value = data.get("progress_bar_value", 0.0)
+		save_file_data = SaveDataResource.new()
+		save_file_data.progress_bar_value = data.get("progress_bar_value", 0.0)
 		
 		var loaded_health = data.get("HealthUpgrades", [])
-		SaveFileData.HealthUpgrades.assign(loaded_health)
+		save_file_data.HealthUpgrades.assign(loaded_health)
 		
 		var loaded_mana = data.get("ManaUpgrades", [])
-		SaveFileData.ManaUpgrades.assign(loaded_mana)
+		save_file_data.ManaUpgrades.assign(loaded_mana)
 		
 		var loaded_arrows = data.get("AvailableArrows", [])
-		SaveFileData.AvailableArrows.assign(loaded_arrows)
+		save_file_data.AvailableArrows.assign(loaded_arrows)
 		
-		SaveFileData.LastBenchID = data.get("LastBenchID", 0)
-		SaveFileData.MaxHealth = data.get("MaxHealth", 100)
-		SaveFileData.MaxMana = data.get("MaxMana", 100)
-		SaveFileData.Money = data.get("Money", 0)
-		SaveFileData.profile_name = data.get("profile_name", "Profile %d" % (slot_index + 1))
+		save_file_data.LastBenchID = data.get("LastBenchID", 0)
+		save_file_data.MaxHealth = data.get("MaxHealth", 100)
+		save_file_data.MaxMana = data.get("MaxMana", 100)
+		save_file_data.Money = data.get("Money", 0)
+		save_file_data.profile_name = data.get("profile_name", "Profile %d" % (slot_index + 1))
 		
 		print("Jogo carregado do Slot ", slot_index)
 		return true
 	else:
-		print("Nenhum save encontrado no Slot ", slot_index)
-		return false
+		print("Nenhum save encontrado no Slot ", slot_index, " — criando novo save padrão...")
+		
+		save_file_data = SaveDataResource.new()
+		
+		_save(slot_index)
+		
+		print("Novo save criado e salvo no Slot ", slot_index)
+		return true
+
 		
 func copy_slot(source_slot: int, destination_slot: int):
 	var source_path = get_save_path(source_slot)
@@ -98,17 +106,17 @@ func is_slot_used(slot_index: int) -> bool:
 	return FileAccess.file_exists(save_path)
 	
 func test():
-	SaveFileData.set_max_health(0)
-	SaveFileData.set_money(500)
-	SaveFileData.set_profile_name("Profile Teste")
+	save_file_data.set_max_health(0)
+	save_file_data.set_money(500)
+	save_file_data.set_profile_name("Profile Teste")
 	_save(0)
-	SaveFileData.set_max_health(1)
+	save_file_data.set_max_health(1)
 	_save(1)
-	SaveFileData.set_max_health(99)
+	save_file_data.set_max_health(99)
 	_load(0)
-	print(SaveFileData.get_max_health(), SaveFileData.get_money(), SaveFileData.get_profile_name())
+	print(save_file_data.get_max_health(), save_file_data.get_money(), save_file_data.get_profile_name())
 	copy_slot(1,0)
 	_load(0)
-	print(SaveFileData.get_max_health())
+	print(save_file_data.get_max_health())
 	delete_slot(0)
-	print(SaveFileData.get_max_health())
+	print(save_file_data.get_max_health())

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://ccg2l16c64hgc"]
 
-[ext_resource type="Script" uid="uid://u88l46xb4d4" path="res://Scripts/Main/game.gd" id="1_mu4po"]
+[ext_resource type="Script" uid="uid://xb1utlp1xd0s" path="res://Scripts/Main/game.gd" id="1_mu4po"]
 [ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Scenes/Actors/Player.tscn" id="2_f405u"]
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Levels/Camera.tscn" id="3_73cq8"]
 [ext_resource type="PackedScene" uid="uid://dt34ayv1esh31" path="res://Scenes/Levels/Areas/EntranceHall/Room01.tscn" id="4_337f6"]
