@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://l84pwrsu8spk" path="res://Scripts/Menus&UI/title_screen.gd" id="2_wie5w"]
 [ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Settings_Menu.tscn" id="5_fiu88"]
 
-[node name="TitleScreen" type="Control" node_paths=PackedStringArray("title_menu", "settings_menu", "file_select_menu")]
+[node name="TitleScreen" type="Control" node_paths=PackedStringArray("title_menu", "settings_menu", "file_select_menu", "quit_menu", "save_file_buttons")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -17,6 +17,8 @@ script = ExtResource("2_wie5w")
 title_menu = NodePath("TitleMenu")
 settings_menu = NodePath("SettingsMenu")
 file_select_menu = NodePath("FileSelectMenu")
+quit_menu = NodePath("QuitMenu")
+save_file_buttons = [NodePath("FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton"), NodePath("FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton2"), NodePath("FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton3")]
 
 [node name="Background" type="TextureRect" parent="."]
 layout_mode = 1
@@ -27,7 +29,6 @@ grow_horizontal = 2
 grow_vertical = 2
 
 [node name="TitleMenu" type="MarginContainer" parent="."]
-visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -105,6 +106,7 @@ focus_neighbor_left = NodePath("../SaveFileButton")
 focus_neighbor_top = NodePath("../../BackButton")
 focus_neighbor_right = NodePath("../SaveFileButton3")
 focus_neighbor_bottom = NodePath("../../EditButtonsContainer/CopyButton")
+save_slot = 2
 
 [node name="SaveFileButton3" parent="FileSelectMenu/VBoxContainer/SaveProfilesContainer" instance=ExtResource("2_vl33i")]
 layout_mode = 2
@@ -114,6 +116,7 @@ focus_neighbor_left = NodePath("../SaveFileButton2")
 focus_neighbor_top = NodePath("../../BackButton")
 focus_neighbor_right = NodePath("../SaveFileButton")
 focus_neighbor_bottom = NodePath("../../EditButtonsContainer/EraseButton")
+save_slot = 3
 
 [node name="EditButtonsContainer" type="HBoxContainer" parent="FileSelectMenu/VBoxContainer"]
 layout_mode = 2
@@ -154,6 +157,7 @@ visible = false
 layout_mode = 1
 
 [node name="QuitMenu" type="MarginContainer" parent="."]
+visible = false
 layout_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
@@ -192,3 +196,16 @@ layout_mode = 2
 size_flags_horizontal = 10
 focus_neighbor_right = NodePath("../YesButton")
 text = "No"
+
+[connection signal="pressed" from="TitleMenu/VBoxContainer/PlayButton" to="." method="show_file_select"]
+[connection signal="pressed" from="TitleMenu/VBoxContainer/SettingsButton" to="." method="show_settings_menu"]
+[connection signal="pressed" from="TitleMenu/VBoxContainer/QuitButton" to="." method="show_quit_menu"]
+[connection signal="pressed" from="FileSelectMenu/VBoxContainer/BackButton" to="." method="hide_file_select"]
+[connection signal="pressed" from="SettingsMenu/MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/BackButton" to="." method="hide_settings_menu"]
+[connection signal="pressed" from="QuitMenu/VBoxContainer/ButtonsContainer/YesButton" to="." method="quit"]
+[connection signal="pressed" from="QuitMenu/VBoxContainer/ButtonsContainer/NoButton" to="." method="hide_quit"]
+
+[editable path="SettingsMenu"]
+[editable path="SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/ControlsMenu"]
+[editable path="SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/AudioMenu"]
+[editable path="SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/VideoMenu"]

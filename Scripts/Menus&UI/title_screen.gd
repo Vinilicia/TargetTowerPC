@@ -46,3 +46,6 @@ func hide_quit() -> void:
 	title_menu.visible = true
 	var focus_button : Button = title_menu.find_child("QuitButton")
 	focus_button.grab_focus()
+
+func quit() -> void:
+	get_tree().quit()

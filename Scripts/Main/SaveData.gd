@@ -1,9 +1,11 @@
 extends Resource
 class_name SaveDataResource
 
+@export var SaveVersion : int = 1
+
 @export var HealthUpgrades: Array[bool] = [false, false, false, false]
 @export var ManaUpgrades: Array[bool] = [false, false, false, false]
-@export var AvailableArrows: Array[bool] = [false, false, false, false]
+@export var AvailableArrows: Array[bool] = [false, false, false, false, false, false, false, false]
 
 @export var LastBenchID: int = 0
 @export var MaxHealth: int = 5

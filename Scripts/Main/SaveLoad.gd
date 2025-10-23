@@ -4,8 +4,6 @@ class_name SaveLoadManager
 var save_file_data: SaveDataResource = SaveDataResource.new()
 var current_slot_index: int = 0
 
-func _ready() -> void:
-	test()
 
 func get_save_path(slot_index: int) -> String:
 	return "user://SaveFile_%d.json" % slot_index
@@ -13,65 +11,145 @@ func get_save_path(slot_index: int) -> String:
 func _save(slot_index: int):
 	var save_path = get_save_path(slot_index)
 	var file = FileAccess.open_encrypted_with_pass(save_path, FileAccess.WRITE, "1n1c19a436")
-	
-	var data_to_save = {
-		"progress_bar_value": save_file_data.progress_bar_value,
-		"HealthUpgrades": save_file_data.HealthUpgrades,
-		"ManaUpgrades": save_file_data.ManaUpgrades,
-		"AvailableArrows": save_file_data.AvailableArrows,
-		"LastBenchID": save_file_data.LastBenchID,
-		"MaxHealth": save_file_data.MaxHealth,
-		"MaxMana": save_file_data.MaxMana,
-		"Money": save_file_data.Money,
-		"profile_name": save_file_data.profile_name
-	}
-	
+
+	var data_to_save: Dictionary = {}
+	for prop_info in save_file_data.get_property_list():
+		var prop_name = prop_info.name
+		if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path"]:
+			continue
+		data_to_save[prop_name] = save_file_data.get(prop_name)
+
 	var json_ver = JSON.stringify(data_to_save)
 	file.store_string(json_ver)
 	file.close()
 	print("Jogo salvo no Slot ", slot_index)
 
+
 func _load(slot_index: int):
 	var save_path = get_save_path(slot_index)
-	
-	if FileAccess.file_exists(save_path):
-		current_slot_index = slot_index
-		
-		var file = FileAccess.open_encrypted_with_pass(save_path, FileAccess.READ, "1n1c19a436")
-		var data = JSON.parse_string(file.get_as_text())
-		file.close()
-		
-		save_file_data = SaveDataResource.new()
-		save_file_data.progress_bar_value = data.get("progress_bar_value", 0.0)
-		
-		var loaded_health = data.get("HealthUpgrades", [])
-		save_file_data.HealthUpgrades.assign(loaded_health)
-		
-		var loaded_mana = data.get("ManaUpgrades", [])
-		save_file_data.ManaUpgrades.assign(loaded_mana)
-		
-		var loaded_arrows = data.get("AvailableArrows", [])
-		save_file_data.AvailableArrows.assign(loaded_arrows)
-		
-		save_file_data.LastBenchID = data.get("LastBenchID", 0)
-		save_file_data.MaxHealth = data.get("MaxHealth", 100)
-		save_file_data.MaxMana = data.get("MaxMana", 100)
-		save_file_data.Money = data.get("Money", 0)
-		save_file_data.profile_name = data.get("profile_name", "Profile %d" % (slot_index + 1))
-		
-		print("Jogo carregado do Slot ", slot_index)
-		return true
-	else:
+
+	# Se não existe, cria novo
+	if not FileAccess.file_exists(save_path):
 		print("Nenhum save encontrado no Slot ", slot_index, " — criando novo save padrão...")
-		
 		save_file_data = SaveDataResource.new()
-		
 		_save(slot_index)
-		
-		print("Novo save criado e salvo no Slot ", slot_index)
 		return true
 
-		
+	current_slot_index = slot_index
+	var file = FileAccess.open_encrypted_with_pass(save_path, FileAccess.READ, "1n1c19a436")
+	var data = JSON.parse_string(file.get_as_text())
+	file.close()
+
+	if typeof(data) != TYPE_DICTIONARY:
+		print("Erro: Arquivo de save inválido — recriando padrão.")
+		save_file_data = SaveDataResource.new()
+		_save(slot_index)
+		return true
+
+	# Cria recursos
+	var default_data = SaveDataResource.new()
+	var loaded_resource = SaveDataResource.new()
+	var valid = true
+
+	# Pega versões
+	var saved_version = data.get("SaveVersion", 0)
+	var current_version = default_data.SaveVersion
+
+	# --- 🔹 CASO 1: SAVE FUTURO ---
+	if saved_version > current_version:
+		print("Save mais novo que a versão atual (%d > %d) — recriando do zero." % [saved_version, current_version])
+		save_file_data = SaveDataResource.new()
+		_save(slot_index)
+		return true
+
+	# --- 🔹 CASO 2: SAVE ANTIGO (migração) ---
+	elif saved_version < current_version:
+		print("Save mais antigo (%d < %d) — migrando dados..." % [saved_version, current_version])
+		for prop_info in default_data.get_property_list():
+			var prop_name = prop_info.name
+			if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path"]:
+				continue
+
+			var default_value = default_data.get(prop_name)
+
+			# Se o campo não existe no save antigo, mantém o valor padrão
+			if not data.has(prop_name):
+				loaded_resource.set(prop_name, default_value)
+				continue
+
+			var value = data[prop_name]
+
+			# Se tipo diferente, mantém padrão
+			if typeof(value) != typeof(default_value):
+				loaded_resource.set(prop_name, default_value)
+				continue
+
+			# Migra arrays com cuidado
+			if typeof(default_value) == TYPE_ARRAY:
+				if typeof(value) == TYPE_ARRAY:
+					# Completa ou corta o array pra caber
+					if value.size() < default_value.size():
+						for i in range(value.size(), default_value.size()):
+							value.append(default_value[i])
+					elif value.size() > default_value.size():
+						value.resize(default_value.size())
+					loaded_resource.set(prop_name, value)
+				else:
+					loaded_resource.set(prop_name, default_value)
+			else:
+				# Tipos simples — copia direto
+				loaded_resource.set(prop_name, value)
+
+		# Atualiza a versão do save e sobrescreve
+		loaded_resource.SaveVersion = current_version
+		save_file_data = loaded_resource
+		_save(slot_index)
+		print("Migração concluída. Save atualizado para versão ", current_version)
+		return true
+
+	# --- 🔹 CASO 3: MESMA VERSÃO (verificação padrão) ---
+	else:
+		for prop_info in default_data.get_property_list():
+			var prop_name = prop_info.name
+			if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path"]:
+				continue
+
+			if not data.has(prop_name):
+				print("Campo faltando:", prop_name)
+				valid = false
+				break
+
+			var value = data[prop_name]
+			var default_value = default_data.get(prop_name)
+
+			if typeof(value) != typeof(default_value):
+				print("Tipo incorreto em %s — recriando save." % prop_name)
+				valid = false
+				break
+
+			if typeof(default_value) == TYPE_ARRAY:
+				if typeof(value) != TYPE_ARRAY:
+					valid = false
+					break
+
+				if value.size() < default_value.size():
+					for i in range(value.size(), default_value.size()):
+						value.append(default_value[i])
+				elif value.size() > default_value.size():
+					value.resize(default_value.size())
+
+			loaded_resource.set(prop_name, value)
+
+		if not valid:
+			print("Save inválido — recriando arquivo padrão.")
+			save_file_data = SaveDataResource.new()
+			_save(slot_index)
+			return true
+
+		save_file_data = loaded_resource
+		print("Jogo carregado com sucesso do Slot ", slot_index)
+		return true
+
 func copy_slot(source_slot: int, destination_slot: int):
 	var source_path = get_save_path(source_slot)
 	var dest_path = get_save_path(destination_slot)
@@ -104,19 +182,3 @@ func delete_slot(slot_to_delete: int):
 func is_slot_used(slot_index: int) -> bool:
 	var save_path = get_save_path(slot_index)
 	return FileAccess.file_exists(save_path)
-	
-func test():
-	save_file_data.set_max_health(0)
-	save_file_data.set_money(500)
-	save_file_data.set_profile_name("Profile Teste")
-	_save(0)
-	save_file_data.set_max_health(1)
-	_save(1)
-	save_file_data.set_max_health(99)
-	_load(0)
-	print(save_file_data.get_max_health(), save_file_data.get_money(), save_file_data.get_profile_name())
-	copy_slot(1,0)
-	_load(0)
-	print(save_file_data.get_max_health())
-	delete_slot(0)
-	print(save_file_data.get_max_health())
