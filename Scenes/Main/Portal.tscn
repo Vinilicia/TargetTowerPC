@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://doixgcgh3c0mc"]
 
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_m5bqq"]
-[ext_resource type="Script" uid="uid://clw7a7wu251ix" path="res://Scripts/Main/portal.gd" id="1_ugh02"]
+[ext_resource type="Script" uid="uid://d0ufod6o1vn4" path="res://Scripts/Main/portal.gd" id="1_ugh02"]
 
 [node name="Portal" type="Area2D"]
 collision_layer = 64

@@ -1,12 +1,11 @@
 extends Node2D
 
-@export var bench_id: int = 0
 @export var area: int = 0
 
 var player: Player = null
 var saveLoad : SaveLoadManager = SaveLoadManager.new()
 
-@onready var room_number = get_room_number()
+@onready var bench_id = get_room_number()
 	
 func _physics_process(_delta: float) -> void:
 	if player and Input.is_action_just_pressed("down"):
