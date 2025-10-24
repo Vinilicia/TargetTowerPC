@@ -25,6 +25,7 @@ func handle_last_level(old_level : Room) -> void:
 	call_deferred("remove_child", old_level)
 
 func handle_next_level(next_level : String, spawn_position : Vector2) -> void:
+	print(next_level)
 	var new_level : Room = load(next_level).instantiate()
 	call_deferred("add_child", new_level)
 	if new_level.name == last_room_name:

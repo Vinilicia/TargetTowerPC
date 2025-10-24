@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=4 uid="uid://p0f35mxovxw1"]
 
-[ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/EntranceHall/Entrance_Base_Room.tscn" id="1_eeqjb"]
+[ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_eeqjb"]
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="2_xd6px"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="3_bxc6w"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="4_ep0ci"]
@@ -36,13 +36,13 @@ tile_map_data = PackedByteArray("AAAdAP//AAABAAoAAAAdAP7/AAAJAAIAAAAdAP3/AAAMAAc
 
 [node name="Portal" parent="Portals" index="0" instance=ExtResource("4_ep0ci")]
 position = Vector2(616, -416)
-next_level = "res://Scenes/Levels/Areas/EntranceHall/Room1.tscn"
-spaw_position = Vector2(100, -70)
+spawn_position = Vector2(100, -100)
+target_level_name = "Room2"
 
 [node name="Portal2" parent="Portals" index="1" instance=ExtResource("4_ep0ci")]
 position = Vector2(8, -424)
-next_level = "res://Scenes/Levels/Areas/EntranceHall/Room2.tscn"
-spaw_position = Vector2(384, -64)
+spawn_position = Vector2(100, -100)
+target_level_name = "Room1"
 
 [node name="Windbox" parent="." index="3" instance=ExtResource("5_cw1qw")]
 position = Vector2(240, -144)

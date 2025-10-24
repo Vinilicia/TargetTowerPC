@@ -16,6 +16,33 @@ script = ExtResource("1_mu4po")
 top_level = true
 position = Vector2(93, -116)
 
+[node name="ToFalling" parent="Player/Misc/StateChart/Root/Memes/Airborne/Rising" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="ToGrounded" parent="Player/Misc/StateChart/Root/Memes/Airborne/Falling" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="ToRising" parent="Player/Misc/StateChart/Root/Memes/Airborne/Falling" index="1"]
+delay_in_seconds = "0.0"
+
+[node name="ToCrouched" parent="Player/Misc/StateChart/Root/Memes/Grounded/Standing" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="ToStanding" parent="Player/Misc/StateChart/Root/Memes/Grounded/Crouched" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="ToFalling" parent="Player/Misc/StateChart/Root/Memes/Grounded" index="2"]
+delay_in_seconds = "0.0"
+
+[node name="ToRising" parent="Player/Misc/StateChart/Root/Memes/Grounded" index="3"]
+delay_in_seconds = "0.0"
+
+[node name="ToCant" parent="Player/Misc/StateChart/Root/Shooting/CanShoot" index="0"]
+delay_in_seconds = "0.0"
+
+[node name="ToCan" parent="Player/Misc/StateChart/Root/Shooting/CantShoot" index="0"]
+delay_in_seconds = "0.0"
+
 [node name="UpColl" parent="Player/Hurtbox" index="1"]
 shape = SubResource("CapsuleShape2D_337f6")
 

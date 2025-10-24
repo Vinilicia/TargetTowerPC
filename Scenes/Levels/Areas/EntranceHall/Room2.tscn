@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=4 uid="uid://bwktolati234h"]
 
-[ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/EntranceHall/Entrance_Base_Room.tscn" id="1_qfwnn"]
+[ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_qfwnn"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_isfyy"]
 [ext_resource type="PackedScene" uid="uid://bps57wjl0501i" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="3_2lb30"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="4_37xga"]
@@ -24,13 +24,13 @@ tile_map_data = PackedByteArray("AAAGAA0AAAAFAAoAAAAGAAwAAAAGAAMAAAAGAAsAAAAIAAs
 
 [node name="Portal" parent="Portals" index="0" instance=ExtResource("4_37xga")]
 position = Vector2(760, -80)
-next_level = "res://Scenes/Levels/Areas/EntranceHall/Room1.tscn"
-spaw_position = Vector2(100, -100)
+spawn_position = Vector2(100, -100)
+target_level_name = "Room1"
 
 [node name="Portal2" parent="Portals" index="1" instance=ExtResource("4_37xga")]
 position = Vector2(248, -64)
-next_level = "res://Scenes/Levels/Areas/EntranceHall/Room3.tscn"
-spaw_position = Vector2(64, -100)
+spawn_position = Vector2(100, -100)
+target_level_name = "Room3"
 
 [node name="ConveyorBelt" parent="." index="3" instance=ExtResource("5_gxxic")]
 position = Vector2(432, 144)
