@@ -1,0 +1,17 @@
+[gd_resource type="Resource" script_class="LevelDatabase" load_steps=2 format=3 uid="uid://ddqd4ltf81dsu"]
+
+[ext_resource type="Script" uid="uid://w1m2yx8aq53j" path="res://Scripts/Components/level_database.gd" id="1_gr0d8"]
+
+[resource]
+script = ExtResource("1_gr0d8")
+area_1_levels = Dictionary[String, String]({
+"Room1": "res://Scenes/Levels/Areas/Area1/Room1.tscn",
+"Room2": "res://Scenes/Levels/Areas/Area1/Room2.tscn",
+"Room3": "res://Scenes/Levels/Areas/Area1/Room3.tscn"
+})
+area_2_levels = Dictionary[String, String]({
+"Room2": "res://Scenes/Levels/Areas/Area1/Room2.tscn",
+"Room4": "res://Scenes/Levels/Areas/Area1/Room3.tscn"
+})
+area_3_levels = Dictionary[String, String]({})
+metadata/_custom_type_script = "uid://w1m2yx8aq53j"
