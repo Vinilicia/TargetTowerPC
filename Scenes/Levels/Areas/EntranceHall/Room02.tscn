@@ -40,3 +40,4 @@ length = 10
 [node name="Bench" parent="." index="4" instance=ExtResource("6_fxdmu")]
 position = Vector2(326, -37)
 bench_id = 2
+area = 1

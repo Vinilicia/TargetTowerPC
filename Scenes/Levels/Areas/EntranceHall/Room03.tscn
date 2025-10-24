@@ -52,3 +52,4 @@ wind_force = 20.0
 [node name="Bench" parent="." index="4" instance=ExtResource("6_psho5")]
 position = Vector2(65, -101)
 bench_id = 3
+area = 1

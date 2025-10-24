@@ -28,3 +28,4 @@ spaw_position = Vector2(100, -100)
 [node name="Bench" parent="." index="3" instance=ExtResource("4_m6pg1")]
 position = Vector2(95, -69)
 bench_id = 1
+area = 1
