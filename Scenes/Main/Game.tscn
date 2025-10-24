@@ -1,18 +1,16 @@
-[gd_scene load_steps=6 format=3 uid="uid://ccg2l16c64hgc"]
+[gd_scene load_steps=5 format=3 uid="uid://ccg2l16c64hgc"]
 
-[ext_resource type="Script" uid="uid://dxxfqr7t77e5e" path="res://Scripts/Main/game.gd" id="1_mu4po"]
+[ext_resource type="Script" uid="uid://beug2ves48cuu" path="res://Scripts/Main/game.gd" id="1_mu4po"]
 [ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Scenes/Actors/Player.tscn" id="2_f405u"]
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Levels/Camera.tscn" id="3_73cq8"]
-[ext_resource type="PackedScene" uid="uid://dt34ayv1esh31" path="res://Scenes/Levels/Areas/Area1/Room1.tscn" id="4_337f6"]
 
 [sub_resource type="CapsuleShape2D" id="CapsuleShape2D_337f6"]
 resource_local_to_scene = true
 radius = 0.5
 height = 1.0
 
-[node name="Game" type="Node2D" node_paths=PackedStringArray("current_level") groups=["Game"]]
+[node name="Game" type="Node2D" groups=["Game"]]
 script = ExtResource("1_mu4po")
-current_level = NodePath("Room01")
 
 [node name="Player" parent="." instance=ExtResource("2_f405u")]
 top_level = true
@@ -29,8 +27,6 @@ remote_path = NodePath("../../../Camera")
 
 [node name="Camera" parent="." instance=ExtResource("3_73cq8")]
 position = Vector2(93, -151)
-
-[node name="Room01" parent="." instance=ExtResource("4_337f6")]
 
 [editable path="Player"]
 [editable path="Player/Archer"]

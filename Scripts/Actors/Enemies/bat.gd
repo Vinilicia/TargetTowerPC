@@ -175,10 +175,7 @@ func _starting_chase_state_entered() -> void:
 	current_speed = backtracking_speed
 	_apply_wander_variation()
 
-	# Pequeno voo inicial para “acordar”
-	move_for(0.5, Vector2(0, 1), current_speed)
-
-func _starting_chase_physics_processing() -> void:
+func _starting_chase_physics_processing(_delta : float) -> void:
 	var sees_player := line_of_sight.get_collider() == player_target
 	if sees_player:
 		giving_up_timer.stop()

@@ -17,5 +17,4 @@ func initialize(save_load_manager : SaveLoadManager) -> void:
 			push_error("save_data é nulo no slot %d!" % save_slot)
 			return
 		init_arrow_textures(save_data)
-		bench_name_label.text = "Banco " + str(save_data.get_last_bench_id())
-		
+		bench_name_label.text = "Banco " + str(save_data.get_last_bench_id())		

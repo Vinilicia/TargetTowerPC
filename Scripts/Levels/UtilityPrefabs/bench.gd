@@ -1,9 +1,12 @@
 extends Node2D
 
-@export var bench_id: int = 0
+@export var area: int = 0
 
 var player: Player = null
 var saveLoad : SaveLoadManager = SaveLoadManager.new()
+
+@onready var bench_id : int = get_room_number()
+@onready var save_id : int = get_tree().get_first_node_in_group("Game").save_id
 
 func _physics_process(_delta: float) -> void:
 	if player and Input.is_action_just_pressed("down"):
@@ -20,5 +23,17 @@ func _on_player_exited(body: Node2D) -> void:
 func bench_used() -> void:
 	print("Jogador sentou no banco ID:", bench_id)
 	saveLoad.save_file_data.set_last_bench_id(bench_id)
-	saveLoad._save(1)
+	saveLoad.save_file_data.set_area_of_bench(area)
+	saveLoad._save(save_id)
 	print("Jogo salvo com sucesso no banco", bench_id)
+	
+func get_room_number() -> int:
+	var room_node = get_parent()
+	if room_node:
+		var name : String = room_node.name
+		var regex = RegEx.new()
+		regex.compile(r"\d+")
+		var result = regex.search(name)
+		if result:
+			return int(result.get_string())
+	return -1
