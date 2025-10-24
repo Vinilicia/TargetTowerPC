@@ -42,6 +42,8 @@ func spaw_player_on_bench() -> void:
 	blackout_fade_out()
 	
 func load_room(room_scene : PackedScene) -> void:
+	if current_level:
+		remove_child(current_level)
 	current_level = room_scene.instantiate()
 	add_child(current_level)
 	call_deferred("spaw_player_on_bench")
