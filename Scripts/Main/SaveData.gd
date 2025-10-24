@@ -8,6 +8,7 @@ class_name SaveDataResource
 @export var AvailableArrows: Array[bool] = [false, false, false, false, false, false, false, false]
 
 @export var LastBenchID: int = 0
+@export var AreaOfBench: int = 0
 @export var MaxHealth: int = 5
 @export var MaxMana: int = 5
 @export var Money: int = 0
@@ -58,6 +59,12 @@ func get_last_bench_id() -> int:
 func set_last_bench_id(value: int):
 	LastBenchID = value
 
+func get_area_of_bench() -> int:
+	return AreaOfBench
+
+func set_area_of_bench(value: int):
+	AreaOfBench = value
+	
 func get_max_health() -> int:
 	return MaxHealth
 
