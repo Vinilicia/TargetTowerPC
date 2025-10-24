@@ -147,7 +147,7 @@ func _starting_chase_state_entered() -> void:
 	move_to(global_position + Vector2(0, 30), 10)
 	_apply_wander_variation()
 
-func _starting_chase_physics_processing() -> void:
+func _starting_chase_physics_processing(_delta : float) -> void:
 	var sees_player := line_of_sight.get_collider() == player_target
 	if sees_player:
 		giving_up_timer.stop()

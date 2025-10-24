@@ -68,4 +68,5 @@ func load_save(save_id) -> void:
 	var scene_path := "res://Scenes/Levels/Areas/EntranceHall/Room%d.tscn" % save_load_manager.save_file_data.get_last_bench_id()
 	var room_scene: PackedScene = load(scene_path)
 	visible = false
+	game.save_id = save_id
 	game.load_room(room_scene)

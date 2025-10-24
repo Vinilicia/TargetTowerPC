@@ -5,6 +5,7 @@ extends Node2D
 @export var blackout_rect : ColorRect
 
 var current_level : Room
+var save_id : int
 var tween : Tween
 var enemy_alive_persistence : Array[bool] = []
 var last_room_name : String = ""

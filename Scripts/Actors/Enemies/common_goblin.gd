@@ -224,7 +224,7 @@ func jump() -> void:
 	is_jumping = true
 	v_component.set_proper_velocity(jump_force, 2)
 
-func _on_attack_state_physics_processing() -> void:
+func _on_attack_state_physics_processing(_delta : float) -> void:
 	if is_on_floor():
 		v_component.set_proper_velocity(0.0, 1)
 		if player_in_range and can_stab_attack:

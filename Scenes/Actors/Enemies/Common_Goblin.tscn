@@ -195,6 +195,7 @@ script = ExtResource("11_f0pr3")
 script = ExtResource("12_o1mr1")
 to = NodePath("../../Chasing")
 event = &"Chase_Player"
+delay_in_seconds = "0.0"
 
 [node name="Chasing" type="Node" parent="WhiteNodes/StateChart/StateTree" index="1"]
 script = ExtResource("11_f0pr3")
@@ -203,11 +204,13 @@ script = ExtResource("11_f0pr3")
 script = ExtResource("12_o1mr1")
 to = NodePath("../../Guarding")
 event = &"Guard"
+delay_in_seconds = "0.0"
 
 [node name="ToAttack" type="Node" parent="WhiteNodes/StateChart/StateTree/Chasing" index="1"]
 script = ExtResource("12_o1mr1")
 to = NodePath("../../Attack")
 event = &"Attack"
+delay_in_seconds = "0.0"
 
 [node name="Attack" type="Node" parent="WhiteNodes/StateChart/StateTree" index="2"]
 script = ExtResource("11_f0pr3")
@@ -216,6 +219,7 @@ script = ExtResource("11_f0pr3")
 script = ExtResource("12_o1mr1")
 to = NodePath("../../Chasing")
 event = &"Chase"
+delay_in_seconds = "0.0"
 
 [connection signal="area_entered" from="Areas/OuterArrowDetector" to="." method="_on_outer_detector_entered"]
 [connection signal="area_entered" from="Areas/InnerArrowDetector" to="." method="_on_inner_detector_entered"]
@@ -233,4 +237,4 @@ event = &"Chase"
 [connection signal="state_physics_processing" from="WhiteNodes/StateChart/StateTree/Guarding" to="." method="_on_guarding_state_physics_processing"]
 [connection signal="state_entered" from="WhiteNodes/StateChart/StateTree/Chasing" to="." method="_on_chasing_state_entered"]
 [connection signal="state_physics_processing" from="WhiteNodes/StateChart/StateTree/Chasing" to="." method="_on_chasing_state_physics_processing"]
-[connection signal="state_processing" from="WhiteNodes/StateChart/StateTree/Attack" to="." method="_on_attack_state_physics_processing"]
+[connection signal="state_physics_processing" from="WhiteNodes/StateChart/StateTree/Attack" to="." method="_on_attack_state_physics_processing"]
