@@ -1,10 +1,10 @@
 extends Resource
 class_name SaveDataResource
 
-@export var SaveVersion : int = 2
+@export var SaveVersion : int = 1
 
-@export var HealthUpgrades: Array[bool] = [false, false, false, false]
-@export var ManaUpgrades: Array[bool] = [false, false, false, false]
+@export var HealthUpgrades: Array[int] = [0, 0, 0, 0]
+@export var ManaUpgrades: Array[int] = [0, 0, 0, 0]
 @export var AvailableArrows: Array[bool] = [false, false, false, false, false, false, false, false]
 
 @export var LastBenchID: int = 1
@@ -53,6 +53,14 @@ func set_available_arrow(index: int):
 	else:
 		print("Erro: Índice de AvailableArrows fora do alcance.")
 
+func get_available_arrows() -> Array[bool]:
+	return AvailableArrows
+
+func set_available_arrows(arrows: Array[bool]) -> void:
+	for i in range(AvailableArrows.size()):
+		if arrows[i]:
+			set_available_arrow(i)
+	
 func get_last_bench_id() -> int:
 	return LastBenchID
 

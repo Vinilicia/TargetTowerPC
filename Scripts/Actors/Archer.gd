@@ -98,13 +98,12 @@ var enemies_on_sight: Array = []
 var last_safe_position : Vector2
 var frames_until_check : int = 0
 var locked_walk: bool = false
-
+var available_arrows: Array[int] = [0, 0, 0, 0, 0, 0, 0, 0]
 
 # ============================================================
 # READY
 # ============================================================
 func _ready():
-	
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 	velocity = Vector2.ZERO
@@ -511,3 +510,13 @@ func _standing_entered() -> void:
 	state_chart.set_expression_property("crouching", false)
 
 #endregion
+
+func set_available_arrows():
+	pass
+	#var save_load: SaveLoadManager = SaveLoadManager.new()
+	#for i in range(available_arrows.size()):
+		#available_arrows[i] = save_load.save_file_data.get_available_arrow(i)
+	#print(save_load.save_file_data.get_available_arrow(0))
+
+func wake_up():
+	set_available_arrows()

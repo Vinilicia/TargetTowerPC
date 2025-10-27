@@ -3,7 +3,6 @@ extends Node2D
 @export var area: int = 0
 
 var player: Player = null
-var saveLoad : SaveLoadManager = SaveLoadManager.new()
 
 @onready var bench_id : int = get_room_number()
 @onready var save_id : int = get_tree().get_first_node_in_group("Game").save_id
@@ -21,11 +20,10 @@ func _on_player_exited(body: Node2D) -> void:
 		player = null
 
 func bench_used() -> void:
-	print("Jogador sentou no banco ID:", bench_id)
+	var saveLoad : SaveLoadManager = SaveLoadManager.new()
 	saveLoad.save_file_data.set_last_bench_id(bench_id)
 	saveLoad.save_file_data.set_area_of_bench(area)
 	saveLoad._save(save_id)
-	print("Jogo salvo com sucesso no banco", bench_id)
 	
 func get_room_number() -> int:
 	var room_node = get_parent()

@@ -83,18 +83,25 @@ func _load(slot_index: int):
 				loaded_resource.set(prop_name, default_value)
 				continue
 
-			# Migra arrays com cuidado
 			if typeof(default_value) == TYPE_ARRAY:
-				if typeof(value) == TYPE_ARRAY:
-					# Completa ou corta o array pra caber
-					if value.size() < default_value.size():
-						for i in range(value.size(), default_value.size()):
-							value.append(default_value[i])
-					elif value.size() > default_value.size():
-						value.resize(default_value.size())
-					loaded_resource.set(prop_name, value)
-				else:
-					loaded_resource.set(prop_name, default_value)
+				if typeof(value) != TYPE_ARRAY:
+					valid = false
+					break
+				if default_value.size() > 0:
+					var element_type = typeof(default_value[0])
+					var new_array: Array = []
+					for v in value:
+						if element_type == TYPE_BOOL:
+							new_array.append(bool(v))
+						else:
+							new_array.append(v)
+					value = new_array
+
+				if value.size() < default_value.size():
+					for i in range(value.size(), default_value.size()):
+						value.append(default_value[i])
+				elif value.size() > default_value.size():
+					value.resize(default_value.size())
 			else:
 				# Tipos simples — copia direto
 				loaded_resource.set(prop_name, value)
@@ -117,7 +124,7 @@ func _load(slot_index: int):
 				print("Campo faltando:", prop_name)
 				valid = false
 				break
-
+			
 			var value = data[prop_name]
 			var default_value = default_data.get(prop_name)
 
@@ -130,18 +137,33 @@ func _load(slot_index: int):
 					valid = false
 					break
 
-
 			if typeof(default_value) == TYPE_ARRAY:
 				if typeof(value) != TYPE_ARRAY:
 					valid = false
 					break
-
+				if default_value.size() > 0:
+					var element_type = typeof(default_value[0])
+					var new_array: Array = []
+					for v in value:
+						if element_type == TYPE_BOOL:
+							new_array.append(bool(v))
+						else:
+							new_array.append(v)
+					value = new_array
 				if value.size() < default_value.size():
 					for i in range(value.size(), default_value.size()):
 						value.append(default_value[i])
 				elif value.size() > default_value.size():
 					value.resize(default_value.size())
-
+					
+				if(prop_name == "AvailableArrows" and typeof(value) == typeof(loaded_resource.AvailableArrows)):
+					var array : Array[bool] = []
+					for v in value:
+						array.append(v)
+					loaded_resource.set_available_arrows(array)
+					print(loaded_resource.get(prop_name))
+					print(loaded_resource.AvailableArrows)
+					print("value " + str(value))
 			loaded_resource.set(prop_name, value)
 
 		if not valid:
@@ -186,3 +208,6 @@ func delete_slot(slot_to_delete: int):
 func is_slot_used(slot_index: int) -> bool:
 	var save_path = get_save_path(slot_index)
 	return FileAccess.file_exists(save_path)
+	
+func test():
+	print(save_file_data.get_available_arrows())
