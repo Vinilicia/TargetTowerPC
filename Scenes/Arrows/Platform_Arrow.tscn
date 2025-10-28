@@ -33,7 +33,7 @@ gradient = SubResource("Gradient_fvltu")
 
 [node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_fh7sq")]
 position = Vector2(2, 0)
-scale = Vector2(18, 7)
+scale = Vector2(18, 5)
 collision_layer = 256
 monitorable = false
 parent = NodePath("..")
@@ -44,7 +44,7 @@ shape = ExtResource("6_sgxhr")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 
 [node name="Coll" type="CollisionShape2D" parent="."]
-position = Vector2(6, 0.5)
+position = Vector2(6, 0)
 scale = Vector2(4, 4)
 shape = ExtResource("6_fh7sq")
 

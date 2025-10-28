@@ -39,7 +39,7 @@ gradient = SubResource("Gradient_j7lj7")
 
 [node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_1yo7r")]
 position = Vector2(2, 0)
-scale = Vector2(18, 7)
+scale = Vector2(18, 5)
 collision_layer = 256
 monitorable = false
 parent = NodePath("..")
