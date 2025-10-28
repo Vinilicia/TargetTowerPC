@@ -5,6 +5,7 @@ class_name Main_Menu
 @export var buttons_container : MarginContainer
 @export var back_to_title_menu : MarginContainer
 
+var title_screen : Control
 var open : bool = false
 var last_button_pressed : Button
 
@@ -37,7 +38,8 @@ func close_back_to_title() -> void:
 	show_buttons()
 
 func go_back_to_title() -> void:
-	pass
+	title_screen.return_menu_from_game()
+	queue_free()
 
 func show_buttons() -> void:
 	buttons_container.visible = true
