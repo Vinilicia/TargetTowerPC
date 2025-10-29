@@ -58,8 +58,8 @@ func spaw_player_on_bench() -> void:
 	blackout_fade_out()
 
 
-func load_room(room_scene: PackedScene) -> void:
-	#get_node("Player").wake_up()
+func load_room(room_scene: PackedScene, save_load_manager: SaveLoadManager) -> void:
+	get_node("Player").wake_up(save_load_manager)
 	current_level = room_scene.instantiate()
 	add_child(current_level)
 	call_deferred("spaw_player_on_bench")

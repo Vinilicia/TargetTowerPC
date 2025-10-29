@@ -203,6 +203,3 @@ func delete_slot(slot_to_delete: int):
 func is_slot_used(slot_index: int) -> bool:
 	var save_path = get_save_path(slot_index)
 	return FileAccess.file_exists(save_path)
-	
-func test():
-	print(save_file_data.get_available_arrows())

@@ -65,7 +65,6 @@ func save_file_3_button_pressed() -> void:
 func load_save(save_id) -> void:
 	var save_load_manager : SaveLoadManager = SaveLoadManager.new()
 	save_load_manager._load(save_id)
-	save_load_manager.test()
 	print("arrow " + str(save_load_manager.save_file_data.get_available_arrows()))
 	print("bench " + str(save_load_manager.save_file_data.get_last_bench_id()))
 	print()
@@ -73,4 +72,4 @@ func load_save(save_id) -> void:
 	var room_scene: PackedScene = load(scene_path)
 	visible = false
 	game.save_id = save_id
-	game.load_room(room_scene)
+	game.load_room(room_scene, save_load_manager)

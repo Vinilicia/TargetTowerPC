@@ -98,7 +98,7 @@ var enemies_on_sight: Array = []
 var last_safe_position : Vector2
 var frames_until_check : int = 0
 var locked_walk: bool = false
-var available_arrows: Array[int] = [0, 0, 0, 0, 0, 0, 0, 0]
+var available_arrows: Array[bool] = [false, false, false, false, false, false, false, false]
 
 # ============================================================
 # READY
@@ -511,12 +511,8 @@ func _standing_entered() -> void:
 
 #endregion
 
-func set_available_arrows():
-	pass
-	#var save_load: SaveLoadManager = SaveLoadManager.new()
-	#for i in range(available_arrows.size()):
-		#available_arrows[i] = save_load.save_file_data.get_available_arrow(i)
-	#print(save_load.save_file_data.get_available_arrow(0))
+func set_available_arrows(available_arrows_loaded: Array[bool]):
+	available_arrows = available_arrows_loaded
 
-func wake_up():
-	set_available_arrows()
+func wake_up(save_load_manager: SaveLoadManager):
+	set_available_arrows(save_load_manager.save_file_data.get_available_arrows())
