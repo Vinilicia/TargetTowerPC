@@ -14,6 +14,7 @@ grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_whle5")
 script = ExtResource("2_wie5w")
+main_menu_path = "res://Scenes/Menus&UI/Main_menu.tscn"
 title_menu = NodePath("TitleMenu")
 settings_menu = NodePath("SettingsMenu")
 file_select_menu = NodePath("FileSelectMenu")
