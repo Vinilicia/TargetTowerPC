@@ -339,9 +339,11 @@ func move(facing_dir: int) -> void:
 	v_component.add_proper_velocity(Vector2(move_speed * facing_dir, 0))
 
 func equip_arrow(array_position: int) -> Arrow:
-	var arrow: Arrow = load(arrow_paths[array_position]).instantiate()
-	arrow.position = arrow_spawn_point
-	return arrow
+	if available_arrows[array_position]:
+		var arrow: Arrow = load(arrow_paths[array_position]).instantiate()
+		arrow.position = arrow_spawn_point
+		return arrow
+	return current_arrow
 
 func get_current_gravity(velocity_in_y: float) -> float:
 	return gravity if velocity_in_y < 0 else gravity * gravity_multiplier
