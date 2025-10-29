@@ -83,4 +83,4 @@ func load_save(save_id) -> void:
 	visible = false
 	instantiate_main_menu()
 	game.save_id = save_id
-	game.load_room(room_scene)
+	game.load_room(room_scene, save_load_manager)
