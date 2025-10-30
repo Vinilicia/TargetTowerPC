@@ -58,7 +58,10 @@ func spaw_player_on_bench() -> void:
 	blackout_fade_out()
 
 
-func load_room(room_scene: PackedScene) -> void:
+func load_room(room_scene: PackedScene, save_load_manager: SaveLoadManager) -> void:
+	get_node("Player").wake_up(save_load_manager)
+	if current_level:
+		remove_child(current_level)
 	current_level = room_scene.instantiate()
 	add_child(current_level)
 	call_deferred("spaw_player_on_bench")
@@ -68,7 +71,6 @@ func blackout_fade_in() -> void:
 	if blackout_rect:
 		tween = get_tree().create_tween()
 		tween.tween_property(blackout_rect, "modulate", Color(1, 1, 1, 1), 0.2)
-
 
 func blackout_fade_out() -> void:
 	if blackout_rect and tween:

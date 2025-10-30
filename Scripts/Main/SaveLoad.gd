@@ -49,7 +49,7 @@ func _load(slot_index: int):
 	var default_data = SaveDataResource.new()
 	var loaded_resource = SaveDataResource.new()
 	var valid = true
-
+	var is_array = false
 	# Pega versões
 	var saved_version = data.get("SaveVersion", 0)
 	var current_version = default_data.SaveVersion
@@ -83,21 +83,30 @@ func _load(slot_index: int):
 				loaded_resource.set(prop_name, default_value)
 				continue
 
-			# Migra arrays com cuidado
 			if typeof(default_value) == TYPE_ARRAY:
-				if typeof(value) == TYPE_ARRAY:
-					# Completa ou corta o array pra caber
-					if value.size() < default_value.size():
-						for i in range(value.size(), default_value.size()):
-							value.append(default_value[i])
-					elif value.size() > default_value.size():
-						value.resize(default_value.size())
-					loaded_resource.set(prop_name, value)
-				else:
-					loaded_resource.set(prop_name, default_value)
+				if typeof(value) != TYPE_ARRAY:
+					valid = false
+					break
+				is_array = true
+				var new_array: Array = []
+				if default_value.size() > 0:
+					var element_type = typeof(default_value[0])
+					for v in value:
+						if element_type == TYPE_BOOL:
+							new_array.append(bool(v))
+						else:
+							new_array.append(v)
+				if value.size() < default_value.size():
+					for i in range(value.size(), default_value.size()):
+						value.append(default_value[i])
+				elif value.size() > default_value.size():
+					value.resize(default_value.size())
+				loaded_resource.set_array(prop_name, new_array)
 			else:
 				# Tipos simples — copia direto
-				loaded_resource.set(prop_name, value)
+				if not is_array:
+					loaded_resource.set(prop_name, value)
+			is_array = false
 
 		# Atualiza a versão do save e sobrescreve
 		loaded_resource.SaveVersion = current_version
@@ -117,7 +126,7 @@ func _load(slot_index: int):
 				print("Campo faltando:", prop_name)
 				valid = false
 				break
-
+			
 			var value = data[prop_name]
 			var default_value = default_data.get(prop_name)
 
@@ -130,19 +139,27 @@ func _load(slot_index: int):
 					valid = false
 					break
 
-
 			if typeof(default_value) == TYPE_ARRAY:
 				if typeof(value) != TYPE_ARRAY:
 					valid = false
 					break
-
+				var new_array: Array = []
+				if default_value.size() > 0:
+					var element_type = typeof(default_value[0])
+					for v in value:
+						if element_type == TYPE_BOOL:
+							new_array.append(bool(v))
+						else:
+							new_array.append(v)
 				if value.size() < default_value.size():
 					for i in range(value.size(), default_value.size()):
 						value.append(default_value[i])
 				elif value.size() > default_value.size():
 					value.resize(default_value.size())
-
-			loaded_resource.set(prop_name, value)
+				loaded_resource.set_array(prop_name, new_array)
+			if not is_array:
+				loaded_resource.set(prop_name, value)
+			is_array = false
 
 		if not valid:
 			print("Save inválido — recriando arquivo padrão.")

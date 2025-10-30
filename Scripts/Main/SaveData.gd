@@ -1,7 +1,7 @@
 extends Resource
 class_name SaveDataResource
 
-@export var SaveVersion : int = 2
+@export var SaveVersion : int = 1
 
 @export var HealthUpgrades: Array[bool] = [false, false, false, false]
 @export var ManaUpgrades: Array[bool] = [false, false, false, false]
@@ -53,6 +53,22 @@ func set_available_arrow(index: int):
 	else:
 		print("Erro: Índice de AvailableArrows fora do alcance.")
 
+func get_available_arrows() -> Array[bool]:
+	return AvailableArrows
+
+func set_available_arrows(arrows: Array[bool]) -> void:
+	for i in range(AvailableArrows.size()):
+		if arrows[i]:
+			set_available_arrow(i)
+
+func set_array(prop_name, array) -> void:
+	if prop_name == "HealthUpgrades":
+		HealthUpgrades = create_bool_array(array)
+	elif prop_name == "ManaUpgrades":
+		ManaUpgrades = create_bool_array(array)
+	elif prop_name == "AvailableArrows":
+		AvailableArrows = create_bool_array(array)
+	
 func get_last_bench_id() -> int:
 	return LastBenchID
 
@@ -82,3 +98,10 @@ func get_money() -> int:
 
 func set_money(value: int):
 	Money = value
+
+
+func create_bool_array(array : Array) -> Array[bool]:
+	var new_array : Array[bool] = []
+	for value in array:
+		new_array.append(value)
+	return new_array
