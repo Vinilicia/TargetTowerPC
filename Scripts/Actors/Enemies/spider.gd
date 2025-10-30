@@ -127,25 +127,67 @@ func _on_floor_timer_timeout() -> void:
 		_rotate_and_snap(180)
 
 
-func _rotate_and_snap(degrees: float) -> void:
+const PIVOT_OFFSET := Vector2(-1, 4.0) # ponto fixo relativo ao inimigo
+
+func _rotate_and_snap(degrees: float, duration := 0.3) -> void:
+
+	
+	if !_floor_timer.is_stopped():
+		_floor_timer.stop()
 	if rotating:
 		return
 	rotating = true
 
-	var contact_point := Vector2.ZERO
+	var abs_deg := absf(degrees)
+	var use_pivot := abs_deg < 91.0  # ou abs_deg < 91.0 se quiser tolerância
 
-	down_ray.force_raycast_update()
-	if down_ray.is_colliding():
-		contact_point = down_ray.get_collision_point()
+	var pivot: Vector2
+	if use_pivot:
+		# Pivô fixo relativo
+		var local_pivot := Vector2(PIVOT_OFFSET.x * movedir, PIVOT_OFFSET.y * signf(degrees) * movedir)
+		pivot = global_position + local_pivot.rotated(rotation)
+	else:
+		# Se não for 90°, gira no próprio eixo
+		pivot = global_position
 
-	rotation_degrees += degrees
+	# Estados iniciais
+	var start_rotation := rotation
+	var target_rotation := rotation + deg_to_rad(degrees)
+	var start_position := global_position
+
+	var to_pivot := start_position - pivot
+	var radius := to_pivot.length()
+	
+	print("\n================ ROTATE DEBUG START ================")
+	print("→ Initial Rotation (deg): ", rad_to_deg(start_rotation))
+	print("→ Target Rotation (deg):  ", degrees)
+	print("→ Initial MoveDir:        ", movedir)
+	print("→ Initial Surface State:  ", surface_state)
+	print("===================================================\n")
+	
+	# Tween de rotação
+	var tween := create_tween()
+	tween.tween_method(func(value):
+		var current_angle: float = lerp(start_rotation, target_rotation, value)
+		var rotated_offset := to_pivot.rotated(current_angle - start_rotation)
+		global_position = pivot + rotated_offset
+		rotation = current_angle
+	, 0.0, 1.0, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+
+	await tween.finished
+	
+	print("\n================ ROTATE DEBUG END ==================")
+	print("→ Final Rotation (deg):   ", rad_to_deg(rotation))
+	print("→ Final MoveDir:          ", movedir)
+	print("→ Final Surface State:    ", surface_state)
+	print("===================================================\n")
+
+	
+	# Pós-rotação
 	await get_tree().process_frame
 	down_ray.force_raycast_update()
-
 	if down_ray.is_colliding():
-		var collision_point = down_ray.get_collision_point()
-		var to_point = collision_point - global_position
-		global_position += to_point.limit_length(6.0)
+		print("AA")
 		update_direction()
 		_update_surface_state()
 	else:
@@ -155,6 +197,8 @@ func _rotate_and_snap(degrees: float) -> void:
 			_climb_to_ceiling_with_tween()
 
 	rotating = false
+
+
 
 
 # (mantive suas funções de climb/fall/randomize etc — não as repito aqui para não alongar demais)
@@ -215,8 +259,8 @@ func _on_surface_changed(old_state: String, new_state: String) -> void:
 # 🧗 SUBIDA SUAVE COM TWEEN (quando sobe do chão)
 # =====================================================
 func _climb_to_ceiling_with_tween() -> void:
-	up_ray.enabled = true
-	side_ray.enabled = true
+	up_ray.enabled = false
+	side_ray.enabled = false
 	var fall_distance := 300.0
 	var fall_target := global_position + Vector2.DOWN.rotated(rotation) * fall_distance
 
