@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://cgx0tclss2wsf"]
 
-[ext_resource type="Script" uid="uid://bi7ajwk42n3cg" path="res://Scripts/Levels/Rooms/Room.gd" id="1_lclgi"]
+[ext_resource type="Script" uid="uid://ct01pbvhd6qwn" path="res://Scripts/Levels/Rooms/Room.gd" id="1_lclgi"]
 
 [node name="Room" type="Node2D" node_paths=PackedStringArray("enemies_node")]
 script = ExtResource("1_lclgi")
@@ -10,7 +10,7 @@ enemies_node = NodePath("Enemies")
 
 [node name="Tilemaps" type="Node2D" parent="."]
 
-[node name="Terrain" type="TileMapLayer" parent="Tilemaps"]
+[node name="Terrain" type="TileMapLayer" parent="Tilemaps" groups=["Attachables"]]
 
 [node name="Background" type="TileMapLayer" parent="Tilemaps"]
 

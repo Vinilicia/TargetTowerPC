@@ -1,7 +1,7 @@
 extends Control
 
 @export var brightness_container : MarginContainer
-@export var environment : WorldEnvironment
+@onready var environment : WorldEnvironment = get_tree().get_first_node_in_group("Environment")
 
 # --- Resoluções ---
 var res1 : Vector2i = Vector2i(1280, 720)

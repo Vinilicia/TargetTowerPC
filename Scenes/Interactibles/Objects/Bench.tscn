@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=3 uid="uid://x2pfg4af3syy"]
+
+[ext_resource type="Script" uid="uid://cvjvyn7evrgi8" path="res://Scripts/Levels/UtilityPrefabs/bench.gd" id="1_ddysv"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_dih4k"]
+
+[node name="Bench" type="Node2D"]
+script = ExtResource("1_ddysv")
+
+[node name="CollisionArea" type="Area2D" parent="."]
+collision_layer = 0
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="CollisionArea"]
+scale = Vector2(10, 10)
+shape = ExtResource("2_dih4k")
+
+[connection signal="body_entered" from="CollisionArea" to="." method="_on_player_entered"]
+[connection signal="body_exited" from="CollisionArea" to="." method="_on_player_exited"]

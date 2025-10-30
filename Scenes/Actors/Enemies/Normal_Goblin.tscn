@@ -3,13 +3,13 @@
 [ext_resource type="Script" uid="uid://dihwtmdgfkujj" path="res://Scripts/Actors/Enemies/normal_goblin.gd" id="1_lcxwn"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_qs8xc"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_o035q"]
-[ext_resource type="Script" uid="uid://beo34a6qi0ttu" path="res://addons/godot_state_charts/state_chart.gd" id="3_wqmh0"]
-[ext_resource type="Script" uid="uid://cth0laac3cf4q" path="res://addons/godot_state_charts/compound_state.gd" id="4_mqlfr"]
-[ext_resource type="Script" uid="uid://dd6f2vcedhvly" path="res://addons/godot_state_charts/atomic_state.gd" id="5_esu5x"]
-[ext_resource type="Script" uid="uid://chr1mtwhkuwmm" path="res://addons/godot_state_charts/transition.gd" id="6_787da"]
-[ext_resource type="Texture2D" uid="uid://hwva6yon4mcy" path="res://icon.svg" id="7_rg2yg"]
+[ext_resource type="Script" uid="uid://c3dea8ukk4f5c" path="res://addons/godot_state_charts/state_chart.gd" id="3_wqmh0"]
+[ext_resource type="Script" uid="uid://csj60p0c2v1g6" path="res://addons/godot_state_charts/compound_state.gd" id="4_mqlfr"]
+[ext_resource type="Script" uid="uid://c71cw33hmp6ru" path="res://addons/godot_state_charts/atomic_state.gd" id="5_esu5x"]
+[ext_resource type="Script" uid="uid://oinxiusrjkq7" path="res://addons/godot_state_charts/transition.gd" id="6_787da"]
+[ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="7_rg2yg"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_7fg1c"]
-[ext_resource type="Script" uid="uid://bpe6nh7g0ks4t" path="res://Scripts/Components/Health_manager.gd" id="9_jgpfp"]
+[ext_resource type="Script" uid="uid://bdlibc1q2ghhl" path="res://Scripts/Components/Health_manager.gd" id="9_jgpfp"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="10_jabsr"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_3ax3k"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="14_vxjof"]
@@ -286,6 +286,7 @@ script = ExtResource("5_esu5x")
 script = ExtResource("6_787da")
 to = NodePath("../../Chasing")
 event = &"Chase_Player"
+delay_in_seconds = "0.0"
 
 [node name="Chasing" type="Node" parent="WhiteNodes/StateChart/StateTree"]
 script = ExtResource("5_esu5x")
@@ -294,11 +295,13 @@ script = ExtResource("5_esu5x")
 script = ExtResource("6_787da")
 to = NodePath("../../Guarding")
 event = &"Guard"
+delay_in_seconds = "0.0"
 
 [node name="ToAttack" type="Node" parent="WhiteNodes/StateChart/StateTree/Chasing"]
 script = ExtResource("6_787da")
 to = NodePath("../../Attack")
 event = &"Attack"
+delay_in_seconds = "0.0"
 
 [node name="Attack" type="Node" parent="WhiteNodes/StateChart/StateTree"]
 script = ExtResource("5_esu5x")
@@ -307,6 +310,7 @@ script = ExtResource("5_esu5x")
 script = ExtResource("6_787da")
 to = NodePath("../../Chasing")
 event = &"Chase"
+delay_in_seconds = "0.0"
 
 [connection signal="area_entered" from="Areas/OuterArrowDetector" to="." method="_on_outer_detector_entered"]
 [connection signal="area_exited" from="Areas/OuterArrowDetector" to="." method="_on_outer_detector_exited"]

@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://drfycye8vmmuq"]
 
-[ext_resource type="Script" uid="uid://dy5rs61ompsov" path="res://Scenes/Menus&UI/main_menu.gd" id="1_25my1"]
 [ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_asgyp"]
-[ext_resource type="Shader" uid="uid://ccj2q0ecjsj7t" path="res://Themes/Shaders/blur.gdshader" id="1_jto2k"]
+[ext_resource type="Shader" uid="uid://2h3v8j8285h0" path="res://Themes/Shaders/blur.gdshader" id="1_jto2k"]
 [ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Settings_Menu.tscn" id="2_25my1"]
+[ext_resource type="Script" uid="uid://ckviptrb7ospa" path="res://Scripts/Menus&UI/main_menu.gd" id="2_asgyp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_asgyp"]
 shader = ExtResource("1_jto2k")
@@ -18,7 +18,7 @@ anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
 theme = ExtResource("1_asgyp")
-script = ExtResource("1_25my1")
+script = ExtResource("2_asgyp")
 settings_menu = NodePath("SettingsMenu")
 buttons_container = NodePath("ButtonsContainer")
 back_to_title_menu = NodePath("BackToTItleMenu")
@@ -100,19 +100,19 @@ size_flags_horizontal = 4
 size_flags_vertical = 10
 
 [node name="YesButton" type="Button" parent="BackToTItleMenu/VBoxContainer/ButtonsContainer"]
-custom_minimum_size = Vector2(40, 20)
+custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 focus_neighbor_left = NodePath("../NoButton")
 text = "Yes"
 
 [node name="NoButton" type="Button" parent="BackToTItleMenu/VBoxContainer/ButtonsContainer"]
-custom_minimum_size = Vector2(40, 20)
+custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 size_flags_horizontal = 10
 focus_neighbor_right = NodePath("../YesButton")
 text = "No"
 
-[connection signal="pressed" from="SettingsMenu/MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/CloseButton" to="." method="close_settings"]
+[connection signal="pressed" from="SettingsMenu/MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/BackButton" to="." method="close_settings"]
 [connection signal="pressed" from="ButtonsContainer/VBoxContainer/ResumeButton" to="." method="close_menu"]
 [connection signal="pressed" from="ButtonsContainer/VBoxContainer/SettingsButton" to="." method="open_settings"]
 [connection signal="pressed" from="ButtonsContainer/VBoxContainer/BackToTitleButton" to="." method="open_back_to_title"]

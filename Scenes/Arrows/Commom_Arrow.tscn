@@ -22,7 +22,7 @@ Despawn_Time = 3.0
 
 [node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_2so76")]
 position = Vector2(2, 0)
-scale = Vector2(18, 7)
+scale = Vector2(18, 5)
 collision_layer = 256
 monitorable = false
 parent = NodePath("..")
@@ -45,7 +45,6 @@ shape = ExtResource("3_3qgj2")
 [node name="Anim_Player" type="AnimationPlayer" parent="."]
 
 [node name="Arrow_Trail" parent="." instance=ExtResource("3_wms8w")]
-process_mode = 4
 gradient = SubResource("Gradient_rhvf2")
 
 [connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]

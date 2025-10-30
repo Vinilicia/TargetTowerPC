@@ -12,6 +12,7 @@ resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
 
 [node name="Arrow" type="CharacterBody2D" node_paths=PackedStringArray("anim", "sprite", "hitbox")]
+modulate = Color(0.192157, 0.0862745, 0.027451, 1)
 collision_layer = 0
 collision_mask = 0
 safe_margin = 1.0
@@ -29,11 +30,12 @@ offset = Vector2(0, 0.5)
 [node name="Anim_Player" type="AnimationPlayer" parent="."]
 
 [node name="Arrow_Trail" parent="." instance=ExtResource("4_5kcse")]
+modulate = Color(0.192157, 0.0862745, 0.027451, 1)
 gradient = SubResource("Gradient_fvltu")
 
 [node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_fh7sq")]
 position = Vector2(2, 0)
-scale = Vector2(18, 7)
+scale = Vector2(18, 5)
 collision_layer = 256
 monitorable = false
 parent = NodePath("..")
@@ -44,7 +46,7 @@ shape = ExtResource("6_sgxhr")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 
 [node name="Coll" type="CollisionShape2D" parent="."]
-position = Vector2(6, 0.5)
+position = Vector2(6, 0)
 scale = Vector2(4, 4)
 shape = ExtResource("6_fh7sq")
 

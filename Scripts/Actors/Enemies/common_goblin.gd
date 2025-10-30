@@ -70,7 +70,7 @@ var can_stab_attack : bool = true
 var player_in_range : bool = false
 var start_attack : bool = false
 var current_speed_multiplier : float = 1.0
-
+var stopped : bool = false
 
 # ======================
 # CICLO DE VIDA
@@ -83,7 +83,7 @@ func _ready() -> void:
 var is_falling : bool = false
 
 func _physics_process(delta: float) -> void:
-	if not (attacking or player_in_range):
+	if not (attacking or player_in_range) and !stopped:
 		v_component.set_proper_velocity(current_speed * direction * current_speed_multiplier, 1)
 	
 	if not is_on_floor():
@@ -94,7 +94,7 @@ func _physics_process(delta: float) -> void:
 				is_jumping = false
 				is_falling = false
 				v_component.set_proper_velocity(0.0, 2)
-		else:
+		elif !attacking:
 			is_falling = false
 			v_component.set_proper_velocity(0.0, 2)
 	
@@ -194,7 +194,7 @@ func jump_attack() -> void:
 	can_stab_attack = false
 	if !stab_attack_timer.is_stopped():
 		stab_attack_timer.stop()
-	v_component.set_proper_velocity(Vector2(100 * direction, -80))
+	v_component.set_proper_velocity(Vector2(90 * direction, -70))
 	attack()
 	_reset_cooldown(jump_attack_timer)
 	_reset_cooldown(stab_attack_timer)
@@ -224,7 +224,7 @@ func jump() -> void:
 	is_jumping = true
 	v_component.set_proper_velocity(jump_force, 2)
 
-func _on_attack_state_physics_processing() -> void:
+func _on_attack_state_physics_processing(_delta : float) -> void:
 	if is_on_floor():
 		v_component.set_proper_velocity(0.0, 1)
 		if player_in_range and can_stab_attack:
@@ -246,16 +246,19 @@ func _on_chasing_state_physics_processing(_delta: float) -> void:
 	var no_ground := !ground_detector.is_colliding()
 	var can_fall := fall_detector.is_colliding()
 
-	if (hit_wall or no_ground):
+	if (hit_wall or no_ground) and is_on_floor():
 		var can_jump_now : bool = can_jump and !is_jumping and is_on_floor()
-		var enough_y_dist = (player_target.global_position.y - global_position.y) < -10
+		var enough_y_dist = (player_target.global_position.y - global_position.y) > 10
 		var enough_x_dist = (player_target.global_position.x - global_position.x) * direction > 15 * direction
-		if hit_wall and can_jump_now and enough_x_dist and enough_y_dist:
+		if hit_wall and can_jump_now and enough_x_dist:
 			jump()
-		elif no_ground and can_fall:
+		elif no_ground and can_fall and enough_y_dist:
 			pass
-		else:
+		elif !stopped:
+			stopped = true
 			v_component.set_proper_velocity(0.0, 1)
+	else:
+		stopped = false
 
 	if not _player_visible_in_sight() and saw_player:
 		if giving_up_timer.is_stopped():
@@ -356,6 +359,7 @@ func _on_hurtbox_got_hit_by(hitbox: Hitbox) -> void:
 
 func _on_guarding_state_entered() -> void:
 	current_speed = walk_speed
+	stopped = false
 
 func _on_chasing_state_entered() -> void:
 	current_speed = chase_speed
