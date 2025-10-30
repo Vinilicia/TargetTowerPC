@@ -78,8 +78,17 @@ func instantiate_main_menu() -> void:
 func load_save(save_id) -> void:
 	var save_load_manager : SaveLoadManager = SaveLoadManager.new()
 	save_load_manager._load(save_id)
-	var scene_path := "res://Scenes/Levels/Areas/Area1/Room%d.tscn" % save_load_manager.save_file_data.get_last_bench_id()
+	
+	var bench_id := save_load_manager.save_file_data.get_last_bench_id()
+	var area_id := save_load_manager.save_file_data.get_area_of_bench()
+	
+	var scene_path := "res://Scenes/Levels/Areas/Area%d/Room%d.tscn" % [area_id, bench_id]
+	
+	if not ResourceLoader.exists(scene_path):
+		push_error("❌ Cena não encontrada: %s" % scene_path)
+		return
 	var room_scene: PackedScene = load(scene_path)
+	
 	visible = false
 	instantiate_main_menu()
 	game.save_id = save_id

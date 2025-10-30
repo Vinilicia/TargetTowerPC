@@ -4,46 +4,43 @@ class_name Portal
 
 @export var spawn_position: Vector2
 
-# 🔹 Mantém o enum exportado normalmente
+# 🔹 Enum exportado normalmente
 @export var area: LevelDatabase.Areas = LevelDatabase.Areas.AREA_1:
 	set(value):
 		if area != value:
 			area = value
-			_update_target_level_list() # atualiza o dropdown e o valor atual
-
+			_update_target_level_list() # Atualiza o dropdown e o valor atual
 
 var target_level_name: String = ""
 
 const DB_PATH := "res://Data/LevelDB.tres"
 
 
-# 🔹 Atualiza a lista de levels e define o primeiro como ativo
-func _update_target_level_list():
-	var database: LevelDatabase = null
+# ------------------------------------------------------------
+# 🔹 Atualiza a lista de níveis e define o primeiro como ativo
+# ------------------------------------------------------------
+func _update_target_level_list() -> void:
+	var database := _get_database()
+	if database == null:
+		push_warning("⚠️ LevelDatabase não encontrado ao tentar atualizar dropdown.")
+		return
 
-	if Engine.is_editor_hint():
-		database = load(DB_PATH) as LevelDatabase
+	var level_names: Array = database.get_level_names(area)
+	if level_names.size() > 0:
+		target_level_name = level_names[0] # 🟢 define o primeiro da lista como padrão
 	else:
-		if Engine.has_singleton("LevelDB"):
-			database = LevelDB.database as LevelDatabase
-
-	if database:
-		var level_names: Array = database.get_level_names(area)
-		if level_names.size() > 0:
-			target_level_name = level_names[0]  # 🟢 define o primeiro da lista como padrão
+		target_level_name = ""
+	
+	# Atualiza a lista de propriedades no editor
 	notify_property_list_changed()
 
 
-# 🔹 Só recria o dropdown do nome
+# ------------------------------------------------------------
+# 🔹 Constrói o dropdown de nomes no editor
+# ------------------------------------------------------------
 func _get_property_list() -> Array:
 	var props: Array = []
-	var database: LevelDatabase = null
-
-	if Engine.is_editor_hint():
-		database = load(DB_PATH) as LevelDatabase
-	else:
-		if Engine.has_singleton("LevelDB"):
-			database = LevelDB.database as LevelDatabase
+	var database := _get_database()
 
 	if database:
 		var level_names: Array = database.get_level_names(area)
@@ -64,18 +61,40 @@ func _get_property_list() -> Array:
 	return props
 
 
-func _set(property, value):
+# ------------------------------------------------------------
+# 🔹 Getters e setters de propriedades
+# ------------------------------------------------------------
+func _set(property: StringName, value) -> bool:
 	if property == "target_level_name":
 		target_level_name = value
 		return true
 	return false
 
 
-func _get(property):
+func _get(property: StringName):
 	if property == "target_level_name":
 		return target_level_name
 	return null
 
+
+# ------------------------------------------------------------
+# 🔹 Helper: obtém o banco de dados de forma segura
+# ------------------------------------------------------------
+func _get_database() -> LevelDatabase:
+	if Engine.is_editor_hint():
+		return load(DB_PATH) as LevelDatabase
+	elif Engine.has_singleton("LevelDB"):
+		return LevelDB.database as LevelDatabase
+	return null
+
+
+# ------------------------------------------------------------
+# 🔹 Lógica de entrada do jogador no portal
+# ------------------------------------------------------------
 func _on_body_entered(_body: Node2D) -> void:
 	var game: Game = get_tree().get_first_node_in_group("Game")
+	if game == null:
+		push_error("❌ Nó 'Game' não encontrado na cena!")
+		return
+
 	game.change_level(target_level_name, spawn_position)

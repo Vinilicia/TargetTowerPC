@@ -1,45 +1,43 @@
-@tool
 extends Resource
 class_name LevelDatabase
 
-# ---------------------------------------------------------
-# Dicionários separados por área
-# ---------------------------------------------------------
-@export var area_1_levels: Dictionary[String, String] = {}
-@export var area_2_levels: Dictionary[String, String] = {}
-@export var area_3_levels: Dictionary[String, String] = {}
+enum Areas { AREA_1, AREA_2 }
 
-# Enum para as áreas — usado no portal
-enum Areas {
-	AREA_1,
-	AREA_2,
-	AREA_3
-}
+# Caminho base onde ficam as áreas
+const BASE_PATH := "res://Scenes/Levels/Areas/"
 
-# ---------------------------------------------------------
-# Métodos utilitários
-# ---------------------------------------------------------
-
-func get_area_names() -> Array[String]:
-	return ["AREA_1", "AREA_2", "AREA_3"]
-
-func get_levels_for_area(area: Areas) -> Dictionary[String, String]:
+# Retorna o nome da área (string) com base no enum
+func get_area_name(area: Areas) -> String:
 	match area:
 		Areas.AREA_1:
-			return area_1_levels
+			return "Area1"
 		Areas.AREA_2:
-			return area_2_levels
-		Areas.AREA_3:
-			return area_3_levels
+			return "Area2"
 		_:
-			return {}
+			return ""
 
+
+# 🔹 Lista os nomes dos levels dentro da área
 func get_level_names(area: Areas) -> Array[String]:
-	return get_levels_for_area(area).keys()
+	var dir := DirAccess.open(BASE_PATH + get_area_name(area))
+	if dir == null:
+		return []
+	var result: Array[String] = []
+	dir.list_dir_begin()
+	var file_name := dir.get_next()
+	while file_name != "":
+		if file_name.begins_with("Room"):
+			result.append(file_name.get_basename())
+		file_name = dir.get_next()
+	dir.list_dir_end()
+	return result
 
+
+# 🔹 Retorna o caminho completo do level
 func get_level_path(area: Areas, level_name: String) -> String:
-	var levels = get_levels_for_area(area)
-	if levels.has(level_name):
-		return levels[level_name]
-	push_warning("Level '%s' não encontrado na área %s" % [level_name, str(area)])
-	return ""
+	return "%s%s/%s.tscn" % [BASE_PATH, get_area_name(area), level_name]
+
+
+# 🔹 Lista todas as áreas por nome (para o dropdown)
+func get_area_names() -> Array[String]:
+	return ["Area1", "Area2"]
