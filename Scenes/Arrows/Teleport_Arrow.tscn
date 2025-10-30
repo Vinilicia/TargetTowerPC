@@ -12,7 +12,7 @@ resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
 
 [node name="Arrow" type="CharacterBody2D" node_paths=PackedStringArray("anim", "sprite", "hitbox")]
-modulate = Color(0.68119, 0.0305027, 0.680791, 1)
+modulate = Color(0, 0.333333, 0.454902, 1)
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_1yo7r")
@@ -34,12 +34,12 @@ scale = Vector2(4, 5)
 shape = ExtResource("3_k3own")
 
 [node name="Arrow_Trail" parent="." instance=ExtResource("4_gbeok")]
-process_mode = 4
+modulate = Color(0, 0.333333, 0.454902, 1)
 gradient = SubResource("Gradient_j7lj7")
 
 [node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_1yo7r")]
 position = Vector2(2, 0)
-scale = Vector2(18, 7)
+scale = Vector2(18, 5)
 collision_layer = 256
 monitorable = false
 parent = NodePath("..")

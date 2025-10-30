@@ -11,6 +11,7 @@ resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
 
 [node name="Arrow_Trail" type="Line2D"]
+self_modulate = Color(1, 1, 1, 0.392157)
 show_behind_parent = true
 top_level = true
 z_index = -5
