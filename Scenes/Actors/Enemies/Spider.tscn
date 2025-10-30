@@ -36,12 +36,12 @@ shape = ExtResource("2_lo6vr")
 
 [node name="UpRaycast" type="RayCast2D" parent="." index="2"]
 target_position = Vector2(0, -300)
-collision_mask = 5
+collision_mask = 21
 
 [node name="DownRaycast" type="RayCast2D" parent="." index="3"]
 target_position = Vector2(0, 12)
-collision_mask = 4
+collision_mask = 20
 
 [node name="FrontRaycast" type="RayCast2D" parent="." index="4"]
 target_position = Vector2(7, 0)
-collision_mask = 4
+collision_mask = 20

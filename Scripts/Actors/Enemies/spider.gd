@@ -158,13 +158,6 @@ func _rotate_and_snap(degrees: float, duration := 0.3) -> void:
 	var to_pivot := start_position - pivot
 	var radius := to_pivot.length()
 	
-	print("\n================ ROTATE DEBUG START ================")
-	print("→ Initial Rotation (deg): ", rad_to_deg(start_rotation))
-	print("→ Target Rotation (deg):  ", degrees)
-	print("→ Initial MoveDir:        ", movedir)
-	print("→ Initial Surface State:  ", surface_state)
-	print("===================================================\n")
-	
 	# Tween de rotação
 	var tween := create_tween()
 	tween.tween_method(func(value):
@@ -175,19 +168,12 @@ func _rotate_and_snap(degrees: float, duration := 0.3) -> void:
 	, 0.0, 1.0, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 	await tween.finished
-	
-	print("\n================ ROTATE DEBUG END ==================")
-	print("→ Final Rotation (deg):   ", rad_to_deg(rotation))
-	print("→ Final MoveDir:          ", movedir)
-	print("→ Final Surface State:    ", surface_state)
-	print("===================================================\n")
 
 	
 	# Pós-rotação
 	await get_tree().process_frame
 	down_ray.force_raycast_update()
 	if down_ray.is_colliding():
-		print("AA")
 		update_direction()
 		_update_surface_state()
 	else:

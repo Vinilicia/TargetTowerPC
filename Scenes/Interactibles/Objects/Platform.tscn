@@ -29,6 +29,7 @@ monitorable = false
 
 [node name="Coll" type="CollisionShape2D" parent="Platform/PlayerDetectorArea"]
 shape = ExtResource("2_6op5a")
+debug_color = Color(0.2, 0.0941176, 0.0392157, 1)
 
 [node name="Sprite" type="Sprite2D" parent="."]
 
