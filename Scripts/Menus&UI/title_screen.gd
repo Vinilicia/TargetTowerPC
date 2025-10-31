@@ -12,15 +12,17 @@ extends Control
 
 @export var save_file_buttons : Array[Button]
 
+var save_load_manager : SaveLoadManager = SaveLoadManager.new()
 var save_selected : int = 1
+var on_copy : bool = false
 
 func _ready() -> void:
-	var save_load_manager : SaveLoadManager = SaveLoadManager.new()
 	for button in save_file_buttons:
 		button.initialize(save_load_manager)
 	find_child("PlayButton").grab_focus()
 
 func return_menu_from_game() -> void:
+	_ready()
 	game_layer.visible = false
 	visible = true
 	title_menu.visible = true
@@ -65,21 +67,29 @@ func quit() -> void:
 	get_tree().quit()
 
 func save_file_1_button_pressed() -> void:
-	load_save(1)
+	button_pressed(1)
 	
 func save_file_2_button_pressed() -> void:
-	load_save(2)
+	button_pressed(2)
 
 func save_file_3_button_pressed() -> void:
-	load_save(3)
+	button_pressed(3)
 
+func button_pressed(button_id : int) -> void:
+	edit_buttons.visible = true
+	save_file_buttons[button_id-1].grab_focus()
+	save_selected = button_id
+	if on_copy:
+		on_copy = false
+		save_load_manager._save(save_selected)
+		print("Save copiado")
+	
 func instantiate_main_menu() -> void:
 	var main_menu = load(main_menu_path).instantiate()
 	main_menu.title_screen = self
 	get_parent().add_child(main_menu)
 
 func load_save(save_id) -> void:
-	var save_load_manager : SaveLoadManager = SaveLoadManager.new()
 	save_load_manager._load(save_id)
 	
 	var bench_id := save_load_manager.save_file_data.get_last_bench_id()
@@ -96,3 +106,19 @@ func load_save(save_id) -> void:
 	instantiate_main_menu()
 	game.save_id = save_id
 	game.load_room(room_scene, save_load_manager)
+
+
+func open_button_pressed() -> void:
+	on_copy = false
+	load_save(save_selected)
+	
+func copy_button_pressed() -> void:
+	on_copy = true
+	save_load_manager._load(save_selected)
+
+func erase_button_pressed() -> void:
+	on_copy = false
+	var save_load : SaveLoadManager = SaveLoadManager.new()
+	save_load._save(save_selected)
+	print("Save deletado")
+	
