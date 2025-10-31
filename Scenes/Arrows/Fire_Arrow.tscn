@@ -3,7 +3,7 @@
 [ext_resource type="Script" uid="uid://co4js5cxxb3v8" path="res://Scripts/Arrows/Fire_Arrow.gd" id="1_futqs"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_1pd68"]
 [ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="3_mwrs1"]
-[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="4_55mib"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="4_futqs"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="5_x8nla"]
 [ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Scenes/Actions-Reactions/Fire.tscn" id="6_p51ot"]
 
@@ -43,7 +43,7 @@ Damage = 1.0
 metadata/_custom_type_script = "uid://dj6mgwavv4r6f"
 
 [node name="Coll" type="CollisionShape2D" parent="Hitbox"]
-shape = ExtResource("4_55mib")
+shape = ExtResource("4_futqs")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 
 [node name="Arrow_Trail" parent="." instance=ExtResource("5_x8nla")]
@@ -53,7 +53,7 @@ gradient = SubResource("Gradient_wcnxp")
 [node name="Coll" type="CollisionShape2D" parent="."]
 position = Vector2(6, 0)
 scale = Vector2(4, 3)
-shape = ExtResource("4_55mib")
+shape = ExtResource("4_futqs")
 
 [node name="Fire" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("6_p51ot")]
 position = Vector2(6, 0)

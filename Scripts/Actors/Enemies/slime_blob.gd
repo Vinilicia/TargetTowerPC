@@ -1,4 +1,7 @@
 extends RigidBody2D
+class_name SlimeBlob
+
+@export var max_height : float = 30.0
 
 func _ready() -> void:
 	await get_tree().create_timer(5).timeout
@@ -12,11 +15,11 @@ func throw(position_target : Vector2) -> void:
 	var g = 784
 	var yMax
 	if round(yf - y0) == 3:
-		yMax = y0 - 20
+		yMax = y0 - max_height - 10
 	elif yf < y0:
-		yMax = yf - 30
+		yMax = yf - max_height
 	else:
-		yMax = y0 - 30
+		yMax = y0 - max_height
 	var vy = sqrt(2*g*abs(yMax-y0))
 	var t1 = vy/g
 	var t2 = sqrt(2*(yf-yMax)/g)

@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://m138swax5ui7"]
+
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_1l1bj"]
+
+[node name="FireArea" type="Area2D"]
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+shape = ExtResource("1_1l1bj")

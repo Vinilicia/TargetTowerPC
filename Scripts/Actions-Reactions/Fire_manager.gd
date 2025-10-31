@@ -25,12 +25,7 @@ func _ready() -> void:
 	hurtbox.call_deferred("add_child", new_coll)
 	hurtbox.set_deferred("scale", ref_hurtbox.scale)
 
-func is_fire(hitbox : Hitbox) -> bool:
-	return hitbox.get_collision_layer_value(13)
-
 func _hurtbox_got_hit(hitbox: Hitbox) -> void:
-	if !is_fire(hitbox):
-		return
 	overlapping_fire_count += 1
 	if on_fire and !can_stack:
 		return
