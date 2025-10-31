@@ -23,7 +23,6 @@ tile_map_data = PackedByteArray("AAAAAP//AAAFAA8AAAAAAP7/AAAFAAwAAAAAAP3/AAAFAAM
 [node name="Portal" parent="Portals" index="0" instance=ExtResource("3_h0g2s")]
 position = Vector2(600, -112)
 spawn_position = Vector2(100, -100)
-target_level_name = "Room1"
 
 [node name="Bench" parent="." index="3" instance=ExtResource("4_8dk6u")]
 position = Vector2(95, -69)
