@@ -8,8 +8,11 @@ extends Control
 @export var settings_menu : Control
 @export var file_select_menu : MarginContainer
 @export var quit_menu : MarginContainer
+@export var edit_buttons : HBoxContainer
 
 @export var save_file_buttons : Array[Button]
+
+var save_selected : int = 1
 
 func _ready() -> void:
 	var save_load_manager : SaveLoadManager = SaveLoadManager.new()
