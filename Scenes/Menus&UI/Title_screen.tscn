@@ -5,7 +5,7 @@
 [ext_resource type="Script" uid="uid://drtwo6544din5" path="res://Scripts/Menus&UI/title_screen.gd" id="2_wie5w"]
 [ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Settings_Menu.tscn" id="5_fiu88"]
 
-[node name="TitleScreen" type="Control" node_paths=PackedStringArray("title_menu", "settings_menu", "file_select_menu", "quit_menu", "save_file_buttons")]
+[node name="TitleScreen" type="Control" node_paths=PackedStringArray("title_menu", "settings_menu", "file_select_menu", "quit_menu", "edit_buttons", "save_file_buttons")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -19,6 +19,7 @@ title_menu = NodePath("TitleMenu")
 settings_menu = NodePath("SettingsMenu")
 file_select_menu = NodePath("FileSelectMenu")
 quit_menu = NodePath("QuitMenu")
+edit_buttons = NodePath("FileSelectMenu/VBoxContainer/EditButtonsContainer")
 save_file_buttons = [NodePath("FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton"), NodePath("FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton2"), NodePath("FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton3")]
 
 [node name="Background" type="TextureRect" parent="."]
@@ -97,7 +98,7 @@ size_flags_vertical = 0
 focus_neighbor_left = NodePath("../SaveFileButton3")
 focus_neighbor_top = NodePath("../../BackButton")
 focus_neighbor_right = NodePath("../SaveFileButton2")
-focus_neighbor_bottom = NodePath("../../EditButtonsContainer/CopyButton")
+focus_neighbor_bottom = NodePath("../../EditButtonsContainer/OpenButton")
 
 [node name="SaveFileButton2" parent="FileSelectMenu/VBoxContainer/SaveProfilesContainer" instance=ExtResource("2_vl33i")]
 layout_mode = 2
@@ -106,7 +107,7 @@ size_flags_vertical = 0
 focus_neighbor_left = NodePath("../SaveFileButton")
 focus_neighbor_top = NodePath("../../BackButton")
 focus_neighbor_right = NodePath("../SaveFileButton3")
-focus_neighbor_bottom = NodePath("../../EditButtonsContainer/CopyButton")
+focus_neighbor_bottom = NodePath("../../EditButtonsContainer/OpenButton")
 save_slot = 2
 
 [node name="SaveFileButton3" parent="FileSelectMenu/VBoxContainer/SaveProfilesContainer" instance=ExtResource("2_vl33i")]
@@ -120,9 +121,21 @@ focus_neighbor_bottom = NodePath("../../EditButtonsContainer/EraseButton")
 save_slot = 3
 
 [node name="EditButtonsContainer" type="HBoxContainer" parent="FileSelectMenu/VBoxContainer"]
+visible = false
 layout_mode = 2
 size_flags_vertical = 3
 theme_override_constants/separation = 120
+
+[node name="OpenButton" type="Button" parent="FileSelectMenu/VBoxContainer/EditButtonsContainer"]
+custom_minimum_size = Vector2(80, 0)
+layout_mode = 2
+size_flags_horizontal = 10
+focus_neighbor_left = NodePath("../EraseButton")
+focus_neighbor_top = NodePath("../../SaveProfilesContainer/SaveFileButton")
+focus_neighbor_right = NodePath("../EraseButton")
+focus_neighbor_bottom = NodePath("../../BackButton")
+text = "Open
+"
 
 [node name="CopyButton" type="Button" parent="FileSelectMenu/VBoxContainer/EditButtonsContainer"]
 custom_minimum_size = Vector2(80, 0)
@@ -138,9 +151,9 @@ text = "Copy"
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 2
-focus_neighbor_left = NodePath("../CopyButton")
+focus_neighbor_left = NodePath("../OpenButton")
 focus_neighbor_top = NodePath("../../SaveProfilesContainer/SaveFileButton3")
-focus_neighbor_right = NodePath("../CopyButton")
+focus_neighbor_right = NodePath("../OpenButton")
 focus_neighbor_bottom = NodePath("../../BackButton")
 text = "Erase"
 
@@ -149,7 +162,7 @@ custom_minimum_size = Vector2(120, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
-focus_neighbor_top = NodePath("../EditButtonsContainer/CopyButton")
+focus_neighbor_top = NodePath("../EditButtonsContainer/OpenButton")
 focus_neighbor_bottom = NodePath("../SaveProfilesContainer/SaveFileButton")
 text = "Back"
 
@@ -204,6 +217,9 @@ text = "No"
 [connection signal="pressed" from="FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton" to="." method="save_file_1_button_pressed"]
 [connection signal="pressed" from="FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton2" to="." method="save_file_2_button_pressed"]
 [connection signal="pressed" from="FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton3" to="." method="save_file_3_button_pressed"]
+[connection signal="pressed" from="FileSelectMenu/VBoxContainer/EditButtonsContainer/OpenButton" to="." method="open_button_pressed"]
+[connection signal="pressed" from="FileSelectMenu/VBoxContainer/EditButtonsContainer/CopyButton" to="." method="copy_button_pressed"]
+[connection signal="pressed" from="FileSelectMenu/VBoxContainer/EditButtonsContainer/EraseButton" to="." method="erase_button_pressed"]
 [connection signal="pressed" from="FileSelectMenu/VBoxContainer/BackButton" to="." method="hide_file_select"]
 [connection signal="pressed" from="SettingsMenu/MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/BackButton" to="." method="hide_settings_menu"]
 [connection signal="pressed" from="QuitMenu/VBoxContainer/ButtonsContainer/YesButton" to="." method="quit"]
