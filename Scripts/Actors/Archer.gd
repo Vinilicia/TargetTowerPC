@@ -98,7 +98,7 @@ var enemies_on_sight: Array = []
 var last_safe_position : Vector2
 var frames_until_check : int = 0
 var locked_walk: bool = false
-var available_arrows: Array[bool] = [false, false, false, false, false, false, false, false]
+var available_arrows: Array[bool] = [true, false, false, false, false, false, false, false, false]
 
 # ============================================================
 # READY
@@ -192,7 +192,7 @@ func handle_combat_inputs() -> void:
 		combat.can_dodge = true
 	
 	if Input.is_action_just_pressed("switch arrow"):
-		current_arrow_index = (current_arrow_index + 1) % 4
+		current_arrow_index = (current_arrow_index + 1) % 9
 		current_arrow = equip_arrow(current_arrow_index)
 
 func try_dodge() -> void:
@@ -339,11 +339,14 @@ func move(facing_dir: int) -> void:
 	v_component.add_proper_velocity(Vector2(move_speed * facing_dir, 0))
 
 func equip_arrow(array_position: int) -> Arrow:
-	if available_arrows[array_position]:
-		var arrow: Arrow = load(arrow_paths[array_position]).instantiate()
-		arrow.position = arrow_spawn_point
-		return arrow
-	return current_arrow
+	while not available_arrows[array_position]:
+		array_position += 1
+		if array_position == available_arrows.size():
+			array_position = 0
+	var arrow: Arrow = load(arrow_paths[array_position]).instantiate()
+	arrow.position = arrow_spawn_point
+	current_arrow_index = array_position
+	return arrow
 
 func get_current_gravity(velocity_in_y: float) -> float:
 	return gravity if velocity_in_y < 0 else gravity * gravity_multiplier

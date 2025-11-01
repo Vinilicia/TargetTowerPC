@@ -5,10 +5,9 @@ extends Node2D
 
 var current_level: Room
 var save_id: int
-var tween: Tween
 var enemy_alive_persistence: Array[bool] = []
 var last_room_name: String = ""
-
+var tween: Tween
 
 func change_level(next_level: String, spawn_position: Vector2, area: LevelDatabase.Areas = LevelDatabase.Areas.AREA_1):
 	blackout_fade_in()
@@ -57,7 +56,6 @@ func spaw_player_on_bench() -> void:
 	await get_tree().create_timer(0.2).timeout
 	blackout_fade_out()
 
-
 func load_room(room_scene: PackedScene, save_load_manager: SaveLoadManager) -> void:
 	get_node("Player").wake_up(save_load_manager)
 	if current_level:
@@ -73,7 +71,7 @@ func blackout_fade_in() -> void:
 		tween.tween_property(blackout_rect, "modulate", Color(1, 1, 1, 1), 0.2)
 
 func blackout_fade_out() -> void:
-	if blackout_rect and tween:
+	if blackout_rect:
 		tween.stop()
 		tween = get_tree().create_tween()
 		tween.tween_property(blackout_rect, "modulate", Color(1, 1, 1, 0), 0.5)
