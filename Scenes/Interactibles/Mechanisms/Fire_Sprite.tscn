@@ -1,0 +1,35 @@
+[gd_scene load_steps=10 format=3 uid="uid://cuyr02d5ffhbw"]
+
+[ext_resource type="Texture2D" uid="uid://gx6aetvv68e4" path="res://Assets/Stolen/FireSprite/Fire-Loop1.png" id="1_d2h0y"]
+[ext_resource type="Texture2D" uid="uid://dsbhs3illb3aj" path="res://Assets/Stolen/FireSprite/Fire-Loop2.png" id="1_xwejc"]
+[ext_resource type="Texture2D" uid="uid://8h06xvmaiu3t" path="res://Assets/Stolen/FireSprite/Fire-Loop3.png" id="2_d2h0y"]
+[ext_resource type="Texture2D" uid="uid://cl5hmrs1cj31o" path="res://Assets/Stolen/FireSprite/Fire-Loop4.png" id="3_eatjt"]
+[ext_resource type="Texture2D" uid="uid://deb0qdru683jc" path="res://Assets/Stolen/FireSprite/Fire-Loop5.png" id="4_7mneh"]
+[ext_resource type="Texture2D" uid="uid://b7hp6k7hlvg64" path="res://Assets/Stolen/FireSprite/Fire-Loop6.png" id="5_uycs1"]
+[ext_resource type="Texture2D" uid="uid://047dr2nb77ev" path="res://Assets/Stolen/FireSprite/Fire-Loop7.png" id="6_bc0aj"]
+[ext_resource type="Texture2D" uid="uid://dkyknlbfyih1h" path="res://Assets/Stolen/FireSprite/Fire-Loop8.png" id="7_u6bfa"]
+
+[sub_resource type="AnimatedTexture" id="AnimatedTexture_uojqh"]
+frames = 8
+speed_scale = 10.0
+frame_0/texture = ExtResource("1_d2h0y")
+frame_1/texture = ExtResource("1_xwejc")
+frame_1/duration = 1.0
+frame_2/texture = ExtResource("2_d2h0y")
+frame_2/duration = 1.0
+frame_3/texture = ExtResource("3_eatjt")
+frame_3/duration = 1.0
+frame_4/texture = ExtResource("4_7mneh")
+frame_4/duration = 1.0
+frame_5/texture = ExtResource("5_uycs1")
+frame_5/duration = 1.0
+frame_6/texture = ExtResource("6_bc0aj")
+frame_6/duration = 1.0
+frame_7/texture = ExtResource("7_u6bfa")
+frame_7/duration = 1.0
+
+[node name="FireSprite" type="Sprite2D"]
+texture_repeat = 2
+texture = SubResource("AnimatedTexture_uojqh")
+region_enabled = true
+region_rect = Rect2(0, 0, 13, 24)

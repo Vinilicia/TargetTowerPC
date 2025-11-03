@@ -1,7 +1,7 @@
 extends SlimeBlob
 
 @export var player_detector : Area2D
-@export var wall_detector : Area2D
+@export var fire_spawn : PackedScene
 
 var disabled := true
 var is_inside_wall := false
@@ -12,8 +12,11 @@ func _physics_process(_delta: float) -> void:
 		hit_ground_last_time = true
 
 func explode() -> void:
+	var fire_area : Area2D = fire_spawn.instantiate()
+	get_parent().call_deferred("add_child", fire_area)
+	fire_area.set_deferred("width", 5)
+	fire_area.set_deferred("position", global_position + Vector2(0, -20))
 	queue_free()
-	pass
 
 func _on_player_detector_body_entered(_body: Node2D) -> void:
 	if linear_velocity.y > 0:
