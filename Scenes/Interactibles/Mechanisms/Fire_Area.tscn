@@ -6,15 +6,22 @@
 [ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Scenes/Actions-Reactions/Fire.tscn" id="4_s6yer"]
 
 [node name="FireArea" type="Area2D"]
+collision_layer = 0
+collision_mask = 20
 script = ExtResource("1_n67fk")
-width = 2
+extinguish_time = 2.0
+width = 3
+max_spread_distance = 54.0
+ground_check_distance = 20.0
+ground_layer = 3
 
 [node name="Coll" type="CollisionShape2D" parent="."]
-scale = Vector2(13, 22)
+visible = false
+scale = Vector2(37, 22)
 shape = ExtResource("1_1l1bj")
 
 [node name="FireSprite" parent="." instance=ExtResource("2_mr058")]
-region_rect = Rect2(0, 0, 26, 24)
+region_rect = Rect2(0, 0, 39, 24)
 
 [node name="Fire" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("4_s6yer")]
 scale_increase = Vector2(1, 1)

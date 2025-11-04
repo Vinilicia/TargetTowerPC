@@ -9,6 +9,8 @@ var tween: Tween
 var enemy_alive_persistence: Array[bool] = []
 var last_room_name: String = ""
 
+#func _ready() -> void:
+	#Engine.time_scale = 0.5
 
 func change_level(next_level: String, spawn_position: Vector2, area: LevelDatabase.Areas = LevelDatabase.Areas.AREA_1):
 	blackout_fade_in()
