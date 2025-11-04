@@ -5,10 +5,11 @@ extends SlimeBlob
 
 var disabled := true
 var hit_ground_last_time := false
+var inside_wall := false
 
 func _physics_process(delta: float) -> void:
 	
-	if disabled:
+	if disabled or inside_wall:
 		set_collision_mask_value(3, false)
 		super._physics_process(delta)
 		return
@@ -24,7 +25,7 @@ func _physics_process(delta: float) -> void:
 		if normal.y < -0.7: 
 			explode(collision.get_position())
 		else:
-			move_and_collide(velocity * delta)
+			position += velocity * delta
 	else:
 		move_and_collide(velocity * delta)
 
@@ -38,3 +39,14 @@ func explode(pos : Vector2) -> void:
 func _on_player_detector_body_entered(_body: Node2D) -> void:
 	if velocity.y > 0:
 		disabled = false
+
+
+func _on_wall_detector_body_entered(body: Node2D) -> void:
+	print("Entrou")
+	if disabled: 
+		inside_wall = true
+
+
+func _on_wall_detector_body_exited(body: Node2D) -> void:
+	print("Saiu")
+	inside_wall = false

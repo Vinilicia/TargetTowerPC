@@ -285,7 +285,8 @@ func handle_arrow_updates() -> void:
 # ============================================================
 func apply_gravity(delta: float) -> void:
 	if !is_on_floor():
-		v_component.add_proper_velocity(Vector2(0, get_current_gravity(velocity.y) * delta))
+		if v_component.get_proper_velocity(2) <= 300:
+			v_component.add_proper_velocity(Vector2(0, get_current_gravity(velocity.y) * delta))
 		state_chart.send_event("Falling" if velocity.y >= 0 else "Rising")
 
 func is_ledge_ahead() -> bool:
@@ -346,7 +347,7 @@ func equip_arrow(array_position: int) -> Arrow:
 	return current_arrow
 
 func get_current_gravity(velocity_in_y: float) -> float:
-	return gravity if velocity_in_y < 0 else gravity * gravity_multiplier
+	return gravity * 0.8 if velocity_in_y < 0 else gravity * gravity_multiplier
 
 func turn(facing_dir: int) -> void:
 	$Archer.scale.x = facing_dir

@@ -12,7 +12,6 @@ script = ExtResource("1_n67fk")
 extinguish_time = 2.0
 width = 3
 max_spread_distance = 54.0
-ground_check_distance = 20.0
 ground_layer = 3
 
 [node name="Coll" type="CollisionShape2D" parent="."]
