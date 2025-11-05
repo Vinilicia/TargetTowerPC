@@ -1,0 +1,43 @@
+[gd_scene load_steps=6 format=3 uid="uid://b4bovnk1knaou"]
+
+[ext_resource type="PackedScene" uid="uid://crq3crt20kp2r" path="res://Scenes/Actors/Enemies/Slime_Blob.tscn" id="1_vgo2h"]
+[ext_resource type="Script" uid="uid://mhy2tv4qowim" path="res://Scripts/Actors/Enemies/fire_slime_blob.gd" id="2_voox2"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="3_g115h"]
+[ext_resource type="PackedScene" uid="uid://m138swax5ui7" path="res://Scenes/Interactibles/Mechanisms/Fire_Area.tscn" id="3_pusew"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="5_pusew"]
+
+[node name="SlimeBlob" node_paths=PackedStringArray("player_detector") instance=ExtResource("1_vgo2h")]
+script = ExtResource("2_voox2")
+player_detector = NodePath("PlayerDetector")
+fire_spawn = ExtResource("3_pusew")
+max_height = 40.0
+
+[node name="Coll" parent="." index="1"]
+visible = false
+
+[node name="Hitbox" parent="." index="2" node_paths=PackedStringArray("parent")]
+visible = false
+parent = NodePath("..")
+
+[node name="PlayerDetector" type="Area2D" parent="." index="3"]
+visible = false
+rotation = 1.5708
+scale = Vector2(20, 300)
+collision_layer = 0
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="PlayerDetector" index="0"]
+shape = ExtResource("3_g115h")
+
+[node name="WallDetector" type="Area2D" parent="." index="4"]
+scale = Vector2(6, 6)
+collision_layer = 0
+collision_mask = 20
+
+[node name="Coll" type="CollisionShape2D" parent="WallDetector" index="0"]
+shape = ExtResource("5_pusew")
+debug_color = Color(1, 0.6, 0.701961, 0.498039)
+
+[connection signal="body_entered" from="PlayerDetector" to="." method="_on_player_detector_body_entered"]
+[connection signal="body_entered" from="WallDetector" to="." method="_on_wall_detector_body_entered"]
+[connection signal="body_exited" from="WallDetector" to="." method="_on_wall_detector_body_exited"]

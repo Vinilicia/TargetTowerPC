@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://trih87ps31u"]
 
-[ext_resource type="Script" uid="uid://3vjeb5i7qx0b" path="res://Scripts/Interactibles/Objects/Platform.gd" id="1_4arru"]
+[ext_resource type="Script" uid="uid://dkbt73v4lvbap" path="res://Scripts/Interactibles/Objects/Platform.gd" id="1_4arru"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_6op5a"]
 
 [node name="Platform_Spawner" type="Node2D" node_paths=PackedStringArray("player_detec")]

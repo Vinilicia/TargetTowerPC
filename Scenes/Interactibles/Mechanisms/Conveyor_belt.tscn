@@ -1,7 +1,7 @@
 [gd_scene load_steps=18 format=3 uid="uid://dgsguis2vqkm7"]
 
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_36qo6"]
-[ext_resource type="Script" uid="uid://c1alum1kjh7oj" path="res://Scripts/Levels/UtilityPrefabs/conveyor_belt.gd" id="1_g3die"]
+[ext_resource type="Script" uid="uid://wos726xx1aqj" path="res://Scripts/Interactibles/Mechanisms/conveyor_belt.gd" id="1_g3die"]
 [ext_resource type="Texture2D" uid="uid://dia7ftiyc16tf" path="res://Assets/Home_bred/Mechanisms/conveyor_belt/conveyor_belt_middle1.png" id="4_6l345"]
 [ext_resource type="Texture2D" uid="uid://cwjdos024c2ni" path="res://Assets/Home_bred/Mechanisms/conveyor_belt/conveyor_belt_middle2.png" id="5_neywt"]
 [ext_resource type="Texture2D" uid="uid://c78nc3cmbh7tq" path="res://Assets/Home_bred/Mechanisms/conveyor_belt/conveyor_belt_middle3.png" id="6_rd6sa"]
@@ -53,10 +53,11 @@ frame_3/duration = 0.1
 
 [node name="ConveyorBelt" type="Node2D"]
 script = ExtResource("1_g3die")
+length = 10
 
 [node name="Belt" type="Area2D" parent="."]
-position = Vector2(0, -8)
-scale = Vector2(1e-05, 12)
+position = Vector2(-80, -8)
+scale = Vector2(-160, 12)
 collision_layer = 0
 collision_mask = 25
 monitorable = false
@@ -66,8 +67,8 @@ shape = ExtResource("1_36qo6")
 debug_color = Color(1, 1, 0, 0.470588)
 
 [node name="StaticBody" type="StaticBody2D" parent="."]
-position = Vector2(0, -6)
-scale = Vector2(1e-05, 12)
+position = Vector2(-80, -6)
+scale = Vector2(-160, 12)
 collision_layer = 4
 
 [node name="Coll" type="CollisionShape2D" parent="StaticBody"]
@@ -80,19 +81,22 @@ position = Vector2(-8, -6)
 scale = Vector2(-1, 1)
 texture = SubResource("AnimatedTexture_cfxrv")
 region_enabled = true
+region_rect = Rect2(0, 0, 16, 12)
 
 [node name="MiddleSprite" type="Sprite2D" parent="SpriteNodes"]
 texture_repeat = 2
-position = Vector2(-32, -6)
+position = Vector2(-80, -6)
 scale = Vector2(-1, 1)
 texture = SubResource("AnimatedTexture_6l345")
 region_enabled = true
+region_rect = Rect2(0, 0, 128, 12)
 
 [node name="RightSprite" type="Sprite2D" parent="SpriteNodes"]
-position = Vector2(-56, -6)
+position = Vector2(-152, -6)
 scale = Vector2(-1, 1)
 texture = SubResource("AnimatedTexture_fav8r")
 region_enabled = true
+region_rect = Rect2(0, 0, 16, 12)
 
 [connection signal="body_entered" from="Belt" to="." method="_on_belt_body_entered"]
 [connection signal="body_exited" from="Belt" to="." method="_on_belt_body_exited"]
