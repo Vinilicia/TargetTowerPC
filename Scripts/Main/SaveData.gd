@@ -5,7 +5,7 @@ class_name SaveDataResource
 
 @export var HealthUpgrades: Array[bool] = [false, false, false, false]
 @export var ManaUpgrades: Array[bool] = [false, false, false, false]
-@export var AvailableArrows: Array[bool] = [false, false, false, false, false, false, false, false]
+@export var AvailableArrows: Array[bool] = [true, false, false, false, false, false, false, false, false]
 
 @export var LastBenchID: int = 1
 @export var AreaOfBench: int = 1

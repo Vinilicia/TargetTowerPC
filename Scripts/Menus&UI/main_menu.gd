@@ -39,6 +39,7 @@ func close_back_to_title() -> void:
 
 func go_back_to_title() -> void:
 	title_screen.return_menu_from_game()
+	get_tree().paused = false
 	queue_free()
 
 func show_buttons() -> void:
