@@ -51,9 +51,7 @@ func _ready() -> void:
 	add_child(_floor_timer)
 	_floor_timer.timeout.connect(_on_floor_timer_timeout)
 
-	# Garante que o timer seja ligado se já estivermos no chão ao spawn
-	_prev_surface_state = ""
-	_on_surface_changed(_prev_surface_state, surface_state)
+	_on_surface_changed( surface_state)
 
 
 # =====================================================
@@ -156,7 +154,6 @@ func _rotate_and_snap(degrees: float, duration := 0.3) -> void:
 	var start_position := global_position
 
 	var to_pivot := start_position - pivot
-	var radius := to_pivot.length()
 	
 	# Tween de rotação
 	var tween := create_tween()
@@ -219,11 +216,11 @@ func _update_surface_state() -> void:
 	if new_state != surface_state:
 		var old_state = surface_state
 		surface_state = new_state
-		_on_surface_changed(old_state, new_state)
+		_on_surface_changed( new_state)
 
 
 # Quando muda de superfície, start/stop do timer
-func _on_surface_changed(old_state: String, new_state: String) -> void:
+func _on_surface_changed( new_state: String) -> void:
 	# Start timer quando entrar em floor
 	if new_state == "floor":
 		if _floor_timer and _floor_timer.is_stopped():
@@ -319,6 +316,5 @@ func _fall_from_ceiling_with_tween() -> void:
 # 🔀 Direção aleatória ao tocar o chão
 # =====================================================
 func _randomize_direction_after_fall() -> void:
-	var old_dir := movedir
 	movedir = -1.0 if randf() < 0.5 else 1.0
 	side_ray.target_position.x = abs(side_ray.target_position.x) * movedir

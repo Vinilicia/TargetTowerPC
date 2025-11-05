@@ -1,20 +1,47 @@
 extends Enemy
 
+enum SlimeType { COMMON, FIRE }
+
+@export var type : SlimeType = SlimeType.COMMON
+@export var sprite : Sprite2D
+
+@export_group("Fire Slime")
+@onready var fire_blob = preload("res://Scenes/Actors/Enemies/Fire_Slime_Blob.tscn")
+@export var fire_attack_delay : float = 2.5
+@export var fire_sprite_modulate : Color = Color(0, 0, 0, 0.785)
+
+@export_group("General")
 @export_enum("Left", "Right") var direction : int
 
-@onready var rock = preload("res://Scenes/Actors/Enemies/Slime_Blob.tscn")
+@onready var blob = preload("res://Scenes/Actors/Enemies/Slime_Blob.tscn")
 @export var sight_area : Area2D
-@export var rock_spawner : Marker2D
+@export var blob_spawner : Marker2D
 @export var look_around_timer : Timer
 @export var attack_timer : Timer
+@export var default_attack_delay : float = 2.0
 @export var lose_sight_timer : Timer
+@export var default_sprite_modulate : Color = Color(0, 0, 0, 0.785)
 
 var player_is_nearby : bool = false
 var player_target : CharacterBody2D
 var timer_off : bool = false
 var angle : float
+var current_blob : PackedScene = null
+
+func change_type(new_type : SlimeType) -> void:
+	if new_type == SlimeType.COMMON:
+		attack_timer.wait_time = default_attack_delay
+		sprite.modulate = default_sprite_modulate
+		current_blob = blob
+	elif new_type == SlimeType.FIRE:
+		attack_timer.wait_time = fire_attack_delay
+		sprite.modulate = fire_sprite_modulate
+		current_blob = fire_blob
+
+	type = new_type
 
 func _ready() -> void:
+	change_type(type)
 	if direction == 0:
 		direction = -1
 	else:
@@ -31,12 +58,12 @@ func _physics_process(delta: float) -> void:
 	velocity = v_component.get_total_velocity()
 	move_and_slide()
 
-func _throw_rock() -> void:
+func _throw_blob() -> void:
 	timer_off = false
-	var instance = rock.instantiate()
+	var instance = current_blob.instantiate()
 	get_parent().call_deferred("add_child", instance)
 	instance.top_level = true
-	instance.global_position = rock_spawner.global_position
+	instance.global_position = blob_spawner.global_position
 	instance.call_deferred("throw", player_target.position)
 	
 func _player_entered_sight_area(player: Node2D) -> void:
@@ -73,7 +100,7 @@ func handle_attack() -> void:
 			flip()
 
 func _on_attack_timer_timeout() -> void:
-	_throw_rock()
+	_throw_blob()
 
 func _on_lose_sight_timer_timeout() -> void:
 	player_is_nearby = false
@@ -81,3 +108,11 @@ func _on_lose_sight_timer_timeout() -> void:
 		attack_timer.stop()
 	if look_around_timer.is_inside_tree():
 		look_around_timer.start()
+
+func _on_fire_manager_caught_fire() -> void:
+	change_type(SlimeType.FIRE)
+
+func _on_screen_exited() -> void:
+	if lose_sight_timer and !lose_sight_timer.is_stopped():
+		lose_sight_timer.stop()
+		_on_lose_sight_timer_timeout()

@@ -1,11 +1,11 @@
 [gd_scene load_steps=8 format=3 uid="uid://h5p666cxnxby"]
 
 [ext_resource type="Script" uid="uid://bf7d3vwk30cyx" path="res://Scripts/Arrows/teleport_arrow.gd" id="1_1yo7r"]
-[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="1_rsdb0"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_1yo7r"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="3_k3own"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="4_gbeok"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="5_1yo7r"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="6_k3own"]
 
 [sub_resource type="Gradient" id="Gradient_j7lj7"]
 resource_local_to_scene = true
@@ -45,6 +45,6 @@ monitorable = false
 parent = NodePath("..")
 
 [node name="Coll" type="CollisionShape2D" parent="Hitbox"]
-shape = ExtResource("1_rsdb0")
+shape = ExtResource("6_k3own")
 
 [connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]
