@@ -41,8 +41,8 @@ func adjust_to_ground() -> void:
 
 	# --- Checa se há parede ---
 	var has_wall_at : Callable = func(x_offset: float, direction: float) -> bool:
-		var start = origin + Vector2(x_offset, 0)
-		var end = start + Vector2(direction * wall_check_distance, 0)
+		var start = origin + Vector2(0, 0)
+		var end = start + Vector2(x_offset, 0)
 		var query = PhysicsRayQueryParameters2D.create(start, end)
 		query.collision_mask = self.collision_mask
 		var result = space.intersect_ray(query)
@@ -66,6 +66,7 @@ func adjust_to_ground() -> void:
 	var total_width = (left_dist - 13 + right_dist - 13) / 13.0
 	width = int(clamp(total_width, 1, max_spread_distance / 10))
 	update_length(width)
+	
 	position.x -= (left_dist - right_dist) * 0.5
 
 func update_length(new_width: int) -> void:
@@ -73,4 +74,7 @@ func update_length(new_width: int) -> void:
 		await ready
 	if sprite and coll:
 		sprite.region_rect = Rect2(0, 0, 13 * new_width, 24)
-		coll.scale = Vector2(new_width * 13 - 2, 22)
+		coll.scale = Vector2(new_width * 13 - 4, 20)
+		await get_tree().process_frame
+		$Fire._ready()
+		$Fire._activate()

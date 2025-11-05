@@ -15,13 +15,15 @@ max_spread_distance = 54.0
 ground_layer = 3
 
 [node name="Coll" type="CollisionShape2D" parent="."]
-visible = false
-scale = Vector2(37, 22)
+position = Vector2(0, 5)
+scale = Vector2(39, 14)
 shape = ExtResource("1_1l1bj")
 
 [node name="FireSprite" parent="." instance=ExtResource("2_mr058")]
 region_rect = Rect2(0, 0, 39, 24)
 
 [node name="Fire" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("4_s6yer")]
+position = Vector2(0, 5)
+instant = true
 scale_increase = Vector2(1, 1)
 collision = NodePath("../Coll")

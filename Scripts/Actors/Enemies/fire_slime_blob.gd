@@ -42,11 +42,9 @@ func _on_player_detector_body_entered(_body: Node2D) -> void:
 
 
 func _on_wall_detector_body_entered(body: Node2D) -> void:
-	print("Entrou")
 	if disabled: 
 		inside_wall = true
 
 
 func _on_wall_detector_body_exited(body: Node2D) -> void:
-	print("Saiu")
 	inside_wall = false

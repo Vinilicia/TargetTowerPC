@@ -365,6 +365,7 @@ func dampen_jump(factor: float) -> void:
 
 func hold_arrow() -> void:
 	combat.update_flying_dir = true
+	current_arrow.setup_hitbox(self)
 	add_child(current_arrow)
 	current_arrow.set_flying_direction(combat.shoot_direction)
 
@@ -424,7 +425,9 @@ func _falling_to_grounded_taken() -> void:
 
 func _grounded_physics_processing(_delta: float) -> void:
 	if v_component.get_proper_velocity().x == 0:
-		if anim.current_animation != "Idle":
+		if is_zero_approx(move_speed):
+			anim.play("Crouching")
+		elif anim.current_animation != "Idle":
 			anim.play("Idle")
 	else:
 		if anim.current_animation != "Run":
@@ -488,10 +491,15 @@ func _standing_physics_processing(_delta: float) -> void:
 		state_chart.send_event("Crouched")
 
 func crouch():
+	anim.play("Crouching")
 	move_speed = 0
 	$UpColl.disabled = true
-	$Hurtbox/UpColl.disabled = true
+	hurtbox.scale.y /= 1.5
+	hurtbox.position.y += hurtbox.scale.y / 2
+	hurtbox.position.x += 1
+	hurtbox.scale.x += 2
 	arrow_spawn_point = Vector2(0, 4)
+	$Utilities/FireManager.update_hurtbox()
 
 func _crouched_entered() -> void:
 	crouch()
@@ -501,10 +509,15 @@ func _crouched_physics_processing(_delta: float) -> void:
 		state_chart.send_event("Standing")
 
 func stand() -> void:
+	anim.play("Idle")
 	move_speed = DEFAULT_MOVE_SPEED
 	$UpColl.disabled = false
-	$Hurtbox/UpColl.disabled = false
+	hurtbox.position.y -= hurtbox.scale.y / 2
+	hurtbox.position.x -= 1
+	hurtbox.scale.y *= 1.5
+	hurtbox.scale.x -= 2
 	arrow_spawn_point = Vector2.ZERO
+	$Utilities/FireManager.update_hurtbox()
 
 func _crouched_exited() -> void:
 	stand()
@@ -519,3 +532,10 @@ func set_available_arrows(available_arrows_loaded: Array[bool]):
 
 func wake_up(save_load_manager: SaveLoadManager):
 	set_available_arrows(save_load_manager.save_file_data.get_available_arrows())
+
+func _on_fire_manager_caught_fire() -> void:
+	var health_man : HealthManager = $Misc/HealthManager
+	var fire_man : FireManager = $Utilities/FireManager
+	if not fire_man.extinguished.is_connected(health_man.stop_burning):
+		fire_man.extinguished.connect(health_man.stop_burning, 4)
+		health_man.start_burning(0.5)

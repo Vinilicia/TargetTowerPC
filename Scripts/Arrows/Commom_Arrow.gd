@@ -130,6 +130,9 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 		spawn_joint(body)
 		despawn()
 
+func setup_hitbox(parent : Node2D) -> void:
+	hitbox.parent = parent
+
 func _on_hitbox_hit(_target: Node2D) -> void:
 	velocity = Vector2.ZERO
 	queue_free()

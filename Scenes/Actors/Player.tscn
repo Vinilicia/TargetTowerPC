@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=3 uid="uid://ev1c8jc3dq42"]
+[gd_scene load_steps=17 format=3 uid="uid://ev1c8jc3dq42"]
 
 [ext_resource type="Script" uid="uid://dxjmsqyt3rpc1" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
@@ -14,6 +14,7 @@
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
 [ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 [ext_resource type="Script" uid="uid://bc87qnt24utwm" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
+[ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="15_heh8i"]
 
 [sub_resource type="Resource" id="Resource_rbeol"]
 script = ExtResource("8_r2kji")
@@ -156,7 +157,7 @@ max_health = 20.0
 [node name="Archer" parent="." instance=ExtResource("9_26aeq")]
 position = Vector2(-28, -28)
 offset = Vector2(21, 17)
-region_rect = Rect2(15, 85, 14, 21)
+region_rect = Rect2(56, 106, 14, 20)
 
 [node name="UpColl" type="CollisionShape2D" parent="."]
 visible = false
@@ -171,18 +172,11 @@ scale = Vector2(10, 10)
 shape = ExtResource("4_26aeq")
 
 [node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
-visible = false
+scale = Vector2(10, 9)
 collision_mask = 3072
 parent = NodePath("..")
 
-[node name="UpColl" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, -4)
-scale = Vector2(10, 12)
-shape = ExtResource("11_cdutm")
-
-[node name="DownColl" type="CollisionShape2D" parent="Hurtbox"]
-position = Vector2(0, 4)
-scale = Vector2(10, 12)
+[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
 shape = ExtResource("11_cdutm")
 
 [node name="Utilities" type="Node2D" parent="."]
@@ -213,9 +207,16 @@ target_position = Vector2(0, 12)
 collision_mask = 20
 
 [node name="WallDetector" type="RayCast2D" parent="Utilities"]
-visible = false
 target_position = Vector2(7, 0)
 collision_mask = 20
+
+[node name="FireManager" parent="Utilities" node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("15_heh8i")]
+time_to_burn = 1.0
+burn_duration = 2.0
+ref_hurtbox = NodePath("../../Hurtbox")
+
+[node name="Hurtbox" parent="Utilities/FireManager" index="0" node_paths=PackedStringArray("parent")]
+parent = NodePath("../../..")
 
 [connection signal="timeout" from="Misc/DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
 [connection signal="state_entered" from="Misc/StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_state_entered"]
@@ -242,5 +243,7 @@ collision_mask = 20
 [connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
 [connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
 [connection signal="body_exited" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
+[connection signal="caught_fire" from="Utilities/FireManager" to="." method="_on_fire_manager_caught_fire"]
 
 [editable path="Archer"]
+[editable path="Utilities/FireManager"]

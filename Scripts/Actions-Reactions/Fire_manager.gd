@@ -25,6 +25,10 @@ func _ready() -> void:
 	hurtbox.call_deferred("add_child", new_coll)
 	hurtbox.set_deferred("scale", ref_hurtbox.scale)
 
+func update_hurtbox() -> void:
+	hurtbox.scale = ref_hurtbox.scale
+	hurtbox.position = ref_hurtbox.position
+
 func _hurtbox_got_hit(hitbox: Hitbox) -> void:
 	overlapping_fire_count += 1
 	if on_fire and !can_stack:
