@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=3 uid="uid://4cb2gyoifqiu"]
+
+[ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_nyc18"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_klb6c"]
+
+[node name="Shaman" instance=ExtResource("1_nyc18")]
+
+[node name="BodyCollision" parent="." index="0"]
+scale = Vector2(16, 20)
+shape = ExtResource("2_klb6c")
+
+[node name="HealthManager" parent="BaseEnemyStuff" index="1"]
+max_health = 6.0
+
+[node name="Hurtbox" parent="BaseEnemyStuff" index="2"]
+scale = Vector2(18, 22)
+
+[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1"]
+shape = ExtResource("2_klb6c")
+
+[node name="ContactHitbox" parent="BaseEnemyStuff" index="3"]
+scale = Vector2(18, 22)
+
+[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0"]
+shape = ExtResource("2_klb6c")
