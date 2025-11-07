@@ -1,9 +1,9 @@
 [gd_scene load_steps=6 format=3 uid="uid://drfycye8vmmuq"]
 
 [ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_asgyp"]
-[ext_resource type="Shader" uid="uid://2h3v8j8285h0" path="res://Themes/Shaders/blur.gdshader" id="1_jto2k"]
+[ext_resource type="Shader" uid="uid://dcgv62kgdgmub" path="res://Themes/Shaders/blur.gdshader" id="1_jto2k"]
 [ext_resource type="PackedScene" uid="uid://dwwx3mfj10mny" path="res://Scenes/Menus&UI/Settings_Menu.tscn" id="2_25my1"]
-[ext_resource type="Script" uid="uid://ckviptrb7ospa" path="res://Scripts/Menus&UI/main_menu.gd" id="2_asgyp"]
+[ext_resource type="Script" uid="uid://eabq0qxlyjb5" path="res://Scripts/Menus&UI/main_menu.gd" id="2_asgyp"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_asgyp"]
 shader = ExtResource("1_jto2k")

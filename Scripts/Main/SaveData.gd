@@ -1,8 +1,9 @@
 extends Resource
 class_name SaveDataResource
 
-@export var SaveVersion : int = 1
+@export var SaveVersion : int = 1  # 🔹 Nova versão de save
 
+# --- DADOS DO JOGO ---
 @export var HealthUpgrades: Array[bool] = [false, false, false, false]
 @export var ManaUpgrades: Array[bool] = [false, false, false, false]
 @export var AvailableArrows: Array[bool] = [true, false, false, false, false, false, false, false, false]
@@ -12,6 +13,14 @@ class_name SaveDataResource
 @export var MaxHealth: int = 5
 @export var MaxMana: int = 5
 @export var Money: int = 0
+
+# --- DADOS DE CONFIGURAÇÃO ---
+@export var master_volume: float = 1.0
+@export var music_volume: float = 0.8
+@export var sfx_volume: float = 0.8
+@export var display_mode: int = 0
+@export var resolution_index: int = 0
+@export var brightness_value: float = 0.5
 
 # -----------------------------------
 # Métodos de acesso
@@ -68,7 +77,7 @@ func set_array(prop_name, array) -> void:
 		ManaUpgrades = create_bool_array(array)
 	elif prop_name == "AvailableArrows":
 		AvailableArrows = create_bool_array(array)
-	
+
 func get_last_bench_id() -> int:
 	return LastBenchID
 
@@ -99,9 +108,8 @@ func get_money() -> int:
 func set_money(value: int):
 	Money = value
 
-
 func create_bool_array(array : Array) -> Array[bool]:
 	var new_array : Array[bool] = []
 	for value in array:
-		new_array.append(value)
+		new_array.append(bool(value))
 	return new_array

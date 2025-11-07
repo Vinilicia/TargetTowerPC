@@ -16,23 +16,8 @@ environment = SubResource("Environment_2w1kt")
 process_mode = 3
 layer = 2
 
-[node name="Blackout" type="ColorRect" parent="UILayer"]
-modulate = Color(1, 1, 1, 0)
-anchors_preset = 15
-anchor_right = 1.0
-anchor_bottom = 1.0
-grow_horizontal = 2
-grow_vertical = 2
-color = Color(0, 0, 0, 1)
-
-[node name="TitleScreen" parent="UILayer" node_paths=PackedStringArray("game", "game_layer") instance=ExtResource("2_i3fi7")]
-game = NodePath("../../GameCanvasLayer/GameViewportContainer/GameViewport/Game")
-game_layer = NodePath("../../GameCanvasLayer")
-
-[node name="GameCanvasLayer" type="CanvasLayer" parent="."]
-visible = false
-
-[node name="GameViewportContainer" type="SubViewportContainer" parent="GameCanvasLayer"]
+[node name="GameViewportContainer" type="SubViewportContainer" parent="UILayer"]
+process_mode = 1
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -42,12 +27,30 @@ mouse_filter = 2
 stretch = true
 stretch_shrink = 2
 
-[node name="GameViewport" type="SubViewport" parent="GameCanvasLayer/GameViewportContainer"]
+[node name="GameViewport" type="SubViewport" parent="UILayer/GameViewportContainer"]
 handle_input_locally = false
 snap_2d_transforms_to_pixel = true
 canvas_item_default_texture_filter = 0
 size = Vector2i(320, 180)
-render_target_update_mode = 0
+render_target_update_mode = 4
 
-[node name="Game" parent="GameCanvasLayer/GameViewportContainer/GameViewport" node_paths=PackedStringArray("blackout_rect") instance=ExtResource("2_cmk6n")]
-blackout_rect = NodePath("../../../../UILayer/Blackout")
+[node name="Game" parent="UILayer/GameViewportContainer/GameViewport" node_paths=PackedStringArray("blackout_rect") instance=ExtResource("2_cmk6n")]
+visible = false
+blackout_rect = NodePath("../../../Blackout")
+
+[node name="Blackout" type="ColorRect" parent="UILayer"]
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="TitleScreen" parent="UILayer" node_paths=PackedStringArray("game") instance=ExtResource("2_i3fi7")]
+offset_top = 1.0
+offset_bottom = 1.0
+game = NodePath("../GameViewportContainer/GameViewport/Game")
+
+[node name="GameCanvasLayer" type="CanvasLayer" parent="."]
+visible = false

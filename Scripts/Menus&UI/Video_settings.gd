@@ -1,3 +1,4 @@
+# Video_Options.gd
 extends Control
 
 @export var brightness_container : MarginContainer
@@ -9,6 +10,11 @@ var res2 : Vector2i = Vector2i(1440, 810)
 var res3 : Vector2i = Vector2i(1920, 1080)
 var resolution : Vector2i = res1
 
+# NOVO: Referências para os nós da UI
+@onready var mode_button: OptionButton = $MarginContainer/VBoxContainer/ModeContainer/OptionButton
+@onready var res_button: OptionButton = $MarginContainer/VBoxContainer/ResolutionContainer/OptionButton
+@onready var brightness_slider: TextureProgressBar = brightness_container.find_child("BrightnessSlider", true)
+@onready var back_button: Button = $MarginContainer/VBoxContainer/BackButton
 
 # ============================
 # ==== FUNÇÕES DE TELA =======
@@ -32,6 +38,9 @@ func _on_window_mode_item_selected(index: int) -> void:
 			DisplayServer.window_set_mode(DisplayServer.WINDOW_MODE_FULLSCREEN)
 			DisplayServer.window_set_flag(DisplayServer.WINDOW_FLAG_BORDERLESS, false)
 
+	# NOVO: Atualiza o valor na memória
+	SaveManager.save_file_data.display_mode = index
+
 
 func _on_resolution_item_selected(index: int) -> void:
 	match index:
@@ -41,9 +50,12 @@ func _on_resolution_item_selected(index: int) -> void:
 			resolution = res2
 		4:
 			resolution = res3
+	
+	# NOVO: Atualiza o valor na memória
+	SaveManager.save_file_data.resolution_index = index
+	
 	if !(DisplayServer.window_get_mode() == DisplayServer.WINDOW_MODE_FULLSCREEN):
 		_set_window_size()
-
 
 
 # ============================
@@ -90,7 +102,8 @@ func _connect_brightness_buttons(container : MarginContainer) -> void:
 	_connect_focus_neighbors(container)
 	
 	# conecta mudança da barra ao WorldEnvironment
-	bar.value_changed.connect(_on_brightness_bar_value_changed)
+	if bar:
+		bar.value_changed.connect(_on_brightness_bar_value_changed)
 
 
 # Limite de brilho permitido no Environment
@@ -103,14 +116,39 @@ func _on_brightness_bar_value_changed(value: float) -> void:
 		# Mapeia [0, 1] → [0.6, 1.3]
 		var mapped_value = lerp(BRIGHTNESS_MIN, BRIGHTNESS_MAX, value)
 		environment.environment.adjustment_brightness = mapped_value
+	
+	# NOVO: Atualiza o valor na memória
+	SaveManager.save_file_data.brightness_value = value
 
 
 func _ready() -> void:
 	_connect_brightness_buttons(brightness_container)
 	
-	if environment and environment.environment:
-		var current = environment.environment.adjustment_brightness
-		var slider : TextureProgressBar = brightness_container.find_child("BrightnessSlider", true)
-		if slider:
-			# Converte o valor real [0.6, 1.3] para [0, 1] para exibir corretamente na barra
-			slider.value = clamp(inverse_lerp(BRIGHTNESS_MIN, BRIGHTNESS_MAX, current), 0.0, 1.0)
+	# --- MODIFICADO AQUI ---
+	# Carrega todos os valores do SaveManager e aplica na UI
+	
+	# 1. Carrega e aplica o Modo de Janela
+	var mode_index = SaveManager.save_file_data.display_mode
+	if mode_button:
+		mode_button.select(mode_index)
+		_on_window_mode_item_selected(mode_index) # Aplica a configuração
+	
+	# 2. Carrega e aplica a Resolução
+	var res_index = SaveManager.save_file_data.resolution_index
+	if res_button:
+		res_button.select(res_index)
+		_on_resolution_item_selected(res_index) # Aplica a configuração
+	
+	# 3. Carrega e aplica o Brilho
+	var bright_val = SaveManager.save_file_data.brightness_value
+	if brightness_slider:
+		brightness_slider.value = bright_val
+		_on_brightness_bar_value_changed(bright_val) # Aplica a configuração
+
+	# NOVO: Conecta o botão "Voltar"
+	if back_button:
+		back_button.pressed.connect(_on_back_button_pressed)
+
+# NOVO: Função para salvar permanentemente ao sair
+func _on_back_button_pressed():
+	SaveManager._save(SaveManager.current_slot_index)

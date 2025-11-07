@@ -1,3 +1,4 @@
+# Audio_Options.gd
 extends Control
 
 @export var master_container : VBoxContainer
@@ -49,8 +50,6 @@ func _connect_focus_neighbors(container : VBoxContainer) -> void:
 		back_button.focus_neighbor_bottom = minus_button.get_path() if minus_button else plus_button.get_path()
 
 
-
-
 func _connect_buttons(container : VBoxContainer) -> void:
 	var bar : TextureProgressBar = container.find_child("VolumeSlider", true)
 	_connect_signal(container, "MinusButton", bar, -0.05)
@@ -65,16 +64,33 @@ func _ready() -> void:
 	_connect_buttons(music_container)
 	_connect_buttons(sfx_container)
 	
-	master_bar.value = db_to_linear(AudioServer.get_bus_volume_db(0))
-	music_bar.value = db_to_linear(AudioServer.get_bus_volume_db(1))
-	sfx_bar.value = db_to_linear(AudioServer.get_bus_volume_db(2))
+	# --- MODIFICADO ---
+	# Carrega os valores do slot de save atual (via SaveManager)
+	master_bar.value = SaveManager.save_file_data.master_volume
+	music_bar.value = SaveManager.save_file_data.music_volume
+	sfx_bar.value = SaveManager.save_file_data.sfx_volume
+
+	# NOVO: Conecta o botão "Voltar" para salvar
+	if back_button:
+		back_button.pressed.connect(_on_back_button_pressed)
 
 
 func _on_master_bar_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(0, linear_to_db(value))
+	# NOVO: Atualiza o valor na memória do save_file_data
+	SaveManager.save_file_data.master_volume = value
 
 func _on_music_bar_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(1, linear_to_db(value))
+	# NOVO: Atualiza o valor na memória do save_file_data
+	SaveManager.save_file_data.music_volume = value
 
 func _on_sfx_bar_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(2, linear_to_db(value))
+	# NOVO: Atualiza o valor na memória do save_file_data
+	SaveManager.save_file_data.sfx_volume = value
+
+# NOVO: Função para salvar permanentemente ao sair
+func _on_back_button_pressed():
+	# Salva TODAS as configurações (áudio, vídeo, controles) no slot atual
+	SaveManager._save(SaveManager.current_slot_index)
