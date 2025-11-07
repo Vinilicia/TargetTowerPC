@@ -5,10 +5,12 @@ extends Node2D
 
 var current_level: Room
 var save_id: int
-var tween: Tween
 var enemy_alive_persistence: Array[bool] = []
 var last_room_name: String = ""
+var tween: Tween
 
+#func _ready() -> void:
+	#Engine.time_scale = 0.5
 
 func change_level(next_level: String, spawn_position: Vector2, area: LevelDatabase.Areas = LevelDatabase.Areas.AREA_1):
 	blackout_fade_in()
@@ -50,13 +52,14 @@ func handle_next_level(scene_path: String, spawn_position: Vector2) -> void:
 
 
 func spaw_player_on_bench() -> void:
+	process_mode = Node.PROCESS_MODE_PAUSABLE
+	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 	get_node("Player").global_position = current_level.get_bench_position()
 	blackout_fade_in()
 	await tween.finished
-	get_parent().get_parent().get_parent().visible = true
+	visible = true
 	await get_tree().create_timer(0.2).timeout
 	blackout_fade_out()
-
 
 func load_room(room_scene: PackedScene, save_load_manager: SaveLoadManager) -> void:
 	get_node("Player").wake_up(save_load_manager)
@@ -73,7 +76,7 @@ func blackout_fade_in() -> void:
 		tween.tween_property(blackout_rect, "modulate", Color(1, 1, 1, 1), 0.2)
 
 func blackout_fade_out() -> void:
-	if blackout_rect and tween:
+	if blackout_rect:
 		tween.stop()
 		tween = get_tree().create_tween()
 		tween.tween_property(blackout_rect, "modulate", Color(1, 1, 1, 0), 0.5)

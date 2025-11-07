@@ -51,8 +51,14 @@ color = Color(0, 0, 0, 1)
 process_mode = 3
 visible = false
 
-[node name="VideoMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="2" node_paths=PackedStringArray("environment")]
-environment = NodePath("../../../../../../../WorldEnvironment")
+[node name="ControlsMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="0"]
+script = null
+
+[node name="AudioMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="1"]
+script = null
+
+[node name="VideoMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="2"]
+script = null
 
 [editable path="UILayer/MainMenu"]
 [editable path="UILayer/MainMenu/SettingsMenu"]

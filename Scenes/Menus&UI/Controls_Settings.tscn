@@ -1,7 +1,7 @@
-[gd_scene load_steps=4 format=3 uid="uid://da2sx0ksycqcf"]
+[gd_scene load_steps=4 format=3 uid="uid://m2dphotkt2qn"]
 
 [ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_pysfg"]
-[ext_resource type="Script" uid="uid://bmvkl7skie8e0" path="res://Scripts/Menus&UI/Controls_settings.gd" id="2_xmawm"]
+[ext_resource type="Script" uid="uid://tehm7nh0515h" path="res://Scripts/Menus&UI/Controls_settings.gd" id="2_xmawm"]
 
 [sub_resource type="StyleBoxFlat" id="StyleBoxFlat_ryl4x"]
 bg_color = Color(0, 0, 0, 0.0784314)
@@ -62,3 +62,4 @@ size_flags_vertical = 8
 text = "Back"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
+[connection signal="pressed" from="MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
