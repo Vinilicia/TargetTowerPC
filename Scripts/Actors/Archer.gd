@@ -98,7 +98,7 @@ var enemies_on_sight: Array = []
 var last_safe_position : Vector2
 var frames_until_check : int = 0
 var locked_walk: bool = false
-var available_arrows: Array[bool] = [true, true, true, true, true, false, false, false, false]
+var available_arrows: Array[bool] = [true, true, true, true, false, false, false, false, false]
 
 # ============================================================
 # READY

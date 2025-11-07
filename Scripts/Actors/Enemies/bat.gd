@@ -92,8 +92,8 @@ func start_at_chase() -> void:
 		func():
 			backtracking_speed = old_backtracking
 			visible = true
-			($BaseEnemyStuff/ContactHitbox as Hitbox).monitorable = false
-			($BaseEnemyStuff/Hurtbox as Hurtbox).monitoring = false
+			($BaseEnemyStuff/ContactHitbox as Hitbox).monitorable = true
+			($BaseEnemyStuff/Hurtbox as Hurtbox).monitoring = true
 	)
 
 func _physics_process(_delta: float) -> void:
