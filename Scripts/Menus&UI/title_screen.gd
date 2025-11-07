@@ -5,6 +5,7 @@ extends Control
 @export var main_menu_path : String
 @export var title_menu : MarginContainer
 @export var file_select_menu : MarginContainer
+@export var settings_menu : Control
 @export var quit_menu : MarginContainer
 @export var edit_buttons : HBoxContainer
 
@@ -113,3 +114,15 @@ func erase_button_pressed() -> void:
 	on_copy = false
 	save_load_manager._save(save_selected)
 	edit_buttons.visible = false
+
+func show_settings() -> void:
+	settings_menu.visible = true
+	title_menu.visible = false
+	var focus_button : Button = settings_menu.find_child("BackButton")
+	focus_button.grab_focus()
+
+func hide_settings() -> void:
+	settings_menu.visible = false
+	title_menu.visible = true
+	var focus_button : Button = title_menu.find_child("SettingsButton")
+	focus_button.grab_focus()

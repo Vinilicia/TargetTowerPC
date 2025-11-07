@@ -44,7 +44,6 @@ func is_forbidden(event: InputEventKey) -> bool:
 func _ready() -> void:
 	_create_action_list()
 
-
 func _create_action_list() -> void:
 	var last_button: Button = null
 	var created_buttons: Array[Button] = []
@@ -160,9 +159,9 @@ func update_labeling(button: Button, event: InputEvent) -> void:
 func _on_reset_button_pressed() -> void:
 	InputMap.load_from_project_settings()
 	_create_action_list()
-	
-	SaveManager._save(SaveManager.current_slot_index)
 
 
 func _on_back_button_pressed() -> void:
-	SaveManager._save(SaveManager.current_slot_index)
+	var game : Game = get_tree().get_first_node_in_group("Game")
+	if game:
+		SaveManager.save_controls_for_slot(game.save_id)
