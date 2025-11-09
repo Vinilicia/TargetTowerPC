@@ -25,7 +25,7 @@ metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("Misc/StateChart")
-camera_distance = 25.0
+camera_distance = 15.0
 camera_move_duration = 1.0
 camera_remote = NodePath("Utilities/Remote")
 arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4", "uid://h5p666cxnxby"])
@@ -196,7 +196,7 @@ target_position = Vector2(15, 0)
 collision_mask = 28
 
 [node name="Remote" type="RemoteTransform2D" parent="Utilities"]
-position = Vector2(0, -35)
+position = Vector2(0, -20)
 update_rotation = false
 update_scale = false
 

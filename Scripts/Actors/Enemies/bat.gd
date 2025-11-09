@@ -88,12 +88,16 @@ func start_at_chase() -> void:
 	visible = false
 	($BaseEnemyStuff/ContactHitbox as Hitbox).monitorable = false
 	($BaseEnemyStuff/Hurtbox as Hurtbox).monitoring = false
+	sight_area.scale = Vector2(600, 400)
+	sight_area.position = Vector2.ZERO
 	($StateChart/State_Tree/SeeingPlayer/StartingChase as AtomicState).state_exited.connect(
 		func():
 			backtracking_speed = old_backtracking
 			visible = true
 			($BaseEnemyStuff/ContactHitbox as Hitbox).monitorable = true
 			($BaseEnemyStuff/Hurtbox as Hurtbox).monitoring = true
+			sight_area.scale = Vector2(350, 250)
+			sight_area.position = Vector2.ZERO
 	)
 
 func _physics_process(_delta: float) -> void:

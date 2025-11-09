@@ -23,7 +23,7 @@ shape = SubResource("CapsuleShape2D_73cq8")
 remote_path = NodePath("../../../Camera")
 
 [node name="Camera" parent="." instance=ExtResource("3_73cq8")]
-position = Vector2(93, -151)
+position = Vector2(93, -136)
 
 [editable path="Player"]
 [editable path="Player/Archer"]

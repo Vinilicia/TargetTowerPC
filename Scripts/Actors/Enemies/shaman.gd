@@ -21,9 +21,11 @@ var idle_state := true
 var preparing_attack := false
 
 var bat_scene : Enemy
+var bolt_scene : Node2D
 
 func _ready() -> void:
 	bat_scene = preload("res://Scenes/Actors/Enemies/Bat.tscn").instantiate()
+	bolt_scene = preload("res://Scenes/Actors/Enemies/shaman_magic_bolt.tscn").instantiate()
 
 func _physics_process(delta: float) -> void:
 	if player:
@@ -55,28 +57,20 @@ func start_attack_timer() -> void:
 	attack_timer.start(random_delay)
 
 func get_random_empty_position() -> Vector2:
-	var camera := get_viewport().get_camera_2d()
-	if camera == null:
-		push_warning("Nenhuma Camera2D ativa encontrada!")
+	if !player:
+		printerr("Sem player ao tentar escolher posição de Spawn!!")
 		return Vector2.ZERO
-
 	var space := get_world_2d().direct_space_state
 	var collision_mask := self.collision_mask
-
-	var viewport_size := get_viewport_rect().size
-	var camera_center := camera.get_screen_center_position()
-
-	# Define retângulo visível em coordenadas do mundo
-	var half_size := viewport_size * 0.5
-	var top_left = camera_center - half_size
-	var bottom_right = camera_center + half_size
+	var distance_to_player := 70
 
 	var max_attempts := 20
 	for i in range(max_attempts):
-		var random_pos := Vector2(
-			randf_range(top_left.x, bottom_right.x),
-			randf_range(top_left.y, bottom_right.y)
-		)
+		var x_sign : int = sign(randi_range(1, 2) - 1.5)
+		var rand_angle : float = deg_to_rad(randi_range(-20, -10))
+		var rand_vec := (Vector2.RIGHT.rotated(rand_angle) * distance_to_player)
+		rand_vec = Vector2(rand_vec.x * x_sign, rand_vec.y)
+		var random_pos = rand_vec + player.global_position
 
 		# Checa colisão no ponto
 		var shape := CircleShape2D.new()
@@ -91,27 +85,41 @@ func get_random_empty_position() -> Vector2:
 		if result.is_empty():
 			return random_pos
 
-	# Se não encontrar nenhum ponto livre, retorna Vector2.ZERO
 	return Vector2.ZERO
 
-
 func summon_bat() -> void:
+	modulate = Color(1, 0, 0, 1)
+	await get_tree().create_timer(0.5).timeout
 	var new_bat = bat_scene.duplicate()
 	new_bat.starts_chasing = true
 	var bat_pos := get_random_empty_position()
 	if bat_pos != Vector2.ZERO:
 		new_bat.position = bat_pos
 	get_parent().call_deferred("add_child", new_bat)
-	print("Summoned bat: ", bat_pos)
+	await get_tree().create_timer(0.5).timeout
+	modulate = Color(1, 1, 1, 1)
 
-func shoot_magic_bolt() -> void:
-	pass
+func shoot_bolt() -> void:
+	if !player:
+		printerr("Player enixestente ao tentar um ataque de Bolt!!")
+		return
+	var direction : Vector2 = to_local(player.global_position).normalized()
+	modulate = Color(0, 1, 0, 1)
+	await get_tree().create_timer(0.3).timeout
+	var new_bolt : Node2D = bolt_scene.duplicate()
+	new_bolt.top_level = true
+	new_bolt.position = global_position
+	new_bolt.rotation = direction.angle() - (PI / 2)
+	call_deferred("add_child", new_bolt)
+	new_bolt.call_deferred("fly", direction)
+	await get_tree().create_timer(0.5).timeout
+	modulate = Color(1, 1, 1, 1)
 
 func attack() -> void:
 	if randf() < summon_bat_chance:
 		summon_bat()
 	else:
-		shoot_magic_bolt()
+		shoot_bolt()
 	start_attack_timer()
 
 func give_up_chase() -> void:
