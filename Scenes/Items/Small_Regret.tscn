@@ -1,0 +1,38 @@
+[gd_scene load_steps=4 format=3 uid="uid://dsfecke3dr6ur"]
+
+[ext_resource type="PackedScene" uid="uid://df53a8yrwvqb4" path="res://Scenes/Items/Regret_Sprite.tscn" id="1_nay2b"]
+[ext_resource type="Script" uid="uid://gftrahe783kp" path="res://Scripts/Items/small_regret.gd" id="1_ybkoh"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="2_ybkoh"]
+
+[node name="SmallRegret" type="RigidBody2D" node_paths=PackedStringArray("anim_timer", "sprite")]
+collision_layer = 128
+collision_mask = 148
+center_of_mass_mode = 1
+center_of_mass = Vector2(2, 0)
+lock_rotation = true
+script = ExtResource("1_ybkoh")
+min_delay = 0.5
+max_delay = 5.0
+anim_timer = NodePath("AnimTimer")
+sprite = NodePath("Regret")
+
+[node name="Regret" parent="." instance=ExtResource("1_nay2b")]
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+visible = false
+scale = Vector2(5, 5)
+shape = ExtResource("2_ybkoh")
+
+[node name="AnimTimer" type="Timer" parent="."]
+one_shot = true
+
+[node name="PlayerDetec" type="Area2D" parent="."]
+visible = false
+scale = Vector2(12, 12)
+collision_layer = 0
+
+[node name="Coll" type="CollisionShape2D" parent="PlayerDetec"]
+shape = ExtResource("2_ybkoh")
+
+[connection signal="timeout" from="AnimTimer" to="." method="_on_anim_timer_timeout"]
+[connection signal="body_entered" from="PlayerDetec" to="." method="_on_player_detec_body_entered"]

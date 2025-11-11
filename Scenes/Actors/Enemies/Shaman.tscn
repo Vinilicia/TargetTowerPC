@@ -17,6 +17,7 @@ magic_bolt_texture = ExtResource("3_3ef5p")
 magic_bolt_scale = Vector2(20, 20)
 magic_bolt_speed = 200.0
 projectile_lifespan = 5.0
+money_amount = 4.0
 
 [node name="BodyCollision" parent="." index="0"]
 scale = Vector2(16, 20)

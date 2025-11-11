@@ -14,9 +14,9 @@ var waittime: float = 1.0
 var rotating := false
 var surface_state: String = "floor"
 var _floor_timer: Timer
+var is_ready : bool = false
 
 func _ready() -> void:
-	# Configura rotação e direção inicial
 	match start_surface:
 		"floor":
 			rotation_degrees = 0
@@ -38,8 +38,7 @@ func _ready() -> void:
 
 
 	await get_tree().process_frame
-	_snap_to_surface_on_spawn()
-
+	
 	_floor_timer = Timer.new()
 	_floor_timer.wait_time = 3.0
 	_floor_timer.autostart = false
@@ -47,8 +46,9 @@ func _ready() -> void:
 	add_child(_floor_timer)
 	_floor_timer.timeout.connect(_on_floor_timer_timeout)
 
-	_on_surface_changed( surface_state)
-
+	_on_surface_changed(surface_state)
+	await get_tree().create_timer(0.5).timeout
+	is_ready = true
 
 # =====================================================
 # RESTANTE DAS FUNÇÕES (mantidas, as que você já tinha)
@@ -71,6 +71,9 @@ func _snap_to_surface_on_spawn() -> void:
 
 
 func _physics_process(_delta: float) -> void:
+	if !is_ready:
+		return
+	
 	if rotating:
 		return
 

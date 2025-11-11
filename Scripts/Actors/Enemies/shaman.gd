@@ -33,20 +33,24 @@ func _physics_process(delta: float) -> void:
 			if !saw_player:
 				saw_player = true
 				engaging_state = true
-		else:
+		elif saw_player:
 			saw_player = false
 			get_tree().create_timer(giving_up_delay).timeout.connect(give_up_chase)
-	else:
+	elif engaging_state:
+		engaging_state = false
+		saw_player = false
 		idle_state = true
+		preparing_attack = false
 	
 	if engaging_state:
 		if !preparing_attack:
 			preparing_attack = true
 			start_attack_timer()
-		pass
 	
 	if !is_on_floor():
-		apply_gravity(delta)
+		apply_gravity()
+	else:
+		v_component.set_proper_velocity(0.0, 2)
 	
 	velocity = v_component.get_total_velocity()
 	move_and_slide()
@@ -61,7 +65,7 @@ func get_random_empty_position() -> Vector2:
 		printerr("Sem player ao tentar escolher posição de Spawn!!")
 		return Vector2.ZERO
 	var space := get_world_2d().direct_space_state
-	var collision_mask := self.collision_mask
+	var coll_mask := self.collision_mask
 	var distance_to_player := 70
 
 	var max_attempts := 20
@@ -103,7 +107,7 @@ func shoot_bolt() -> void:
 	if !player:
 		printerr("Player enixestente ao tentar um ataque de Bolt!!")
 		return
-	var direction : Vector2 = to_local(player.global_position).normalized()
+	var direction : Vector2 = to_local(player.global_position + Vector2(0, -10)).normalized()
 	modulate = Color(0, 1, 0, 1)
 	await get_tree().create_timer(0.3).timeout
 	var new_bolt : Node2D = bolt_scene.duplicate()
@@ -125,6 +129,8 @@ func attack() -> void:
 func give_up_chase() -> void:
 	if !saw_player:
 		engaging_state = false
+		preparing_attack = false
+		idle_state = true
 
 func look_for_player() -> bool:
 	line_of_sight.target_position = to_local(player.global_position)
