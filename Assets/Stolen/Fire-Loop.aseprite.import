@@ -22,4 +22,4 @@ spritesheet/merge_duplicates=false
 animation/default/name="default"
 animation/default/direction=0
 animation/default/repeat_count=0
-animation/autoplay=""
+animation/autoplay="Loop"

@@ -2,6 +2,7 @@ extends Enemy
 
 @onready var state_chart = $StateChart as StateChart
 
+@export var starts_chasing := false
 @export_subgroup("Timers")
 @export var chasing_timer: Timer
 @export var giving_up_timer: Timer
@@ -63,6 +64,9 @@ var attack_delay_timer : Timer
 
 #region Built-In
 func _ready() -> void:
+	if starts_chasing:
+		start_at_chase()
+	
 	ceiling_retry_timer = Timer.new()
 	ceiling_retry_timer.one_shot = true
 	ceiling_retry_timer.wait_time = 8.0
@@ -77,6 +81,24 @@ func _ready() -> void:
 	move_timer = Timer.new()
 	move_timer.one_shot = true
 	add_child(move_timer)
+
+func start_at_chase() -> void:
+	var old_backtracking : float = backtracking_speed
+	backtracking_speed = 0.0
+	visible = false
+	($BaseEnemyStuff/ContactHitbox as Hitbox).monitorable = false
+	($BaseEnemyStuff/Hurtbox as Hurtbox).monitoring = false
+	sight_area.scale = Vector2(600, 400)
+	sight_area.position = Vector2.ZERO
+	($StateChart/State_Tree/SeeingPlayer/StartingChase as AtomicState).state_exited.connect(
+		func():
+			backtracking_speed = old_backtracking
+			visible = true
+			($BaseEnemyStuff/ContactHitbox as Hitbox).monitorable = true
+			($BaseEnemyStuff/Hurtbox as Hurtbox).monitoring = true
+			sight_area.scale = Vector2(350, 250)
+			sight_area.position = Vector2.ZERO
+	)
 
 func _physics_process(_delta: float) -> void:
 	_update_facing_direction()

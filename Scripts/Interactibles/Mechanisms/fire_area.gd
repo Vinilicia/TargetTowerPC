@@ -40,7 +40,7 @@ func adjust_to_ground() -> void:
 			return false
 
 	# --- Checa se há parede ---
-	var has_wall_at : Callable = func(x_offset: float, direction: float) -> bool:
+	var has_wall_at : Callable = func(x_offset: float) -> bool:
 		var start = origin + Vector2(0, 0)
 		var end = start + Vector2(x_offset, 0)
 		var query = PhysicsRayQueryParameters2D.create(start, end)
@@ -53,13 +53,13 @@ func adjust_to_ground() -> void:
 
 	var right_dist := 0.0
 	while right_dist < half_spread and has_ground_at.call(right_dist):
-		if has_wall_at.call(right_dist, 1.0):
+		if has_wall_at.call(right_dist):
 			break
 		right_dist += spread_step
 
 	var left_dist := 0.0
 	while left_dist < half_spread and has_ground_at.call(-left_dist):
-		if has_wall_at.call(-left_dist, -1.0):
+		if has_wall_at.call(-left_dist):
 			break
 		left_dist += spread_step
 

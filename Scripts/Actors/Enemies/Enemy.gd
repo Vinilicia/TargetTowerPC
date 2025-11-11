@@ -16,3 +16,6 @@ func took_damage(_amount : float) -> void:
 	
 func run_out_of_health() -> void:
 	die()
+
+func apply_gravity(delta_time : float) -> void:
+	v_component.set_proper_velocity(get_gravity().y, 2)

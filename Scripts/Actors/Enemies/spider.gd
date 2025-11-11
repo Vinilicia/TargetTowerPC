@@ -15,10 +15,6 @@ var rotating := false
 var surface_state: String = "floor"
 var _floor_timer: Timer
 
-# guarda estado anterior pra detectar transições
-var _prev_surface_state: String = ""
-
-
 func _ready() -> void:
 	# Configura rotação e direção inicial
 	match start_surface:
@@ -74,7 +70,7 @@ func _snap_to_surface_on_spawn() -> void:
 	ray.target_position = axis.normalized() * original_length
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if rotating:
 		return
 
@@ -129,7 +125,6 @@ const PIVOT_OFFSET := Vector2(-1, 4.0) # ponto fixo relativo ao inimigo
 
 func _rotate_and_snap(degrees: float, duration := 0.3) -> void:
 
-	
 	if !_floor_timer.is_stopped():
 		_floor_timer.stop()
 	if rotating:
@@ -214,7 +209,6 @@ func _update_surface_state() -> void:
 
 	# Se mudou, chama handler de transição
 	if new_state != surface_state:
-		var old_state = surface_state
 		surface_state = new_state
 		_on_surface_changed( new_state)
 

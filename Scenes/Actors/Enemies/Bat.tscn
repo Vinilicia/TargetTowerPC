@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://1ra02226sph7"]
+[gd_scene load_steps=11 format=3 uid="uid://1ra02226sph7"]
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_nstmu"]
 [ext_resource type="Script" uid="uid://c8gs6ym4fp2uw" path="res://Scripts/Actors/Enemies/bat.gd" id="2_4cx4r"]
@@ -8,12 +8,12 @@
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="6_tyolk"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="7_gpbq7"]
 [ext_resource type="Script" uid="uid://b4dwolbvt8our" path="res://addons/godot_state_charts/history_state.gd" id="8_cp3cr"]
-[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="9_77jsk"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="10_hjvma"]
 [ext_resource type="PackedScene" uid="uid://5eo2pd11j7wo" path="res://Scenes/Actors/SpriteImports/BatSprite.tscn" id="11_l4jld"]
 
 [node name="Bat" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "avoidance_rays", "dash_area", "dive_area", "sight_area", "contact_hitbox") instance=ExtResource("1_nstmu")]
 script = ExtResource("2_4cx4r")
+starts_chasing = false
 chasing_timer = NodePath("Timers/ChasingTimer")
 giving_up_timer = NodePath("Timers/GivingUpTimer")
 line_of_sight = NodePath("BehaviorChanging/LineOfSight")
@@ -176,7 +176,7 @@ collision_layer = 0
 monitorable = false
 
 [node name="SightAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/SightArea" index="0"]
-shape = ExtResource("9_77jsk")
+shape = ExtResource("3_nstmu")
 debug_color = Color(0, 1, 0.34902, 0.419608)
 
 [node name="DashAttackArea" type="Area2D" parent="BehaviorChanging" index="1"]
@@ -186,7 +186,7 @@ collision_layer = 0
 monitorable = false
 
 [node name="DashAttackAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/DashAttackArea" index="0"]
-shape = ExtResource("9_77jsk")
+shape = ExtResource("3_nstmu")
 debug_color = Color(0.678431, 0.313726, 0.0627451, 0.419608)
 
 [node name="DiveAttackArea" type="Area2D" parent="BehaviorChanging" index="2"]
@@ -196,7 +196,7 @@ collision_layer = 0
 monitorable = false
 
 [node name="DiveAttackAreaCollision" type="CollisionShape2D" parent="BehaviorChanging/DiveAttackArea" index="0"]
-shape = ExtResource("9_77jsk")
+shape = ExtResource("3_nstmu")
 debug_color = Color(0.678431, 0.313726, 0.0627451, 0.419608)
 
 [node name="LineOfSight" type="RayCast2D" parent="BehaviorChanging" index="3"]

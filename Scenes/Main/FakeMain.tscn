@@ -34,7 +34,7 @@ canvas_item_default_texture_filter = 0
 size = Vector2i(320, 180)
 render_target_update_mode = 4
 
-[node name="Game" parent="UILayer/GameViewportContainer/GameViewport" node_paths=PackedStringArray("blackout_rect") instance=ExtResource("2_y476l")]
+[node name="FakeGame" parent="UILayer/GameViewportContainer/GameViewport" node_paths=PackedStringArray("blackout_rect") instance=ExtResource("2_y476l")]
 blackout_rect = NodePath("../../../Blackout")
 
 [node name="Blackout" type="ColorRect" parent="UILayer"]
