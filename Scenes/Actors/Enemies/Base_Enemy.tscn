@@ -1,8 +1,8 @@
 [gd_scene load_steps=6 format=3 uid="uid://vc2ghdvugqqc"]
 
-[ext_resource type="Script" uid="uid://cuos4bh8j5ee8" path="res://Scripts/Actors/Enemies/Enemy.gd" id="1_o7nfh"]
-[ext_resource type="Script" uid="uid://b3ucjfdhlhrc8" path="res://Scripts/Components/Velocity_component.gd" id="2_8um0u"]
-[ext_resource type="Script" uid="uid://l8o3upwc5b8x" path="res://Scripts/Components/Health_manager.gd" id="3_sxwhk"]
+[ext_resource type="Script" uid="uid://dm6o7kkghfnnn" path="res://Scripts/Actors/Enemies/Enemy.gd" id="1_o7nfh"]
+[ext_resource type="Script" uid="uid://c4xupirqm5ogs" path="res://Scripts/Components/Velocity_component.gd" id="2_8um0u"]
+[ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Scripts/Components/Health_manager.gd" id="3_sxwhk"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="4_7pv7w"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="5_o68ib"]
 
@@ -19,7 +19,6 @@ health_man = NodePath("BaseEnemyStuff/HealthManager")
 
 [node name="VelocityComponent" type="Node" parent="BaseEnemyStuff"]
 script = ExtResource("2_8um0u")
-metadata/_custom_type_script = "uid://b3ucjfdhlhrc8"
 
 [node name="HealthManager" type="Node" parent="BaseEnemyStuff"]
 script = ExtResource("3_sxwhk")

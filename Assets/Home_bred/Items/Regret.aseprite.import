@@ -1,0 +1,25 @@
+[remap]
+
+importer="Aseprite AnimatedSprite2D Import"
+type="PackedScene"
+uid="uid://jbgqsrvmb7xh"
+path="res://.godot/imported/Regret.aseprite-bd951675806ebc0be30c1f83e50c43be.scn"
+
+[deps]
+
+source_file="res://Assets/Home_bred/Items/Regret.aseprite"
+dest_files=["res://.godot/imported/Regret.aseprite-bd951675806ebc0be30c1f83e50c43be.scn"]
+
+[params]
+
+spritesheet/layout=0
+spritesheet/fixed_rows_count=1
+spritesheet/fixed_columns_count=1
+spritesheet/border_type=0
+spritesheet/trim=false
+spritesheet/ignore_empty=false
+spritesheet/merge_duplicates=false
+animation/default/name="default"
+animation/default/direction=0
+animation/default/repeat_count=0
+animation/autoplay="Normal"
