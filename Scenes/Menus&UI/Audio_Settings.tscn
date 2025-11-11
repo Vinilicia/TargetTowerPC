@@ -251,7 +251,6 @@ text = "Back"
 
 [node name="AudioStreamPlayer" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("10_8qbqp")
-autoplay = true
 bus = &"Music"
 parameters/looping = true
 

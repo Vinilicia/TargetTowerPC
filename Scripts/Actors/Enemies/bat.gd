@@ -342,7 +342,13 @@ func dive() -> void:
 	current_speed = dash_speed
 	var dir := Vector2(0, 1)
 	var duration := dash_distance / dash_speed
-	move_for(duration, dir, current_speed, func(): state_chart.send_event("Finished_Attack"))
+	($Bat as Sprite2D).rotation = PI / 2 * facing_direction
+	($Bat as Sprite2D).position = ($Bat as Sprite2D).position.rotated(PI/2 * facing_direction)
+	move_for(duration, dir, current_speed, func():
+		state_chart.send_event("Finished_Attack")
+		($Bat as Sprite2D).rotation = 0
+		($Bat as Sprite2D).position = ($Bat as Sprite2D).position.rotated(-PI/2 * facing_direction)
+		)
 #endregion
 
 #region Seleção e preparação de ataque
