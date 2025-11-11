@@ -52,10 +52,12 @@ func handle_next_level(scene_path: String, spawn_position: Vector2) -> void:
 
 
 func spaw_player_on_bench() -> void:
+	process_mode = Node.PROCESS_MODE_PAUSABLE
+	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 	get_node("Player").global_position = current_level.get_bench_position()
 	blackout_fade_in()
 	await tween.finished
-	get_parent().get_parent().get_parent().visible = true
+	visible = true
 	await get_tree().create_timer(0.2).timeout
 	blackout_fade_out()
 

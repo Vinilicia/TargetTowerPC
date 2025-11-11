@@ -534,6 +534,7 @@ func set_available_arrows(available_arrows_loaded: Array[bool]):
 	available_arrows = available_arrows_loaded
 
 func wake_up(save_load_manager: SaveLoadManager):
+	return
 	set_available_arrows(save_load_manager.save_file_data.get_available_arrows())
 
 func _on_fire_manager_caught_fire() -> void:

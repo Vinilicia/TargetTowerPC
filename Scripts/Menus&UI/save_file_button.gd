@@ -10,9 +10,9 @@ func init_arrow_textures(save_data : SaveDataResource) -> void:
 		if save_data.get_available_arrow(i): # Aqui nesse ponto o erro ocorre
 			arrow_texture_nodes[i].texture = arrow_textures[i]
 
-func initialize(save_load_manager : SaveLoadManager) -> void:
-	if save_load_manager._load(save_slot):
-		var save_data = save_load_manager.save_file_data as SaveDataResource
+func initialize() -> void:
+	if SaveManager._load(save_slot):
+		var save_data = SaveManager.save_file_data as SaveDataResource
 		if save_data == null:
 			push_error("save_data é nulo no slot %d!" % save_slot)
 			return

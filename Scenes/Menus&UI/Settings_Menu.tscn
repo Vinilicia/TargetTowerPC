@@ -1,11 +1,11 @@
 [gd_scene load_steps=7 format=3 uid="uid://dwwx3mfj10mny"]
 
 [ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_5sxic"]
-[ext_resource type="Script" uid="uid://kmt6mu0uj7iv" path="res://Scripts/Menus&UI/Settings_menu.gd" id="2_42ids"]
+[ext_resource type="Script" uid="uid://p2le6qq5h3ge" path="res://Scripts/Menus&UI/Settings_menu.gd" id="2_42ids"]
 [ext_resource type="FontFile" uid="uid://we2hkdmwoyf1" path="res://Assets/HandymandiFree.ttf" id="3_6ko3e"]
-[ext_resource type="PackedScene" uid="uid://da2sx0ksycqcf" path="res://Scenes/Menus&UI/Controls_Settings.tscn" id="4_8ys5w"]
-[ext_resource type="PackedScene" uid="uid://cyfg1sluqqde" path="res://Scenes/Menus&UI/Audio_Settings.tscn" id="5_8gcye"]
-[ext_resource type="PackedScene" uid="uid://w4qscxieiq2w" path="res://Scenes/Menus&UI/Video_Settings.tscn" id="6_bn18l"]
+[ext_resource type="PackedScene" uid="uid://m2dphotkt2qn" path="res://Scenes/Menus&UI/Controls_Settings.tscn" id="4_8ys5w"]
+[ext_resource type="PackedScene" uid="uid://bthl2lmp4wsmv" path="res://Scenes/Menus&UI/Audio_Settings.tscn" id="5_8gcye"]
+[ext_resource type="PackedScene" uid="uid://cvv7jnj3ll1ty" path="res://Scenes/Menus&UI/Video_Settings.tscn" id="6_bn18l"]
 
 [node name="SettingsMenu" type="Control" node_paths=PackedStringArray("Menus_Container", "Buttons_Container", "Controls_menu", "Audio_menu", "Video_menu", "Controls_button", "Audio_button", "Video_button")]
 layout_mode = 3
