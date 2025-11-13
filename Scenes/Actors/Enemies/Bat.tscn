@@ -40,6 +40,9 @@ wander_strength = 15.0
 scale = Vector2(11, 10)
 shape = ExtResource("3_nstmu")
 
+[node name="VelocityComponent" parent="BaseEnemyStuff" index="0"]
+metadata/_custom_type_script = "uid://b3ucjfdhlhrc8"
+
 [node name="HealthManager" parent="BaseEnemyStuff" index="1"]
 max_health = 3.0
 
