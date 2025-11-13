@@ -472,7 +472,14 @@ func _cant_shoot_physics_processing(_delta: float) -> void:
 func _on_health_lost_health(_amount: float) -> void:
 	modulate = Color(1, 0, 0, 1)
 	await get_tree().create_timer(0.3).timeout
-	modulate = Color(1, 1, 1, 1)
+	var invisibility_time = hurtbox.invincibility_time
+	var time_passed = 0
+	while time_passed < invisibility_time:
+		var tween: Tween = create_tween()
+		tween.tween_property(self, "modulate", Color(1, 1, 1, 0.39), 0.1)
+		tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.1)
+		await get_tree().create_timer(0.2).timeout
+		time_passed += 0.2
 
 func _falling_state_processing(_delta: float) -> void:
 	if is_on_floor():
