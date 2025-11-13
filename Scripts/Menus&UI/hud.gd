@@ -1,7 +1,8 @@
 extends Control
+class_name HUD
 
 @export var hearts_container : HBoxContainer
-@export var heart_rect : PackedScene
+@onready var heart_rect : PackedScene = preload("res://Scenes/Menus&UI/Heart_TextRect.tscn")
 
 var hearts : Array[HeartTexture] = []
 var full_heart_amount : int
@@ -14,17 +15,7 @@ func init_hearts(amount : int = 3) -> void:
 	full_heart_amount = amount
 
 func _ready() -> void:
-	init_hearts(7)
-	await get_tree().create_timer(5.0).timeout
-	lose_hearts(2)
-	await get_tree().create_timer(3.0).timeout
-	gain_hearts(1)
-	await get_tree().create_timer(3.0).timeout
-	lose_hearts(3)
-	await get_tree().create_timer(3.0).timeout
-	gain_hearts(1)
-	await get_tree().create_timer(3.0).timeout
-	gain_hearts(3)
+	pass
 
 func lose_hearts(amount_lost : int) -> void:
 	var index := full_heart_amount - 1

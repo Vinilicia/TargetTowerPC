@@ -54,6 +54,7 @@ const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 @export var dodge_cancel_timer : Timer
 @export var ledge_detector : RayCast2D
 @export var wall_detector : RayCast2D
+@export var health_manager : HealthManager
 
 @export_category("Para debugar")
 @export_range(0, 8) var initial_arrow_index: int
@@ -107,7 +108,8 @@ func _ready():
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 	velocity = Vector2.ZERO
-	UiHandler.equiped_arrow_index = initial_arrow_index
+	await HudHandler.hud.ready
+	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health)
 	#Engine.time_scale = 0.5
 
 # ============================================================
@@ -469,18 +471,6 @@ func _cant_shoot_physics_processing(_delta: float) -> void:
 	if Input.is_action_pressed("shoot"):
 		combat.is_holding = true
 
-func _on_health_lost_health(_amount: float) -> void:
-	modulate = Color(1, 0, 0, 1)
-	await get_tree().create_timer(0.3).timeout
-	var invisibility_time = hurtbox.invincibility_time
-	var time_passed = 0
-	while time_passed < invisibility_time:
-		var tween: Tween = create_tween()
-		tween.tween_property(self, "modulate", Color(1, 1, 1, 0.39), 0.1)
-		tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.1)
-		await get_tree().create_timer(0.2).timeout
-		time_passed += 0.2
-
 func _falling_state_processing(_delta: float) -> void:
 	if is_on_floor():
 		state_chart.send_event("Grounded")
@@ -547,8 +537,26 @@ func wake_up(use_save : bool):
 		pass
 
 func _on_fire_manager_caught_fire() -> void:
-	var health_man : HealthManager = $Misc/HealthManager
 	var fire_man : FireManager = $Utilities/FireManager
-	if not fire_man.extinguished.is_connected(health_man.stop_burning):
-		fire_man.extinguished.connect(health_man.stop_burning, 4)
-		health_man.start_burning(0.5)
+	if not fire_man.extinguished.is_connected(health_manager.stop_burning):
+		fire_man.extinguished.connect(health_manager.stop_burning, 4)
+		health_manager.start_burning(0.5)
+
+func _on_health_lost_health(amount: float) -> void:
+	HudHandler.hud.lose_hearts(amount)
+	modulate = Color(1, 0, 0, 1)
+	await get_tree().create_timer(0.3).timeout
+	var invisibility_time = hurtbox.invincibility_time
+	var time_passed = 0
+	while time_passed < invisibility_time:
+		var tween: Tween = create_tween()
+		tween.tween_property(self, "modulate", Color(1, 1, 1, 0.39), 0.15)
+		tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.15)
+		await get_tree().create_timer(0.3).timeout
+		time_passed += 0.3
+
+func _on_health_manager_ran_out() -> void:
+	get_tree().quit()
+
+func _on_health_manager_gained_health(amount: float) -> void:
+	HudHandler.hud.gain_hearts(amount)

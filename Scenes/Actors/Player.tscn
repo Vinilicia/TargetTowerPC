@@ -1,19 +1,19 @@
 [gd_scene load_steps=17 format=3 uid="uid://ev1c8jc3dq42"]
 
-[ext_resource type="Script" uid="uid://cdrvtbyrgwsa3" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
+[ext_resource type="Script" uid="uid://dxjmsqyt3rpc1" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="4_26aeq"]
-[ext_resource type="Script" uid="uid://c3dea8ukk4f5c" path="res://addons/godot_state_charts/state_chart.gd" id="4_r6772"]
-[ext_resource type="Script" uid="uid://i22f180f1ooj" path="res://addons/godot_state_charts/parallel_state.gd" id="5_wypxn"]
-[ext_resource type="Script" uid="uid://csj60p0c2v1g6" path="res://addons/godot_state_charts/compound_state.gd" id="6_26aeq"]
-[ext_resource type="Script" uid="uid://c71cw33hmp6ru" path="res://addons/godot_state_charts/atomic_state.gd" id="7_wypxn"]
+[ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="4_r6772"]
+[ext_resource type="Script" uid="uid://c1vp0ojjvaby1" path="res://addons/godot_state_charts/parallel_state.gd" id="5_wypxn"]
+[ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="6_26aeq"]
+[ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="7_wypxn"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_26aeq"]
-[ext_resource type="Script" uid="uid://cecn1q6qyblur" path="res://addons/godot_state_charts/expression_guard.gd" id="8_r2kji"]
-[ext_resource type="Script" uid="uid://oinxiusrjkq7" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
+[ext_resource type="Script" uid="uid://le5w1cm0ul8p" path="res://addons/godot_state_charts/expression_guard.gd" id="8_r2kji"]
+[ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
 [ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Actors/SpriteImports/ArcherSprite.tscn" id="9_26aeq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
-[ext_resource type="Script" uid="uid://7qfev32u4td5" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
-[ext_resource type="Script" uid="uid://4evypv5km8px" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
+[ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
+[ext_resource type="Script" uid="uid://bc87qnt24utwm" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="15_heh8i"]
 
 [sub_resource type="Resource" id="Resource_rbeol"]
@@ -21,7 +21,7 @@ script = ExtResource("8_r2kji")
 expression = "!crouching"
 metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector", "health_manager") groups=["Player"]]
 collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("Misc/StateChart")
@@ -46,6 +46,7 @@ hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("Misc/DodgeCancelTimer")
 ledge_detector = NodePath("Utilities/LedgeDetector")
 wall_detector = NodePath("Utilities/WallDetector")
+health_manager = NodePath("Misc/HealthManager")
 
 [node name="Misc" type="Node" parent="."]
 
@@ -152,7 +153,7 @@ delay_in_seconds = "0.0"
 
 [node name="HealthManager" type="Node" parent="Misc"]
 script = ExtResource("11_jfvij")
-max_health = 20.0
+max_health = 12.0
 
 [node name="Archer" parent="." instance=ExtResource("9_26aeq")]
 position = Vector2(-28, -28)
@@ -236,8 +237,9 @@ parent = NodePath("../../..")
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_physics_processing"]
 [connection signal="state_entered" from="Misc/StateChart/Root/Shooting/CantShoot" to="." method="_cannot_shoot_state_entered"]
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Shooting/CantShoot" to="." method="_cant_shoot_physics_processing"]
+[connection signal="gained_health" from="Misc/HealthManager" to="." method="_on_health_manager_gained_health"]
 [connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_lost_health"]
-[connection signal="ran_out" from="Misc/HealthManager" to="." method="die"]
+[connection signal="ran_out" from="Misc/HealthManager" to="." method="_on_health_manager_ran_out"]
 [connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
 [connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
 [connection signal="body_exited" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
