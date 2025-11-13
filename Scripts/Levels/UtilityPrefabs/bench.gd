@@ -1,6 +1,7 @@
 extends Node2D
 
 @export var area: int = 0
+@export var should_save : bool = true
 
 var player: Player = null
 
@@ -9,7 +10,9 @@ var player: Player = null
 
 func _physics_process(_delta: float) -> void:
 	if player and Input.is_action_just_pressed("down"):
-		bench_used()
+		heal_player()
+		if should_save:
+			bench_used()
 
 func _on_player_entered(body: Node2D) -> void:
 	if body is Player:
@@ -19,7 +22,11 @@ func _on_player_exited(body: Node2D) -> void:
 	if body is Player:
 		player = null
 
-func bench_used() -> void:
+func heal_player() -> void:
+	var player_health_man : HealthManager = player.health_manager
+	player_health_man.gain_health(player_health_man.max_health)
+
+func bench_used() -> void:	
 	var saveLoad : SaveLoadManager = SaveLoadManager.new()
 	saveLoad.save_file_data.set_last_bench_id(bench_id)
 	saveLoad.save_file_data.set_area_of_bench(area)

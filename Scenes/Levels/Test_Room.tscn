@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://dn10h68f76vry"]
+[gd_scene load_steps=11 format=4 uid="uid://dn10h68f76vry"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_evn5t"]
 [ext_resource type="PackedScene" uid="uid://rbo0lyegdlbe" path="res://Scenes/Actors/Enemies/Spider.tscn" id="2_f20nt"]
@@ -9,8 +9,10 @@
 [ext_resource type="PackedScene" uid="uid://bps57wjl0501i" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="6_22qgy"]
 [ext_resource type="PackedScene" uid="uid://5y1krmoyg57i" path="res://Scenes/Interactibles/Mechanisms/Windbox.tscn" id="8_wsoaw"]
 [ext_resource type="PackedScene" uid="uid://dgsguis2vqkm7" path="res://Scenes/Interactibles/Mechanisms/Conveyor_belt.tscn" id="9_kfdoy"]
+[ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="10_kfdoy"]
 
-[node name="TestRoom" instance=ExtResource("1_evn5t")]
+[node name="TestRoom" node_paths=PackedStringArray("bench") instance=ExtResource("1_evn5t")]
+bench = NodePath("Bench")
 
 [node name="Spooder" parent="Enemies" index="0" instance=ExtResource("2_f20nt")]
 position = Vector2(351, 20)
@@ -80,3 +82,7 @@ size = Vector2i(3, 8)
 position = Vector2(437, -182)
 belt_speed = 60.0
 length = 7
+
+[node name="Bench" parent="." index="7" instance=ExtResource("10_kfdoy")]
+position = Vector2(343, 184)
+should_save = false
