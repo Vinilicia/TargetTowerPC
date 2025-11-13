@@ -550,10 +550,10 @@ func _on_health_lost_health(amount: float) -> void:
 	var time_passed = 0
 	while time_passed < invisibility_time:
 		var tween: Tween = create_tween()
-		tween.tween_property(self, "modulate", Color(1, 1, 1, 0.39), 0.1)
-		tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.1)
-		await get_tree().create_timer(0.2).timeout
-		time_passed += 0.2
+		tween.tween_property(self, "modulate", Color(1, 1, 1, 0.39), 0.15)
+		tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.15)
+		await get_tree().create_timer(0.3).timeout
+		time_passed += 0.3
 
 func _on_health_manager_ran_out() -> void:
 	get_tree().quit()

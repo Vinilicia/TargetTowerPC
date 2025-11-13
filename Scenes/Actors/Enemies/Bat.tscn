@@ -31,7 +31,7 @@ dash_speed = 200.0
 dash_distance = 120.0
 dash_delay = 0.3
 attack_reaction_delay = 0.1
-dash_hitbox_increase = 1.5
+dash_hitbox_increase = 1.2
 chase_retarget_frames = 10
 facing_flip_deadzone = 2.0
 wander_strength = 15.0
@@ -39,9 +39,6 @@ wander_strength = 15.0
 [node name="BodyCollision" parent="." index="0"]
 scale = Vector2(11, 10)
 shape = ExtResource("3_nstmu")
-
-[node name="VelocityComponent" parent="BaseEnemyStuff" index="0"]
-metadata/_custom_type_script = "uid://b3ucjfdhlhrc8"
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1"]
 max_health = 3.0
