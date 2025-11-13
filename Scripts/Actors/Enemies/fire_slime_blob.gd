@@ -41,10 +41,10 @@ func _on_player_detector_body_entered(_body: Node2D) -> void:
 		disabled = false
 
 
-func _on_wall_detector_body_entered(body: Node2D) -> void:
+func _on_wall_detector_body_entered(_body: Node2D) -> void:
 	if disabled: 
 		inside_wall = true
 
 
-func _on_wall_detector_body_exited(body: Node2D) -> void:
+func _on_wall_detector_body_exited(_body: Node2D) -> void:
 	inside_wall = false

@@ -1,0 +1,27 @@
+[remap]
+
+importer="Aseprite TextureRect Import"
+type="PackedScene"
+uid="uid://b82xu7fmd7iff"
+path="res://.godot/imported/Heart.aseprite-3d20eff042b8e8aed9f9b7d9f72ea88a.scn"
+
+[deps]
+
+source_file="res://Assets/Home_bred/UI/HUD/Heart.aseprite"
+dest_files=["res://.godot/imported/Heart.aseprite-3d20eff042b8e8aed9f9b7d9f72ea88a.scn"]
+
+[params]
+
+spritesheet/layout=0
+spritesheet/fixed_rows_count=1
+spritesheet/fixed_columns_count=1
+spritesheet/border_type=0
+spritesheet/trim=false
+spritesheet/ignore_empty=false
+spritesheet/merge_duplicates=false
+animation/default/name="default"
+animation/default/direction=0
+animation/default/repeat_count=0
+animation/autoplay="Full"
+animation/strategy_(packed_spritesheet)=0
+animation/strategy_(grid-based_spritesheet)=0

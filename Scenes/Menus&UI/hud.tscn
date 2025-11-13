@@ -1,0 +1,38 @@
+[gd_scene load_steps=2 format=3 uid="uid://bbwrmqxcr5lq0"]
+
+[ext_resource type="Script" uid="uid://dqwu44m4sxr5n" path="res://Scripts/Menus&UI/hud.gd" id="1_v2751"]
+
+[node name="HUD" type="Control" node_paths=PackedStringArray("hearts_container") groups=["HUD"]]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_v2751")
+hearts_container = NodePath("MarginContainer/ElementsContainer/HealthContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ElementsContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HealthContainer" type="HBoxContainer" parent="MarginContainer/ElementsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="ManaContainer" type="HBoxContainer" parent="MarginContainer/ElementsContainer"]
+layout_mode = 2
+
+[node name="MoneyContainer" type="HBoxContainer" parent="MarginContainer/ElementsContainer"]
+layout_mode = 2

@@ -2,13 +2,13 @@
 
 importer="Aseprite AnimatedSprite2D Import"
 type="PackedScene"
-uid="uid://rqw6msgawccg"
-path="res://.godot/imported/Fire-Loop.aseprite-6f07b3e2a2661d365b07304128ef492f.scn"
+uid="uid://jbgqsrvmb7xh"
+path="res://.godot/imported/Regret.aseprite-bd951675806ebc0be30c1f83e50c43be.scn"
 
 [deps]
 
-source_file="res://Assets/Stolen/Fire-Loop.aseprite"
-dest_files=["res://.godot/imported/Fire-Loop.aseprite-6f07b3e2a2661d365b07304128ef492f.scn"]
+source_file="res://Assets/Home_bred/Items/Regret.aseprite"
+dest_files=["res://.godot/imported/Regret.aseprite-bd951675806ebc0be30c1f83e50c43be.scn"]
 
 [params]
 
@@ -22,4 +22,4 @@ spritesheet/merge_duplicates=false
 animation/default/name="default"
 animation/default/direction=0
 animation/default/repeat_count=0
-animation/autoplay="Loop"
+animation/autoplay="Normal"

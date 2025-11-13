@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://dx5wssyph2nw7"]
+
+[ext_resource type="PackedScene" uid="uid://rqw6msgawccg" path="res://Assets/Stolen/Fire-Loop.aseprite" id="1_e4vae"]
+
+[node name="Fire-Loop" instance=ExtResource("1_e4vae")]
+modulate = Color(0, 1, 0, 1)
+frame = 6
+frame_progress = 0.83649

@@ -14,13 +14,9 @@ var waittime: float = 1.0
 var rotating := false
 var surface_state: String = "floor"
 var _floor_timer: Timer
-
-# guarda estado anterior pra detectar transições
-var _prev_surface_state: String = ""
-
+var is_ready : bool = false
 
 func _ready() -> void:
-	# Configura rotação e direção inicial
 	match start_surface:
 		"floor":
 			rotation_degrees = 0
@@ -29,7 +25,7 @@ func _ready() -> void:
 			rotation_degrees = 180
 			surface_state = "ceiling"
 		"wall_left":
-			rotation_degrees = -90
+			rotation_degrees = -90  
 			surface_state = "wall"
 			movedir = -1.0
 		"wall_right":
@@ -42,8 +38,7 @@ func _ready() -> void:
 
 
 	await get_tree().process_frame
-	_snap_to_surface_on_spawn()
-
+	
 	_floor_timer = Timer.new()
 	_floor_timer.wait_time = 3.0
 	_floor_timer.autostart = false
@@ -51,8 +46,9 @@ func _ready() -> void:
 	add_child(_floor_timer)
 	_floor_timer.timeout.connect(_on_floor_timer_timeout)
 
-	_on_surface_changed( surface_state)
-
+	_on_surface_changed(surface_state)
+	await get_tree().create_timer(0.5).timeout
+	is_ready = true
 
 # =====================================================
 # RESTANTE DAS FUNÇÕES (mantidas, as que você já tinha)
@@ -74,7 +70,10 @@ func _snap_to_surface_on_spawn() -> void:
 	ray.target_position = axis.normalized() * original_length
 
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
+	if !is_ready:
+		return
+	
 	if rotating:
 		return
 
@@ -129,7 +128,6 @@ const PIVOT_OFFSET := Vector2(-1, 4.0) # ponto fixo relativo ao inimigo
 
 func _rotate_and_snap(degrees: float, duration := 0.3) -> void:
 
-	
 	if !_floor_timer.is_stopped():
 		_floor_timer.stop()
 	if rotating:
@@ -214,7 +212,6 @@ func _update_surface_state() -> void:
 
 	# Se mudou, chama handler de transição
 	if new_state != surface_state:
-		var old_state = surface_state
 		surface_state = new_state
 		_on_surface_changed( new_state)
 

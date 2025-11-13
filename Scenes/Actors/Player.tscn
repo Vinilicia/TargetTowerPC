@@ -21,11 +21,11 @@ script = ExtResource("8_r2kji")
 expression = "!crouching"
 metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector")]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector", "health_manager") groups=["Player"]]
 collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("Misc/StateChart")
-camera_distance = 25.0
+camera_distance = 15.0
 camera_move_duration = 1.0
 camera_remote = NodePath("Utilities/Remote")
 arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4", "uid://h5p666cxnxby"])
@@ -46,6 +46,7 @@ hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("Misc/DodgeCancelTimer")
 ledge_detector = NodePath("Utilities/LedgeDetector")
 wall_detector = NodePath("Utilities/WallDetector")
+health_manager = NodePath("Misc/HealthManager")
 
 [node name="Misc" type="Node" parent="."]
 
@@ -152,12 +153,10 @@ delay_in_seconds = "0.0"
 
 [node name="HealthManager" type="Node" parent="Misc"]
 script = ExtResource("11_jfvij")
-max_health = 20.0
+max_health = 12.0
 
 [node name="Archer" parent="." instance=ExtResource("9_26aeq")]
 position = Vector2(-28, -28)
-offset = Vector2(21, 17)
-region_rect = Rect2(56, 106, 14, 20)
 
 [node name="UpColl" type="CollisionShape2D" parent="."]
 visible = false
@@ -196,7 +195,7 @@ target_position = Vector2(15, 0)
 collision_mask = 28
 
 [node name="Remote" type="RemoteTransform2D" parent="Utilities"]
-position = Vector2(0, -35)
+position = Vector2(0, -20)
 update_rotation = false
 update_scale = false
 
@@ -238,8 +237,9 @@ parent = NodePath("../../..")
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_physics_processing"]
 [connection signal="state_entered" from="Misc/StateChart/Root/Shooting/CantShoot" to="." method="_cannot_shoot_state_entered"]
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Shooting/CantShoot" to="." method="_cant_shoot_physics_processing"]
+[connection signal="gained_health" from="Misc/HealthManager" to="." method="_on_health_manager_gained_health"]
 [connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_lost_health"]
-[connection signal="ran_out" from="Misc/HealthManager" to="." method="die"]
+[connection signal="ran_out" from="Misc/HealthManager" to="." method="_on_health_manager_ran_out"]
 [connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
 [connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
 [connection signal="body_exited" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]

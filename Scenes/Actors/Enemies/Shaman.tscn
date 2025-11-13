@@ -1,0 +1,59 @@
+[gd_scene load_steps=6 format=3 uid="uid://4cb2gyoifqiu"]
+
+[ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_nyc18"]
+[ext_resource type="Script" uid="uid://unmi54jxtanq" path="res://Scripts/Actors/Enemies/shaman.gd" id="2_3ef5p"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_klb6c"]
+[ext_resource type="Texture2D" uid="uid://gx6aetvv68e4" path="res://Assets/Stolen/FireSprite/Fire-Loop1.png" id="3_3ef5p"]
+[ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="5_yejv2"]
+
+[node name="Shaman" node_paths=PackedStringArray("line_of_sight", "attack_timer") instance=ExtResource("1_nyc18")]
+script = ExtResource("2_3ef5p")
+line_of_sight = NodePath("LineOfSight")
+attack_timer = NodePath("AttackTimer")
+base_attack_delay = 3.0
+attack_delay_variation = 1.0
+giving_up_delay = 0.4
+summon_bat_chance = 0.5
+magic_bolt_texture = ExtResource("3_3ef5p")
+magic_bolt_scale = Vector2(20, 20)
+magic_bolt_speed = 200.0
+projectile_lifespan = 5.0
+money_amount = 4.0
+
+[node name="BodyCollision" parent="." index="0"]
+scale = Vector2(16, 20)
+shape = ExtResource("2_klb6c")
+
+[node name="HealthManager" parent="BaseEnemyStuff" index="1"]
+max_health = 6.0
+
+[node name="Hurtbox" parent="BaseEnemyStuff" index="2"]
+scale = Vector2(18, 22)
+
+[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1"]
+shape = ExtResource("2_klb6c")
+
+[node name="ContactHitbox" parent="BaseEnemyStuff" index="3"]
+scale = Vector2(18, 22)
+
+[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0"]
+shape = ExtResource("2_klb6c")
+
+[node name="VisibleNotifier" type="VisibleOnScreenNotifier2D" parent="." index="2"]
+rect = Rect2(-7, -7, 14, 14)
+
+[node name="LineOfSight" type="RayCast2D" parent="." index="3"]
+target_position = Vector2(0, 0)
+collision_mask = 21
+
+[node name="AttackTimer" type="Timer" parent="." index="4"]
+one_shot = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="5"]
+modulate = Color(1, 0, 0.623529, 1)
+scale = Vector2(0.14, 0.2)
+texture = ExtResource("5_yejv2")
+
+[connection signal="screen_entered" from="VisibleNotifier" to="." method="_on_visible_notifier_screen_entered"]
+[connection signal="screen_exited" from="VisibleNotifier" to="." method="_on_visible_notifier_screen_exited"]
+[connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]

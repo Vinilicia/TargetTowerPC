@@ -16,17 +16,21 @@ enum Status {
 var status_mask : int = Status.NORMAL
 
 signal lost_health(amount : float)
+signal gained_health(amount : float)
 signal ran_out
 
 func _ready() -> void:
 	health = max_health
 
 func gain_health(value : float) -> void:
-	health = min(health + value, max_health)
+	var true_value : float = min(value, max_health - health)
+	gained_health.emit(true_value)
+	health += true_value
 
 func lose_health(value : float) -> void:
-	lost_health.emit(value)
-	health = max(0, health - value)
+	var true_value : float = min(value, health)
+	lost_health.emit(true_value)
+	health -= true_value
 	check_if_alive()
 
 func check_if_alive() -> void:
