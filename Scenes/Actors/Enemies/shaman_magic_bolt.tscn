@@ -9,11 +9,13 @@
 script = ExtResource("1_nbkg7")
 speed = 160.0
 
+[node name="Fire-Loop" parent="." instance=ExtResource("4_gomsn")]
+
 [node name="Hitbox" parent="." instance=ExtResource("2_gomsn")]
+position = Vector2(0, 4)
+scale = Vector2(10, 8)
 collision_layer = 1024
 Damage = 1.0
 
 [node name="Coll" type="CollisionShape2D" parent="Hitbox"]
 shape = ExtResource("3_s4tnc")
-
-[node name="Fire-Loop" parent="." instance=ExtResource("4_gomsn")]

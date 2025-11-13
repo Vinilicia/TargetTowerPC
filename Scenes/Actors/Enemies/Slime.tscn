@@ -2,8 +2,8 @@
 
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_nn6wd"]
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_xj0ob"]
-[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="2_cbwjt"]
 [ext_resource type="Script" uid="uid://dvu0iocv5wpf5" path="res://Scripts/Actors/Enemies/slime.gd" id="2_d83c3"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="4_d83c3"]
 [ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="4_jrs23"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="6_d83c3"]
 
@@ -46,13 +46,12 @@ scale = Vector2(16, 16)
 shape = ExtResource("1_nn6wd")
 
 [node name="SightArea" type="Area2D" parent="." index="2"]
-visible = false
 scale = Vector2(300, 200)
 collision_layer = 0
 monitorable = false
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="SightArea" index="0"]
-shape = ExtResource("2_cbwjt")
+shape = ExtResource("4_d83c3")
 debug_color = Color(0.234089, 0.629159, 0.300647, 0.42)
 
 [node name="BlobSpawner" type="Marker2D" parent="." index="3"]

@@ -1,9 +1,10 @@
-[gd_scene load_steps=5 format=3 uid="uid://4cb2gyoifqiu"]
+[gd_scene load_steps=6 format=3 uid="uid://4cb2gyoifqiu"]
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_nyc18"]
 [ext_resource type="Script" uid="uid://unmi54jxtanq" path="res://Scripts/Actors/Enemies/shaman.gd" id="2_3ef5p"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_klb6c"]
 [ext_resource type="Texture2D" uid="uid://gx6aetvv68e4" path="res://Assets/Stolen/FireSprite/Fire-Loop1.png" id="3_3ef5p"]
+[ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="5_yejv2"]
 
 [node name="Shaman" node_paths=PackedStringArray("line_of_sight", "attack_timer") instance=ExtResource("1_nyc18")]
 script = ExtResource("2_3ef5p")
@@ -47,6 +48,11 @@ collision_mask = 21
 
 [node name="AttackTimer" type="Timer" parent="." index="4"]
 one_shot = true
+
+[node name="Sprite2D" type="Sprite2D" parent="." index="5"]
+modulate = Color(1, 0, 0.623529, 1)
+scale = Vector2(0.14, 0.2)
+texture = ExtResource("5_yejv2")
 
 [connection signal="screen_entered" from="VisibleNotifier" to="." method="_on_visible_notifier_screen_entered"]
 [connection signal="screen_exited" from="VisibleNotifier" to="." method="_on_visible_notifier_screen_exited"]

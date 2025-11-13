@@ -1,11 +1,10 @@
-[gd_scene load_steps=13 format=3 uid="uid://bps57wjl0501i"]
+[gd_scene load_steps=12 format=3 uid="uid://bps57wjl0501i"]
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_j75sw"]
 [ext_resource type="Script" uid="uid://vlys5segiqlr" path="res://Scripts/Actors/Enemies/common_goblin.gd" id="2_mp5lk"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_r6q1e"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_5lx0x"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="5_k48vj"]
-[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="6_7rrmr"]
 [ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="7_hjulu"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="8_dopws"]
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="9_yymsn"]
@@ -116,7 +115,7 @@ Knockback_force = 120.0
 Knockback_angle = 30.0
 
 [node name="Coll" type="CollisionShape2D" parent="Areas/AttackHitbox" index="0"]
-shape = ExtResource("6_7rrmr")
+shape = ExtResource("3_5lx0x")
 debug_color = Color(1, 0.6, 0.701961, 0.419608)
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="3"]

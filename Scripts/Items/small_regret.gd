@@ -12,7 +12,7 @@ var player : Node2D = null
 
 func _ready() -> void:
 	anim_timer.start(randf_range(min_delay, max_delay))
-	go_to_player()
+	#dgo_to_player()
 
 @export var fly_acceleration: float = 300.0
 

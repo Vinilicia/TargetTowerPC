@@ -540,9 +540,11 @@ func _standing_entered() -> void:
 func set_available_arrows(available_arrows_loaded: Array[bool]):
 	available_arrows = available_arrows_loaded
 
-func wake_up(save_load_manager: SaveLoadManager):
-	return
-	set_available_arrows(save_load_manager.save_file_data.get_available_arrows())
+func wake_up(use_save : bool):
+	if use_save:
+		set_available_arrows(SaveManager.save_file_data.get_available_arrows())
+	else:
+		pass
 
 func _on_fire_manager_caught_fire() -> void:
 	var health_man : HealthManager = $Misc/HealthManager

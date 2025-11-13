@@ -25,7 +25,7 @@ func _ready() -> void:
 			rotation_degrees = 180
 			surface_state = "ceiling"
 		"wall_left":
-			rotation_degrees = -90
+			rotation_degrees = -90  
 			surface_state = "wall"
 			movedir = -1.0
 		"wall_right":
