@@ -6,8 +6,8 @@ extends Button
 @export var bench_name_label : Label
 
 func init_arrow_textures(save_data : SaveDataResource) -> void:
-	for i in arrow_texture_nodes.size():
-		if save_data.get_available_arrow(i): # Aqui nesse ponto o erro ocorre
+	for i in range(arrow_texture_nodes.size()):
+		if save_data.get_available_arrow(i+1): # Aqui nesse ponto o erro ocorre
 			arrow_texture_nodes[i].texture = arrow_textures[i]
 
 func initialize() -> void:

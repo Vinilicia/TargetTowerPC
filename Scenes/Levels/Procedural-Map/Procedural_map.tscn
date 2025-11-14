@@ -1,0 +1,71 @@
+[gd_scene load_steps=11 format=3 uid="uid://dfa4di7v84300"]
+
+[ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Scenes/Actors/Player.tscn" id="1_iqip7"]
+[ext_resource type="Script" uid="uid://ccivni2x6df06" path="res://Scripts/Levels/procedural_map.gd" id="1_xfo6p"]
+[ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Levels/Camera.tscn" id="2_6mfhi"]
+[ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_povcy"]
+[ext_resource type="PackedScene" uid="uid://bps57wjl0501i" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="3_8npxh"]
+[ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="4_gve05"]
+[ext_resource type="PackedScene" uid="uid://rbo0lyegdlbe" path="res://Scenes/Actors/Enemies/Spider.tscn" id="5_2sijd"]
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_xfo6p"]
+size = Vector2(674, 20)
+
+[sub_resource type="RectangleShape2D" id="RectangleShape2D_u53cf"]
+size = Vector2(20, 375)
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6mfhi"]
+resource_local_to_scene = true
+radius = 0.5
+height = 2.0
+
+[node name="ProceduralMap" type="Node2D"]
+script = ExtResource("1_xfo6p")
+bat = ExtResource("2_povcy")
+goblin = ExtResource("3_8npxh")
+slime = ExtResource("4_gve05")
+spider = ExtResource("5_2sijd")
+
+[node name="Tilemaps" type="Node2D" parent="."]
+
+[node name="Enemies" type="Node2D" parent="."]
+
+[node name="Colisões" type="Node2D" parent="."]
+
+[node name="StaticBody2D" type="StaticBody2D" parent="Colisões"]
+collision_layer = 4
+collision_mask = 11
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Colisões/StaticBody2D"]
+position = Vector2(322, 133)
+shape = SubResource("RectangleShape2D_xfo6p")
+
+[node name="CollisionShape2D4" type="CollisionShape2D" parent="Colisões/StaticBody2D"]
+position = Vector2(324, -40)
+shape = SubResource("RectangleShape2D_xfo6p")
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Colisões/StaticBody2D"]
+position = Vector2(-19, -50)
+shape = SubResource("RectangleShape2D_u53cf")
+
+[node name="CollisionShape2D3" type="CollisionShape2D" parent="Colisões/StaticBody2D"]
+position = Vector2(644, -59)
+shape = SubResource("RectangleShape2D_u53cf")
+
+[node name="SpawAreas" type="Node2D" parent="."]
+
+[node name="Player" parent="." instance=ExtResource("1_iqip7")]
+position = Vector2(303, 55)
+
+[node name="Coll" parent="Player/Hurtbox" index="1"]
+shape = SubResource("CapsuleShape2D_6mfhi")
+
+[node name="Remote" parent="Player/Utilities" index="1"]
+remote_path = NodePath("../../../Camera")
+
+[node name="Camera" parent="." instance=ExtResource("2_6mfhi")]
+position = Vector2(303, 35)
+
+[editable path="Player"]
+[editable path="Player/Archer"]
+[editable path="Player/Utilities/FireManager"]
