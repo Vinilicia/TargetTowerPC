@@ -44,7 +44,7 @@ theme_override_constants/separation = 5
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ModeContainer"]
 layout_mode = 2
-text = "Window mode:"
+text = "TEXT_WINDOW_MODE"
 
 [node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/ModeContainer"]
 custom_minimum_size = Vector2(160, 20)
@@ -55,15 +55,15 @@ alignment = 1
 selected = 0
 allow_reselect = true
 item_count = 5
-popup/item_0/text = "Window"
+popup/item_0/text = "TEXT_MODE_WINDOWED"
 popup/item_0/id = 0
 popup/item_1/id = 3
 popup/item_1/separator = true
-popup/item_2/text = "Borderless window"
+popup/item_2/text = "TEXT_MODE_BORDERLESS"
 popup/item_2/id = 1
 popup/item_3/id = 4
 popup/item_3/separator = true
-popup/item_4/text = "Fullscreen"
+popup/item_4/text = "TEXT_MODE_FULLSCREEN"
 popup/item_4/id = 2
 
 [node name="ResolutionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
@@ -72,7 +72,7 @@ size_flags_vertical = 8
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
 layout_mode = 2
-text = "Resolution:"
+text = "TEXT_RESOLUTION"
 
 [node name="Control" type="Control" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
 custom_minimum_size = Vector2(5, 0)
@@ -107,7 +107,7 @@ size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer"]
 layout_mode = 2
-text = "Brightness:"
+text = "TEXT_BRIGHTNESS"
 
 [node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer"]
 layout_mode = 2
@@ -168,7 +168,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
 focus_neighbor_bottom = NodePath("../ModeContainer/OptionButton")
-text = "Back"
+text = "TEXT_BACK"
 
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/ModeContainer/OptionButton" to="." method="_on_window_mode_item_selected"]
 [connection signal="item_selected" from="MarginContainer/VBoxContainer/ResolutionContainer/OptionButton" to="." method="_on_resolution_item_selected"]

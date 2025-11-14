@@ -530,7 +530,7 @@ func _standing_entered() -> void:
 func set_available_arrows(available_arrows_loaded: Array[bool]):
 	available_arrows = available_arrows_loaded
 
-func wake_up(use_save : bool):
+func wake_up(use_save : bool = true):
 	if use_save:
 		set_available_arrows(SaveManager.save_file_data.get_available_arrows())
 	else:

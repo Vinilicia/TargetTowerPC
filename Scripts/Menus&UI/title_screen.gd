@@ -16,10 +16,8 @@ var save_selected : int = 1
 var on_copy : bool = false
 
 func _ready() -> void:
-	save_load_manager = SaveManager
 	for button in save_file_buttons:
 		button.initialize()
-	
 	find_child("PlayButton").grab_focus()
 
 func return_menu_from_game() -> void:
@@ -98,7 +96,7 @@ func load_save(save_id) -> void:
 	visible = false
 	instantiate_main_menu()
 	game.save_id = save_id
-	game.load_room(room_scene, save_load_manager)
+	game.load_room(room_scene)
 
 func open_button_pressed() -> void:
 	on_copy = false
@@ -124,5 +122,6 @@ func show_settings() -> void:
 func hide_settings() -> void:
 	settings_menu.visible = false
 	title_menu.visible = true
+	_ready()
 	var focus_button : Button = title_menu.find_child("SettingsButton")
 	focus_button.grab_focus()

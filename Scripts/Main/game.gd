@@ -61,8 +61,8 @@ func spaw_player_on_bench() -> void:
 	await get_tree().create_timer(0.2).timeout
 	blackout_fade_out()
 
-func load_room(room_scene: PackedScene, save_load_manager: SaveLoadManager) -> void:
-	get_node("Player").wake_up(save_load_manager)
+func load_room(room_scene: PackedScene) -> void:
+	get_node("Player").wake_up()
 	if current_level:
 		remove_child(current_level)
 	current_level = room_scene.instantiate()

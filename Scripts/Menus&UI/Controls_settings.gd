@@ -14,17 +14,17 @@ var previous_event: InputEvent = null
 var previous_button: Button = null
 
 var input_actions = {
-	"up": "Up",
-	"down": "Down",
-	"left": "Left",
-	"right": "Right",
-	"angle up": "Angle Up",
-	"angle down": "Angle Down",
-	"shoot": "Shoot",
-	"jump": "Jump",
-	"dodge": "Dodge",
-	"lock walk": "Moonwalk",
-	"map": "Map"
+	"up": "TEXT_CONTROLS_UP",
+	"down": "TEXT_CONTROLS_DOWN",
+	"left": "TEXT_CONTROLS_LEFT",
+	"right": "TEXT_CONTROLS_RIGHT",
+	"angle up": "TEXT_CONTROLS_ANGLE_UP",
+	"angle down": "TEXT_CONTROLS_ANGLE_DOWN",
+	"shoot": "TEXT_CONTROLS_SHOOT",
+	"jump": "TEXT_CONTROLS_JUMP",
+	"dodge": "TEXT_CONTROLS_DODGE",
+	"lock walk": "TEXT_CONTROLS_MOONWALK",
+	"map": "TEXT_CONTROLS_MAP"
 }
 
 var forbidden_keys = [
@@ -32,7 +32,6 @@ var forbidden_keys = [
 	KEY_ESCAPE,
 	KEY_ALT
 ]
-
 
 func is_forbidden(event: InputEventKey) -> bool:
 	for key in forbidden_keys:
@@ -61,7 +60,7 @@ func _create_action_list() -> void:
 		var action_label: Label = button.find_child("ActionLabel")
 		var input_label: Label = button.find_child("InputLabel")
 		
-		action_label.text = input_actions[action]
+		action_label.text = tr(str(input_actions[action]))
 		
 		var events = InputMap.action_get_events(action)
 		if events.size() > 0:
@@ -165,3 +164,7 @@ func _on_back_button_pressed() -> void:
 	var game : Game = get_tree().get_first_node_in_group("Game")
 	if game:
 		SaveManager.save_controls_for_slot(game.save_id)
+
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED:
+		_create_action_list()

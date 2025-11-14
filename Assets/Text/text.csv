@@ -1,0 +1,41 @@
+KEYS,en,pt,es,fr,it,de,da,sv,no,is,hu,pl,tr,ru,uk,cs,sk
+TEXT_TITLE,Target Tower,Target Tower,Torre Objetivo,Tour Cible,Torre Bersaglio,Zielturm,Måltårn,Måltorn,Måltårn,Markturn,Cél Torony,Wieża Celowania,Hedef Kulesi,Башня Цели,Вежа Мети,Věž Cíle,Veža Cieľa
+TEXT_OPEN,Open,Abrir,Abrir,Ouvrir,Apri,Öffnen,Åbn,Öppna,Åpne,Opna,Megnyitás,Otwórz,Aç,Открыть,Відкрити,Otevřít,Otvoriť
+TEXT_COPY,Copy,Copiar,Copiar,Copier,Copia,Kopieren,Kopiér,Kopiera,Kopier,Afrita,Másolás,Kopiuj,Kopyala,Копировать,Копіювати,Kopírovat,Kopírovať
+TEXT_ERASE,Erase,Apagar,Borrar,Effacer,Cancella,Löschen,Slet,Radera,Slett,Eyða,Törlés,Usuń,Sil,Удалить,Видалити,Smazat,Odstrániť
+TEXT_BACK,Back,Voltar,Atrás,Retour,Indietro,Zurück,Tilbage,Tillbaka,Tilbake,Til baka,Vissza,Wstecz,Geri,Назад,Назад,Zpět,Naspäť
+TEXT_PLAY,Play,Jogar,Jugar,Jouer,Gioca,Spielen,Spil,Spela,Spill,Spila,Játék,Gracz,Oyna,Играть,Грати,Hrát,Hrať
+TEXT_SETTINGS,Settings,Configurações,Ajustes,Paramètres,Impostazioni,Einstellungen,Indstillinger,Inställningar,Innstillinger,Stillingar,Beállítások,Ustawienia,Ayarlar,Настройки,Налаштування,Nastavení,Nastavenia
+TEXT_QUIT,Quit,Sair,Salir,Quitter,Esci,Beenden,Afslut,Avsluta,Avslutt,Hætta,Kilépés,Wyjdź,Ayrıl,Выйти,Вийти,Ukončit,Ukončiť
+TEXT_YES,Yes,Sim,Sí,Oui,Sì,Ja,Ja,Ja,Ja,Jú,Igen,Tak,Evet,Да,Так,Ano,Áno
+TEXT_NO,No,Não,No,Non,No,Nein,Nee,Nej,Nei,Nei,Nem,Nie,Hayır,Нет,Ні,Ne,Nie
+TEXT_CONTROLS,Controls,Controles,Controles,Commandes,Controlli,Steuerung,Kontroller,Kontroller,Kontroller,Stjórnun,Irányítás,Sterowanie,Kontroller,Управление,Керування,Ovládání,Ovládanie
+TEXT_AUDIO,Audio,Áudio,Audio,Audio,Audio,Audio,Lyd,Ljud,Lyd,Hljóð,Hang,Audio,Ses,Аудио,Аудіо,Audio,Audio
+TEXT_VIDEO,Video,Vídeo,Video,Vidéo,Video,Video,Video,Video,Video,Myndband,Videó,Wideo,Video,Видео,Відео,Video,Video
+TEXT_WINDOW_MODE,Window,Modo de exibição,Ventana,Fenêtre,Finestra,Fenster,Vindue,Fönster,Vindu,Gluggi,Ablak,Okno,Pencere,Окно,Вікно,Okno,Okno
+TEXT_MODE_FULLSCREEN,Fullscreen,Tela cheia,Pantalla completa,Plein écran,Schermo intero,Vollbild,Fuld skærm,Fullskärm,Fullskjerm,Heilskjár,Teljes képernyő,Pełny ekran,Tam ekran,Полный экран,Повний екран,Na celou obrazovku,Na celú obrazovku
+TEXT_MODE_WINDOWED,Window,Janela,Ventana,Fenêtré,Finestra,Fenster,Vindue,Fönster,Vindu,Gluggi,Ablakos,Okno,Pencere,Оконный,Віконний,Režim okna,Režim okna
+TEXT_MODE_BORDERLESS,Borderless window,Janela sem borda,Ventana sin bordes,Fenêtre sans bordure,Finestra senza bordi,Randlos,Frit vindue,Kantlös,Begrensningsløs,Rúðulaus,Ablak keret nélkül,Okno bez ramki,Çerçevesiz,Безрамочное окно,Безрамкове вікно,Bezrámové okno,Bezrámové okno
+TEXT_RESOLUTION,Resolution,Resolução,Resolución,Résolution,Risoluzione,Auflösung,Opløsning,Upplösning,Oppløsning,Upplausn,Felbontás,Resolucja,Çözünürlük,Разрешение,Роздільна здатність,Rozlišení,Rozlíšenie
+TEXT_BRIGHTNESS,Brightness,Brilho,Brillo,Luminosité,Luminosità,Helligkeit,Lysstyrke,Ljusstyrka,Lysstyrke,Birtustig,Fényerő,Jasność,Parlaklık,Яркость,Яскравість,Jas,Jas
+TEXT_AUDIO_MASTER,Master,Geral,General,Principal,Generale,Master,Hoved,Ljudnivå,Hoved,Höfuð,Hangerő,Mistrz,Nazaran,Громкость,Головна гучність,Hlavní hlasitost,Hlavná hlasitosť
+TEXT_AUDIO_MUSIC,Music,Música,Música,Musique,Musica,Musik,Musik,Musik,Musikk,Tónlist,Zene,Muzyka,Müzik,Музыка,Музика,Hudba,Hudba
+TEXT_AUDIO_SFX,SFX,Efeitos sonoros,Efectos,Hauts-parleurs,Effetti sonori,Effekte,Lydeffekter,Ljudeffekter,Lydeffekter,Hljóðbrellur,Hangeffekt,Dźwięki,SES FX,Звуки,Звукові ефекти,Efekty zvuku,Zvukové efekty
+TEXT_CONTROLS_RESET,Reset to default,Resetar para padrão,Restablecer,Réinitialiser,Reimposta,Zurücksetzen,Nulstil,Återställ,Nullstill,Endurstilla,Visszaállítás,Przywróć,Varsayılana dön,Сбросить,Скинути,Obnovit,Pôvodné nastavenia
+TEXT_CONTROLS_JUMP,Jump,Pular,Saltar,Sauter,Salto,Springen,Hop,Hoppa,Hoppe,Hoppa,Ugrás,Skok,Zıpla,Прыжок,Стрибок,Skok,Skok
+TEXT_CONTROLS_SHOOT,Shoot,Atirar,Disparar,Tirer,Spara,Schießen,Skyd,Skiuta,Skyte,Skjóta,Lőni,Strzelać,Ateş et,Стрелять,Стріляти,Střílet,Strieľať
+TEXT_CONTROLS_UP,Up,Cima,Arriba,Haut,Su,Oben,Op,Opp,Uppl,Upp,Fel,Góra,Yukarı,Вверх,Вгору,Nahoru,Hore
+TEXT_CONTROLS_DOWN,Down,Baixo,Abajo,Bas,Giu,Unten,Ned,Ner,Ned,Niður,Le,Nie,W dół,Aşağı,Вниз,Dolů,Dole
+TEXT_CONTROLS_LEFT,Left,Esquerda,Izquierda,Gauche,Sinistra,Links,Venstre,Vänster,Venstre,Vinstri,Balra,Lewo,Sola,Влево,Ліворуч,Doleva,Doľava
+TEXT_CONTROLS_RIGHT,Right,Direita,Derecha,Droite,Destra,Rechts,Højre,Höger,Høyre,Hægri,Jobbra,Prawo,Sağ,Вправо,Праворуч,Doprava,Doprava
+TEXT_CONTROLS_ANGLE_UP,Angle up,Diagonal pra cima,Ángulo arriba,Angle haut,Angolo alto,Winkel oben,Vinkel op,Vinkel upp,Vinkel opp,Horn upp,Szög fel,Kąt góra,Açı yukarı,Угол вверх,Кут вгору,Úhel nahoru,Uhol hore
+TEXT_CONTROLS_ANGLE_DOWN,Angle down,Diagonal pra baixo,Ángulo abajo,Angle bas,Angolo basso,Winkel unten,Vinkel ned,Vinkel ner,Vinkel ned,Horn niður,Szög le,Kąt dół,Açı aşağı,Угол вниз,Кут вниз,Úhel dolů,Uhol dolu
+TEXT_CONTROLS_DODGE,Dodge,Desviar,Esquivar,Esquiver,Schiva,Ausweichen,Dodge,Dodge,Unngå,Fara undan,Kitérés,Unik,Kaçın,Уклонение,Ухилення,Uhýbat,Uhnúť
+TEXT_CONTROLS_MAP,Map,Mapa,Mapa,Carte,Mappa,Karte,Kort,Karta,Kart,Kort,Mapa,Mapa,Harita,Карта,Мапа,Mapa,Mapa
+TEXT_CONTROLS_MOONWALK,Lock direction,Travar direção,Bloquear dirección,Verrouiller direction,Blocca direzione,Richtung sperren,Lås retning,Lås riktning,Lås retning,Læsa stefnu,Irány rögzítése,Blokuj kierunek,Yön kilidi,Блокировать направление,Заблокувати напрямок,Zamknout směr,Zamknúť smer
+TEXT_BACK_TITLE,Back to title screen,Voltar pro título,Volver al título,Retour au menu,Menu principale,Zum Titel,Til titel,Till titel,Til tittel,Aftur í valmynd,Vissza a címhez,Do tytułu,Başlığa dön,В меню,У меню,Zpět na titul,Naspäť na titul
+TEXT_RESUME,Resume,Continuar,Continuar,Reprendre,Continua,Fortsetzen,Genoptag,Fortsätt,Fortsett,Halda áfram,Folytatás,Wznów,Sürdür,Продолжить,Продовжити,Pokračovat,Pokračovať
+TEXT_BACK_TITLE_CONFIRM,Are you sure you want to go back?,Tem certeza de que deseja voltar?,¿Seguro que quieres volver?,Êtes-vous sûr de vouloir revenir ?,Sei sicuro di voler tornare?,Sicher zurück?,Er du sikker på at gå tilbage?,Är du säker på att gå tillbaka?,Er du sikker på at gå tilbake?,Ertu viss?,Biztos vissza akarsz menni?,Czy na pewno wrócić?,Emin misin?,Вы уверены?,Ви впевнені?,Opravdu se chcete vrátit?,Naozaj sa chcete vrátiť?
+TEXT_QUIT_CONFIRM,Are you sure you want to quit?,Tem certeza de que deseja sair?,¿Seguro que quieres salir?,Êtes-vous sûr de vouloir quitter ?,Sei sicuro di voler uscire?,Sicher beenden?,Er du sikker på at afslutte?,Är du säker på att avsluta?,Er du sikker på å avslutte?,Ertu viss um að hætta?,Biztos kilépsz?,Czy na pewno chcesz wyjść?,Emin misin?,Вы уверены что хотите выйти?,Ви впевнені що хочете вийти?,Opravdu chcete ukončit?,Naozaj chcete ukončiť?
+TEXT_BENCH,Bench,Banco,Banco,Banc,Panchina,Bank,Bænk,Bänk,Benk,Bekkur,Pad,Bańka,Banka,Скамья,Лава,Lavice,Lavica
+TEXT_LANGUAGE,Language,Idioma,Idioma,Langue,Lingua,Sprache,Sprog,Språk,Språk,Tungumál,Nyelv,Język,Dil,Язык,Мова,Jazyk,Jazyk

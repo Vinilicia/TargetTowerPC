@@ -49,25 +49,25 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 2
 theme_override_font_sizes/font_size = 40
-text = "Target Tower"
+text = "TEXT_TITLE"
 
 [node name="PlayButton" type="Button" parent="TitleMenu/VBoxContainer"]
 custom_minimum_size = Vector2(140, 22)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Play"
+text = "TEXT_PLAY"
 
 [node name="SettingsButton" type="Button" parent="TitleMenu/VBoxContainer"]
 custom_minimum_size = Vector2(140, 22)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Settings"
+text = "TEXT_SETTINGS"
 
 [node name="QuitButton" type="Button" parent="TitleMenu/VBoxContainer"]
 custom_minimum_size = Vector2(140, 22)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Quit"
+text = "TEXT_QUIT"
 
 [node name="FileSelectMenu" type="MarginContainer" parent="."]
 visible = false
@@ -134,8 +134,7 @@ focus_neighbor_left = NodePath("../EraseButton")
 focus_neighbor_top = NodePath("../../SaveProfilesContainer/SaveFileButton")
 focus_neighbor_right = NodePath("../EraseButton")
 focus_neighbor_bottom = NodePath("../../BackButton")
-text = "Open
-"
+text = "TEXT_OPEN"
 
 [node name="CopyButton" type="Button" parent="FileSelectMenu/VBoxContainer/EditButtonsContainer"]
 custom_minimum_size = Vector2(80, 0)
@@ -145,7 +144,7 @@ focus_neighbor_left = NodePath("../EraseButton")
 focus_neighbor_top = NodePath("../../SaveProfilesContainer/SaveFileButton")
 focus_neighbor_right = NodePath("../EraseButton")
 focus_neighbor_bottom = NodePath("../../BackButton")
-text = "Copy"
+text = "TEXT_COPY"
 
 [node name="EraseButton" type="Button" parent="FileSelectMenu/VBoxContainer/EditButtonsContainer"]
 custom_minimum_size = Vector2(80, 0)
@@ -155,7 +154,7 @@ focus_neighbor_left = NodePath("../OpenButton")
 focus_neighbor_top = NodePath("../../SaveProfilesContainer/SaveFileButton3")
 focus_neighbor_right = NodePath("../OpenButton")
 focus_neighbor_bottom = NodePath("../../BackButton")
-text = "Erase"
+text = "TEXT_ERASE"
 
 [node name="BackButton" type="Button" parent="FileSelectMenu/VBoxContainer"]
 custom_minimum_size = Vector2(120, 20)
@@ -164,7 +163,7 @@ size_flags_horizontal = 4
 size_flags_vertical = 10
 focus_neighbor_top = NodePath("../EditButtonsContainer/OpenButton")
 focus_neighbor_bottom = NodePath("../SaveProfilesContainer/SaveFileButton")
-text = "Back"
+text = "TEXT_BACK"
 
 [node name="SettingsMenu" parent="." instance=ExtResource("5_fiu88")]
 visible = false
@@ -191,7 +190,7 @@ size_flags_vertical = 4
 
 [node name="QuestionLabel" type="Label" parent="QuitMenu/VBoxContainer"]
 layout_mode = 2
-text = "Are you sure you want to quit?"
+text = "TEXT_QUIT_CONFIRM"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -205,14 +204,14 @@ size_flags_vertical = 6
 custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 focus_neighbor_left = NodePath("../NoButton")
-text = "Yes"
+text = "TEXT_YES"
 
 [node name="NoButton" type="Button" parent="QuitMenu/VBoxContainer/ButtonsContainer"]
 custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 size_flags_horizontal = 10
 focus_neighbor_right = NodePath("../YesButton")
-text = "No"
+text = "TEXT_NO"
 
 [connection signal="pressed" from="TitleMenu/VBoxContainer/PlayButton" to="." method="show_file_select"]
 [connection signal="pressed" from="TitleMenu/VBoxContainer/SettingsButton" to="." method="show_settings"]

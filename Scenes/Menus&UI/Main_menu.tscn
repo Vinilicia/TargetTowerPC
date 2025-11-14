@@ -55,13 +55,13 @@ custom_minimum_size = Vector2(170, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 focus_neighbor_top = NodePath("../BackToTitleButton")
-text = "Resume"
+text = "TEXT_RESUME"
 
 [node name="SettingsButton" type="Button" parent="ButtonsContainer/VBoxContainer"]
 custom_minimum_size = Vector2(170, 20)
 layout_mode = 2
 size_flags_horizontal = 4
-text = "Settings"
+text = "TEXT_SETTINGS"
 
 [node name="BackToTitleButton" type="Button" parent="ButtonsContainer/VBoxContainer"]
 custom_minimum_size = Vector2(170, 20)
@@ -69,7 +69,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 4
 focus_neighbor_bottom = NodePath("../ResumeButton")
-text = "Back to Title Screen"
+text = "TEXT_BACK_TITLE"
 
 [node name="BackToTItleMenu" type="MarginContainer" parent="."]
 visible = false
@@ -89,7 +89,7 @@ size_flags_vertical = 4
 
 [node name="QuestionLabel" type="Label" parent="BackToTItleMenu/VBoxContainer"]
 layout_mode = 2
-text = "Are you sure you want to go back?"
+text = "TEXT_BACK_TITLE_CONFIRM"
 horizontal_alignment = 1
 vertical_alignment = 1
 
@@ -103,14 +103,14 @@ size_flags_vertical = 10
 custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 focus_neighbor_left = NodePath("../NoButton")
-text = "Yes"
+text = "TEXT_YES"
 
 [node name="NoButton" type="Button" parent="BackToTItleMenu/VBoxContainer/ButtonsContainer"]
 custom_minimum_size = Vector2(60, 20)
 layout_mode = 2
 size_flags_horizontal = 10
 focus_neighbor_right = NodePath("../YesButton")
-text = "No"
+text = "TEXT_NO"
 
 [connection signal="pressed" from="SettingsMenu/MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/BackButton" to="." method="close_settings"]
 [connection signal="pressed" from="ButtonsContainer/VBoxContainer/ResumeButton" to="." method="close_menu"]
