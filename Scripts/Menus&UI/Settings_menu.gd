@@ -13,10 +13,34 @@ extends Control
 @export var Audio_button : Button
 @export var Video_button : Button
 
+@export var language_button : OptionButton
+
 var last_button_pressed : Button
+
+# lista de idiomas — índice = ID do item no OptionButton (0..16)
+var languages := [
+	"en", # 0 English
+	"fr", # 1 Français
+	"it", # 2 Italiano
+	"de", # 3 Deutsch
+	"es", # 4 Español
+	"pt", # 5 Português
+	"da", # 6 Dansk
+	"sv", # 7 Svenska
+	"no", # 8 Norsk
+	"is", # 9 Íslenska
+	"hu", # 10 Magyar
+	"pl", # 11 Polski
+	"tr", # 12 Türkçe
+	"ru", # 13 Русский
+	"uk", # 14 Українська
+	"cs", # 15 Čeština
+	"sk"  # 16 Slovenčina
+]
 
 func _ready() -> void:
 	last_button_pressed = Controls_button
+	sync_language_button_with_locale()
 
 func give_focus() -> void:
 	Controls_button.grab_focus()
@@ -60,29 +84,57 @@ func _on_video_button_pressed() -> void:
 	if menu_back_button:
 		menu_back_button.grab_focus()
 
+# ---------------------------------------------------------
+#  SINCRONIZAR OptionButton COM O LOCALE ATUAL
+# ---------------------------------------------------------
+func sync_language_button_with_locale() -> void:
+	if language_button == null:
+		return
+
+	var current_locale := TranslationServer.get_locale()
+
+	# 1) tenta match exato usando os IDs (0..16)
+	for id in range(languages.size()):
+		if languages[id] == current_locale:
+			var idx := language_button.get_item_index(id) # -> index no OptionButton (pula separadores)
+			if idx != -1:
+				language_button.select(idx)
+				return
+
+	# 2) tenta match por prefixo (ex: "pt_BR" -> "pt")
+	var prefix := current_locale.split("_")[0]
+	if prefix != current_locale:
+		for id in range(languages.size()):
+			if languages[id] == prefix:
+				var idx := language_button.get_item_index(id)
+				if idx != -1:
+					language_button.select(idx)
+					return
+
+	# 3) fallback para English (id 0) caso nada bata
+	var fallback_idx := language_button.get_item_index(0)
+	if fallback_idx != -1:
+		language_button.select(fallback_idx)
+
+# Godot chama isso quando o locale muda
+func _notification(what: int) -> void:
+	if what == NOTIFICATION_TRANSLATION_CHANGED:
+		sync_language_button_with_locale()
+
+# ---------------------------------------------------------
+#  QUANDO O JOGADOR MUDA A LÍNGUA NO OptionButton
+# ---------------------------------------------------------
 func _on_language_button_item_selected(index: int) -> void:
-	var languages := [
-		"en", # English
-		"fr", # Français
-		"it", # Italiano
-		"de", # Deutsch
-		"es", # Español
-		"pt", # Português
-		"da", # Dansk
-		"sv", # Svenska
-		"no", # Norsk
-		"is", # Íslenska
-		"hu", # Magyar
-		"pl", # Polski
-		"tr", # Türkçe
-		"ru", # Русский
-		"uk", # Українська
-		"cs", # Čeština
-		"sk", # Slovenčina
-	]
+	if language_button == null:
+		return
 
-	if index >= 0 and index < languages.size() * 2:
-		var locale = languages[index / 2]
-		TranslationServer.set_locale(locale)
+	# index é o índice do item no OptionButton (conta separadores).
+	# precisamos do id (0..16) para mapear ao array languages
+	var item_id := language_button.get_item_id(index)
+	if item_id < 0 or item_id >= languages.size():
+		return
 
-		print("Language changed to: ", locale)
+	var chosen_locale : String = languages[item_id]
+
+	SaveManager.call("set_locale_and_save", chosen_locale)
+	sync_language_button_with_locale()

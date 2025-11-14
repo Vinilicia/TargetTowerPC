@@ -11,7 +11,7 @@ var save_file_data: SaveDataResource = SaveDataResource.new()
 var current_slot_index: int = 0
 
 # SETTINGS (versão)
-const SETTINGS_VERSION := 1
+const SETTINGS_VERSION := 2
 var settings_data: Dictionary = {
 	"SettingsVersion": SETTINGS_VERSION,
 	"master_volume": 1.0,
@@ -19,13 +19,13 @@ var settings_data: Dictionary = {
 	"sfx_volume": 0.8,
 	"display_mode": 0,
 	"resolution_index": 0,
-	"brightness_value": 0.5
+	"brightness_value": 0.5,
+	"locale": "en"
 }
 
 func _ready() -> void:
 	# Carrega configurações globais ao iniciar (autoload chamará isso automaticamente)
 	load_settings()
-
 
 # ---------------------------------
 # Caminhos
@@ -337,7 +337,8 @@ func load_settings() -> void:
 		"sfx_volume": 0.8,
 		"display_mode": 0,
 		"resolution_index": 0,
-		"brightness_value": 0.5
+		"brightness_value": 0.5,
+		"locale": "en"
 	}
 
 	# SAVE MAIS NOVO (config do futuro) -> sobrescreve com default atual
@@ -382,6 +383,10 @@ func load_settings() -> void:
 	# finalize
 	merged["SettingsVersion"] = current_version
 	settings_data = merged
+	
+	var locale := String(settings_data.get("locale", "en"))
+	if locale != "":
+		TranslationServer.set_locale(locale)
 
 	apply_settings()
 	print("⚙️ Configurações carregadas de:", path)
@@ -443,6 +448,10 @@ func delete_slot(slot_to_delete: int):
 		dir.remove(get_controls_path(slot_to_delete))
 	print("Slot %d (save e controles) deletado." % slot_to_delete)
 
-
 func is_slot_used(slot_index: int) -> bool:
 	return FileAccess.file_exists(get_save_path(slot_index))
+
+func set_locale_and_save(locale: String) -> void:
+	settings_data["locale"] = locale
+	TranslationServer.set_locale(locale)
+	save_settings()

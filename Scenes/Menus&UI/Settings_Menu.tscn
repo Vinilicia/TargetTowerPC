@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://bthl2lmp4wsmv" path="res://Scenes/Menus&UI/Audio_Settings.tscn" id="5_8gcye"]
 [ext_resource type="PackedScene" uid="uid://cvv7jnj3ll1ty" path="res://Scenes/Menus&UI/Video_Settings.tscn" id="6_bn18l"]
 
-[node name="SettingsMenu" type="Control" node_paths=PackedStringArray("Menus_Container", "Buttons_Container", "Controls_menu", "Audio_menu", "Video_menu", "Controls_button", "Audio_button", "Video_button")]
+[node name="SettingsMenu" type="Control" node_paths=PackedStringArray("Menus_Container", "Buttons_Container", "Controls_menu", "Audio_menu", "Video_menu", "Controls_button", "Audio_button", "Video_button", "language_button")]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -23,6 +23,7 @@ Video_menu = NodePath("MarginContainer/VBoxContainer/MenusContainer/VideoMenu")
 Controls_button = NodePath("MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/ControlsButton")
 Audio_button = NodePath("MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/AudioButton")
 Video_button = NodePath("MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/VideoButton")
+language_button = NodePath("MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/LanguageContainer/LanguageButton")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1

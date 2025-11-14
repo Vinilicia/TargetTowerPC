@@ -11,7 +11,6 @@ extends Control
 
 @export var save_file_buttons : Array[Button]
 
-var save_load_manager : SaveLoadManager
 var save_selected : int = 1
 var on_copy : bool = false
 
@@ -71,7 +70,7 @@ func button_pressed(button_id : int) -> void:
 	save_selected = button_id
 	if on_copy:
 		on_copy = false
-		save_load_manager._save(save_selected)
+		SaveManager._save(save_selected)
 	
 func instantiate_main_menu() -> void:
 	var main_menu : Control = load(main_menu_path).instantiate()
@@ -80,10 +79,10 @@ func instantiate_main_menu() -> void:
 	get_parent().add_child(main_menu)
 
 func load_save(save_id) -> void:
-	save_load_manager._load(save_id)
+	SaveManager._load(save_id)
 	
-	var bench_id := save_load_manager.save_file_data.get_last_bench_id()
-	var area_id := save_load_manager.save_file_data.get_area_of_bench()
+	var bench_id := SaveManager.save_file_data.get_last_bench_id()
+	var area_id := SaveManager.save_file_data.get_area_of_bench()
 	
 	var scene_path := "res://Scenes/Levels/Areas/Area%d/Room%d.tscn" % [area_id, bench_id]
 	
@@ -105,12 +104,12 @@ func open_button_pressed() -> void:
 	
 func copy_button_pressed() -> void:
 	on_copy = true
-	save_load_manager._load(save_selected)
+	SaveManager._load(save_selected)
 	edit_buttons.visible = false
 
 func erase_button_pressed() -> void:
 	on_copy = false
-	save_load_manager._save(save_selected)
+	SaveManager._save(save_selected)
 	edit_buttons.visible = false
 
 func show_settings() -> void:
