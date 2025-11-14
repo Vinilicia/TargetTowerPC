@@ -1,0 +1,17 @@
+[remap]
+
+importer="csv_translation"
+type="Translation"
+uid="uid://3wfnbevlm0i"
+
+[deps]
+
+files=["res://Assets/Text/text.en.translation", "res://Assets/Text/text.pt.translation", "res://Assets/Text/text.es.translation", "res://Assets/Text/text.fr.translation", "res://Assets/Text/text.it.translation", "res://Assets/Text/text.de.translation", "res://Assets/Text/text.da.translation", "res://Assets/Text/text.sv.translation", "res://Assets/Text/text.nb.translation", "res://Assets/Text/text.is.translation", "res://Assets/Text/text.hu.translation", "res://Assets/Text/text.pl.translation", "res://Assets/Text/text.tr.translation", "res://Assets/Text/text.ru.translation", "res://Assets/Text/text.uk.translation", "res://Assets/Text/text.cs.translation", "res://Assets/Text/text.sk.translation"]
+
+source_file="res://Assets/Text/text.csv"
+dest_files=["res://Assets/Text/text.en.translation", "res://Assets/Text/text.pt.translation", "res://Assets/Text/text.es.translation", "res://Assets/Text/text.fr.translation", "res://Assets/Text/text.it.translation", "res://Assets/Text/text.de.translation", "res://Assets/Text/text.da.translation", "res://Assets/Text/text.sv.translation", "res://Assets/Text/text.nb.translation", "res://Assets/Text/text.is.translation", "res://Assets/Text/text.hu.translation", "res://Assets/Text/text.pl.translation", "res://Assets/Text/text.tr.translation", "res://Assets/Text/text.ru.translation", "res://Assets/Text/text.uk.translation", "res://Assets/Text/text.cs.translation", "res://Assets/Text/text.sk.translation"]
+
+[params]
+
+compress=true
+delimiter=0

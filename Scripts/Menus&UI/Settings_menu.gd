@@ -59,3 +59,30 @@ func _on_video_button_pressed() -> void:
 	var menu_back_button : Button = Video_menu.find_child("BackButton", true)
 	if menu_back_button:
 		menu_back_button.grab_focus()
+
+func _on_language_button_item_selected(index: int) -> void:
+	var languages := [
+		"en", # English
+		"fr", # Français
+		"it", # Italiano
+		"de", # Deutsch
+		"es", # Español
+		"pt", # Português
+		"da", # Dansk
+		"sv", # Svenska
+		"no", # Norsk
+		"is", # Íslenska
+		"hu", # Magyar
+		"pl", # Polski
+		"tr", # Türkçe
+		"ru", # Русский
+		"uk", # Українська
+		"cs", # Čeština
+		"sk", # Slovenčina
+	]
+
+	if index >= 0 and index < languages.size() * 2:
+		var locale = languages[index / 2]
+		TranslationServer.set_locale(locale)
+
+		print("Language changed to: ", locale)

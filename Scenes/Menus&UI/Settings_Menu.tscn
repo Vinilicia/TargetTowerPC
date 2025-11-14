@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=3 uid="uid://dwwx3mfj10mny"]
+[gd_scene load_steps=6 format=3 uid="uid://dwwx3mfj10mny"]
 
 [ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_5sxic"]
 [ext_resource type="Script" uid="uid://p2le6qq5h3ge" path="res://Scripts/Menus&UI/Settings_menu.gd" id="2_42ids"]
-[ext_resource type="FontFile" uid="uid://we2hkdmwoyf1" path="res://Assets/HandymandiFree.ttf" id="3_6ko3e"]
 [ext_resource type="PackedScene" uid="uid://m2dphotkt2qn" path="res://Scenes/Menus&UI/Controls_Settings.tscn" id="4_8ys5w"]
 [ext_resource type="PackedScene" uid="uid://bthl2lmp4wsmv" path="res://Scenes/Menus&UI/Audio_Settings.tscn" id="5_8gcye"]
 [ext_resource type="PackedScene" uid="uid://cvv7jnj3ll1ty" path="res://Scenes/Menus&UI/Video_Settings.tscn" id="6_bn18l"]
@@ -44,9 +43,8 @@ layout_mode = 2
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 0
-theme_override_fonts/font = ExtResource("3_6ko3e")
 theme_override_font_sizes/font_size = 32
-text = "Settings"
+text = "TEXT_SETTINGS"
 
 [node name="ButtonsContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 layout_mode = 2
@@ -66,22 +64,107 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
 focus_neighbor_top = NodePath("../BackButton")
-text = "Controls"
+text = "TEXT_CONTROLS"
 
 [node name="VideoButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer"]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
-text = "Video"
+text = "TEXT_VIDEO"
 
 [node name="AudioButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer"]
 custom_minimum_size = Vector2(120, 0)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 3
-text = "Audio
-"
+text = "TEXT_AUDIO"
+
+[node name="LanguageContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+theme_override_constants/separation = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/LanguageContainer"]
+layout_mode = 2
+text = "TEXT_LANGUAGE"
+
+[node name="LanguageButton" type="OptionButton" parent="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/LanguageContainer"]
+custom_minimum_size = Vector2(160, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_neighbor_top = NodePath("../../BackButton")
+alignment = 1
+selected = 0
+allow_reselect = true
+item_count = 33
+popup/item_0/text = "English"
+popup/item_0/id = 0
+popup/item_1/id = 17
+popup/item_1/separator = true
+popup/item_2/text = "Français"
+popup/item_2/id = 1
+popup/item_3/id = 18
+popup/item_3/separator = true
+popup/item_4/text = "Italiano"
+popup/item_4/id = 2
+popup/item_5/id = 19
+popup/item_5/separator = true
+popup/item_6/text = "Deutsch"
+popup/item_6/id = 3
+popup/item_7/id = 20
+popup/item_7/separator = true
+popup/item_8/text = "Español"
+popup/item_8/id = 4
+popup/item_9/id = 21
+popup/item_9/separator = true
+popup/item_10/text = "Português"
+popup/item_10/id = 5
+popup/item_11/id = 22
+popup/item_11/separator = true
+popup/item_12/text = "Dansk"
+popup/item_12/id = 6
+popup/item_13/id = 23
+popup/item_13/separator = true
+popup/item_14/text = "Svenska"
+popup/item_14/id = 7
+popup/item_15/id = 24
+popup/item_15/separator = true
+popup/item_16/text = "Norsk"
+popup/item_16/id = 8
+popup/item_17/id = 25
+popup/item_17/separator = true
+popup/item_18/text = "Íslenska"
+popup/item_18/id = 9
+popup/item_19/id = 26
+popup/item_19/separator = true
+popup/item_20/text = "Magyar"
+popup/item_20/id = 10
+popup/item_21/id = 27
+popup/item_21/separator = true
+popup/item_22/text = "Polski"
+popup/item_22/id = 11
+popup/item_23/id = 28
+popup/item_23/separator = true
+popup/item_24/text = "Türkçe"
+popup/item_24/id = 12
+popup/item_25/id = 29
+popup/item_25/separator = true
+popup/item_26/text = "Русский"
+popup/item_26/id = 13
+popup/item_27/id = 30
+popup/item_27/separator = true
+popup/item_28/text = "Українська"
+popup/item_28/id = 14
+popup/item_29/id = 31
+popup/item_29/separator = true
+popup/item_30/text = "Čeština"
+popup/item_30/id = 15
+popup/item_31/id = 32
+popup/item_31/separator = true
+popup/item_32/text = "Slovenčina"
+popup/item_32/id = 16
 
 [node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer"]
 custom_minimum_size = Vector2(120, 0)
@@ -89,7 +172,7 @@ layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
 focus_neighbor_bottom = NodePath("../ControlsButton")
-text = "Back"
+text = "TEXT_BACK"
 
 [node name="MenusContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
 visible = false
@@ -116,6 +199,7 @@ layout_mode = 2
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/ControlsButton" to="." method="_on_controls_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/VideoButton" to="." method="_on_video_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/AudioButton" to="." method="_on_audio_button_pressed"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ButtonsContainer/VBoxContainer/LanguageContainer/LanguageButton" to="." method="_on_language_button_item_selected"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MenusContainer/ControlsMenu/MarginContainer/VBoxContainer/BackButton" to="." method="setup_buttons"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MenusContainer/AudioMenu/MarginContainer/VBoxContainer/BackButton" to="." method="setup_buttons"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/MenusContainer/VideoMenu/MarginContainer/VBoxContainer/BackButton" to="." method="setup_buttons"]

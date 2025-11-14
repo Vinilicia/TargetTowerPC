@@ -52,14 +52,14 @@ size_flags_horizontal = 6
 size_flags_vertical = 8
 theme_override_colors/font_color = Color(1, 1, 1, 1)
 theme_override_font_sizes/font_size = 16
-text = "Reset To Default"
+text = "TEXT_CONTROLS_RESET"
 
 [node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
 custom_minimum_size = Vector2(160, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 8
-text = "Back"
+text = "TEXT_BACK"
 
 [connection signal="pressed" from="MarginContainer/VBoxContainer/ResetButton" to="." method="_on_reset_button_pressed"]
 [connection signal="pressed" from="MarginContainer/VBoxContainer/BackButton" to="." method="_on_back_button_pressed"]
