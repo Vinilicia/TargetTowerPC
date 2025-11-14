@@ -57,7 +57,7 @@ func spaw_player_on_bench() -> void:
 	get_node("Player").global_position = current_level.get_bench_position()
 	blackout_fade_in()
 	await tween.finished
-	visible = true
+	(get_parent().get_parent() as SubViewportContainer).visible = true
 	await get_tree().create_timer(0.2).timeout
 	blackout_fade_out()
 
