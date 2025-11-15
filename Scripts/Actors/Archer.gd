@@ -100,6 +100,7 @@ var last_safe_position : Vector2
 var frames_until_check : int = 0
 var locked_walk: bool = false
 var available_arrows: Array[bool] = [true, true, true, true, false, false, false, false, false]
+var in_control : bool = true
 
 # ============================================================
 # READY
@@ -118,10 +119,11 @@ func _ready():
 func _physics_process(delta: float) -> void:
 	update_hold_time(delta)
 	apply_gravity(delta)
-	handle_combat_inputs()
+	if in_control:
+		handle_combat_inputs()
+		handle_aim_enemy()
+		handle_arrow_updates()
 	handle_movement()
-	handle_aim_enemy()
-	handle_arrow_updates()
 	velocity = v_component.get_total_velocity()
 	corner_correction(7, delta)
 	move_and_slide()
@@ -299,10 +301,10 @@ func is_wall_ahead() -> bool:
 	return response
 
 func handle_movement() -> void:
-	if Input.is_action_just_pressed("lock walk"):
+	if Input.is_action_just_pressed("lock walk") and in_control:
 		locked_walk = not locked_walk
 		
-	if combat.is_dodging:
+	if combat.is_dodging and in_control:
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			jump_state.jump_queued = true
 		if Input.is_action_just_released("jump"):
@@ -317,11 +319,11 @@ func handle_movement() -> void:
 		if combat.dodge_cancelled and combat.dodge_can_cancel:
 			end_dodge()
 	else:
-		if Input.is_action_just_pressed("jump") and (is_on_floor() or jump_state.coyote_time):
+		if Input.is_action_just_pressed("jump") and (is_on_floor() or jump_state.coyote_time) and in_control:
 			jump()
 		
 		v_component.set_proper_velocity(0.0, 1)
-		var dir: int = int(Input.get_axis("left", "right"))
+		var dir: int = int(Input.get_axis("left", "right")) if in_control else 0
 		if dir:
 			if direction != dir:
 				direction = dir
@@ -540,7 +542,7 @@ func _on_fire_manager_caught_fire() -> void:
 	var fire_man : FireManager = $Utilities/FireManager
 	if not fire_man.extinguished.is_connected(health_manager.stop_burning):
 		fire_man.extinguished.connect(health_manager.stop_burning, 4)
-		health_manager.start_burning(0.5)
+		health_manager.start_burning(1)
 
 func _on_health_lost_health(amount: float) -> void:
 	HudHandler.hud.lose_hearts(amount)
@@ -560,3 +562,9 @@ func _on_health_manager_ran_out() -> void:
 
 func _on_health_manager_gained_health(amount: float) -> void:
 	HudHandler.hud.gain_hearts(amount)
+
+func gain_control() -> void:
+	in_control = true
+
+func lose_control() -> void:
+	in_control = false

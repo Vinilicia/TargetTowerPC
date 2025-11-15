@@ -9,12 +9,18 @@ var enemy_alive_persistence: Array[bool] = []
 var last_room_name: String = ""
 var tween: Tween
 
-#func _ready() -> void:
+signal level_ready
+signal readying_level
+
+func _ready() -> void:
 	#Engine.time_scale = 0.5
+	connect("level_ready", (find_child("Player") as Player).gain_control)
+	connect("readying_level", (find_child("Player") as Player).lose_control)
 
 func change_level(next_level: String, spawn_position: Vector2, area: LevelDatabase.Areas = LevelDatabase.Areas.AREA_1):
+	readying_level.emit()
 	blackout_fade_in()
-
+	await get_tree().create_timer(0.5).timeout
 	var old_level: Room = current_level
 
 	# 🔹 Resolve o caminho pelo LevelDB autoload
@@ -26,9 +32,10 @@ func change_level(next_level: String, spawn_position: Vector2, area: LevelDataba
 	handle_next_level(scene_path, spawn_position)
 	handle_last_level(old_level)
 
-	await get_tree().create_timer(0.2).timeout
+	await get_tree().create_timer(0.5).timeout
 	blackout_fade_out()
-
+	await get_tree().create_timer(0.5).timeout
+	level_ready.emit()
 
 func handle_last_level(old_level: Room) -> void:
 	if old_level:

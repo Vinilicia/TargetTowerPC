@@ -150,6 +150,8 @@ func _save(slot_index: int):
 	var data_to_save: Dictionary = {}
 	for prop_info in save_file_data.get_property_list():
 		var prop_name = prop_info.name
+		if prop_name == "Money":
+			print("BANANA ", save_file_data.get("Money"))
 		if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path", "script"]:
 			continue
 		data_to_save[prop_name] = save_file_data.get(prop_name)

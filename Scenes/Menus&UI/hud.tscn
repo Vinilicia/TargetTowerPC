@@ -1,16 +1,20 @@
-[gd_scene load_steps=2 format=3 uid="uid://bbwrmqxcr5lq0"]
+[gd_scene load_steps=4 format=3 uid="uid://bbwrmqxcr5lq0"]
 
+[ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_hqwsg"]
 [ext_resource type="Script" uid="uid://dqwu44m4sxr5n" path="res://Scripts/Menus&UI/hud.gd" id="1_v2751"]
+[ext_resource type="Texture2D" uid="uid://bm6sl6whs11eu" path="res://Assets/Home_bred/UI/HUD/RegretIcon.aseprite" id="2_vuvra"]
 
-[node name="HUD" type="Control" node_paths=PackedStringArray("hearts_container") groups=["HUD"]]
+[node name="HUD" type="Control" node_paths=PackedStringArray("hearts_container", "money_label") groups=["HUD"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
 anchor_bottom = 1.0
 grow_horizontal = 2
 grow_vertical = 2
+theme = ExtResource("1_hqwsg")
 script = ExtResource("1_v2751")
 hearts_container = NodePath("MarginContainer/ElementsContainer/HealthContainer")
+money_label = NodePath("MarginContainer/ElementsContainer/MoneyContainer/CurrentValueLabel")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -36,3 +40,15 @@ layout_mode = 2
 
 [node name="MoneyContainer" type="HBoxContainer" parent="MarginContainer/ElementsContainer"]
 layout_mode = 2
+
+[node name="MoneyIcon" type="TextureRect" parent="MarginContainer/ElementsContainer/MoneyContainer"]
+layout_mode = 2
+texture = ExtResource("2_vuvra")
+stretch_mode = 2
+
+[node name="CurrentValueLabel" type="Label" parent="MarginContainer/ElementsContainer/MoneyContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+text = "0"
+
+[connection signal="visibility_changed" from="MarginContainer/ElementsContainer/MoneyContainer/CurrentValueLabel" to="." method="_on_money_label_visibility_changed"]

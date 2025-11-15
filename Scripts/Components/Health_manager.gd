@@ -3,7 +3,7 @@ class_name HealthManager
 
 @export var max_health : float
 
-const SECONDS_PER_TICK : float = 1.0
+@export var seconds_per_fire_tick : float = 1.0
 
 var health : float
 enum Status {
@@ -51,7 +51,7 @@ func burning_loop(damage : float) -> void:
 		while (status_mask & Status.BURNING):
 			if !is_inside_tree():
 				break
-			await get_tree().create_timer(SECONDS_PER_TICK).timeout
+			await get_tree().create_timer(seconds_per_fire_tick).timeout
 			lose_health(damage)
 
 #func start_poisoned(ticks : int, damage_value : float) -> void:

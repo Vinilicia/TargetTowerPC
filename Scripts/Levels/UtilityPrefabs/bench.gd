@@ -27,11 +27,10 @@ func heal_player() -> void:
 	player_health_man.gain_health(player_health_man.max_health)
 
 func bench_used() -> void:	
-	var saveLoad : SaveLoadManager = SaveLoadManager.new()
-	saveLoad.save_file_data.set_last_bench_id(bench_id)
-	saveLoad.save_file_data.set_area_of_bench(area)
-	saveLoad.save_file_data.set_available_arrows(player.available_arrows)
-	saveLoad._save(save_id)
+	SaveManager.save_file_data.set_last_bench_id(bench_id)
+	SaveManager.save_file_data.set_area_of_bench(area)
+	SaveManager.save_file_data.set_available_arrows(player.available_arrows)
+	SaveManager._save(save_id)
 	
 func get_room_number() -> int:
 	var room_node = get_parent()
