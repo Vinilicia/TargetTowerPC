@@ -10,6 +10,7 @@ var max_y : int
 var spaces_to_fill : int
 var platform_last_position : int = -1
 var platform_position : int = -1
+var actual_floor : int = 0
 var platform_scene : PackedScene = preload("res://Scenes/Levels/ProceduralMap/ThingsToFill/platform_for_random.tscn")
 var spider_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Spider.tscn")
 var slime_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Slime.tscn")
@@ -30,6 +31,8 @@ func _ready() -> void:
 		set_platform_position()
 		fill_enemies()
 		platform_last_position = platform_position
+		actual_floor += 1
+	fill_enemies()
 	
 func set_level_entrance(entrance : Vector2i) -> void:
 	level_entrance = entrance
@@ -52,7 +55,7 @@ func set_platform_position() -> void:
 	platform_position = r
 	
 	var x = (max_x/2 - 6) - 8 * platform_position
-	var y = -level_entrance.y * 6
+	var y = -actual_floor * 6
 	ground_tilemap.erase_cell(Vector2i(x-1, y-5))
 	ground_tilemap.erase_cell(Vector2i(x-2, y-5))
 	ground_tilemap.erase_cell(Vector2i(x-3, y-5))
@@ -79,7 +82,26 @@ func set_platform_position() -> void:
 		add_child(spider)
 	
 func fill_enemies() -> void:
+	var x
+	var y = -actual_floor * 6
 	for i in range(spaces_to_fill):
-		if i != platform_last_position and platform_position:
-			pass
-	pass
+		if i != platform_last_position and i != platform_position:
+			x = (max_x/2 - 6) - 8 * i
+			x = (x - 2)
+			var r = randf() * 100.0
+			if r < 25:
+				var goblin = goblin_scene.instantiate()
+				goblin.position = Vector2(x*16,y*16-2)
+				add_child(goblin)
+			elif r < 50:
+				ground_tilemap.set_cells_terrain_connect([Vector2i(x, y-1)], 0, 0, false)
+				ground_tilemap.set_cells_terrain_connect([Vector2i(x-1, y-1)], 0, 0, false)
+				ground_tilemap.set_cells_terrain_connect([Vector2i(x, y-2)], 0, 0, false)
+				ground_tilemap.set_cells_terrain_connect([Vector2i(x-1, y-2)], 0, 0, false)
+				var slime = slime_scene.instantiate()
+				slime.position = Vector2(x*16,(y-2)*16-2)
+				add_child(slime)
+			elif r < 75:
+				var bat = bat_scene.instantiate()
+				bat.position = Vector2(x*16,y*16-(4*16))
+				add_child(bat)
