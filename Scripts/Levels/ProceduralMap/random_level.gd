@@ -3,7 +3,7 @@ extends Node2D
 
 @onready var ground_tilemap : TileMapLayer = $Tilemaps/Ground
 
-var level_entrance : Vector2i = Vector2i(0,0)
+var level_entrance : Vector2i
 var level_exit : Vector2i
 var max_x : int
 var max_y : int
@@ -17,14 +17,17 @@ var slime_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Slime.tscn"
 var goblin_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Common_Goblin.tscn")
 var bat_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Bat.tscn")
 
+func _init(entrance : Vector2i = Vector2i(0,0)) -> void:
+	level_entrance = entrance
+	
 func _ready() -> void:
 	var r = randf_range(0, 1.0)
 	if r < 0.2:
 		level_exit.x = 1 - level_entrance.x
 		level_exit.y = level_entrance.y
 	else:
-		level_exit.x = randi_range(level_entrance.y,max_y)
-		level_exit.y = 1
+		level_exit.x = randi_range(0,1)
+		level_exit.y = randi_range(level_entrance.y+1,max_y)
 	remove_barrier(level_entrance)
 	remove_barrier(level_exit)
 	for i in range(max_y):
@@ -33,9 +36,6 @@ func _ready() -> void:
 		platform_last_position = platform_position
 		actual_floor += 1
 	fill_enemies()
-	
-func set_level_entrance(entrance : Vector2i) -> void:
-	level_entrance = entrance
 	
 func remove_barrier(entrance : Vector2i) -> void:
 	var x
