@@ -114,7 +114,7 @@ func shoot_bolt() -> void:
 	new_bolt.top_level = true
 	new_bolt.position = global_position
 	new_bolt.rotation = direction.angle() - (PI / 2)
-	call_deferred("add_child", new_bolt)
+	get_parent().call_deferred("add_child", new_bolt)
 	new_bolt.call_deferred("fly", direction)
 	await get_tree().create_timer(0.5).timeout
 	modulate = Color(1, 1, 1, 1)

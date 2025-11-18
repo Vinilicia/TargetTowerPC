@@ -23,8 +23,8 @@ func _on_player_exited(body: Node2D) -> void:
 		player = null
 
 func heal_player() -> void:
-	var player_health_man : HealthManager = player.health_manager
-	player_health_man.gain_health(player_health_man.max_health)
+	player.heal_hp_on_bench()
+	player.heal_mana_on_bench()
 
 func bench_used() -> void:	
 	SaveManager.save_file_data.set_last_bench_id(bench_id)

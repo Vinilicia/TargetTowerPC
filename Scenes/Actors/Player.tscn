@@ -31,6 +31,7 @@ camera_remote = NodePath("Utilities/Remote")
 arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4", "uid://h5p666cxnxby"])
 max_hold_time = 1.5
 shoot_delay = 0.5
+max_mana = 5
 dodge_cooldown = 0.7
 dodge_horizontal_speed = 200.0
 dodge_up_speed = -100.0

@@ -3,14 +3,14 @@ class_name HUD
 
 @export var hearts_container : HBoxContainer
 @export var money_label : Label
-@export var money_container : VBoxContainer
-@export var anim : AnimationPlayer
+@export var mana_bar : TextureProgressBar
 @onready var heart_rect : PackedScene = preload("res://Scenes/Menus&UI/Heart_TextRect.tscn")
 
 var hearts : Array[HeartTexture] = []
 var full_heart_amount : int
-
-@onready var separation : int = 10
+var current_money : int = 0
+var tween : Tween
+var target_money : int = 0
 
 func init_hearts(amount : int = 3) -> void:
 	for i in range(amount):
@@ -18,6 +18,11 @@ func init_hearts(amount : int = 3) -> void:
 		hearts_container.call_deferred("add_child", new_heart)
 		hearts.append(new_heart)
 	full_heart_amount = amount
+
+func init_mana(amount : int = 5) -> void:
+	mana_bar.max_value = amount
+	mana_bar.value = amount
+	
 
 func _ready() -> void:
 	pass
@@ -48,9 +53,11 @@ func gain_hearts(amount_gained : int) -> void:
 		index += 1
 	full_heart_amount += amount_gained
 
-var current_money : int = 0
-var tween : Tween
-var target_money : int = 0
+func gain_mana(amount_gained : int) -> void:
+	mana_bar.value += amount_gained
+
+func lose_mana(amount_lost : int ) -> void:
+	mana_bar.value -= amount_lost
 
 func add_money(value: int) -> void:
 	target_money += value

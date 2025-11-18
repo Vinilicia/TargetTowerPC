@@ -29,6 +29,7 @@ const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 @export_dir var arrow_paths: Array[String]
 @export var max_hold_time: float
 @export var shoot_delay: float
+@export var max_mana : int
 
 @export_subgroup("Dodge")
 @export var dodge_duration: float = 0.3
@@ -101,6 +102,7 @@ var frames_until_check : int = 0
 var locked_walk: bool = false
 var available_arrows: Array[bool] = [true, true, true, true, false, false, false, false, false]
 var in_control : bool = true
+@onready var current_mana : int = max_mana
 
 # ============================================================
 # READY
@@ -111,6 +113,7 @@ func _ready():
 	velocity = Vector2.ZERO
 	await HudHandler.hud.ready
 	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health)
+	HudHandler.hud.init_mana(max_mana)
 	#Engine.time_scale = 0.5
 
 # ============================================================
@@ -389,6 +392,7 @@ func shoot() -> void:
 	current_arrow.fly(combat.holding_time > max_hold_time, self)
 	reset_arrow()
 	state_chart.send_event("CantShoot")
+	lose_mana(current_arrow.Cost)
 
 func air_stall() -> void:
 	if v_component.get_proper_velocity(2) > 0:
@@ -459,11 +463,27 @@ func _can_shoot_state_entered() -> void:
 		hold_arrow()
 
 func _can_shoot_physics_processing(_delta: float) -> void:
-	if Input.is_action_just_released("shoot"):
+	if Input.is_action_just_released("shoot") and current_mana >= current_arrow.Cost:
 		shoot()
-	if Input.is_action_just_pressed("shoot"):
+	if Input.is_action_just_pressed("shoot") and current_mana >= current_arrow.Cost:
 		hold_arrow()
 		shoot()
+
+func heal_hp_on_bench() -> void:
+	health_manager.gain_health(health_manager.max_health)
+
+func heal_mana_on_bench() -> void:
+	gain_mana(2)
+
+func gain_mana(amount : int) -> void:
+	var true_amount : int = min(amount, max_mana - current_mana)
+	current_mana += true_amount
+	HudHandler.hud.gain_mana(true_amount)
+
+func lose_mana(amount : int) -> void:
+	var true_amount : int = min(current_mana, amount)
+	current_mana -= true_amount
+	HudHandler.hud.lose_mana(true_amount)
 
 func _cannot_shoot_state_entered() -> void:
 	await get_tree().create_timer(shoot_delay).timeout

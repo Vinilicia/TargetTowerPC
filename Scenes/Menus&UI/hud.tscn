@@ -1,10 +1,13 @@
-[gd_scene load_steps=4 format=3 uid="uid://bbwrmqxcr5lq0"]
+[gd_scene load_steps=7 format=3 uid="uid://bbwrmqxcr5lq0"]
 
 [ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_hqwsg"]
 [ext_resource type="Script" uid="uid://dqwu44m4sxr5n" path="res://Scripts/Menus&UI/hud.gd" id="1_v2751"]
 [ext_resource type="Texture2D" uid="uid://bm6sl6whs11eu" path="res://Assets/Home_bred/UI/HUD/RegretIcon.aseprite" id="2_vuvra"]
+[ext_resource type="Texture2D" uid="uid://dpcss316mg4ry" path="res://Assets/Home_bred/UI/HUD/ManaBarUnder.aseprite" id="3_hqwsg"]
+[ext_resource type="Texture2D" uid="uid://cytxaja6vb7r4" path="res://Assets/Home_bred/UI/HUD/ManaBarOver.aseprite" id="4_dha11"]
+[ext_resource type="Texture2D" uid="uid://cvm5amqgku2hn" path="res://Assets/Home_bred/UI/HUD/ManaBarProgress.aseprite" id="5_tx75f"]
 
-[node name="HUD" type="Control" node_paths=PackedStringArray("hearts_container", "money_label") groups=["HUD"]]
+[node name="HUD" type="Control" node_paths=PackedStringArray("hearts_container", "money_label", "mana_bar") groups=["HUD"]]
 layout_mode = 3
 anchors_preset = 15
 anchor_right = 1.0
@@ -15,6 +18,7 @@ theme = ExtResource("1_hqwsg")
 script = ExtResource("1_v2751")
 hearts_container = NodePath("MarginContainer/ElementsContainer/HealthContainer")
 money_label = NodePath("MarginContainer/ElementsContainer/MoneyContainer/CurrentValueLabel")
+mana_bar = NodePath("MarginContainer/ElementsContainer/ManaContainer/ManaBar")
 
 [node name="MarginContainer" type="MarginContainer" parent="."]
 layout_mode = 1
@@ -37,6 +41,19 @@ theme_override_constants/separation = 0
 
 [node name="ManaContainer" type="HBoxContainer" parent="MarginContainer/ElementsContainer"]
 layout_mode = 2
+
+[node name="ManaBar" type="TextureProgressBar" parent="MarginContainer/ElementsContainer/ManaContainer"]
+custom_minimum_size = Vector2(240, 16)
+layout_mode = 2
+max_value = 5.0
+nine_patch_stretch = true
+stretch_margin_left = 3
+stretch_margin_top = 3
+stretch_margin_right = 3
+stretch_margin_bottom = 3
+texture_under = ExtResource("3_hqwsg")
+texture_over = ExtResource("4_dha11")
+texture_progress = ExtResource("5_tx75f")
 
 [node name="MoneyContainer" type="HBoxContainer" parent="MarginContainer/ElementsContainer"]
 layout_mode = 2
