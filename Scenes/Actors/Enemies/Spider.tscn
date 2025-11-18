@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_bh22r"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_lo6vr"]
-[ext_resource type="Script" uid="uid://uv2kdjusqwj3" path="res://Scripts/Actors/Enemies/spider.gd" id="2_wapg0"]
+[ext_resource type="Script" uid="uid://8qvjm167ae02" path="res://Scripts/Actors/Enemies/spider.gd" id="2_wapg0"]
 
 [node name="Spooder" node_paths=PackedStringArray("up_ray", "down_ray", "side_ray") instance=ExtResource("1_bh22r")]
 script = ExtResource("2_wapg0")

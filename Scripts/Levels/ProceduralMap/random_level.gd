@@ -9,7 +9,12 @@ var max_x : int
 var max_y : int
 var spaces_to_fill : int
 var platform_last_position : int = -1
+var platform_position : int = -1
 var platform_scene : PackedScene = preload("res://Scenes/Levels/ProceduralMap/ThingsToFill/platform_for_random.tscn")
+var spider_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Spider.tscn")
+var slime_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Slime.tscn")
+var goblin_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Common_Goblin.tscn")
+var bat_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Bat.tscn")
 
 func _ready() -> void:
 	var r = randf_range(0, 1.0)
@@ -21,7 +26,10 @@ func _ready() -> void:
 		level_exit.y = 1
 	remove_barrier(level_entrance)
 	remove_barrier(level_exit)
-	set_platform_position()
+	for i in range(max_y):
+		set_platform_position()
+		fill_enemies()
+		platform_last_position = platform_position
 	
 func set_level_entrance(entrance : Vector2i) -> void:
 	level_entrance = entrance
@@ -41,9 +49,9 @@ func set_platform_position() -> void:
 	var r = randi_range(0, spaces_to_fill-1)
 	while r == platform_last_position:
 		r = randi_range(0, spaces_to_fill-1)
-	platform_last_position = r
+	platform_position = r
 	
-	var x = (max_x/2 - 6) - 8 * platform_last_position
+	var x = (max_x/2 - 6) - 8 * platform_position
 	var y = -level_entrance.y * 6
 	ground_tilemap.erase_cell(Vector2i(x-1, y-5))
 	ground_tilemap.erase_cell(Vector2i(x-2, y-5))
@@ -64,6 +72,14 @@ func set_platform_position() -> void:
 	y = (y - 3) * 16
 	platoform.position = Vector2(x, y)
 	add_child(platoform)
+	r = randf_range(0,1)
+	if r < 0.4:
+		var spider = spider_scene.instantiate()
+		spider.position = Vector2(x,y-5)
+		add_child(spider)
 	
-	
-	
+func fill_enemies() -> void:
+	for i in range(spaces_to_fill):
+		if i != platform_last_position and platform_position:
+			pass
+	pass
