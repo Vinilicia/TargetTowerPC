@@ -8,9 +8,10 @@ extends Node2D
 @export var area_size := Vector2(600,120)
 
 func _ready():
+	pass
 	#randomize()
-	for i in range(5):
-		spawn_enemy()
+	#for i in range(5):
+		#spawn_enemy()
 
 func spawn_enemy():
 	var random_enemy = randi_range(1, 3)

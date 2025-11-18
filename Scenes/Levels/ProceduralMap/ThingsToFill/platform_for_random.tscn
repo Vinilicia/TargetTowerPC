@@ -1,0 +1,21 @@
+[gd_scene load_steps=4 format=4 uid="uid://ca0invqmypf01"]
+
+[ext_resource type="Texture2D" uid="uid://0dj5oxmi674f" path="res://Assets/Home_bred/Tilemap/plataforma_correntes.aseprite" id="1_04rex"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l3ad8"]
+texture = ExtResource("1_04rex")
+0:0/0 = 0
+0:0/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, -3.14729, -8, -3.14729)
+0:0/0/physics_layer_0/polygon_0/one_way = true
+0:1/0 = 0
+0:2/0 = 0
+
+[sub_resource type="TileSet" id="TileSet_3qdx6"]
+physics_layer_0/collision_layer = 4
+physics_layer_0/collision_mask = 0
+sources/0 = SubResource("TileSetAtlasSource_l3ad8")
+
+[node name="Platform-For_Random" type="TileMapLayer" groups=["Attachables"]]
+z_index = 1
+tile_map_data = PackedByteArray("AAD//wAAAAAAAAAAAAAAAAAAAAAAAAAAAAABAAAAAAAAAAAAAAD+/wAAAAAAAAAAAAD+////AAAAAAEAAAD+//7/AAAAAAEAAAD+//3/AAAAAAEAAAD+//z/AAAAAAEAAAD+//v/AAAAAAEAAAD+//r/AAAAAAEAAAD+//n/AAAAAAEAAAABAPn/AAAAAAEAAAABAPr/AAAAAAEAAAABAPv/AAAAAAEAAAABAPz/AAAAAAEAAAABAP3/AAAAAAEAAAABAP7/AAAAAAEAAAABAP//AAAAAAEAAAA=")
+tile_set = SubResource("TileSet_3qdx6")
