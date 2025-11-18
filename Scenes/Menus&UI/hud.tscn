@@ -40,6 +40,7 @@ layout_mode = 2
 theme_override_constants/separation = 0
 
 [node name="ManaContainer" type="HBoxContainer" parent="MarginContainer/ElementsContainer"]
+visible = false
 layout_mode = 2
 
 [node name="ManaBar" type="TextureProgressBar" parent="MarginContainer/ElementsContainer/ManaContainer"]

@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=3 uid="uid://ev1c8jc3dq42"]
+[gd_scene load_steps=18 format=3 uid="uid://ev1c8jc3dq42"]
 
 [ext_resource type="Script" uid="uid://dxjmsqyt3rpc1" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
@@ -15,6 +15,7 @@
 [ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 [ext_resource type="Script" uid="uid://bc87qnt24utwm" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="15_heh8i"]
+[ext_resource type="PackedScene" uid="uid://drn2ul007bkbw" path="res://Scenes/Actors/SpriteImports/NewAcherSprite.tscn" id="16_mwnd1"]
 
 [sub_resource type="Resource" id="Resource_rbeol"]
 script = ExtResource("8_r2kji")
@@ -158,6 +159,7 @@ max_health = 12.0
 seconds_per_fire_tick = 0.05
 
 [node name="Archer" parent="." instance=ExtResource("9_26aeq")]
+visible = false
 position = Vector2(-28, -28)
 
 [node name="UpColl" type="CollisionShape2D" parent="."]
@@ -176,6 +178,7 @@ shape = ExtResource("4_26aeq")
 scale = Vector2(10, 9)
 collision_mask = 3072
 parent = NodePath("..")
+invincibility_time = 1.7
 
 [node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
 shape = ExtResource("11_cdutm")
@@ -218,6 +221,9 @@ ref_hurtbox = NodePath("../../Hurtbox")
 
 [node name="Hurtbox" parent="Utilities/FireManager" index="0" node_paths=PackedStringArray("parent")]
 parent = NodePath("../../..")
+
+[node name="Archer2" parent="." instance=ExtResource("16_mwnd1")]
+position = Vector2(-24, -26)
 
 [connection signal="timeout" from="Misc/DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
 [connection signal="state_entered" from="Misc/StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_state_entered"]

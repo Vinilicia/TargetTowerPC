@@ -13,7 +13,7 @@ const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 # ============================================================
 # EXPORTS E NODES
 # ============================================================
-@onready var anim: AnimationPlayer = $Archer/AnimationPlayer
+@onready var anim: AnimationPlayer = $Archer2/AnimationPlayer
 @onready var enemy_tracker: RayCast2D = $Utilities/AimEnemy/EnemyTracker
 @onready var aim_enemy: Area2D = $Utilities/AimEnemy/AimSight
 
@@ -305,6 +305,8 @@ func is_wall_ahead() -> bool:
 
 func handle_movement() -> void:
 	if Input.is_action_just_pressed("lock walk") and in_control:
+		if locked_walk:
+			move_speed = DEFAULT_MOVE_SPEED
 		locked_walk = not locked_walk
 		
 	if combat.is_dodging and in_control:
@@ -323,7 +325,10 @@ func handle_movement() -> void:
 			end_dodge()
 	else:
 		if Input.is_action_just_pressed("jump") and (is_on_floor() or jump_state.coyote_time) and in_control:
-			jump()
+			if is_on_floor():
+				jump()
+			elif jump_state.coyote_time:
+				jump(1, true)
 		
 		v_component.set_proper_velocity(0.0, 1)
 		var dir: int = int(Input.get_axis("left", "right")) if in_control else 0
@@ -333,15 +338,26 @@ func handle_movement() -> void:
 				if not locked_walk:
 					facing_direction = direction
 					turn(facing_direction)
+			if dir != facing_direction:
+				move_speed = DEFAULT_MOVE_SPEED * 0.7
+			elif move_speed < DEFAULT_MOVE_SPEED:
+				move_speed = DEFAULT_MOVE_SPEED
 			move(direction)
 
 # ============================================================
 # FUNÇÕES DE AÇÃO
 # ============================================================
-func jump(multiplier: float = 1) -> void:
+func jump(multiplier: float = 1, coyote : bool = false) -> void:
 	jump_state.jump_queued = false
+	jump_state.jumping = true
+	anim.clear_queue()
+	if not coyote:
+		play_anim("Jump")
+		play_anim("Rise", true)
+	else:
+		play_anim("Rise")
+	await get_tree().create_timer(0.08).timeout
 	v_component.set_proper_velocity(jump_force * multiplier, 2)
-	state_chart.send_event("Rising")
 
 func move(facing_dir: int) -> void:
 	v_component.add_proper_velocity(Vector2(move_speed * facing_dir, 0))
@@ -360,8 +376,8 @@ func get_current_gravity(velocity_in_y: float) -> float:
 	return gravity * 0.8 if velocity_in_y < 0 else gravity * gravity_multiplier
 
 func turn(facing_dir: int) -> void:
-	$Archer.scale.x = facing_dir
-	$Archer.position.x = -ARCHER_OFFSET_X * facing_dir
+	$Archer2.scale.x = facing_dir
+	$Archer2.position.x = -ARCHER_OFFSET_X * facing_dir
 	ledge_detector.position.x = 8 * facing_dir
 	wall_detector.scale.x = facing_dir
 	pos = camera_remote.position
@@ -418,37 +434,40 @@ func corner_correction(amount: int, delta: float) -> void:
 
 func _rising_to_falling_taken() -> void:
 	anim.clear_queue()
-	anim.play("Jump Apex")
-
-func _falling_state_entered() -> void:
-	anim.queue("Start Fall")
-	anim.queue("Fall")
+	play_anim("Apex")
+	play_anim("Fall", true)
 
 func _grounded_to_falling_taken() -> void:
-	anim.stop()
 	jump_state.coyote_time = true
 	await get_tree().create_timer(coyote_time_timer).timeout
 	jump_state.coyote_time = false
+	if anim.current_animation != "Rise" and anim.current_animation != "Jump":
+		anim.clear_queue()
+		play_anim("Fall")
 
 func _falling_to_grounded_taken() -> void:
-	anim.play("Landing")
-	
+	anim.clear_queue()
+	play_anim("Land")
 
 func _grounded_physics_processing(_delta: float) -> void:
-	if v_component.get_proper_velocity().x == 0:
-		if is_zero_approx(move_speed):
-			anim.play("Crouching")
-		elif anim.current_animation != "Idle":
-			anim.play("Idle")
-	else:
-		if anim.current_animation != "Run":
-			anim.play("Run Start")
-			anim.queue("Run")
+	if anim.current_animation != "Land" and anim.current_animation != "Jump":
+		if v_component.get_proper_velocity().x == 0:
+			if is_zero_approx(move_speed):
+				if anim.current_animation != "Crouch":
+					play_anim("Crouch")
+			elif anim.current_animation != "Idle":
+				play_anim("Idle")
+		else:
+			if sign(v_component.get_proper_velocity().x) != facing_direction:
+				if anim.current_animation != "RunBackwards":
+					play_anim("RunBackwards") 
+			elif anim.current_animation != "RunLoop" and anim.current_animation != "Run":
+				play_anim("Run")
+				play_anim("RunLoop", true)
 
 func _rising_state_entered() -> void:
-	jump_state.jumping = true
 	anim.clear_queue()
-	anim.play("Jump")
+	anim.queue("Rise")
 
 func _rising_physics_processing(_delta: float) -> void:
 	if !Input.is_action_pressed("jump") and jump_state.jumping:
@@ -473,7 +492,7 @@ func heal_hp_on_bench() -> void:
 	health_manager.gain_health(health_manager.max_health)
 
 func heal_mana_on_bench() -> void:
-	gain_mana(2)
+	gain_mana(max_mana)
 
 func gain_mana(amount : int) -> void:
 	var true_amount : int = min(amount, max_mana - current_mana)
@@ -513,7 +532,7 @@ func _standing_physics_processing(_delta: float) -> void:
 		state_chart.send_event("Crouched")
 
 func crouch():
-	anim.play("Crouching")
+	play_anim("Crouch")
 	move_speed = 0
 	$UpColl.disabled = true
 	hurtbox.scale.y /= 1.5
@@ -531,7 +550,7 @@ func _crouched_physics_processing(_delta: float) -> void:
 		state_chart.send_event("Standing")
 
 func stand() -> void:
-	anim.play("Idle")
+	play_anim("Idle")
 	move_speed = DEFAULT_MOVE_SPEED
 	$UpColl.disabled = false
 	hurtbox.position.y -= hurtbox.scale.y / 2
@@ -546,6 +565,15 @@ func _crouched_exited() -> void:
 
 func _standing_entered() -> void:
 	state_chart.set_expression_property("crouching", false)
+
+func play_anim(name: String, queue: bool = false, blend: float = -1.0) -> void:
+	if queue:
+		if anim.current_animation == "Hurt":
+			await anim.animation_finished
+		anim.queue(name)
+	else:
+		if anim.current_animation != "Hurt":
+			anim.play(name, blend)
 
 #endregion
 
@@ -567,7 +595,13 @@ func _on_fire_manager_caught_fire() -> void:
 func _on_health_lost_health(amount: float) -> void:
 	HudHandler.hud.lose_hearts(amount)
 	modulate = Color(1, 0, 0, 1)
-	await get_tree().create_timer(0.3).timeout
+	anim.clear_queue()
+	play_anim("Hurt")
+	in_control = false
+	v_component.add_knockback_velocity(Vector2(default_knockback.x * -facing_direction, default_knockback.y))
+	v_component.set_proper_velocity(0.0, 2)
+	await anim.animation_finished
+	in_control = true
 	var invisibility_time = hurtbox.invincibility_time
 	var time_passed = 0
 	while time_passed < invisibility_time:
