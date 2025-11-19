@@ -1,0 +1,40 @@
+[gd_resource type="TileSet" load_steps=5 format=3 uid="uid://dponjdl3lj8ux"]
+
+[ext_resource type="Texture2D" uid="uid://31lxurkj2o3c" path="res://Assets/Home_bred/Tilemap/decoracoes_fundo.aseprite" id="1_vy1h4"]
+[ext_resource type="Texture2D" uid="uid://b303skwud88jp" path="res://Assets/Home_bred/Tilemap/potes.aseprite" id="2_a5a2e"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_f486r"]
+texture = ExtResource("1_vy1h4")
+0:0/size_in_atlas = Vector2i(1, 2)
+0:0/0 = 0
+1:0/size_in_atlas = Vector2i(1, 2)
+1:0/0 = 0
+2:0/size_in_atlas = Vector2i(1, 2)
+2:0/0 = 0
+3:0/size_in_atlas = Vector2i(1, 2)
+3:0/0 = 0
+4:0/size_in_atlas = Vector2i(1, 2)
+4:0/0 = 0
+0:2/size_in_atlas = Vector2i(1, 2)
+0:2/0 = 0
+1:2/size_in_atlas = Vector2i(1, 2)
+1:2/0 = 0
+2:2/size_in_atlas = Vector2i(1, 2)
+2:2/0 = 0
+3:2/size_in_atlas = Vector2i(1, 2)
+3:2/0 = 0
+4:2/size_in_atlas = Vector2i(1, 2)
+4:2/0 = 0
+5:0/size_in_atlas = Vector2i(1, 2)
+5:0/0 = 0
+5:2/size_in_atlas = Vector2i(1, 2)
+5:2/0 = 0
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vmysm"]
+texture = ExtResource("2_a5a2e")
+0:0/0 = 0
+1:0/0 = 0
+
+[resource]
+sources/0 = SubResource("TileSetAtlasSource_f486r")
+sources/1 = SubResource("TileSetAtlasSource_vmysm")

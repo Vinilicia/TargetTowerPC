@@ -34,9 +34,11 @@ func _ready() -> void:
 	for i in range(max_y):
 		set_platform_position()
 		fill_enemies()
+		fill_flags()
 		platform_last_position = platform_position
 		actual_floor += 1
 	fill_enemies()
+	fill_flags()
 	
 func remove_barrier(entrance : Vector2i) -> void:
 	var x
@@ -115,4 +117,16 @@ func fill_enemies() -> void:
 				add_child(bat)
 
 func fill_flags() -> void:
-	pass
+	var x = max_x/2 - 6
+	var y = -actual_floor * 6 - 3
+	var r
+	var i
+	var j
+	var possible_j = [0, 2]
+	while x > -max_x/2 + 4:
+		r = randf() * 100
+		if r < 70:
+			i = randi_range(0, 5)
+			j = possible_j.pick_random()
+			decorations_tilemap.set_cell(Vector2i(x, y), 0, Vector2i(i,j))
+		x -= 6
