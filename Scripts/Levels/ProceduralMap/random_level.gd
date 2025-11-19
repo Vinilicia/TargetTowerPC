@@ -2,6 +2,7 @@ class_name RandomLevel
 extends Node2D
 
 @onready var ground_tilemap : TileMapLayer = $Tilemaps/Ground
+@onready var decorations_tilemap: TileMapLayer = $Tilemaps/Decorations
 
 var level_entrance : Vector2i
 var level_exit : Vector2i
@@ -87,6 +88,13 @@ func fill_enemies() -> void:
 	for i in range(spaces_to_fill):
 		if i != platform_last_position and i != platform_position:
 			x = (max_x/2 - 6) - 8 * i
+			
+			var pr = randf() * 100.0
+			if pr < 50:
+				decorations_tilemap.set_cell(Vector2i(x-1, y-1), 1, Vector2i(0,0))
+				decorations_tilemap.set_cell(Vector2i(x, y-1), 1, Vector2i(1,0))
+				decorations_tilemap.set_cell(Vector2i(x+1, y-1), 1, Vector2i(0,0))
+					
 			x = (x - 2)
 			var r = randf() * 100.0
 			if r < 25:
@@ -105,3 +113,6 @@ func fill_enemies() -> void:
 				var bat = bat_scene.instantiate()
 				bat.position = Vector2(x*16,y*16-(4*16))
 				add_child(bat)
+
+func fill_flags() -> void:
+	pass
