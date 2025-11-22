@@ -29,6 +29,10 @@ texture = ExtResource("1_vy1h4")
 5:0/0 = 0
 5:2/size_in_atlas = Vector2i(1, 2)
 5:2/0 = 0
+0:5/0 = 0
+3:4/size_in_atlas = Vector2i(1, 2)
+3:4/0 = 0
+1:4/0 = 0
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_vmysm"]
 texture = ExtResource("2_a5a2e")

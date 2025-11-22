@@ -1,16 +1,9 @@
-[gd_scene load_steps=8 format=4 uid="uid://ctdgwssxk0oqy"]
+[gd_scene load_steps=5 format=4 uid="uid://ctdgwssxk0oqy"]
 
 [ext_resource type="Script" uid="uid://bvjirmrhekr5q" path="res://Scripts/Levels/ProceduralMap/medium_level.gd" id="1_420ix"]
 [ext_resource type="TileSet" uid="uid://cweshf453isub" path="res://Themes/AreaTileSets/Entrance_Hall_Terrain_Tileset.tres" id="2_iamun"]
-[ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Scenes/Actors/Player.tscn" id="3_bk5i5"]
 [ext_resource type="TileSet" uid="uid://bibe8vc18o6ko" path="res://Scenes/Levels/ProceduralMap/Levels/background.tres" id="3_iamun"]
 [ext_resource type="TileSet" uid="uid://dponjdl3lj8ux" path="res://Scenes/Levels/ProceduralMap/Levels/decorations.tres" id="4_bk5i5"]
-[ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Levels/Camera.tscn" id="4_w5an8"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_prsdb"]
-resource_local_to_scene = true
-radius = 0.5
-height = 2.0
 
 [node name="MediumLevel" type="Node2D"]
 script = ExtResource("1_420ix")
@@ -30,19 +23,3 @@ tile_set = ExtResource("3_iamun")
 
 [node name="Decorations" type="TileMapLayer" parent="Tilemaps"]
 tile_set = ExtResource("4_bk5i5")
-
-[node name="Player" parent="." instance=ExtResource("3_bk5i5")]
-position = Vector2(358, -27)
-
-[node name="Coll" parent="Player/Hurtbox" index="1"]
-shape = SubResource("CapsuleShape2D_prsdb")
-
-[node name="Remote" parent="Player/Utilities" index="1"]
-remote_path = NodePath("../../../Camera")
-
-[node name="Camera" parent="." instance=ExtResource("4_w5an8")]
-position = Vector2(358, -47)
-
-[editable path="Player"]
-[editable path="Player/Archer"]
-[editable path="Player/Utilities/FireManager"]

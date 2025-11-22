@@ -1,10 +1,6 @@
-[gd_scene load_steps=12 format=3 uid="uid://dfa4di7v84300"]
+[gd_scene load_steps=8 format=3 uid="uid://dfa4di7v84300"]
 
 [ext_resource type="Script" uid="uid://ccivni2x6df06" path="res://Scripts/Levels/procedural_map.gd" id="1_6ntii"]
-[ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_xrb8l"]
-[ext_resource type="PackedScene" uid="uid://bps57wjl0501i" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="3_qfu0e"]
-[ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="4_jxats"]
-[ext_resource type="PackedScene" uid="uid://rbo0lyegdlbe" path="res://Scenes/Actors/Enemies/Spider.tscn" id="5_bm13n"]
 [ext_resource type="Texture2D" uid="uid://d1hvuiyfkjgb0" path="res://Assets/Home_bred/Tilemap/chao.aseprite" id="6_yk7iw"]
 [ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Scenes/Actors/Player.tscn" id="7_el3ic"]
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Levels/Camera.tscn" id="8_h1msk"]
@@ -1034,10 +1030,6 @@ height = 2.0
 
 [node name="ProceduralMap" type="Node2D"]
 script = ExtResource("1_6ntii")
-bat = ExtResource("2_xrb8l")
-goblin = ExtResource("3_qfu0e")
-slime = ExtResource("4_jxats")
-spider = ExtResource("5_bm13n")
 
 [node name="Tilemaps" type="Node2D" parent="."]
 
