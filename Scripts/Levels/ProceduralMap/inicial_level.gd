@@ -3,19 +3,19 @@ extends Node2D
 @onready var ground_tilemap : TileMapLayer = $Tilemaps/Ground
 
 var level_exit : int
+var x : int
 
-func _init(exit : int = 0) -> void:
+func setup(exit : int = 0) -> void:
 	level_exit = exit
 
 func _ready() -> void:
-	remove_barrier(level_exit)
+	remove_barrier()
 	
-func remove_barrier(exit : int) -> void:
-	var x
-	if exit == 0:
-		x = 6
+func remove_barrier() -> void:
+	if level_exit == 0:
+		x = 7
 	else:
-		x = -7
+		x = -8
 	ground_tilemap.erase_cell(Vector2i(x, -1))
 	ground_tilemap.erase_cell(Vector2i(x, -2))
 	ground_tilemap.erase_cell(Vector2i(x, -3))

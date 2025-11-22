@@ -18,17 +18,17 @@ var slime_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Slime.tscn"
 var goblin_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Common_Goblin.tscn")
 var bat_scene : PackedScene = preload("res://Scenes/Actors/Enemies/Bat.tscn")
 
-func _init(entrance : Vector2i = Vector2i(0,0)) -> void:
+func setup(entrance : Vector2i = Vector2i(0,0)) -> void:
 	level_entrance = entrance
 	
 func _ready() -> void:
-	var r = randf_range(0, 1.0)
-	if r < 0.2:
-		level_exit.x = 1 - level_entrance.x
-		level_exit.y = level_entrance.y
-	else:
-		level_exit.x = randi_range(0,1)
-		level_exit.y = randi_range(level_entrance.y+1,max_y)
+	#var r = randf_range(0, 1.0)
+	#if r < 0.2:
+		#level_exit.x = 1 - level_entrance.x
+		#level_exit.y = level_entrance.y
+	#else:
+	level_exit.x = randi_range(0,1)
+	level_exit.y = randi_range(level_entrance.y+1,max_y)
 	remove_barrier(level_entrance)
 	remove_barrier(level_exit)
 	for i in range(max_y):
