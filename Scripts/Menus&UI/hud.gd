@@ -4,6 +4,7 @@ class_name HUD
 @export var hearts_container : HBoxContainer
 @export var money_label : Label
 @export var mana_bar : TextureProgressBar
+@export var mana_bar_textures : Array[Texture]
 @onready var heart_rect : PackedScene = preload("res://Scenes/Menus&UI/Heart_TextRect.tscn")
 
 var hearts : Array[HeartTexture] = []
@@ -22,7 +23,9 @@ func init_hearts(amount : int = 3) -> void:
 func init_mana(amount : int = 5) -> void:
 	mana_bar.max_value = amount
 	mana_bar.value = amount
-	
+
+func change_arrow(index : int) -> void:
+	mana_bar.texture_over = mana_bar_textures[index]
 
 func _ready() -> void:
 	pass
@@ -55,9 +58,15 @@ func gain_hearts(amount_gained : int) -> void:
 
 func gain_mana(amount_gained : int) -> void:
 	mana_bar.value += amount_gained
+	if mana_bar.value == mana_bar.max_value:
+		mana_bar.tint_under = Color(1, 1, 1, 1)
+		mana_bar.tint_progress = Color(1, 1, 1, 1)
 
 func lose_mana(amount_lost : int ) -> void:
 	mana_bar.value -= amount_lost
+	if mana_bar.value == 0:
+		mana_bar.tint_under = Color(1, 0, 0, 1)
+		mana_bar.tint_progress = Color(1, 0, 1, 1)
 
 func add_money(value: int) -> void:
 	target_money += value

@@ -15,8 +15,8 @@ enum Status {
 
 var status_mask : int = Status.NORMAL
 
-signal lost_health(amount : float)
-signal gained_health(amount : float)
+signal lost_health(amount : int)
+signal gained_health(amount : int)
 signal ran_out
 
 func _ready() -> void:

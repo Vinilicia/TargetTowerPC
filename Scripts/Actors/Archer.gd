@@ -4,7 +4,7 @@ class_name Player
 # ============================================================
 # CONSTANTES
 # ============================================================
-const ARCHER_OFFSET_X := 28
+const ARCHER_OFFSET_X := 24
 const DEFAULT_MOVE_SPEED := 120.0
 const DODGE_KNOCKBACK := 100
 const DODGE_VERTICAL_VELOCITY := 0.0
@@ -13,7 +13,7 @@ const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 # ============================================================
 # EXPORTS E NODES
 # ============================================================
-@onready var anim: AnimationPlayer = $Archer2/AnimationPlayer
+@onready var anim: AnimationPlayer = $Archer/AnimationPlayer
 @onready var enemy_tracker: RayCast2D = $Utilities/AimEnemy/EnemyTracker
 @onready var aim_enemy: Area2D = $Utilities/AimEnemy/AimSight
 
@@ -30,6 +30,8 @@ const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 @export var max_hold_time: float
 @export var shoot_delay: float
 @export var max_mana : int
+@export var mana_regen_time : float = 1.0
+@export var mana_regen_scaling : float = 0.7
 
 @export_subgroup("Dodge")
 @export var dodge_duration: float = 0.3
@@ -56,6 +58,7 @@ const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 @export var ledge_detector : RayCast2D
 @export var wall_detector : RayCast2D
 @export var health_manager : HealthManager
+@export var mana_timer : Timer
 
 @export_category("Para debugar")
 @export_range(0, 8) var initial_arrow_index: int
@@ -101,6 +104,7 @@ var last_safe_position : Vector2
 var frames_until_check : int = 0
 var locked_walk: bool = false
 var available_arrows: Array[bool] = [true, true, true, true, false, false, false, false, false]
+var arrows : Array[Arrow] = []
 var in_control : bool = true
 @onready var current_mana : int = max_mana
 
@@ -108,13 +112,27 @@ var in_control : bool = true
 # READY
 # ============================================================
 func _ready():
+	build_arrows()
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 	velocity = Vector2.ZERO
 	await HudHandler.hud.ready
-	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health)
+	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health as int)
 	HudHandler.hud.init_mana(max_mana)
+	HudHandler.hud.change_arrow(current_arrow_index)
+	
+	mana_timer.wait_time = mana_regen_time
 	#Engine.time_scale = 0.5
+
+func build_arrows() -> void:
+	if current_arrow and current_arrow.is_inside_tree():
+		current_arrow.queue_free()
+	arrows = []
+	for i in range(arrow_paths.size()):
+		if available_arrows[i]:
+			var new_arrow : Arrow = load(arrow_paths[i]).instantiate()
+			arrows.append(new_arrow)
+	reset_arrow()
 
 # ============================================================
 # MAIN LOOP
@@ -122,10 +140,10 @@ func _ready():
 func _physics_process(delta: float) -> void:
 	update_hold_time(delta)
 	apply_gravity(delta)
+	handle_combat_inputs()
+	handle_arrow_updates()
 	if in_control:
-		handle_combat_inputs()
 		handle_aim_enemy()
-		handle_arrow_updates()
 	handle_movement()
 	velocity = v_component.get_total_velocity()
 	corner_correction(7, delta)
@@ -191,16 +209,21 @@ func handle_combat_inputs() -> void:
 		combat.is_holding = false 
 		combat.update_flying_dir = false
 	
-	if Input.is_action_just_pressed("dodge") and combat.can_dodge:
-		combat.can_dodge = false
-		dodged_this_frame = true
-		try_dodge()
-		await get_tree().create_timer(dodge_cooldown).timeout
-		combat.can_dodge = true
-	
-	if Input.is_action_just_pressed("switch arrow"):
-		current_arrow_index = (current_arrow_index + 1) % 9
-		current_arrow = equip_arrow(current_arrow_index)
+	if in_control:
+		if Input.is_action_just_pressed("dodge") and combat.can_dodge:
+			combat.can_dodge = false
+			dodged_this_frame = true
+			try_dodge()
+			await get_tree().create_timer(dodge_cooldown).timeout
+			combat.can_dodge = true
+		
+		if Input.is_action_just_pressed("switch arrow"):
+			current_arrow_index = (current_arrow_index + 1) % arrows.size()
+			if current_arrow.is_inside_tree():
+				shoot()
+			else:
+				current_arrow = equip_arrow(current_arrow_index)
+			HudHandler.hud.change_arrow(current_arrow_index)
 
 func try_dodge() -> void:
 	var attempt_dodge_dir : Vector2 = combat.dodge_direction
@@ -330,7 +353,6 @@ func handle_movement() -> void:
 			elif jump_state.coyote_time:
 				jump(1, true)
 		
-		v_component.set_proper_velocity(0.0, 1)
 		var dir: int = int(Input.get_axis("left", "right")) if in_control else 0
 		if dir:
 			if direction != dir:
@@ -343,6 +365,8 @@ func handle_movement() -> void:
 			elif move_speed < DEFAULT_MOVE_SPEED:
 				move_speed = DEFAULT_MOVE_SPEED
 			move(direction)
+		else:
+			v_component.set_proper_velocity(0.0, 1)
 
 # ============================================================
 # FUNÇÕES DE AÇÃO
@@ -360,14 +384,13 @@ func jump(multiplier: float = 1, coyote : bool = false) -> void:
 	v_component.set_proper_velocity(jump_force * multiplier, 2)
 
 func move(facing_dir: int) -> void:
-	v_component.add_proper_velocity(Vector2(move_speed * facing_dir, 0))
+	var current_h_speed = v_component.get_proper_velocity(1)
+	var starting : bool = abs(current_h_speed) < 45
+	var horizontal_velocity = lerp(current_h_speed, facing_dir * move_speed, 0.1 if starting else 1.0)
+	v_component.set_proper_velocity(horizontal_velocity, 1)
 
 func equip_arrow(array_position: int) -> Arrow:
-	while not available_arrows[array_position]:
-		array_position += 1
-		if array_position == available_arrows.size():
-			array_position = 0
-	var arrow: Arrow = load(arrow_paths[array_position]).instantiate()
+	var arrow: Arrow = arrows[array_position].duplicate()
 	arrow.position = arrow_spawn_point
 	current_arrow_index = array_position
 	return arrow
@@ -376,8 +399,8 @@ func get_current_gravity(velocity_in_y: float) -> float:
 	return gravity * 0.8 if velocity_in_y < 0 else gravity * gravity_multiplier
 
 func turn(facing_dir: int) -> void:
-	$Archer2.scale.x = facing_dir
-	$Archer2.position.x = -ARCHER_OFFSET_X * facing_dir
+	$Archer.scale.x = facing_dir
+	$Archer.position.x = -ARCHER_OFFSET_X * facing_dir
 	ledge_detector.position.x = 8 * facing_dir
 	wall_detector.scale.x = facing_dir
 	pos = camera_remote.position
@@ -503,6 +526,8 @@ func lose_mana(amount : int) -> void:
 	var true_amount : int = min(current_mana, amount)
 	current_mana -= true_amount
 	HudHandler.hud.lose_mana(true_amount)
+	if amount > 0:
+		mana_timer.start(mana_regen_time * ( 1.5 if current_mana == 0 else 1.0))
 
 func _cannot_shoot_state_entered() -> void:
 	await get_tree().create_timer(shoot_delay).timeout
@@ -566,14 +591,14 @@ func _crouched_exited() -> void:
 func _standing_entered() -> void:
 	state_chart.set_expression_property("crouching", false)
 
-func play_anim(name: String, queue: bool = false, blend: float = -1.0) -> void:
+func play_anim(animation_name: String, queue: bool = false, blend: float = -1.0) -> void:
 	if queue:
 		if anim.current_animation == "Hurt":
 			await anim.animation_finished
-		anim.queue(name)
+		anim.queue(animation_name)
 	else:
 		if anim.current_animation != "Hurt":
-			anim.play(name, blend)
+			anim.play(animation_name, blend)
 
 #endregion
 
@@ -593,32 +618,44 @@ func _on_fire_manager_caught_fire() -> void:
 		health_manager.start_burning(1)
 
 func _on_health_lost_health(amount: float) -> void:
-	HudHandler.hud.lose_hearts(amount)
+	available_arrows[2] = true
+	build_arrows()
+	HudHandler.hud.lose_hearts(amount as int)
 	modulate = Color(1, 0, 0, 1)
 	anim.clear_queue()
-	play_anim("Hurt")
 	in_control = false
 	v_component.add_knockback_velocity(Vector2(default_knockback.x * -facing_direction, default_knockback.y))
 	v_component.set_proper_velocity(0.0, 2)
+	current_arrow.queue_free()
+	reset_arrow()
+	state_chart.send_event("CantShoot")
+	play_anim("Hurt")
 	await anim.animation_finished
 	in_control = true
 	var invisibility_time = hurtbox.invincibility_time
 	var time_passed = 0
 	while time_passed < invisibility_time:
-		var tween: Tween = create_tween()
-		tween.tween_property(self, "modulate", Color(1, 1, 1, 0.39), 0.15)
-		tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.15)
+		var mod_tween: Tween = create_tween()
+		mod_tween.tween_property(self, "modulate", Color(1, 1, 1, 0.39), 0.15)
+		mod_tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.15)
 		await get_tree().create_timer(0.3).timeout
 		time_passed += 0.3
 
 func _on_health_manager_ran_out() -> void:
 	get_tree().quit()
 
-func _on_health_manager_gained_health(amount: float) -> void:
-	HudHandler.hud.gain_hearts(amount)
+func _on_health_manager_gained_health(amount: int) -> void:
+	HudHandler.hud.gain_hearts(amount as int)
 
 func gain_control() -> void:
 	in_control = true
 
 func lose_control() -> void:
 	in_control = false
+
+func _on_mana_regen_timer_timeout() -> void:
+	gain_mana(1)
+	if current_mana < max_mana:
+		mana_timer.start(mana_timer.wait_time * mana_regen_scaling)
+	else:
+		mana_timer.wait_time = mana_regen_time

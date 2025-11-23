@@ -1,6 +1,6 @@
 [gd_scene load_steps=8 format=3 uid="uid://l0kny3w6cbg4"]
 
-[ext_resource type="Script" uid="uid://c340tfff8ejnu" path="res://Scripts/Arrows/Platform_Arrow.gd" id="1_a3nj1"]
+[ext_resource type="Script" uid="uid://c7n2rnxslbue6" path="res://Scripts/Arrows/Platform_Arrow.gd" id="1_a3nj1"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_ftbuc"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Scenes/Arrows/Arrow_trail.tscn" id="4_5kcse"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="5_fh7sq"]

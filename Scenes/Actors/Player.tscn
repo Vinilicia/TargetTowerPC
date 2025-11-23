@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=3 uid="uid://ev1c8jc3dq42"]
+[gd_scene load_steps=17 format=3 uid="uid://ev1c8jc3dq42"]
 
 [ext_resource type="Script" uid="uid://dxjmsqyt3rpc1" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
@@ -10,7 +10,6 @@
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="8_26aeq"]
 [ext_resource type="Script" uid="uid://le5w1cm0ul8p" path="res://addons/godot_state_charts/expression_guard.gd" id="8_r2kji"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
-[ext_resource type="PackedScene" uid="uid://dyxyhr1x5n0xu" path="res://Scenes/Actors/SpriteImports/ArcherSprite.tscn" id="9_26aeq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
 [ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 [ext_resource type="Script" uid="uid://bc87qnt24utwm" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
@@ -22,7 +21,7 @@ script = ExtResource("8_r2kji")
 expression = "!crouching"
 metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector", "health_manager") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector", "health_manager", "mana_timer") groups=["Player"]]
 collision_mask = 20
 script = ExtResource("1_8nfcn")
 state_chart = NodePath("Misc/StateChart")
@@ -33,6 +32,8 @@ arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid:
 max_hold_time = 1.5
 shoot_delay = 0.5
 max_mana = 5
+mana_regen_time = 2.0
+mana_regen_scaling = 0.8
 dodge_cooldown = 0.7
 dodge_horizontal_speed = 200.0
 dodge_up_speed = -100.0
@@ -42,13 +43,17 @@ jump_force = -300.0
 gravity_multiplier = 1.0
 jump_queuing_time = 0.1
 air_stall_velocity = 40.0
-coyote_time_timer = 0.07
+coyote_time_timer = 0.05
 v_component = NodePath("Misc/VelocityComponent")
 hurtbox = NodePath("Hurtbox")
 dodge_cancel_timer = NodePath("Misc/DodgeCancelTimer")
 ledge_detector = NodePath("Utilities/LedgeDetector")
 wall_detector = NodePath("Utilities/WallDetector")
 health_manager = NodePath("Misc/HealthManager")
+mana_timer = NodePath("Misc/ManaRegenTimer")
+
+[node name="Archer" parent="." instance=ExtResource("16_mwnd1")]
+position = Vector2(-24, -26)
 
 [node name="Misc" type="Node" parent="."]
 
@@ -158,27 +163,25 @@ script = ExtResource("11_jfvij")
 max_health = 12.0
 seconds_per_fire_tick = 0.05
 
-[node name="Archer" parent="." instance=ExtResource("9_26aeq")]
-visible = false
-position = Vector2(-28, -28)
+[node name="ManaRegenTimer" type="Timer" parent="Misc"]
+one_shot = true
 
 [node name="UpColl" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(0, -4)
-scale = Vector2(10, 10)
+position = Vector2(0, -7)
+scale = Vector2(6, 11)
 shape = ExtResource("4_26aeq")
 
 [node name="DownColl" type="CollisionShape2D" parent="."]
-visible = false
-position = Vector2(0, 4)
-scale = Vector2(10, 10)
+position = Vector2(0, 3)
+scale = Vector2(6, 11)
 shape = ExtResource("4_26aeq")
 
 [node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
-scale = Vector2(10, 9)
+position = Vector2(0, -2)
+scale = Vector2(7, 10)
 collision_mask = 3072
 parent = NodePath("..")
-invincibility_time = 1.7
+invincibility_time = 1.3
 
 [node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
 shape = ExtResource("11_cdutm")
@@ -222,9 +225,6 @@ ref_hurtbox = NodePath("../../Hurtbox")
 [node name="Hurtbox" parent="Utilities/FireManager" index="0" node_paths=PackedStringArray("parent")]
 parent = NodePath("../../..")
 
-[node name="Archer2" parent="." instance=ExtResource("16_mwnd1")]
-position = Vector2(-24, -26)
-
 [connection signal="timeout" from="Misc/DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
 [connection signal="state_entered" from="Misc/StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_state_entered"]
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_physics_processing"]
@@ -248,10 +248,10 @@ position = Vector2(-24, -26)
 [connection signal="gained_health" from="Misc/HealthManager" to="." method="_on_health_manager_gained_health"]
 [connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_lost_health"]
 [connection signal="ran_out" from="Misc/HealthManager" to="." method="_on_health_manager_ran_out"]
+[connection signal="timeout" from="Misc/ManaRegenTimer" to="." method="_on_mana_regen_timer_timeout"]
 [connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
 [connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
 [connection signal="body_exited" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
 [connection signal="caught_fire" from="Utilities/FireManager" to="." method="_on_fire_manager_caught_fire"]
 
-[editable path="Archer"]
 [editable path="Utilities/FireManager"]

@@ -45,6 +45,6 @@ func go_to_player() -> void:
 	collision_mask = 0
 	player = get_tree().get_first_node_in_group("Player")
 
-func _on_player_detec_body_entered(body: Node2D) -> void:
+func _on_player_detec_body_entered(_body: Node2D) -> void:
 	($PlayerDetec as Area2D).set_deferred("monitoring", false)
 	get_collected()

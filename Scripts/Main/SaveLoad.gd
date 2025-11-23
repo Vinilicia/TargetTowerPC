@@ -192,7 +192,6 @@ func _load(slot_index: int) -> bool:
 	var default_data = SaveDataResource.new()
 	var loaded_resource = SaveDataResource.new()
 	var valid = true
-	var is_array = false
 	var saved_version = int(data.get("SaveVersion", 0))
 	var current_version = int(default_data.SaveVersion)
 
@@ -372,7 +371,6 @@ func load_settings() -> void:
 		return
 
 	# MESMA VERSÃO — valida e preenche faltantes
-	var valid = true
 	var merged: Dictionary = default_settings.duplicate(true)
 	for key in default_settings.keys():
 		if data.has(key):

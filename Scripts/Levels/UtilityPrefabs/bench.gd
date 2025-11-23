@@ -35,10 +35,10 @@ func bench_used() -> void:
 func get_room_number() -> int:
 	var room_node = get_parent()
 	if room_node:
-		var name : String = room_node.name
+		var room_name : String = room_node.name
 		var regex = RegEx.new()
 		regex.compile(r"\d+")
-		var result = regex.search(name)
+		var result = regex.search(room_name)
 		if result:
 			return int(result.get_string())
 	return -1
