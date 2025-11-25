@@ -41,6 +41,6 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 	queue_free()
 
 
-func _on_hitbox_hit(target: Node2D) -> void:
+func _on_hitbox_hit(_target: Node2D) -> void:
 	velocity = Vector2.ZERO
 	bounce()

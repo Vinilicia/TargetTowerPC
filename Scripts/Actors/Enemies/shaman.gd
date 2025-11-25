@@ -27,7 +27,7 @@ func _ready() -> void:
 	bat_scene = preload("res://Scenes/Actors/Enemies/Bat.tscn").instantiate()
 	bolt_scene = preload("res://Scenes/Actors/Enemies/shaman_magic_bolt.tscn").instantiate()
 
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if player:
 		if look_for_player():
 			if !saw_player:
@@ -65,7 +65,6 @@ func get_random_empty_position() -> Vector2:
 		printerr("Sem player ao tentar escolher posição de Spawn!!")
 		return Vector2.ZERO
 	var space := get_world_2d().direct_space_state
-	var coll_mask := self.collision_mask
 	var distance_to_player := 70
 
 	var max_attempts := 20
@@ -114,7 +113,7 @@ func shoot_bolt() -> void:
 	new_bolt.top_level = true
 	new_bolt.position = global_position
 	new_bolt.rotation = direction.angle() - (PI / 2)
-	call_deferred("add_child", new_bolt)
+	get_parent().call_deferred("add_child", new_bolt)
 	new_bolt.call_deferred("fly", direction)
 	await get_tree().create_timer(0.5).timeout
 	modulate = Color(1, 1, 1, 1)

@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://drn2ul007bkbw"]
+
+[ext_resource type="PackedScene" uid="uid://dd3gdpbv4uwc6" path="res://Assets/Home_bred/Archer/NewArcher2.aseprite" id="1_bgcsm"]
+
+[node name="Archer" instance=ExtResource("1_bgcsm")]
+offset = Vector2(18, 12)
+region_rect = Rect2(61, 51, 15, 24)
+
+[node name="AnimationPlayer" parent="." index="0"]
+autoplay = "Idle"

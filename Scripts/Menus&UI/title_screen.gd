@@ -21,7 +21,7 @@ func _ready() -> void:
 
 func return_menu_from_game() -> void:
 	_ready()
-	game.visible = false
+	(get_parent().find_child("GameViewportContainer") as SubViewportContainer).visible = false
 	game.process_mode = Node.PROCESS_MODE_DISABLED
 	game.physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_OFF
 	visible = true

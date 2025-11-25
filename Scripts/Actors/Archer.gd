@@ -4,7 +4,7 @@ class_name Player
 # ============================================================
 # CONSTANTES
 # ============================================================
-const ARCHER_OFFSET_X := 28
+const ARCHER_OFFSET_X := 24
 const DEFAULT_MOVE_SPEED := 120.0
 const DODGE_KNOCKBACK := 100
 const DODGE_VERTICAL_VELOCITY := 0.0
@@ -29,6 +29,9 @@ const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 @export_dir var arrow_paths: Array[String]
 @export var max_hold_time: float
 @export var shoot_delay: float
+@export var max_mana : int
+@export var mana_regen_time : float = 1.0
+@export var mana_regen_scaling : float = 0.7
 
 @export_subgroup("Dodge")
 @export var dodge_duration: float = 0.3
@@ -55,6 +58,7 @@ const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 @export var ledge_detector : RayCast2D
 @export var wall_detector : RayCast2D
 @export var health_manager : HealthManager
+@export var mana_timer : Timer
 
 @export_category("Para debugar")
 @export_range(0, 8) var initial_arrow_index: int
@@ -100,17 +104,35 @@ var last_safe_position : Vector2
 var frames_until_check : int = 0
 var locked_walk: bool = false
 var available_arrows: Array[bool] = [true, true, true, true, false, false, false, false, false]
+var arrows : Array[Arrow] = []
+var in_control : bool = true
+@onready var current_mana : int = max_mana
 
 # ============================================================
 # READY
 # ============================================================
 func _ready():
+	build_arrows()
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 	velocity = Vector2.ZERO
 	await HudHandler.hud.ready
-	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health)
+	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health as int)
+	HudHandler.hud.init_mana(max_mana)
+	HudHandler.hud.change_arrow(current_arrow_index)
+	
+	mana_timer.wait_time = mana_regen_time
 	#Engine.time_scale = 0.5
+
+func build_arrows() -> void:
+	if current_arrow and current_arrow.is_inside_tree():
+		current_arrow.queue_free()
+	arrows = []
+	for i in range(arrow_paths.size()):
+		if available_arrows[i]:
+			var new_arrow : Arrow = load(arrow_paths[i]).instantiate()
+			arrows.append(new_arrow)
+	reset_arrow()
 
 # ============================================================
 # MAIN LOOP
@@ -119,9 +141,10 @@ func _physics_process(delta: float) -> void:
 	update_hold_time(delta)
 	apply_gravity(delta)
 	handle_combat_inputs()
-	handle_movement()
-	handle_aim_enemy()
 	handle_arrow_updates()
+	if in_control:
+		handle_aim_enemy()
+	handle_movement()
 	velocity = v_component.get_total_velocity()
 	corner_correction(7, delta)
 	move_and_slide()
@@ -186,16 +209,21 @@ func handle_combat_inputs() -> void:
 		combat.is_holding = false 
 		combat.update_flying_dir = false
 	
-	if Input.is_action_just_pressed("dodge") and combat.can_dodge:
-		combat.can_dodge = false
-		dodged_this_frame = true
-		try_dodge()
-		await get_tree().create_timer(dodge_cooldown).timeout
-		combat.can_dodge = true
-	
-	if Input.is_action_just_pressed("switch arrow"):
-		current_arrow_index = (current_arrow_index + 1) % 9
-		current_arrow = equip_arrow(current_arrow_index)
+	if in_control:
+		if Input.is_action_just_pressed("dodge") and combat.can_dodge:
+			combat.can_dodge = false
+			dodged_this_frame = true
+			try_dodge()
+			await get_tree().create_timer(dodge_cooldown).timeout
+			combat.can_dodge = true
+		
+		if Input.is_action_just_pressed("switch arrow"):
+			current_arrow_index = (current_arrow_index + 1) % arrows.size()
+			if current_arrow.is_inside_tree():
+				shoot()
+			else:
+				current_arrow = equip_arrow(current_arrow_index)
+			HudHandler.hud.change_arrow(current_arrow_index)
 
 func try_dodge() -> void:
 	var attempt_dodge_dir : Vector2 = combat.dodge_direction
@@ -299,10 +327,12 @@ func is_wall_ahead() -> bool:
 	return response
 
 func handle_movement() -> void:
-	if Input.is_action_just_pressed("lock walk"):
+	if Input.is_action_just_pressed("lock walk") and in_control:
+		if locked_walk:
+			move_speed = DEFAULT_MOVE_SPEED
 		locked_walk = not locked_walk
 		
-	if combat.is_dodging:
+	if combat.is_dodging and in_control:
 		if Input.is_action_just_pressed("jump") and is_on_floor():
 			jump_state.jump_queued = true
 		if Input.is_action_just_released("jump"):
@@ -317,36 +347,50 @@ func handle_movement() -> void:
 		if combat.dodge_cancelled and combat.dodge_can_cancel:
 			end_dodge()
 	else:
-		if Input.is_action_just_pressed("jump") and (is_on_floor() or jump_state.coyote_time):
-			jump()
+		if Input.is_action_just_pressed("jump") and (is_on_floor() or jump_state.coyote_time) and in_control:
+			if is_on_floor():
+				jump()
+			elif jump_state.coyote_time:
+				jump(1, true)
 		
-		v_component.set_proper_velocity(0.0, 1)
-		var dir: int = int(Input.get_axis("left", "right"))
+		var dir: int = int(Input.get_axis("left", "right")) if in_control else 0
 		if dir:
 			if direction != dir:
 				direction = dir
 				if not locked_walk:
 					facing_direction = direction
 					turn(facing_direction)
+			if dir != facing_direction:
+				move_speed = DEFAULT_MOVE_SPEED * 0.7
+			elif move_speed < DEFAULT_MOVE_SPEED:
+				move_speed = DEFAULT_MOVE_SPEED
 			move(direction)
+		else:
+			v_component.set_proper_velocity(0.0, 1)
 
 # ============================================================
 # FUNÇÕES DE AÇÃO
 # ============================================================
-func jump(multiplier: float = 1) -> void:
+func jump(multiplier: float = 1, coyote : bool = false) -> void:
 	jump_state.jump_queued = false
+	jump_state.jumping = true
+	anim.clear_queue()
+	if not coyote:
+		play_anim("Jump")
+		play_anim("Rise", true)
+	else:
+		play_anim("Rise")
+	await get_tree().create_timer(0.08).timeout
 	v_component.set_proper_velocity(jump_force * multiplier, 2)
-	state_chart.send_event("Rising")
 
 func move(facing_dir: int) -> void:
-	v_component.add_proper_velocity(Vector2(move_speed * facing_dir, 0))
+	var current_h_speed = v_component.get_proper_velocity(1)
+	var starting : bool = abs(current_h_speed) < 45
+	var horizontal_velocity = lerp(current_h_speed, facing_dir * move_speed, 0.1 if starting else 1.0)
+	v_component.set_proper_velocity(horizontal_velocity, 1)
 
 func equip_arrow(array_position: int) -> Arrow:
-	while not available_arrows[array_position]:
-		array_position += 1
-		if array_position == available_arrows.size():
-			array_position = 0
-	var arrow: Arrow = load(arrow_paths[array_position]).instantiate()
+	var arrow: Arrow = arrows[array_position].duplicate()
 	arrow.position = arrow_spawn_point
 	current_arrow_index = array_position
 	return arrow
@@ -387,6 +431,7 @@ func shoot() -> void:
 	current_arrow.fly(combat.holding_time > max_hold_time, self)
 	reset_arrow()
 	state_chart.send_event("CantShoot")
+	lose_mana(current_arrow.Cost)
 
 func air_stall() -> void:
 	if v_component.get_proper_velocity(2) > 0:
@@ -412,37 +457,40 @@ func corner_correction(amount: int, delta: float) -> void:
 
 func _rising_to_falling_taken() -> void:
 	anim.clear_queue()
-	anim.play("Jump Apex")
-
-func _falling_state_entered() -> void:
-	anim.queue("Start Fall")
-	anim.queue("Fall")
+	play_anim("Apex")
+	play_anim("Fall", true)
 
 func _grounded_to_falling_taken() -> void:
-	anim.stop()
 	jump_state.coyote_time = true
 	await get_tree().create_timer(coyote_time_timer).timeout
 	jump_state.coyote_time = false
+	if anim.current_animation != "Rise" and anim.current_animation != "Jump":
+		anim.clear_queue()
+		play_anim("Fall")
 
 func _falling_to_grounded_taken() -> void:
-	anim.play("Landing")
-	
+	anim.clear_queue()
+	play_anim("Land")
 
 func _grounded_physics_processing(_delta: float) -> void:
-	if v_component.get_proper_velocity().x == 0:
-		if is_zero_approx(move_speed):
-			anim.play("Crouching")
-		elif anim.current_animation != "Idle":
-			anim.play("Idle")
-	else:
-		if anim.current_animation != "Run":
-			anim.play("Run Start")
-			anim.queue("Run")
+	if anim.current_animation != "Land" and anim.current_animation != "Jump":
+		if v_component.get_proper_velocity().x == 0:
+			if is_zero_approx(move_speed):
+				if anim.current_animation != "Crouch":
+					play_anim("Crouch")
+			elif anim.current_animation != "Idle":
+				play_anim("Idle")
+		else:
+			if sign(v_component.get_proper_velocity().x) != facing_direction:
+				if anim.current_animation != "RunBackwards":
+					play_anim("RunBackwards") 
+			elif anim.current_animation != "RunLoop" and anim.current_animation != "Run":
+				play_anim("Run")
+				play_anim("RunLoop", true)
 
 func _rising_state_entered() -> void:
-	jump_state.jumping = true
 	anim.clear_queue()
-	anim.play("Jump")
+	anim.queue("Rise")
 
 func _rising_physics_processing(_delta: float) -> void:
 	if !Input.is_action_pressed("jump") and jump_state.jumping:
@@ -457,11 +505,29 @@ func _can_shoot_state_entered() -> void:
 		hold_arrow()
 
 func _can_shoot_physics_processing(_delta: float) -> void:
-	if Input.is_action_just_released("shoot"):
+	if Input.is_action_just_released("shoot") and current_mana >= current_arrow.Cost:
 		shoot()
-	if Input.is_action_just_pressed("shoot"):
+	if Input.is_action_just_pressed("shoot") and current_mana >= current_arrow.Cost:
 		hold_arrow()
 		shoot()
+
+func heal_hp_on_bench() -> void:
+	health_manager.gain_health(health_manager.max_health)
+
+func heal_mana_on_bench() -> void:
+	gain_mana(max_mana)
+
+func gain_mana(amount : int) -> void:
+	var true_amount : int = min(amount, max_mana - current_mana)
+	current_mana += true_amount
+	HudHandler.hud.gain_mana(true_amount)
+
+func lose_mana(amount : int) -> void:
+	var true_amount : int = min(current_mana, amount)
+	current_mana -= true_amount
+	HudHandler.hud.lose_mana(true_amount)
+	if amount > 0:
+		mana_timer.start(mana_regen_time * ( 1.5 if current_mana == 0 else 1.0))
 
 func _cannot_shoot_state_entered() -> void:
 	await get_tree().create_timer(shoot_delay).timeout
@@ -491,7 +557,7 @@ func _standing_physics_processing(_delta: float) -> void:
 		state_chart.send_event("Crouched")
 
 func crouch():
-	anim.play("Crouching")
+	play_anim("Crouch")
 	move_speed = 0
 	$UpColl.disabled = true
 	hurtbox.scale.y /= 1.5
@@ -509,7 +575,7 @@ func _crouched_physics_processing(_delta: float) -> void:
 		state_chart.send_event("Standing")
 
 func stand() -> void:
-	anim.play("Idle")
+	play_anim("Idle")
 	move_speed = DEFAULT_MOVE_SPEED
 	$UpColl.disabled = false
 	hurtbox.position.y -= hurtbox.scale.y / 2
@@ -524,6 +590,15 @@ func _crouched_exited() -> void:
 
 func _standing_entered() -> void:
 	state_chart.set_expression_property("crouching", false)
+
+func play_anim(animation_name: String, queue: bool = false, blend: float = -1.0) -> void:
+	if queue:
+		if anim.current_animation == "Hurt":
+			await anim.animation_finished
+		anim.queue(animation_name)
+	else:
+		if anim.current_animation != "Hurt":
+			anim.play(animation_name, blend)
 
 #endregion
 
@@ -540,23 +615,47 @@ func _on_fire_manager_caught_fire() -> void:
 	var fire_man : FireManager = $Utilities/FireManager
 	if not fire_man.extinguished.is_connected(health_manager.stop_burning):
 		fire_man.extinguished.connect(health_manager.stop_burning, 4)
-		health_manager.start_burning(0.5)
+		health_manager.start_burning(1)
 
 func _on_health_lost_health(amount: float) -> void:
-	HudHandler.hud.lose_hearts(amount)
+	available_arrows[2] = true
+	build_arrows()
+	HudHandler.hud.lose_hearts(amount as int)
 	modulate = Color(1, 0, 0, 1)
-	await get_tree().create_timer(0.3).timeout
+	anim.clear_queue()
+	in_control = false
+	v_component.add_knockback_velocity(Vector2(default_knockback.x * -facing_direction, default_knockback.y))
+	v_component.set_proper_velocity(0.0, 2)
+	current_arrow.queue_free()
+	reset_arrow()
+	state_chart.send_event("CantShoot")
+	play_anim("Hurt")
+	await anim.animation_finished
+	in_control = true
 	var invisibility_time = hurtbox.invincibility_time
 	var time_passed = 0
 	while time_passed < invisibility_time:
-		var tween: Tween = create_tween()
-		tween.tween_property(self, "modulate", Color(1, 1, 1, 0.39), 0.15)
-		tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.15)
+		var mod_tween: Tween = create_tween()
+		mod_tween.tween_property(self, "modulate", Color(1, 1, 1, 0.39), 0.15)
+		mod_tween.tween_property(self, "modulate", Color(1, 1, 1, 1), 0.15)
 		await get_tree().create_timer(0.3).timeout
 		time_passed += 0.3
 
 func _on_health_manager_ran_out() -> void:
 	get_tree().quit()
 
-func _on_health_manager_gained_health(amount: float) -> void:
-	HudHandler.hud.gain_hearts(amount)
+func _on_health_manager_gained_health(amount: int) -> void:
+	HudHandler.hud.gain_hearts(amount as int)
+
+func gain_control() -> void:
+	in_control = true
+
+func lose_control() -> void:
+	in_control = false
+
+func _on_mana_regen_timer_timeout() -> void:
+	gain_mana(1)
+	if current_mana < max_mana:
+		mana_timer.start(mana_timer.wait_time * mana_regen_scaling)
+	else:
+		mana_timer.wait_time = mana_regen_time

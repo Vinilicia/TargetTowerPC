@@ -6,13 +6,14 @@ class_name SaveDataResource
 # --- DADOS DO JOGO ---
 @export var HealthUpgrades: Array[bool] = [false, false, false, false]
 @export var ManaUpgrades: Array[bool] = [false, false, false, false]
-@export var AvailableArrows: Array[bool] = [true, false, false, false, false, false, false, false, false]
+@export var AvailableArrows: Array[bool] = [true, true, true, true, false, false, false, false, false]
 
 @export var LastBenchID: int = 1
 @export var AreaOfBench: int = 1
 @export var MaxHealth: int = 5
 @export var MaxMana: int = 5
 @export var Money: int = 0
+@export var MoneyUpgrades: int = 0
 
 # -----------------------------------
 # Métodos de acesso / utilitários

@@ -23,23 +23,22 @@ func _on_player_exited(body: Node2D) -> void:
 		player = null
 
 func heal_player() -> void:
-	var player_health_man : HealthManager = player.health_manager
-	player_health_man.gain_health(player_health_man.max_health)
+	player.heal_hp_on_bench()
+	player.heal_mana_on_bench()
 
 func bench_used() -> void:	
-	var saveLoad : SaveLoadManager = SaveLoadManager.new()
-	saveLoad.save_file_data.set_last_bench_id(bench_id)
-	saveLoad.save_file_data.set_area_of_bench(area)
-	saveLoad.save_file_data.set_available_arrows(player.available_arrows)
-	saveLoad._save(save_id)
+	SaveManager.save_file_data.set_last_bench_id(bench_id)
+	SaveManager.save_file_data.set_area_of_bench(area)
+	SaveManager.save_file_data.set_available_arrows(player.available_arrows)
+	SaveManager._save(save_id)
 	
 func get_room_number() -> int:
 	var room_node = get_parent()
 	if room_node:
-		var name : String = room_node.name
+		var room_name : String = room_node.name
 		var regex = RegEx.new()
 		regex.compile(r"\d+")
-		var result = regex.search(name)
+		var result = regex.search(room_name)
 		if result:
 			return int(result.get_string())
 	return -1

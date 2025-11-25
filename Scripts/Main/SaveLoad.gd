@@ -150,6 +150,8 @@ func _save(slot_index: int):
 	var data_to_save: Dictionary = {}
 	for prop_info in save_file_data.get_property_list():
 		var prop_name = prop_info.name
+		if prop_name == "Money":
+			print("BANANA ", save_file_data.get("Money"))
 		if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path", "script"]:
 			continue
 		data_to_save[prop_name] = save_file_data.get(prop_name)
@@ -190,7 +192,6 @@ func _load(slot_index: int) -> bool:
 	var default_data = SaveDataResource.new()
 	var loaded_resource = SaveDataResource.new()
 	var valid = true
-	var is_array = false
 	var saved_version = int(data.get("SaveVersion", 0))
 	var current_version = int(default_data.SaveVersion)
 
@@ -370,7 +371,6 @@ func load_settings() -> void:
 		return
 
 	# MESMA VERSÃO — valida e preenche faltantes
-	var valid = true
 	var merged: Dictionary = default_settings.duplicate(true)
 	for key in default_settings.keys():
 		if data.has(key):

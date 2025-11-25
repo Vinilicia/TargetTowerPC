@@ -92,7 +92,7 @@ func _update_length(new_length: int) -> void:
 			left_sprite.scale.x = -belt_direction.x
 			
 			middle_sprite.region_rect = Rect2(0, 0, 16 * (new_length - 2), 12)
-			middle_sprite.position.x = ((16 * new_length) / 2) * -belt_direction.x
+			middle_sprite.position.x = ((16 * float(new_length)) / 2) * -belt_direction.x
 			middle_sprite.scale.x = -belt_direction.x
 			
 			right_sprite.region_rect = Rect2(0, 0, 16, 12)
@@ -122,11 +122,11 @@ func _update_length(new_length: int) -> void:
 			left_sprite.scale.x = -belt_direction.y
 			
 			middle_sprite.region_rect = Rect2(0, 0, 16 * (new_length - 2), 12)
-			middle_sprite.position.x = ((16 * new_length) / 2) * -belt_direction.y
+			middle_sprite.position.x = ((16 * float(new_length)) / 2) * -belt_direction.y
 			middle_sprite.scale.x = -belt_direction.y
 			
 			right_sprite.region_rect = Rect2(0, 0, 16, 12)
-			right_sprite.position.x = ((16 * new_length) - 8) * -belt_direction.y
+			right_sprite.position.x = ((16 * float(new_length)) - 8) * -belt_direction.y
 			right_sprite.scale.x = -belt_direction.y
 
 func reverse_direction() -> void:
