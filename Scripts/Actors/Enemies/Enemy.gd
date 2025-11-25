@@ -33,3 +33,12 @@ func run_out_of_health() -> void:
 
 func apply_gravity() -> void:
 	v_component.set_proper_velocity(get_gravity().y, 2)
+
+func grounded_behaviour() -> void:
+	if !is_on_floor():
+		apply_gravity()
+	else:
+		v_component.set_proper_velocity(0.0, 2)
+	
+	velocity = v_component.get_total_velocity()
+	move_and_slide()

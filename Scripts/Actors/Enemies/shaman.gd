@@ -47,13 +47,7 @@ func _physics_process(_delta: float) -> void:
 			preparing_attack = true
 			start_attack_timer()
 	
-	if !is_on_floor():
-		apply_gravity()
-	else:
-		v_component.set_proper_velocity(0.0, 2)
-	
-	velocity = v_component.get_total_velocity()
-	move_and_slide()
+	grounded_behaviour()
 
 func start_attack_timer() -> void:
 	var random_delay = randf_range(base_attack_delay - attack_delay_variation,

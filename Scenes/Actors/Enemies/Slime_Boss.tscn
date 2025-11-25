@@ -1,0 +1,45 @@
+[gd_scene load_steps=5 format=3 uid="uid://c1h7etr3mj23i"]
+
+[ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_yxd03"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="2_70jhk"]
+[ext_resource type="Script" uid="uid://bc41f60p5xh1j" path="res://Scripts/Actors/Enemies/slime_boss.gd" id="2_ng6vj"]
+[ext_resource type="Texture2D" uid="uid://kqvbqjwvyhq" path="res://Assets/Home_bred/Enemies/SlimeBoss.aseprite" id="3_ng6vj"]
+
+[node name="Boss" node_paths=PackedStringArray("raycast") instance=ExtResource("1_yxd03")]
+script = ExtResource("2_ng6vj")
+jump_force = Vector2(0, 0)
+spinning_speed = 90.0
+raycast = NodePath("RayCast2D")
+default_time = 0.0
+default_timer_offset = 0.0
+
+[node name="BodyCollision" parent="." index="0"]
+visible = false
+rotation = 1.5708
+scale = Vector2(24, 19.985)
+shape = ExtResource("2_70jhk")
+
+[node name="BaseEnemyStuff" parent="." index="1"]
+visible = false
+
+[node name="HealthManager" parent="BaseEnemyStuff" index="1"]
+max_health = 20.0
+
+[node name="Hurtbox" parent="BaseEnemyStuff" index="2"]
+scale = Vector2(25, 32)
+
+[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1"]
+rotation = 1.5708
+shape = ExtResource("2_70jhk")
+
+[node name="ContactHitbox" parent="BaseEnemyStuff" index="3"]
+scale = Vector2(25, 33)
+
+[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0"]
+rotation = 1.5708
+shape = ExtResource("2_70jhk")
+
+[node name="Sprite" type="Sprite2D" parent="." index="2"]
+texture = ExtResource("3_ng6vj")
+
+[node name="RayCast2D" type="RayCast2D" parent="." index="3"]
