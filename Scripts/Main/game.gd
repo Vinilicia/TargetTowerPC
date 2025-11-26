@@ -76,7 +76,6 @@ func load_room(room_scene: PackedScene) -> void:
 	add_child(current_level)
 	call_deferred("spaw_player_on_bench")
 
-
 func blackout_fade_in() -> void:
 	if blackout_rect:
 		tween = get_tree().create_tween()

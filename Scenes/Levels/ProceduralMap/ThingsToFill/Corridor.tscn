@@ -1,0 +1,25 @@
+[gd_scene load_steps=4 format=4 uid="uid://ccav44a3mhpqn"]
+
+[ext_resource type="TileSet" uid="uid://cweshf453isub" path="res://Themes/AreaTileSets/Entrance_Hall_Terrain_Tileset.tres" id="2_4pihq"]
+[ext_resource type="TileSet" uid="uid://bibe8vc18o6ko" path="res://Scenes/Levels/ProceduralMap/Levels/background.tres" id="3_3tflt"]
+[ext_resource type="TileSet" uid="uid://dponjdl3lj8ux" path="res://Scenes/Levels/ProceduralMap/Levels/decorations.tres" id="4_xvkm8"]
+
+[node name="Corridor" type="Node2D"]
+
+[node name="Tilemaps" type="Node2D" parent="."]
+
+[node name="Ground" type="TileMapLayer" parent="Tilemaps" groups=["Attachables"]]
+texture_filter = 1
+tile_map_data = PackedByteArray("AAADAAEAAAAKAA8AAAACAAEAAAAHAA8AAAABAAEAAAANAAoAAAAAAAEAAAAMAAoAAAD//wEAAAAMAAoAAAABAPr/AAADAAUAAAACAPr/AAAEAAUAAAADAPr/AAAPAAUAAAADAPv/AAAKAAIAAAACAPv/AAACAAkAAAABAPv/AAAOAAcAAAD///r/AAALAAUAAAAAAPr/AAAJAAAAAAAAAPv/AAAIAAcAAAD///v/AAAGAAgAAAD+//v/AAAGAAIAAAD+//r/AAACAAUAAAD9//r/AAAEAAUAAAD8//r/AAAFAAAAAAD8//v/AAAAAAcAAAD9//v/AAAJAAIAAAD8//z/AAAAAAoAAAD9//z/AAAHAA8AAAD+//z/AAABAAoAAAD///z/AAABAAoAAAAAAPz/AAADAAoAAAABAPz/AAAHAA8AAAACAPz/AAABAAoAAAADAPz/AAAKAA8AAAD8/wAAAAAFAAAAAAD9/wAAAAAMAAUAAAD+/wAAAAAIAAAAAAD//wAAAAADAAUAAAAAAAAAAAAIAAAAAAABAAAAAAADAAUAAAACAAAAAAALAAUAAAADAAAAAAAKAAAAAAD+/wEAAAALAAoAAAD9/wEAAAAMAAoAAAD8/wEAAAAAAAoAAAA=")
+tile_set = ExtResource("2_4pihq")
+
+[node name="BackGround" type="TileMapLayer" parent="Tilemaps"]
+modulate = Color(0.241523, 0.251293, 0.411493, 1)
+z_index = -1
+tile_map_data = PackedByteArray("AAD/////AAAAAAAAAAAAAP//AAAAAAAAAAD///3/AAAAAAAAAAAAAP3/AAAAAAAAAAAAAP7/AAAAAAEAAAD///7/AAAAAAEAAAA=")
+tile_set = ExtResource("3_3tflt")
+
+[node name="Decorations" type="TileMapLayer" parent="Tilemaps"]
+z_index = -1
+tile_map_data = PackedByteArray("AAABAP7/AAADAAQAAAD+//7/AAADAAQAAAA=")
+tile_set = ExtResource("4_xvkm8")
