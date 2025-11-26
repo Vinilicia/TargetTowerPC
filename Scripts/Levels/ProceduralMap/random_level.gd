@@ -134,3 +134,15 @@ func fill_flags() -> void:
 			j = possible_j.pick_random()
 			decorations_tilemap.set_cell(Vector2i(x, y), 0, Vector2i(i,j))
 		x -= 6
+		
+func draw_edges():
+	var x = -max_x/2
+	ground_tilemap.set_cells_terrain_connect([Vector2i(x, 0)], 0, 0, false)
+	ground_tilemap.set_cells_terrain_connect([Vector2i(x, 1)], 0, 0, false)
+	for y in range((max_y+1) * 6):
+		ground_tilemap.set_cells_terrain_connect([Vector2i(x, -y)], 0, 0, false)
+	x = max_x/2 - 1
+	ground_tilemap.set_cells_terrain_connect([Vector2i(x, 0)], 0, 0, false)
+	ground_tilemap.set_cells_terrain_connect([Vector2i(x, 1)], 0, 0, false)
+	for y in range((max_y+1) * 6):
+		ground_tilemap.set_cells_terrain_connect([Vector2i(x, -y)], 0, 0, false)

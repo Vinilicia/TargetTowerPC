@@ -36,20 +36,23 @@ func spaw_next_level() -> void:
 	if last_exit == 0:
 		actual_x = actual_x + level.max_x/2 * 16
 		level.position = Vector2i(actual_x, actual_y)
-		actual_x = actual_x + level.max_x/2 * 16
+		actual_x = actual_x - level.max_x/2 * 16
 	else:
 		actual_x = actual_x - level.max_x/2 * 16
 		level.position = Vector2i(actual_x, actual_y)
-		actual_x = actual_x - level.max_x/2 * 16
+		actual_x = actual_x + level.max_x/2 * 16
 	add_child(level)
 	actual_y = actual_y - level.level_exit.y * 6 * 16
-	if level.level_exit.x != last_exit:
+	if level.level_exit.x == last_exit:
 		if level.level_exit.x == 0:
 			actual_x = actual_x + level.max_x * 16
 		else:
 			actual_x = actual_x - level.max_x * 16
-		#spaw_corridors(level.max_x)
+		
+	var r = randf() * 100.0
 	last_exit = level.level_exit.x
+	if r < 50:
+		spaw_corridors()
 	
 func random_level() -> Node2D:
 	var r = randi() % 100
@@ -59,10 +62,10 @@ func random_level() -> Node2D:
 		return medium_level_scene.instantiate()
 	return null
 
-func spaw_corridors(max_x_level: int) -> void:
-	var number_of_corridors = max_x_level/8 + 2
+func spaw_corridors() -> void:
+	var number_of_corridors = randi_range(2, 3)
 	var direction = -1
-	if last_exit == 1:
+	if last_exit == 0:
 		direction = 1
 	for i in range(number_of_corridors):
 		var corridor = corridor_scene.instantiate()
@@ -70,4 +73,3 @@ func spaw_corridors(max_x_level: int) -> void:
 		corridor.position = Vector2i(actual_x, actual_y)
 		actual_x = actual_x + direction * 4 * 16
 		add_child(corridor)
-		
