@@ -116,6 +116,7 @@ func _ready():
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 	velocity = Vector2.ZERO
+	#await get_tree().process_frame
 	await HudHandler.hud.ready
 	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health as int)
 	HudHandler.hud.init_mana(max_mana)

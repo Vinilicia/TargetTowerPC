@@ -27,7 +27,7 @@ func spaw_initial_level() -> void:
 	var r = randi_range(0, 1)
 	initial_level.setup(r)
 	add_child(initial_level)
-	player.position = Vector2i(0, -2)
+	player.position = Vector2i(0, -10)
 	last_exit = r
 	actual_x = initial_level.x * 16
 	
