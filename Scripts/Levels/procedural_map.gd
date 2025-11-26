@@ -4,9 +4,9 @@ extends Node2D
 @export var small_level_scene : PackedScene
 @export var medium_level_scene : PackedScene
 @export var corridor_scene : PackedScene
-#@export var final_level_scene : PackedScene
+@export var final_level_scene : PackedScene
 
-@export var number_of_levels : int = 5
+@export var number_of_levels : int = 2
 
 @onready var player : CharacterBody2D = $Player
 
@@ -19,6 +19,7 @@ func _ready():
 	spaw_initial_level()
 	for i in range(number_of_levels):
 		spaw_next_level()
+	spaw_final_level()
 
 func spaw_initial_level() -> void:
 	var initial_level = initial_level_scene.instantiate()
@@ -29,6 +30,16 @@ func spaw_initial_level() -> void:
 	player.position = Vector2i(0, -2)
 	last_exit = r
 	actual_x = initial_level.x * 16
+	
+func spaw_final_level() -> void:
+	var final_level = final_level_scene.instantiate()
+	var direction = -1
+	if last_exit == 0:
+		direction = 1
+	actual_x = actual_x + direction * 16 * 16
+	final_level.position = Vector2i(actual_x, actual_y)
+	final_level.setup(1-last_exit)
+	add_child(final_level)
 	
 func spaw_next_level() -> void:
 	var level = random_level()

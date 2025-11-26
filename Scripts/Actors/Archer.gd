@@ -315,7 +315,7 @@ func handle_movement() -> void:
 		if combat.dodge_cancelled and combat.dodge_can_cancel:
 			end_dodge()
 	else:
-		if Input.is_action_just_pressed("jump") and (is_on_floor() or jump_state.coyote_time):
+		if Input.is_action_just_pressed("jump") and (is_on_floor() or jump_state.coyote_time) and !Input.is_action_pressed("down"):
 			jump()
 		
 		v_component.set_proper_velocity(0.0, 1)
