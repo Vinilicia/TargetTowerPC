@@ -1,4 +1,4 @@
-extends Node2D
+extends Room
 
 @export var initial_level_scene : PackedScene
 @export var small_level_scene : PackedScene
@@ -8,7 +8,7 @@ extends Node2D
 
 @export var number_of_levels : int = 2
 
-@onready var player : CharacterBody2D = $Player
+@onready var player : CharacterBody2D = get_tree().get_first_node_in_group("Player")
 
 var actual_x : int = 0
 var actual_y : int = 0
@@ -27,7 +27,7 @@ func spaw_initial_level() -> void:
 	var r = randi_range(0, 1)
 	initial_level.setup(r)
 	add_child(initial_level)
-	player.position = Vector2i(0, -10)
+	player.global_position = Vector2i(0, -50)
 	last_exit = r
 	actual_x = initial_level.x * 16
 	
@@ -71,7 +71,6 @@ func random_level() -> Node2D:
 		return small_level_scene.instantiate()
 	else:
 		return medium_level_scene.instantiate()
-	return null
 
 func spaw_corridors() -> void:
 	var number_of_corridors = randi_range(2, 3)

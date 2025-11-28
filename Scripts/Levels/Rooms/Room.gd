@@ -30,4 +30,4 @@ func kill_enemies(is_alive : Array[bool]) -> void:
 func get_bench_position() -> Vector2:
 	if bench:
 		return bench.global_position
-	return Vector2.ZERO
+	return Vector2(0, -10)

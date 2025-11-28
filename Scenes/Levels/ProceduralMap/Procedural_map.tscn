@@ -1,18 +1,11 @@
-[gd_scene load_steps=10 format=3 uid="uid://dfa4di7v84300"]
+[gd_scene load_steps=7 format=3 uid="uid://dfa4di7v84300"]
 
-[ext_resource type="Script" uid="uid://ccivni2x6df06" path="res://Scripts/Levels/procedural_map.gd" id="1_6ntii"]
+[ext_resource type="Script" uid="uid://ctdeeth1dmuxv" path="res://Scripts/Levels/procedural_map.gd" id="1_6ntii"]
 [ext_resource type="PackedScene" uid="uid://sj0pbsaa0taq" path="res://Scenes/Levels/ProceduralMap/Levels/Inicial_level.tscn" id="2_6ntii"]
 [ext_resource type="PackedScene" uid="uid://b6cr2ha3js4rb" path="res://Scenes/Levels/ProceduralMap/Levels/Small_level.tscn" id="3_xrb8l"]
 [ext_resource type="PackedScene" uid="uid://ctdgwssxk0oqy" path="res://Scenes/Levels/ProceduralMap/Levels/Medium_level.tscn" id="4_qfu0e"]
 [ext_resource type="PackedScene" uid="uid://ccav44a3mhpqn" path="res://Scenes/Levels/ProceduralMap/ThingsToFill/Corridor.tscn" id="5_jxats"]
-[ext_resource type="PackedScene" uid="uid://d2t4nkqy0m7b6" path="res://Scenes/Levels/ProceduralMap/Levels/Final_level.tscn" id="6_6ntii"]
-[ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Scenes/Actors/Player.tscn" id="7_el3ic"]
-[ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Levels/Camera.tscn" id="8_h1msk"]
-
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_6mfhi"]
-resource_local_to_scene = true
-radius = 0.5
-height = 2.0
+[ext_resource type="PackedScene" uid="uid://dj2nfg6f48tss" path="res://Scenes/Levels/ProceduralMap/Levels/Final_level.tscn" id="6_6ntii"]
 
 [node name="ProceduralMap" type="Node2D"]
 script = ExtResource("1_6ntii")
@@ -21,19 +14,4 @@ small_level_scene = ExtResource("3_xrb8l")
 medium_level_scene = ExtResource("4_qfu0e")
 corridor_scene = ExtResource("5_jxats")
 final_level_scene = ExtResource("6_6ntii")
-
-[node name="Player" parent="." instance=ExtResource("7_el3ic")]
-position = Vector2(320, -64)
-
-[node name="Coll" parent="Player/Hurtbox" index="1"]
-shape = SubResource("CapsuleShape2D_6mfhi")
-
-[node name="Remote" parent="Player/Utilities" index="1"]
-remote_path = NodePath("../../../Camera")
-
-[node name="Camera" parent="." instance=ExtResource("8_h1msk")]
-position = Vector2(320, -84)
-
-[editable path="Player"]
-[editable path="Player/Archer"]
-[editable path="Player/Utilities/FireManager"]
+number_of_levels = 6

@@ -63,6 +63,12 @@ layout_mode = 2
 size_flags_horizontal = 4
 text = "TEXT_SETTINGS"
 
+[node name="GauntletButton" type="Button" parent="TitleMenu/VBoxContainer"]
+custom_minimum_size = Vector2(140, 22)
+layout_mode = 2
+size_flags_horizontal = 4
+text = "TEXT_PROCEDURAL"
+
 [node name="QuitButton" type="Button" parent="TitleMenu/VBoxContainer"]
 custom_minimum_size = Vector2(140, 22)
 layout_mode = 2
@@ -215,6 +221,7 @@ text = "TEXT_NO"
 
 [connection signal="pressed" from="TitleMenu/VBoxContainer/PlayButton" to="." method="show_file_select"]
 [connection signal="pressed" from="TitleMenu/VBoxContainer/SettingsButton" to="." method="show_settings"]
+[connection signal="pressed" from="TitleMenu/VBoxContainer/GauntletButton" to="." method="load_procedural"]
 [connection signal="pressed" from="TitleMenu/VBoxContainer/QuitButton" to="." method="show_quit_menu"]
 [connection signal="pressed" from="FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton" to="." method="save_file_1_button_pressed"]
 [connection signal="pressed" from="FileSelectMenu/VBoxContainer/SaveProfilesContainer/SaveFileButton2" to="." method="save_file_2_button_pressed"]

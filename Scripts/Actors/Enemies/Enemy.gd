@@ -21,8 +21,8 @@ func die() -> void:
 func spawn_money() -> void:
 	for i in range(money_amount):
 		var new_regret : RigidBody2D = regret_scene.duplicate()
-		new_regret.position = global_position + Vector2(randf_range(-5, 5), randf_range(-4, 0))
-		new_regret.linear_velocity = Vector2(randf_range(-10, 10), randf_range(-20, -20))
+		new_regret.position = position + Vector2(randf_range(-5, 5), randf_range(-4, 2))
+		new_regret.linear_velocity = Vector2(randf_range(-30, 30), randf_range(-70, -150))
 		get_parent().call_deferred("add_child", new_regret)
 
 func took_damage(_amount : float) -> void:

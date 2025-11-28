@@ -97,6 +97,14 @@ func load_save(save_id) -> void:
 	game.save_id = save_id
 	game.load_room(room_scene)
 
+func load_procedural() -> void:
+	var room_scene : PackedScene = load("res://Scenes/Levels/ProceduralMap/Procedural_map.tscn")
+	
+	visible = false
+	instantiate_main_menu()
+	game.save_id = 0
+	game.load_room(room_scene)
+
 func open_button_pressed() -> void:
 	on_copy = false
 	load_save(save_selected)
