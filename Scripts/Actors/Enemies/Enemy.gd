@@ -31,14 +31,15 @@ func took_damage(_amount : float) -> void:
 func run_out_of_health() -> void:
 	die()
 
-func apply_gravity() -> void:
-	v_component.set_proper_velocity(get_gravity().y, 2)
+func apply_gravity(delta : float) -> void:
+	v_component.add_proper_velocity(Vector2(0, get_gravity().y * delta))
 
-func grounded_behaviour() -> void:
+func grounded_behaviour(delta : float) -> void:
 	if !is_on_floor():
-		apply_gravity()
+		apply_gravity(delta)
 	else:
-		v_component.set_proper_velocity(0.0, 2)
+		pass
+		#v_component.set_proper_velocity(0.0, 2)
 	
 	velocity = v_component.get_total_velocity()
 	move_and_slide()

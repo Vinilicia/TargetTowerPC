@@ -20,7 +20,7 @@ shape = ExtResource("3_d48gk")
 debug_color = Color(0.979514, 0, 0.387407, 0.42)
 
 [node name="Hitbox" parent="." instance=ExtResource("3_ppbia")]
-collision_layer = 2048
+collision_layer = 3072
 Damage = 1.0
 Knockback_force = 300.0
 Knockback_angle = -70.0

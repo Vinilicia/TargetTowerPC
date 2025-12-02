@@ -27,7 +27,7 @@ func _ready() -> void:
 	bat_scene = preload("res://Scenes/Actors/Enemies/Bat.tscn").instantiate()
 	bolt_scene = preload("res://Scenes/Actors/Enemies/shaman_magic_bolt.tscn").instantiate()
 
-func _physics_process(_delta: float) -> void:
+func _physics_process(delta: float) -> void:
 	if player:
 		if look_for_player():
 			if !saw_player:
@@ -47,7 +47,7 @@ func _physics_process(_delta: float) -> void:
 			preparing_attack = true
 			start_attack_timer()
 	
-	grounded_behaviour()
+	grounded_behaviour(delta)
 
 func start_attack_timer() -> void:
 	var random_delay = randf_range(base_attack_delay - attack_delay_variation,

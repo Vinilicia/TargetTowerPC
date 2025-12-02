@@ -14,7 +14,7 @@
 [ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
 [ext_resource type="Script" uid="uid://bc87qnt24utwm" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="15_heh8i"]
-[ext_resource type="PackedScene" uid="uid://drn2ul007bkbw" path="res://Scenes/Actors/SpriteImports/NewAcherSprite.tscn" id="16_mwnd1"]
+[ext_resource type="PackedScene" path="res://Scenes/Actors/SpriteImports/NewAcherSprite.tscn" id="16_mwnd1"]
 
 [sub_resource type="Resource" id="Resource_rbeol"]
 script = ExtResource("8_r2kji")

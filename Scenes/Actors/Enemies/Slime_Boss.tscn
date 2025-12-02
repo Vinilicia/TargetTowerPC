@@ -10,8 +10,21 @@ script = ExtResource("2_ng6vj")
 jump_force = Vector2(0, 0)
 spinning_speed = 90.0
 raycast = NodePath("RayCast2D")
-default_time = 0.0
-default_timer_offset = 0.0
+default_timer = 1.8
+default_timer_offset = 0.3
+gravity_scale = 0.6
+bounce_delay = 0.1
+bounce_chance = 0.3
+pursue_chance = 0.3
+shoot_chance = 0.4
+dispersed_volley_chance = 0.0
+patterned_volley_chance = 1.0
+ground_attack_max = 3
+top_attack_max = 4
+num_volley_attacks = 10
+num_patterned_shots = 12
+patterned_rand_x_offset = 20.0
+num_consecutive_jumps = 4
 
 [node name="BodyCollision" parent="." index="0"]
 visible = false
