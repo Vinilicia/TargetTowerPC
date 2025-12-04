@@ -1,11 +1,18 @@
-[gd_scene load_steps=5 format=3 uid="uid://c1h7etr3mj23i"]
+[gd_scene load_steps=7 format=3 uid="uid://c1h7etr3mj23i"]
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_yxd03"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="2_70jhk"]
 [ext_resource type="Script" uid="uid://bc41f60p5xh1j" path="res://Scripts/Actors/Enemies/slime_boss.gd" id="2_ng6vj"]
+[ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="2_u4e3f"]
 [ext_resource type="Texture2D" uid="uid://kqvbqjwvyhq" path="res://Assets/Home_bred/Enemies/SlimeBoss.aseprite" id="3_ng6vj"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3fodh"]
+resource_local_to_scene = true
+shader = ExtResource("2_u4e3f")
+shader_parameter/enabled = true
+
 [node name="Boss" node_paths=PackedStringArray("raycast") instance=ExtResource("1_yxd03")]
+material = SubResource("ShaderMaterial_3fodh")
 script = ExtResource("2_ng6vj")
 jump_force = Vector2(0, 0)
 spinning_speed = 90.0
@@ -17,10 +24,10 @@ bounce_delay = 0.1
 bounce_chance = 0.3
 pursue_chance = 0.3
 shoot_chance = 0.4
-dispersed_volley_chance = 0.0
-patterned_volley_chance = 1.0
+dispersed_volley_chance = 0.5
+patterned_volley_chance = 0.5
 ground_attack_max = 3
-top_attack_max = 4
+top_attack_max = 2
 num_volley_attacks = 10
 num_patterned_shots = 12
 patterned_rand_x_offset = 20.0
@@ -53,6 +60,7 @@ rotation = 1.5708
 shape = ExtResource("2_70jhk")
 
 [node name="Sprite" type="Sprite2D" parent="." index="2"]
+use_parent_material = true
 texture = ExtResource("3_ng6vj")
 
 [node name="RayCast2D" type="RayCast2D" parent="." index="3"]

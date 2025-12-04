@@ -1,0 +1,76 @@
+[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://dw5q7exg3ylkf"]
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_declk"]
+parameter_name = "Tint"
+qualifier = 2
+default_value_enabled = true
+
+[sub_resource type="VisualShaderNodeIf" id="VisualShaderNodeIf_asn3t"]
+default_input_values = [0, 0.0, 1, 1.0, 2, 1e-05, 3, Vector3(0, 0, 0), 4, Vector3(0, 0, 0), 5, Vector3(0, 0, 0)]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_aqvuk"]
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeBooleanParameter" id="VisualShaderNodeBooleanParameter_xqi20"]
+parameter_name = "enabled"
+default_value_enabled = true
+
+[resource]
+code = "shader_type canvas_item;
+render_mode blend_mix;
+
+uniform bool enabled = false;
+instance uniform vec4 Tint : source_color = vec4(1.000000, 1.000000, 1.000000, 1.000000);
+
+
+
+void fragment() {
+// BooleanParameter:5
+	bool n_out5p0 = enabled;
+
+
+// ColorParameter:2
+	vec4 n_out2p0 = Tint;
+
+
+// Input:4
+	vec4 n_out4p0 = COLOR;
+
+
+	vec3 n_out3p0;
+// If:3
+	float n_in3p1 = 1.00000;
+	float n_in3p2 = 0.00001;
+	if(abs((n_out5p0 ? 1.0 : 0.0) - n_in3p1) < n_in3p2)
+	{
+		n_out3p0 = vec3(n_out2p0.xyz);
+	}
+	else if((n_out5p0 ? 1.0 : 0.0) < n_in3p1)
+	{
+		n_out3p0 = vec3(n_out4p0.xyz);
+	}
+	else
+	{
+		n_out3p0 = vec3(n_out4p0.xyz);
+	}
+
+
+// Output:0
+	COLOR.rgb = n_out3p0;
+
+
+}
+"
+graph_offset = Vector2(0, -59.7581)
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(740, 180)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorParameter_declk")
+nodes/fragment/2/position = Vector2(60, 220)
+nodes/fragment/3/node = SubResource("VisualShaderNodeIf_asn3t")
+nodes/fragment/3/position = Vector2(480, 100)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_aqvuk")
+nodes/fragment/4/position = Vector2(80, 480)
+nodes/fragment/5/node = SubResource("VisualShaderNodeBooleanParameter_xqi20")
+nodes/fragment/5/position = Vector2(120, 40)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 3, 4, 0, 3, 4, 4, 0, 3, 5, 5, 0, 3, 0, 3, 0, 0, 0)

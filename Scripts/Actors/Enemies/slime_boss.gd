@@ -63,7 +63,6 @@ func generate_new_time() -> void:
 
 func _physics_process(delta: float) -> void:
 	if engaging:
-		var player_on_left := to_local(player.global_position).x < 0
 		engaging_time += delta
 		if engaging_time > current_time:
 			generate_new_time()
@@ -161,7 +160,7 @@ func patterned_volley() -> void:
 		var num := randi_range(3, 5)
 		for i in range(num):
 			var this_start = start + Vector2(patterned_rand_x_offset, 0) * randf_range(-1, 1)
-			var this_end = end +Vector2(patterned_rand_x_offset, 0) * randf_range(-1, 1)
+			var this_end = end + Vector2(patterned_rand_x_offset, 0) * randf_range(-1, 1)
 			var new_target : Vector2 = this_start + ((this_end - this_start) * (float(i) / float(num - 1)))
 			new_target = to_local(new_target) + position
 			targets.append(new_target)
@@ -182,7 +181,7 @@ func patterned_volley() -> void:
 func straight_shot() -> void:
 	modulate = Color(0.7, 0, 0, 1)
 	await get_tree().create_timer(0.4).timeout
-	await shoot(to_local(player.global_position + position + Vector2(0, 5)), true)
+	shoot(to_local(player.global_position + position + Vector2(0, 5)), true)
 	modulate = Color(1, 1, 1, 1)
 
 func shoot(target : Vector2, straight : bool = false) -> void:
@@ -248,3 +247,10 @@ func perform_jump(target: Vector2, offset : float = 10, height_increase : float 
 	var vx = (xf - x0) / total_t
 	
 	v_component.set_proper_velocity(Vector2(vx, vy))
+
+func grounded_behaviour(delta : float) -> void:
+	if !is_on_floor():
+		apply_gravity(delta)
+	
+	velocity = v_component.get_total_velocity()
+	move_and_slide()

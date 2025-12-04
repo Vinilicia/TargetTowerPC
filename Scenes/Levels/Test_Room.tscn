@@ -1,8 +1,9 @@
-[gd_scene load_steps=14 format=4 uid="uid://dn10h68f76vry"]
+[gd_scene load_steps=27 format=4 uid="uid://dn10h68f76vry"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_evn5t"]
 [ext_resource type="PackedScene" uid="uid://rbo0lyegdlbe" path="res://Scenes/Actors/Enemies/Spider.tscn" id="2_f20nt"]
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="3_m8jmo"]
+[ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="3_nh0l2"]
 [ext_resource type="PackedScene" uid="uid://4cb2gyoifqiu" path="res://Scenes/Actors/Enemies/Shaman.tscn" id="4_shaer"]
 [ext_resource type="PackedScene" uid="uid://dsfecke3dr6ur" path="res://Scenes/Items/Small_Regret.tscn" id="5_1fqpg"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="5_6vixh"]
@@ -14,10 +15,71 @@
 [ext_resource type="PackedScene" uid="uid://b3ymhm7i1i4vm" path="res://Scenes/Interactibles/Mechanisms/Boss_Door.tscn" id="12_nh0l2"]
 [ext_resource type="PackedScene" uid="uid://c1h7etr3mj23i" path="res://Scenes/Actors/Enemies/Slime_Boss.tscn" id="12_rd61j"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nh0l2"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nc3ja"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_i7ony"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_fk0q1"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_0qj0d"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8d45d"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vaokv"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_iwt5g"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2x3qx"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cauvd"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_hj1hg"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_s4qre"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
 [node name="TestRoom" node_paths=PackedStringArray("bench") instance=ExtResource("1_evn5t")]
 bench = NodePath("Bench")
 
 [node name="Spooder" parent="Enemies" index="0" instance=ExtResource("2_f20nt")]
+material = SubResource("ShaderMaterial_nh0l2")
 position = Vector2(351, 20)
 speed = 35.0
 movedir = -1.0
@@ -25,6 +87,7 @@ start_surface = "ceiling"
 fall_speed = 100.0
 
 [node name="Spooder2" parent="Enemies" index="1" instance=ExtResource("2_f20nt")]
+material = SubResource("ShaderMaterial_nc3ja")
 position = Vector2(278, 116)
 speed = 35.0
 movedir = -1.0
@@ -32,35 +95,45 @@ start_surface = "ceiling"
 fall_speed = 100.0
 
 [node name="Slime" parent="Enemies" index="2" instance=ExtResource("3_m8jmo")]
+material = SubResource("ShaderMaterial_i7ony")
 position = Vector2(-128, 129)
 
 [node name="Slime2" parent="Enemies" index="3" instance=ExtResource("3_m8jmo")]
+material = SubResource("ShaderMaterial_fk0q1")
 position = Vector2(885, -203)
 
 [node name="Slime3" parent="Enemies" index="4" instance=ExtResource("3_m8jmo")]
+material = SubResource("ShaderMaterial_0qj0d")
 position = Vector2(882, -376)
 
 [node name="Shaman" parent="Enemies" index="5" instance=ExtResource("4_shaer")]
+material = SubResource("ShaderMaterial_8d45d")
 position = Vector2(537, 85)
 magic_bolt_texture = null
 magic_bolt_scale = Vector2(0, 0)
 
 [node name="Bat" parent="Enemies" index="6" instance=ExtResource("5_6vixh")]
+material = SubResource("ShaderMaterial_vaokv")
 position = Vector2(851, 133)
 
 [node name="Bat2" parent="Enemies" index="7" instance=ExtResource("5_6vixh")]
+material = SubResource("ShaderMaterial_iwt5g")
 position = Vector2(946, -51)
 
 [node name="Bat3" parent="Enemies" index="8" instance=ExtResource("5_6vixh")]
+material = SubResource("ShaderMaterial_2x3qx")
 position = Vector2(21, -216)
 
 [node name="Bat4" parent="Enemies" index="9" instance=ExtResource("5_6vixh")]
+material = SubResource("ShaderMaterial_cauvd")
 position = Vector2(111, -216)
 
 [node name="CommonGoblin" parent="Enemies" index="10" instance=ExtResource("6_22qgy")]
+material = SubResource("ShaderMaterial_hj1hg")
 position = Vector2(333, -438)
 
 [node name="CommonGoblin2" parent="Enemies" index="11" instance=ExtResource("6_22qgy")]
+material = SubResource("ShaderMaterial_s4qre")
 position = Vector2(587, -169)
 
 [node name="Terrain" parent="Tilemaps" index="0"]
@@ -100,9 +173,9 @@ position = Vector2(77, 74)
 position = Vector2(-157, 74)
 
 [node name="Boss" parent="BossArena" index="2" node_paths=PackedStringArray("markers_node") instance=ExtResource("12_rd61j")]
+material = null
 position = Vector2(-90, 74)
 markers_node = NodePath("Markers")
-patterned_rand_x_offset = 20.0
 
 [node name="Markers" type="Node2D" parent="BossArena/Boss" index="4"]
 

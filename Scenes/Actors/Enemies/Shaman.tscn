@@ -51,6 +51,7 @@ one_shot = true
 
 [node name="Sprite2D" type="Sprite2D" parent="." index="5"]
 modulate = Color(1, 0, 0.623529, 1)
+use_parent_material = true
 scale = Vector2(0.14, 0.2)
 texture = ExtResource("5_yejv2")
 
