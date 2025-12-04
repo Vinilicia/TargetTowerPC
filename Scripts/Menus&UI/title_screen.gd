@@ -27,6 +27,7 @@ func return_menu_from_game() -> void:
 	visible = true
 	title_menu.visible = true
 	file_select_menu.visible = false
+	AudioManager.stop_all()
 
 func show_file_select() -> void:
 	title_menu.visible = false
@@ -78,7 +79,7 @@ func instantiate_main_menu() -> void:
 	main_menu.visible = false
 	get_parent().add_child(main_menu)
 
-func load_save(save_id) -> void:
+func load_game(save_id) -> void:
 	SaveManager._load(save_id)
 	
 	var bench_id := SaveManager.save_file_data.get_last_bench_id()
@@ -96,6 +97,7 @@ func load_save(save_id) -> void:
 	instantiate_main_menu()
 	game.save_id = save_id
 	game.load_room(room_scene)
+	AudioManager.play_song("LostPaintings")
 
 func load_procedural() -> void:
 	var room_scene : PackedScene = load("res://Scenes/Levels/ProceduralMap/Procedural_map.tscn")
@@ -104,10 +106,11 @@ func load_procedural() -> void:
 	instantiate_main_menu()
 	game.save_id = 0
 	game.load_room(room_scene)
+	AudioManager.play_song("DraculasCastle")
 
 func open_button_pressed() -> void:
 	on_copy = false
-	load_save(save_selected)
+	load_game(save_selected)
 	edit_buttons.visible = false
 	
 func copy_button_pressed() -> void:

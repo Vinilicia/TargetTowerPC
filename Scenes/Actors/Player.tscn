@@ -233,6 +233,7 @@ parent = NodePath("../../..")
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Memes/Airborne/Falling" to="." method="_falling_state_processing"]
 [connection signal="taken" from="Misc/StateChart/Root/Memes/Airborne/Falling/ToGrounded" to="." method="_falling_to_grounded_taken"]
 [connection signal="state_entered" from="Misc/StateChart/Root/Memes/Grounded" to="." method="_grounded_state_entered"]
+[connection signal="state_exited" from="Misc/StateChart/Root/Memes/Grounded" to="." method="_on_grounded_state_exited"]
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Memes/Grounded" to="." method="_grounded_physics_processing"]
 [connection signal="state_entered" from="Misc/StateChart/Root/Memes/Grounded/Standing" to="." method="_standing_entered"]
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Memes/Grounded/Standing" to="." method="_standing_physics_processing"]

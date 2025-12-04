@@ -1,0 +1,43 @@
+[gd_scene load_steps=8 format=3 uid="uid://d0bopxl34ipsi"]
+
+[ext_resource type="Script" uid="uid://bti8xal7fmd6a" path="res://Scenes/Main/AudioManager.gd" id="1_4sm43"]
+[ext_resource type="AudioStream" uid="uid://c8b42joe51vlq" path="res://Assets/Stolen/Audio/SFX/arrow-impact-329920.mp3" id="2_8yw1d"]
+[ext_resource type="AudioStream" uid="uid://boar385u8jsck" path="res://Assets/Stolen/Audio/SFX/arrow-swish_03-306040.mp3" id="3_mp20l"]
+[ext_resource type="AudioStream" uid="uid://b6cgsc4nii2da" path="res://Assets/Stolen/Audio/SFX/concrete-footsteps.mp3" id="4_de5ey"]
+[ext_resource type="AudioStream" uid="uid://cgra185nfpm4p" path="res://Assets/Stolen/Audio/SFX/sfx-short-chop-transient-358667.mp3" id="5_i506s"]
+[ext_resource type="AudioStream" uid="uid://c481u6r5qmmdj" path="res://Assets/Stolen/Audio/Music/SotN Draculas Castle.mp3" id="6_l0os4"]
+[ext_resource type="AudioStream" uid="uid://diop8um66nmkn" path="res://Assets/Stolen/Audio/Music/SotN Lost Portrait.mp3" id="7_sfnoe"]
+
+[node name="AudioManager" type="Node"]
+process_mode = 3
+script = ExtResource("1_4sm43")
+
+[node name="EnemyHit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("2_8yw1d")
+volume_db = 2.0
+bus = &"SFX"
+
+[node name="ArrowShot" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("3_mp20l")
+volume_db = -12.0
+pitch_scale = 1.6
+bus = &"SFX"
+
+[node name="Footsteps" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("4_de5ey")
+pitch_scale = 1.2
+bus = &"SFX"
+
+[node name="PlayerHit" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("5_i506s")
+volume_db = 6.0
+pitch_scale = 0.2
+bus = &"SFX"
+
+[node name="DraculasCastle" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("6_l0os4")
+bus = &"Music"
+
+[node name="LostPaintings" type="AudioStreamPlayer" parent="."]
+stream = ExtResource("7_sfnoe")
+bus = &"Music"
