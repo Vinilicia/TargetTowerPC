@@ -9,9 +9,13 @@ func _ready():
 
 func play_song(track_name: String, from_position: float = 0.0):
 	if _sounds.has(track_name):
-		var player = _sounds[track_name]
-		
-		player.play(from_position)
+		var player : AudioStreamPlayer = _sounds[track_name]
+		if player.playing:
+			var new_player : AudioStreamPlayer = player.duplicate(15)
+			add_child(new_player)
+			new_player.play(from_position)
+		else:
+			player.play(from_position)
 	else:
 		push_warning("AudioManager: Som '" + track_name + "' não encontrado.")
 

@@ -373,6 +373,7 @@ func handle_movement() -> void:
 # FUNÇÕES DE AÇÃO
 # ============================================================
 func jump(multiplier: float = 1, coyote : bool = false) -> void:
+	AudioManager.play_song("PlayerJump")
 	jump_state.jump_queued = false
 	jump_state.jumping = true
 	anim.clear_queue()
