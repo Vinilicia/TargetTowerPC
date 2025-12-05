@@ -1,0 +1,25 @@
+[remap]
+
+importer="Aseprite AnimatedSprite2D Import"
+type="PackedScene"
+uid="uid://6amc3rlmj1x2"
+path="res://.godot/imported/BossDoor.aseprite-f5e8288912d3298b2f447d62f34f3250.scn"
+
+[deps]
+
+source_file="res://Assets/Home_bred/Mechanisms/BossDoor.aseprite"
+dest_files=["res://.godot/imported/BossDoor.aseprite-f5e8288912d3298b2f447d62f34f3250.scn"]
+
+[params]
+
+spritesheet/layout=0
+spritesheet/fixed_rows_count=1
+spritesheet/fixed_columns_count=1
+spritesheet/border_type=0
+spritesheet/trim=false
+spritesheet/ignore_empty=false
+spritesheet/merge_duplicates=false
+animation/default/name="default"
+animation/default/direction=0
+animation/default/repeat_count=0
+animation/autoplay=""

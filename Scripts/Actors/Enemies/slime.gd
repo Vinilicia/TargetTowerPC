@@ -64,7 +64,7 @@ func _throw_blob() -> void:
 	get_parent().call_deferred("add_child", instance)
 	instance.top_level = true
 	instance.global_position = blob_spawner.global_position
-	instance.call_deferred("throw", player_target.position)
+	instance.call_deferred("arc_throw", player_target.position)
 	
 func _player_entered_sight_area(player: Node2D) -> void:
 	player_target = player

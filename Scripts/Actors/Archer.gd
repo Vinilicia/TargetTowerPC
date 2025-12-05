@@ -259,9 +259,14 @@ func dodge(dodge_dir : Vector2, duration_multiplier : float) -> void:
 	v_component.add_proper_velocity(dodge_dir)
 	hurtbox.get_invincible(dodge_duration * duration_multiplier)
 	if duration_multiplier == 1:
+		play_anim("FrontDodge")
 		if !is_ledge_ahead():
 			dodge_started_off_ledge = true
 		dodge_cancel_timer.start(dodge_duration * dodge_cancel_portion)
+	elif dodge_dir.y < 0:
+		play_anim("UpDodge")
+	else:
+		play_anim("DownDodge")
 	await get_tree().create_timer(dodge_duration * duration_multiplier).timeout
 	if combat.is_dodging:
 		end_dodge()
@@ -475,13 +480,13 @@ func _falling_to_grounded_taken() -> void:
 	play_anim("Land")
 
 func _grounded_physics_processing(_delta: float) -> void:
-	if anim.current_animation != "Land" and anim.current_animation != "Jump":
+	if anim.current_animation != "Land" and anim.current_animation != "Jump" and anim.current_animation != "FrontDodge":
 		if v_component.get_proper_velocity().x == 0:
 			if AudioManager.is_playing("Footsteps"):
 				AudioManager.stop("Footsteps")
 			if is_zero_approx(move_speed):
 				if anim.current_animation != "Crouch":
-					play_anim("Crouch")
+					play_anim("Crouch")	
 			elif anim.current_animation != "Idle":
 				play_anim("Idle")
 		else:
