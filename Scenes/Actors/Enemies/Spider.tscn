@@ -1,11 +1,19 @@
-[gd_scene load_steps=5 format=3 uid="uid://rbo0lyegdlbe"]
+[gd_scene load_steps=8 format=3 uid="uid://rbo0lyegdlbe"]
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_bh22r"]
+[ext_resource type="Material" uid="uid://djswnephywl88" path="res://Themes/Shaders/hitflash_material.tres" id="2_bnyj6"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_lo6vr"]
 [ext_resource type="Script" uid="uid://b1tclyusv1i0c" path="res://Scripts/Actors/Enemies/spider.gd" id="2_wapg0"]
 [ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="4_wapg0"]
+[ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="5_yj5ul"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_yj5ul"]
+resource_local_to_scene = true
+shader = ExtResource("5_yj5ul")
+shader_parameter/enabled = false
 
 [node name="Spooder" node_paths=PackedStringArray("up_ray", "down_ray", "side_ray") instance=ExtResource("1_bh22r")]
+material = ExtResource("2_bnyj6")
 script = ExtResource("2_wapg0")
 speed = 25.0
 movedir = 1.0
@@ -14,10 +22,14 @@ fall_speed = 150.0
 up_ray = NodePath("UpRaycast")
 down_ray = NodePath("DownRaycast")
 side_ray = NodePath("FrontRaycast")
+metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0"]
 scale = Vector2(10, 7)
 shape = ExtResource("2_lo6vr")
+
+[node name="BaseEnemyStuff" parent="." index="1"]
+material = SubResource("ShaderMaterial_yj5ul")
 
 [node name="VelocityComponent" parent="BaseEnemyStuff" index="0"]
 knockback_susceptability = 1
@@ -35,6 +47,12 @@ shape = ExtResource("2_lo6vr")
 scale = Vector2(12, 9)
 shape = ExtResource("2_lo6vr")
 
+[node name="Sprite" type="Sprite2D" parent="BaseEnemyStuff" index="5"]
+modulate = Color(0.34902, 0, 0.537255, 1)
+use_parent_material = true
+scale = Vector2(0.1, 0.08)
+texture = ExtResource("4_wapg0")
+
 [node name="UpRaycast" type="RayCast2D" parent="." index="2"]
 target_position = Vector2(0, -300)
 collision_mask = 21
@@ -46,9 +64,3 @@ collision_mask = 20
 [node name="FrontRaycast" type="RayCast2D" parent="." index="4"]
 target_position = Vector2(7, 0)
 collision_mask = 20
-
-[node name="Sprite2D" type="Sprite2D" parent="." index="5"]
-modulate = Color(0.34902, 0, 0.537255, 1)
-use_parent_material = true
-scale = Vector2(0.1, 0.08)
-texture = ExtResource("4_wapg0")

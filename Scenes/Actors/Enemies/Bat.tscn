@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://1ra02226sph7"]
+[gd_scene load_steps=14 format=3 uid="uid://1ra02226sph7"]
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_nstmu"]
 [ext_resource type="Script" uid="uid://c8gs6ym4fp2uw" path="res://Scripts/Actors/Enemies/bat.gd" id="2_4cx4r"]
+[ext_resource type="Material" uid="uid://djswnephywl88" path="res://Themes/Shaders/hitflash_material.tres" id="2_nstmu"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_nstmu"]
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="4_2tjd0"]
+[ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="5_4cx4r"]
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="5_15gtg"]
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="6_tyolk"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="7_gpbq7"]
@@ -11,7 +13,13 @@
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="10_hjvma"]
 [ext_resource type="PackedScene" uid="uid://5eo2pd11j7wo" path="res://Scenes/Actors/SpriteImports/BatSprite.tscn" id="11_l4jld"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_y01to"]
+resource_local_to_scene = true
+shader = ExtResource("5_4cx4r")
+shader_parameter/enabled = false
+
 [node name="Bat" node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "avoidance_rays", "dash_area", "dive_area", "sight_area", "contact_hitbox") instance=ExtResource("1_nstmu")]
+material = ExtResource("2_nstmu")
 script = ExtResource("2_4cx4r")
 starts_chasing = false
 chasing_timer = NodePath("Timers/ChasingTimer")
@@ -35,10 +43,14 @@ dash_hitbox_increase = 1.2
 chase_retarget_frames = 10
 facing_flip_deadzone = 2.0
 wander_strength = 15.0
+metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0"]
 scale = Vector2(11, 10)
 shape = ExtResource("3_nstmu")
+
+[node name="BaseEnemyStuff" parent="." index="1"]
+material = SubResource("ShaderMaterial_y01to")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1"]
 max_health = 3.0
@@ -54,6 +66,15 @@ scale = Vector2(15, 13)
 
 [node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0"]
 shape = ExtResource("3_nstmu")
+
+[node name="Bat" parent="BaseEnemyStuff" index="5" instance=ExtResource("11_l4jld")]
+use_parent_material = true
+position = Vector2(-10, -9)
+offset = Vector2(1, 3)
+region_rect = Rect2(17, 29, 18, 11)
+
+[node name="AnimationPlayer" parent="BaseEnemyStuff/Bat" index="0"]
+autoplay = "Asleep"
 
 [node name="StateChart" type="Node" parent="." index="2"]
 script = ExtResource("4_2tjd0")
@@ -252,15 +273,6 @@ time_to_burn = 0.5
 can_stack = true
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
-[node name="Bat" parent="." index="6" instance=ExtResource("11_l4jld")]
-use_parent_material = true
-position = Vector2(-10, -9)
-offset = Vector2(1, 3)
-region_rect = Rect2(17, 29, 18, 11)
-
-[node name="AnimationPlayer" parent="Bat" index="0"]
-autoplay = "Asleep"
-
 [connection signal="state_entered" from="StateChart/State_Tree/Idle" to="." method="_idle_entered"]
 [connection signal="state_exited" from="StateChart/State_Tree/Idle" to="." method="_idle_exited"]
 [connection signal="state_entered" from="StateChart/State_Tree/SeeingPlayer/StartingChase" to="." method="_starting_chase_state_entered"]
@@ -282,4 +294,4 @@ autoplay = "Asleep"
 [connection signal="timeout" from="Timers/GivingUpTimer" to="." method="give_up_chase"]
 [connection signal="caught_fire" from="FireManager" to="." method="_on_fire_manager_caught_fire"]
 
-[editable path="Bat"]
+[editable path="BaseEnemyStuff/Bat"]

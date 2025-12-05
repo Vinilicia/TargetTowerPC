@@ -60,7 +60,7 @@ var current_attack_type: String = ""
 var ceiling_retry_timer: Timer
 var attack_delay_timer : Timer
 
-@onready var sprite_anim : AnimationPlayer = $Bat/AnimationPlayer
+@onready var sprite_anim : AnimationPlayer = $BaseEnemyStuff/Bat/AnimationPlayer
 
 #region Built-In
 func _ready() -> void:
