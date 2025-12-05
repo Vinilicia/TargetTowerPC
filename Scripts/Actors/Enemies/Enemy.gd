@@ -27,6 +27,7 @@ func spawn_money() -> void:
 		get_parent().call_deferred("add_child", new_regret)
 
 func took_damage(_amount : float) -> void:
+	AudioManager.play_song("EnemyHit")
 	material_anim.play("hitflash")
 
 func run_out_of_health() -> void:

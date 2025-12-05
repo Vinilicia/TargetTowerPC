@@ -378,6 +378,7 @@ func handle_movement() -> void:
 # FUNÇÕES DE AÇÃO
 # ============================================================
 func jump(multiplier: float = 1, coyote : bool = false) -> void:
+	AudioManager.play_song("PlayerJump")
 	jump_state.jump_queued = false
 	jump_state.jumping = true
 	anim.clear_queue()
@@ -481,12 +482,16 @@ func _falling_to_grounded_taken() -> void:
 func _grounded_physics_processing(_delta: float) -> void:
 	if anim.current_animation != "Land" and anim.current_animation != "Jump" and anim.current_animation != "FrontDodge":
 		if v_component.get_proper_velocity().x == 0:
+			if AudioManager.is_playing("Footsteps"):
+				AudioManager.stop("Footsteps")
 			if is_zero_approx(move_speed):
 				if anim.current_animation != "Crouch":
 					play_anim("Crouch")	
 			elif anim.current_animation != "Idle":
 				play_anim("Idle")
 		else:
+			if !AudioManager.is_playing("Footsteps"):
+				AudioManager.play_song("Footsteps")
 			if sign(v_component.get_proper_velocity().x) != facing_direction:
 				if anim.current_animation != "RunBackwards":
 					play_anim("RunBackwards") 
@@ -624,8 +629,7 @@ func _on_fire_manager_caught_fire() -> void:
 		health_manager.start_burning(1)
 
 func _on_health_lost_health(amount: float) -> void:
-	available_arrows[2] = true
-	build_arrows()
+	AudioManager.play_song("PlayerHit")
 	HudHandler.hud.lose_hearts(amount as int)
 	modulate = Color(1, 0, 0, 1)
 	anim.clear_queue()
@@ -665,3 +669,7 @@ func _on_mana_regen_timer_timeout() -> void:
 		mana_timer.start(mana_timer.wait_time * mana_regen_scaling)
 	else:
 		mana_timer.wait_time = mana_regen_time
+
+func _on_grounded_state_exited() -> void:
+	if AudioManager.is_playing("Footsteps"):
+		AudioManager.stop("Footsteps")

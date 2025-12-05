@@ -58,6 +58,7 @@ func _get_contacts_at_position(pos: Vector2) -> Array:
 	return space.intersect_shape(params, 16) # pega até 16 contatos
 
 func fly(is_charged: bool, _player: CharacterBody2D) -> void:
+	AudioManager.play_song("ArrowShot")
 	_enable_collision()
 	hitbox.set_deferred("monitorable", true)
 	if is_charged:

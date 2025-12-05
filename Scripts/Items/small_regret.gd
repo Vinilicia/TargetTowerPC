@@ -30,6 +30,7 @@ func _on_anim_timer_timeout() -> void:
 	anim_timer.start(randf_range(min_delay, max_delay))
 
 func get_collected() -> void:
+	AudioManager.play_song("Money")
 	gravity_scale = 0.0
 	collision_mask = 0
 	anim_timer.stop()

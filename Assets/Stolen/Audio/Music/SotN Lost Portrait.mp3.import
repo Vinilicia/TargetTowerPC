@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://diop8um66nmkn"
+path="res://.godot/imported/SotN Lost Portrait.mp3-deaf1d781d8fb591ba6b8c26c5dc374b.mp3str"
+
+[deps]
+
+source_file="res://Assets/Stolen/Audio/Music/SotN Lost Portrait.mp3"
+dest_files=["res://.godot/imported/SotN Lost Portrait.mp3-deaf1d781d8fb591ba6b8c26c5dc374b.mp3str"]
+
+[params]
+
+loop=true
+loop_offset=0.0
+bpm=0.0
+beat_count=0
+bar_beats=4
