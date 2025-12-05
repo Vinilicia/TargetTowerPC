@@ -143,7 +143,7 @@ func stop(duration: float) -> void:
 func set_facing(dir: int) -> void:
 	if dir == 0 or dir == facing_direction:
 		return
-	$Bat.flip_h = !($Bat.flip_h)
+	$BaseEnemyStuff/Bat.flip_h = !($BaseEnemyStuff/Bat.flip_h)
 	facing_direction = dir
 	for child in $BehaviorChanging.get_children():
 		child.position = Vector2(child.position.x * -1, child.position.y)
@@ -342,12 +342,12 @@ func dive() -> void:
 	current_speed = dash_speed
 	var dir := Vector2(0, 1)
 	var duration := dash_distance / dash_speed
-	($Bat as Sprite2D).rotation = PI / 2 * facing_direction
-	($Bat as Sprite2D).position = ($Bat as Sprite2D).position.rotated(PI/2 * facing_direction)
+	($BaseEnemyStuff/Bat as Sprite2D).rotation = PI / 2 * facing_direction
+	($BaseEnemyStuff/Bat as Sprite2D).position = ($BaseEnemyStuff/Bat as Sprite2D).position.rotated(PI/2 * facing_direction)
 	move_for(duration, dir, current_speed, func():
 		state_chart.send_event("Finished_Attack")
-		($Bat as Sprite2D).rotation = 0
-		($Bat as Sprite2D).position = ($Bat as Sprite2D).position.rotated(-PI/2 * facing_direction)
+		($BaseEnemyStuff/Bat as Sprite2D).rotation = 0
+		($BaseEnemyStuff/Bat as Sprite2D).position = ($BaseEnemyStuff/Bat as Sprite2D).position.rotated(-PI/2 * facing_direction)
 		)
 #endregion
 

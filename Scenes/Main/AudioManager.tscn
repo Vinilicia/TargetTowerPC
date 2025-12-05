@@ -1,6 +1,6 @@
-[gd_scene load_steps=10 format=3 uid="uid://d0bopxl34ipsi"]
+[gd_scene load_steps=10 format=3 uid="uid://bybaidqwohsvs"]
 
-[ext_resource type="Script" uid="uid://bti8xal7fmd6a" path="res://Scenes/Main/AudioManager.gd" id="1_4sm43"]
+[ext_resource type="Script" path="res://Scenes/Main/AudioManager.gd" id="1_4sm43"]
 [ext_resource type="AudioStream" uid="uid://c8b42joe51vlq" path="res://Assets/Stolen/Audio/SFX/arrow-impact-329920.mp3" id="2_8yw1d"]
 [ext_resource type="AudioStream" uid="uid://boar385u8jsck" path="res://Assets/Stolen/Audio/SFX/arrow-swish_03-306040.mp3" id="3_mp20l"]
 [ext_resource type="AudioStream" uid="uid://cg5i4d0dp8lw0" path="res://Assets/Stolen/Audio/SFX/jump.wav" id="3_xkinn"]
@@ -16,13 +16,14 @@ script = ExtResource("1_4sm43")
 
 [node name="EnemyHit" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("2_8yw1d")
-volume_db = -7.0
+volume_db = -15.0
 pitch_scale = 1.1
 bus = &"SFX"
 
 [node name="PlayerJump" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("3_xkinn")
-volume_db = -10.0
+volume_db = -20.0
+pitch_scale = 0.9
 bus = &"SFX"
 
 [node name="ArrowShot" type="AudioStreamPlayer" parent="."]
@@ -39,7 +40,7 @@ bus = &"SFX"
 
 [node name="Footsteps" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("4_de5ey")
-volume_db = -5.0
+volume_db = -15.0
 pitch_scale = 1.2
 bus = &"SFX"
 

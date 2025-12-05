@@ -18,26 +18,24 @@ shader_parameter/enabled = false
 material = ExtResource("2_5og7u")
 script = ExtResource("2_d83c3")
 type = 0
-sprite = NodePath("BaseEnemyStuff/Sprite")
 fire_attack_delay = 2.5
 fire_sprite_modulate = Color(0.709804, 0, 0, 0.784314)
 direction = 0
+default_attack_delay = 2.0
+default_sprite_modulate = Color(0.2, 0.603922, 0.517647, 0.784314)
+sprite = NodePath("BaseEnemyStuff/Sprite")
 sight_area = NodePath("SightArea")
 blob_spawner = NodePath("BlobSpawner")
 look_around_timer = NodePath("Timers/LookAroundTimer")
 attack_timer = NodePath("Timers/AttackTimer")
-default_attack_delay = 2.0
 lose_sight_timer = NodePath("Timers/LoseSightTimer")
-default_sprite_modulate = Color(0.2, 0.603922, 0.517647, 0.784314)
 metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0"]
-visible = false
 scale = Vector2(16, 16)
 shape = ExtResource("1_nn6wd")
 
 [node name="BaseEnemyStuff" parent="." index="1"]
-visible = false
 material = SubResource("ShaderMaterial_lln2p")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1"]
