@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://lmmbb0dc7g2n"]
 
-[ext_resource type="Script" uid="uid://dj6mgwavv4r6f" path="res://Scripts/Components/Hitbox.gd" id="1_vpft6"]
+[ext_resource type="Script" uid="uid://ciy6s7pn2rp1q" path="res://Scripts/Components/Hitbox.gd" id="1_vpft6"]
 
 [node name="Add_Collision" type="Area2D"]
 modulate = Color(1, 0, 0, 1)

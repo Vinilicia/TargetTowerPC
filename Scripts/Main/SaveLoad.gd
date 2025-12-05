@@ -1,12 +1,6 @@
 extends Node
 class_name SaveLoadManager
 
-# SaveLoadManager — versão final
-# - Save de jogo por slot (criptografado) -> SaveFile_X.json
-# - Controles por slot (plain JSON) -> Controls_X.map
-# - Configurações globais (plain JSON, NÃO criptografado) -> settings.json
-# - Verificação/migração de versão para ambos (save + settings)
-
 var save_file_data: SaveDataResource = SaveDataResource.new()
 var current_slot_index: int = 0
 

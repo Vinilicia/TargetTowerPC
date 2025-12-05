@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=4 uid="uid://dj2nfg6f48tss"]
 
-[ext_resource type="Script" uid="uid://34talmf73m2a" path="res://Scripts/Levels/ProceduralMap/final_level.gd" id="1_6xyeh"]
+[ext_resource type="Script" path="res://Scripts/Levels/ProceduralMap/final_level.gd" id="1_6xyeh"]
 [ext_resource type="TileSet" uid="uid://cweshf453isub" path="res://Themes/AreaTileSets/Entrance_Hall_Terrain_Tileset.tres" id="2_h01wv"]
 [ext_resource type="TileSet" uid="uid://bibe8vc18o6ko" path="res://Scenes/Levels/ProceduralMap/Levels/background.tres" id="3_vvr41"]
 [ext_resource type="TileSet" uid="uid://dponjdl3lj8ux" path="res://Scenes/Levels/ProceduralMap/Levels/decorations.tres" id="4_7df0u"]

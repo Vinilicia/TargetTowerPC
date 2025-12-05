@@ -1,6 +1,6 @@
 [gd_scene load_steps=10 format=3 uid="uid://bybaidqwohsvs"]
 
-[ext_resource type="Script" path="res://Scenes/Main/AudioManager.gd" id="1_4sm43"]
+[ext_resource type="Script" uid="uid://bti8xal7fmd6a" path="res://Scenes/Main/AudioManager.gd" id="1_4sm43"]
 [ext_resource type="AudioStream" uid="uid://c8b42joe51vlq" path="res://Assets/Stolen/Audio/SFX/arrow-impact-329920.mp3" id="2_8yw1d"]
 [ext_resource type="AudioStream" uid="uid://boar385u8jsck" path="res://Assets/Stolen/Audio/SFX/arrow-swish_03-306040.mp3" id="3_mp20l"]
 [ext_resource type="AudioStream" uid="uid://cg5i4d0dp8lw0" path="res://Assets/Stolen/Audio/SFX/jump.wav" id="3_xkinn"]

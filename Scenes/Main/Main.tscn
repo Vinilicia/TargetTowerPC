@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://ccg2l16c64hgc" path="res://Scenes/Main/Game.tscn" id="2_cmk6n"]
 [ext_resource type="PackedScene" uid="uid://b5j3ir5pf6oxw" path="res://Scenes/Menus&UI/Title_screen.tscn" id="2_i3fi7"]
-[ext_resource type="PackedScene" path="res://Scenes/Menus&UI/hud.tscn" id="2_o8wgc"]
+[ext_resource type="PackedScene" uid="uid://d2hbghv0g000b" path="res://Scenes/Menus&UI/hud.tscn" id="2_o8wgc"]
 
 [sub_resource type="Environment" id="Environment_2w1kt"]
 background_mode = 3

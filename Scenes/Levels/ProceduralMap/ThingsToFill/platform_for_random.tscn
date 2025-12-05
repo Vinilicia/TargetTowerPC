@@ -1,7 +1,7 @@
 [gd_scene load_steps=6 format=4 uid="uid://ca0invqmypf01"]
 
 [ext_resource type="Texture2D" uid="uid://0dj5oxmi674f" path="res://Assets/Home_bred/Tilemap/plataforma_correntes.aseprite" id="1_04rex"]
-[ext_resource type="Script" uid="uid://dochdvw2bedn6" path="res://Scripts/Levels/ProceduralMap/platform_for_random.gd" id="2_l3ad8"]
+[ext_resource type="Script" path="res://Scripts/Levels/ProceduralMap/platform_for_random.gd" id="2_l3ad8"]
 
 [sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_l3ad8"]
 texture = ExtResource("1_04rex")

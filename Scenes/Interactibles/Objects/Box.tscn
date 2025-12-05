@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://xhwqoiulihut"]
 
-[ext_resource type="Script" uid="uid://d2qgirks8dg0i" path="res://Scripts/Interactibles/Objects/Box.gd" id="1_yd07j"]
+[ext_resource type="Script" uid="uid://dbmjis5tg5d2j" path="res://Scripts/Interactibles/Objects/Box.gd" id="1_yd07j"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_vfhko"]
 [ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Scenes/Actions-Reactions/Fire.tscn" id="3_1iocv"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="3_vfhko"]

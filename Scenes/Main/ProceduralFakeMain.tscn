@@ -1,7 +1,7 @@
-[gd_scene load_steps=5 format=3 uid="uid://b8jlr1xjc6ar6"]
+[gd_scene load_steps=5 format=3 uid="uid://cobjwip0vo2nw"]
 
 [ext_resource type="PackedScene" uid="uid://dfa4di7v84300" path="res://Scenes/Levels/ProceduralMap/Procedural_map.tscn" id="1_bm4ef"]
-[ext_resource type="PackedScene" uid="uid://bbwrmqxcr5lq0" path="res://Scenes/Menus&UI/hud.tscn" id="2_grvqc"]
+[ext_resource type="PackedScene" path="res://Scenes/Menus&UI/hud.tscn" id="2_grvqc"]
 [ext_resource type="PackedScene" uid="uid://drfycye8vmmuq" path="res://Scenes/Menus&UI/Main_menu.tscn" id="3_d8y0m"]
 
 [sub_resource type="Environment" id="Environment_2w1kt"]

@@ -157,7 +157,7 @@ func patterned_volley() -> void:
 	var end := bottom_right_marker.global_position
 	var full_delay := false
 	for j in range(num_patterned_shots):
-		var num := randi_range(3, 5)
+		var num := randi_range(4, 5)
 		for i in range(num):
 			var this_start = start + Vector2(patterned_rand_x_offset, 0) * randf_range(-1, 1)
 			var this_end = end + Vector2(patterned_rand_x_offset, 0) * randf_range(-1, 1)
@@ -167,12 +167,12 @@ func patterned_volley() -> void:
 		if full_delay:
 			for i in range(num):
 				shoot(targets[i])
-				await get_tree().create_timer(0.05).timeout
+				await get_tree().create_timer(0.1).timeout
 			await get_tree().create_timer(1.0).timeout
 		else:
 			for i in range(num):
 				shoot(targets[num - i - 1])
-				await get_tree().create_timer(0.05).timeout
+				await get_tree().create_timer(0.1).timeout
 			await get_tree().create_timer(0.3).timeout
 		targets.clear()
 		full_delay = !full_delay

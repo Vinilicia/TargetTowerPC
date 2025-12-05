@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://dm11p43b6up60"]
 
-[ext_resource type="Script" uid="uid://bnu3co5ndqq6k" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/The_Block.gd" id="1_8f6wl"]
+[ext_resource type="Script" uid="uid://hta7cv5pyipp" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/The_Block.gd" id="1_8f6wl"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_xj432"]
 [ext_resource type="PackedScene" uid="uid://bd5krujpcucd0" path="res://Scenes/Interactibles/Mechanisms/Buttons&Receptors/Receptor.tscn" id="4_c6s6k"]
 [ext_resource type="PackedScene" uid="uid://nax8k76qlh1" path="res://Scenes/Interactibles/Mechanisms/BlockSprite.tscn" id="4_jn313"]

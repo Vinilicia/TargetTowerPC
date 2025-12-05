@@ -14,6 +14,7 @@ func play_song(track_name: String, from_position: float = 0.0):
 			var new_player : AudioStreamPlayer = player.duplicate(15)
 			add_child(new_player)
 			new_player.play(from_position)
+			new_player.finished.connect(remove_child.bind(new_player))
 		else:
 			player.play(from_position)
 	else:

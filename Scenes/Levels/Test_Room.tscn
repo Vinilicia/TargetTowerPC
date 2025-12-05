@@ -103,25 +103,21 @@ position = Vector2(537, 85)
 magic_bolt_texture = null
 magic_bolt_scale = Vector2(0, 0)
 
-[node name="Bat" parent="Enemies" index="5" node_paths=PackedStringArray("avoidance_rays") instance=ExtResource("5_6vixh")]
+[node name="Bat" parent="Enemies" index="5" instance=ExtResource("5_6vixh")]
 material = SubResource("ShaderMaterial_vaokv")
 position = Vector2(851, 133)
-avoidance_rays = []
 
-[node name="Bat2" parent="Enemies" index="6" node_paths=PackedStringArray("avoidance_rays") instance=ExtResource("5_6vixh")]
+[node name="Bat2" parent="Enemies" index="6" instance=ExtResource("5_6vixh")]
 material = SubResource("ShaderMaterial_iwt5g")
 position = Vector2(946, -51)
-avoidance_rays = []
 
-[node name="Bat3" parent="Enemies" index="7" node_paths=PackedStringArray("avoidance_rays") instance=ExtResource("5_6vixh")]
+[node name="Bat3" parent="Enemies" index="7" instance=ExtResource("5_6vixh")]
 material = SubResource("ShaderMaterial_2x3qx")
 position = Vector2(21, -216)
-avoidance_rays = []
 
-[node name="Bat4" parent="Enemies" index="8" node_paths=PackedStringArray("avoidance_rays") instance=ExtResource("5_6vixh")]
+[node name="Bat4" parent="Enemies" index="8" instance=ExtResource("5_6vixh")]
 material = SubResource("ShaderMaterial_cauvd")
 position = Vector2(111, -216)
-avoidance_rays = []
 
 [node name="CommonGoblin" parent="Enemies" index="9" instance=ExtResource("6_22qgy")]
 material = SubResource("ShaderMaterial_hj1hg")

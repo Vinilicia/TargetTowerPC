@@ -71,7 +71,7 @@ func _player_entered_sight_area(player: Node2D) -> void:
 	player_is_nearby = true
 	if !look_around_timer.is_stopped():
 		look_around_timer.stop()
-	if attack_timer.is_stopped():
+	if attack_timer.is_stopped() and can_engage:
 		attack_timer.start()
 	if !lose_sight_timer.is_stopped():
 		lose_sight_timer.stop()
@@ -116,3 +116,10 @@ func _on_screen_exited() -> void:
 	if lose_sight_timer and !lose_sight_timer.is_stopped():
 		lose_sight_timer.stop()
 		_on_lose_sight_timer_timeout()
+
+var can_engage := false
+
+func _on_screen_entered() -> void:
+	can_engage = true
+	if player_is_nearby and attack_timer.is_stopped():
+		attack_timer.start()

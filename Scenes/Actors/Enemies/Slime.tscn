@@ -18,17 +18,17 @@ shader_parameter/enabled = false
 material = ExtResource("2_5og7u")
 script = ExtResource("2_d83c3")
 type = 0
+sprite = NodePath("BaseEnemyStuff/Sprite")
 fire_attack_delay = 2.5
 fire_sprite_modulate = Color(0.709804, 0, 0, 0.784314)
 direction = 0
-default_attack_delay = 2.0
-default_sprite_modulate = Color(0.2, 0.603922, 0.517647, 0.784314)
-sprite = NodePath("BaseEnemyStuff/Sprite")
 sight_area = NodePath("SightArea")
 blob_spawner = NodePath("BlobSpawner")
 look_around_timer = NodePath("Timers/LookAroundTimer")
 attack_timer = NodePath("Timers/AttackTimer")
+default_attack_delay = 2.0
 lose_sight_timer = NodePath("Timers/LoseSightTimer")
+default_sprite_modulate = Color(0.2, 0.603922, 0.517647, 0.784314)
 metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0"]
@@ -95,4 +95,5 @@ ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 [connection signal="timeout" from="Timers/AttackTimer" to="." method="_on_attack_timer_timeout"]
 [connection signal="timeout" from="Timers/LoseSightTimer" to="." method="_on_lose_sight_timer_timeout"]
 [connection signal="caught_fire" from="FireManager" to="." method="_on_fire_manager_caught_fire"]
+[connection signal="screen_entered" from="VisibleOnScreenNotifier2D" to="." method="_on_screen_entered"]
 [connection signal="screen_exited" from="VisibleOnScreenNotifier2D" to="." method="_on_screen_exited"]

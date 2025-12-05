@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=3 uid="uid://dgt2ss0d4d6rv"]
 
 [ext_resource type="Theme" uid="uid://catq4027bh15m" path="res://Themes/Arrows_Btn.tres" id="1_6nads"]
-[ext_resource type="Script" uid="uid://0ac3yjob4sh3" path="res://Scripts/Menus&UI/Arrow_select_button.gd" id="2_dudbk"]
+[ext_resource type="Script" uid="uid://5rpe2fmxi8hw" path="res://Scripts/Menus&UI/Arrow_select_button.gd" id="2_dudbk"]
 
 [node name="Arrow_Select" type="TextureButton"]
 clip_contents = true

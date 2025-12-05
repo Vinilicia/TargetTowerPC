@@ -264,7 +264,7 @@ func _on_chasing_state_physics_processing(_delta: float) -> void:
 		if giving_up_timer.is_stopped():
 			giving_up_timer.start()
 
-	var position_difference = player_target.position.x - position.x
+	var position_difference = player_target.global_position.x - global_position.x
 	var target_dir : int = sign(position_difference)
 	if target_dir != direction and is_on_floor() and abs(position_difference) > 10:
 		_change_direction()

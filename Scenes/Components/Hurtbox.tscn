@@ -1,6 +1,6 @@
 [gd_scene load_steps=2 format=3 uid="uid://c4slmrws5ya4m"]
 
-[ext_resource type="Script" uid="uid://mtr77w2jjjxb" path="res://Scripts/Components/Hurtbox.gd" id="1_mlsjm"]
+[ext_resource type="Script" uid="uid://o2g1efop53wp" path="res://Scripts/Components/Hurtbox.gd" id="1_mlsjm"]
 
 [node name="Add_Collision" type="Area2D" node_paths=PackedStringArray("invincibility_timer")]
 modulate = Color(1, 0, 1, 1)

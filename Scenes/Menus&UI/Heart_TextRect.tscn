@@ -2,7 +2,7 @@
 
 [ext_resource type="PackedScene" uid="uid://b82xu7fmd7iff" path="res://Assets/Home_bred/UI/HUD/Heart.aseprite" id="1_a5g5j"]
 [ext_resource type="Texture2D" uid="uid://d32ybas88g4ur" path="res://Assets/Home_bred/UI/HUD/Heart.png" id="2_54pmo"]
-[ext_resource type="Script" uid="uid://dufqva3rjcsar" path="res://Scripts/Menus&UI/heart_text_rect.gd" id="3_54pmo"]
+[ext_resource type="Script" path="res://Scripts/Menus&UI/heart_text_rect.gd" id="3_54pmo"]
 
 [sub_resource type="AtlasTexture" id="AtlasTexture_3qt6j"]
 resource_local_to_scene = true

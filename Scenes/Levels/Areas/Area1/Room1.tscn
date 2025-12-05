@@ -1,20 +1,39 @@
-[gd_scene load_steps=5 format=4 uid="uid://dt34ayv1esh31"]
+[gd_scene load_steps=9 format=4 uid="uid://dt34ayv1esh31"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_3owao"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_ov6pu"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="3_h0g2s"]
+[ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="3_ho8y7"]
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="4_8dk6u"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_mn7b2"]
+resource_local_to_scene = true
+shader = ExtResource("3_ho8y7")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_vw5jy"]
+resource_local_to_scene = true
+shader = ExtResource("3_ho8y7")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cfyxf"]
+resource_local_to_scene = true
+shader = ExtResource("3_ho8y7")
+shader_parameter/enabled = true
 
 [node name="Room01" node_paths=PackedStringArray("bench") instance=ExtResource("1_3owao")]
 bench = NodePath("Bench")
 
 [node name="Bat" parent="Enemies" index="0" instance=ExtResource("2_ov6pu")]
+material = SubResource("ShaderMaterial_mn7b2")
 position = Vector2(296, -184)
 
 [node name="Bat2" parent="Enemies" index="1" instance=ExtResource("2_ov6pu")]
+material = SubResource("ShaderMaterial_vw5jy")
 position = Vector2(344, -184)
 
 [node name="Bat3" parent="Enemies" index="2" instance=ExtResource("2_ov6pu")]
+material = SubResource("ShaderMaterial_cfyxf")
 position = Vector2(584, -184)
 
 [node name="Terrain" parent="Tilemaps" index="0"]

@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://cjd68laeibaxd"]
 
-[ext_resource type="Script" uid="uid://cs1o1a6sihmab" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/red_target.gd" id="1_upa32"]
+[ext_resource type="Script" uid="uid://d1oxy8nl1u82p" path="res://Scripts/Interactibles/Puzzle_Related/Buttons&Receptors/red_target.gd" id="1_upa32"]
 [ext_resource type="PackedScene" uid="uid://dnfcq0yact58d" path="res://Scenes/Interactibles/Mechanisms/Buttons&Receptors/RedTargetSprite.tscn" id="2_b2dfq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="3_q608q"]
 

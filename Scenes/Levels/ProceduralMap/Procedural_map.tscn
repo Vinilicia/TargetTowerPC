@@ -1,6 +1,6 @@
 [gd_scene load_steps=7 format=3 uid="uid://dfa4di7v84300"]
 
-[ext_resource type="Script" uid="uid://ctdeeth1dmuxv" path="res://Scripts/Levels/procedural_map.gd" id="1_6ntii"]
+[ext_resource type="Script" path="res://Scripts/Levels/procedural_map.gd" id="1_6ntii"]
 [ext_resource type="PackedScene" uid="uid://sj0pbsaa0taq" path="res://Scenes/Levels/ProceduralMap/Levels/Inicial_level.tscn" id="2_6ntii"]
 [ext_resource type="PackedScene" uid="uid://b6cr2ha3js4rb" path="res://Scenes/Levels/ProceduralMap/Levels/Small_level.tscn" id="3_xrb8l"]
 [ext_resource type="PackedScene" uid="uid://ctdgwssxk0oqy" path="res://Scenes/Levels/ProceduralMap/Levels/Medium_level.tscn" id="4_qfu0e"]

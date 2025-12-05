@@ -18,6 +18,7 @@ material = ExtResource("2_u4e3f")
 script = ExtResource("2_ng6vj")
 jump_force = Vector2(0, 0)
 spinning_speed = 90.0
+raycast = NodePath("RayCast2D")
 default_timer = 1.2
 default_timer_offset = 0.2
 gravity_scale = 0.6
@@ -30,10 +31,9 @@ patterned_volley_chance = 0.4
 ground_attack_max = 3
 top_attack_max = 2
 num_volley_attacks = 10
-num_patterned_shots = 12
+num_patterned_shots = 10
 patterned_rand_x_offset = 20.0
 num_consecutive_jumps = 4
-raycast = NodePath("RayCast2D")
 metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0"]
