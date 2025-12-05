@@ -1,16 +1,24 @@
-[gd_scene load_steps=7 format=3 uid="uid://b68l087fc22iq"]
+[gd_scene load_steps=10 format=3 uid="uid://b68l087fc22iq"]
 
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_nn6wd"]
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Scenes/Actors/Enemies/Base_Enemy.tscn" id="1_xj0ob"]
+[ext_resource type="Material" uid="uid://djswnephywl88" path="res://Themes/Shaders/hitflash_material.tres" id="2_5og7u"]
 [ext_resource type="Script" uid="uid://dvu0iocv5wpf5" path="res://Scripts/Actors/Enemies/slime.gd" id="2_d83c3"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="4_d83c3"]
 [ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="4_jrs23"]
+[ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="5_rrpeh"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="6_d83c3"]
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_lln2p"]
+resource_local_to_scene = true
+shader = ExtResource("5_rrpeh")
+shader_parameter/enabled = false
+
 [node name="Slime" node_paths=PackedStringArray("sprite", "sight_area", "blob_spawner", "look_around_timer", "attack_timer", "lose_sight_timer") instance=ExtResource("1_xj0ob")]
+material = ExtResource("2_5og7u")
 script = ExtResource("2_d83c3")
 type = 0
-sprite = NodePath("Sprite2D")
+sprite = NodePath("BaseEnemyStuff/Sprite")
 fire_attack_delay = 2.5
 fire_sprite_modulate = Color(0.709804, 0, 0, 0.784314)
 direction = 0
@@ -21,6 +29,7 @@ attack_timer = NodePath("Timers/AttackTimer")
 default_attack_delay = 2.0
 lose_sight_timer = NodePath("Timers/LoseSightTimer")
 default_sprite_modulate = Color(0.2, 0.603922, 0.517647, 0.784314)
+metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0"]
 visible = false
@@ -29,6 +38,7 @@ shape = ExtResource("1_nn6wd")
 
 [node name="BaseEnemyStuff" parent="." index="1"]
 visible = false
+material = SubResource("ShaderMaterial_lln2p")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1"]
 max_health = 4.0
@@ -45,6 +55,12 @@ scale = Vector2(16, 16)
 [node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0"]
 shape = ExtResource("1_nn6wd")
 
+[node name="Sprite" type="Sprite2D" parent="BaseEnemyStuff" index="5"]
+modulate = Color(0.2, 0.603922, 0.517647, 0.784314)
+use_parent_material = true
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("4_jrs23")
+
 [node name="SightArea" type="Area2D" parent="." index="2"]
 scale = Vector2(300, 200)
 collision_layer = 0
@@ -57,12 +73,7 @@ debug_color = Color(0.234089, 0.629159, 0.300647, 0.42)
 [node name="BlobSpawner" type="Marker2D" parent="." index="3"]
 position = Vector2(0, -10)
 
-[node name="Sprite2D" type="Sprite2D" parent="." index="4"]
-modulate = Color(0.2, 0.603922, 0.517647, 0.784314)
-scale = Vector2(0.12, 0.12)
-texture = ExtResource("4_jrs23")
-
-[node name="Timers" type="Node" parent="." index="5"]
+[node name="Timers" type="Node" parent="." index="4"]
 
 [node name="LookAroundTimer" type="Timer" parent="Timers" index="0"]
 wait_time = 4.0
@@ -74,11 +85,11 @@ wait_time = 2.0
 wait_time = 3.0
 one_shot = true
 
-[node name="FireManager" parent="." index="6" node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("6_d83c3")]
+[node name="FireManager" parent="." index="5" node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("6_d83c3")]
 visible = false
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
-[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." index="7"]
+[node name="VisibleOnScreenNotifier2D" type="VisibleOnScreenNotifier2D" parent="." index="6"]
 
 [connection signal="body_entered" from="SightArea" to="." method="_player_entered_sight_area"]
 [connection signal="body_exited" from="SightArea" to="." method="_player_exited_sight_area"]

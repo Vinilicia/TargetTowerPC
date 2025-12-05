@@ -4,6 +4,7 @@ class_name Enemy
 
 @export var v_component : VelocityComponent
 @export var health_man : HealthManager
+@onready var material_anim : AnimationPlayer = $BaseEnemyStuff/Anim
 
 @export var spawns_money := true
 @export var money_amount : float = 1
@@ -26,10 +27,19 @@ func spawn_money() -> void:
 		get_parent().call_deferred("add_child", new_regret)
 
 func took_damage(_amount : float) -> void:
-	pass
-	
+	material_anim.play("hitflash")
+
 func run_out_of_health() -> void:
 	die()
 
-func apply_gravity() -> void:
-	v_component.set_proper_velocity(get_gravity().y, 2)
+func apply_gravity(delta : float) -> void:
+	v_component.add_proper_velocity(Vector2(0, get_gravity().y * delta))
+
+func grounded_behaviour(delta : float) -> void:
+	if !is_on_floor():
+		apply_gravity(delta)
+	else:
+		v_component.set_proper_velocity(0.0, 2)
+	
+	velocity = v_component.get_total_velocity()
+	move_and_slide()
