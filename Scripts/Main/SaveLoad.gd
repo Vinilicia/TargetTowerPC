@@ -172,9 +172,17 @@ func _load(slot_index: int) -> bool:
 
 	current_slot_index = slot_index
 	var file = FileAccess.open_encrypted_with_pass(save_path, FileAccess.READ, "1n1c19a436")
-	var parse_res = JSON.parse_string(file.get_as_text())
-	file.close()
-
+	if file == null:
+		var error_code = FileAccess.get_open_error()
+		printerr("FALHA NO LOAD: Arquivo corrompido ou senha errada. Erro: ", error_code)
+		return false
+	var text_content = file.get_as_text()
+	
+	file.close() # Fecha o arquivo
+	var parse_res = JSON.parse_string(text_content)
+	if parse_res == null:
+		printerr("FALHA NO LOAD: O arquivo abriu, mas o JSON é inválido.")
+		return false
 	if typeof(parse_res) != TYPE_DICTIONARY:
 		print("Erro: Arquivo de save inválido — recriando padrão.")
 		save_file_data = SaveDataResource.new()
