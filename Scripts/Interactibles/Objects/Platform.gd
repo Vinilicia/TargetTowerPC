@@ -6,6 +6,7 @@ extends Node2D
 @export var platform_width : float = 4
 @export var time_to_pop_up : float = 0.25
 @export var time_to_despawn : float = 10
+@export var sprite : AnimatedSprite2D
 
 const DESPAWN_CHECK_DELAY : float = 0.5
 const TIME_TO_SHRINK : float = 0.15
@@ -27,7 +28,10 @@ func activate(direction: int, downward: bool) -> void:
 	vertical = (direction == 0)
 	if !vertical:
 		$Platform.scale.y = -1
-	
+	if vertical:
+		sprite.rotation = deg_to_rad(90) if !down else deg_to_rad(-90)
+	else:
+		sprite.rotation = 0 if direction == 1 else deg_to_rad(180)
 	$Timer.start(spawning_time)
 
 func spawn() -> void:
@@ -42,16 +46,20 @@ func spawn() -> void:
 		if down: 
 			tween.tween_property($Platform, "scale", Vector2(platform_width, platform_length), time_to_pop_up)
 			tween.parallel().tween_property($Platform, "position", Vector2(0, 12), time_to_pop_up)
+			sprite.position = Vector2(0, 12)
 		else: 
 			tween.tween_property($Platform, "scale", Vector2(platform_width, platform_length), time_to_pop_up)
 			tween.parallel().tween_property($Platform, "position", Vector2(0, -12), time_to_pop_up)
+			sprite.position = Vector2(0, -12)
 	else:
 		tween.tween_property($Platform, "scale", Vector2(platform_length * dir, -platform_width), time_to_pop_up)
 		tween.parallel().tween_property($Platform, "position", Vector2(12 * -dir, 0), time_to_pop_up)
+		sprite.position = Vector2(12 * -dir, 0)
 		tween.finished.connect(func():
 			player_detec.position.y += 0.25
 			player_detec.monitoring = true
 			)
+	sprite.play("Grow")
 
 func shrink() -> void:
 	var tween = create_tween()
@@ -65,6 +73,7 @@ func shrink() -> void:
 	else:
 		tween.tween_property($Platform, "scale", Vector2(1, 1), TIME_TO_SHRINK)
 		tween.parallel().tween_property($Platform, "position", Vector2(0, 0), TIME_TO_SHRINK)
+	sprite.play_backwards("Grow")
 	await tween.finished
 	queue_free()
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=4 uid="uid://bfms4o0tag486"]
+[gd_scene load_steps=16 format=4 uid="uid://bfms4o0tag486"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_d0sk3"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="2_ch0e0"]
@@ -8,6 +8,7 @@
 [ext_resource type="PackedScene" uid="uid://rbo0lyegdlbe" path="res://Scenes/Actors/Enemies/Spider.tscn" id="5_o5032"]
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="6_i5j4l"]
 [ext_resource type="PackedScene" uid="uid://xhwqoiulihut" path="res://Scenes/Interactibles/Objects/Box.tscn" id="8_7rix5"]
+[ext_resource type="PackedScene" uid="uid://8fltbt7y55sy" path="res://Scenes/Interactibles/Mechanisms/Buttons&Receptors/RedTarget&Block.tscn" id="9_brqs5"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o5032"]
 resource_local_to_scene = true
@@ -89,3 +90,15 @@ position = Vector2(-238, -209)
 
 [node name="Box2" parent="." index="5" instance=ExtResource("8_7rix5")]
 position = Vector2(-1070, -129)
+
+[node name="RedTarget&Block" parent="." index="6" instance=ExtResource("9_brqs5")]
+position = Vector2(-361, -206)
+
+[node name="Block" parent="RedTarget&Block" index="0"]
+start_state = "Deactivated"
+
+[node name="RedTarget" parent="RedTarget&Block" index="1"]
+position = Vector2(88, -179)
+rotation = -1.5708
+
+[editable path="RedTarget&Block"]

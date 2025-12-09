@@ -8,18 +8,19 @@ extends Node2D
 @onready var sprite = $BlockSprite as AnimatedSprite2D
 
 func _ready() -> void:
-	if start_state == "Activated":
-		sprite.play("Activate")
-	else:
-		was_deactivated()
+	if start_state == "Deactivated":
+		deactivate()
 
-func was_activated():
+func get_start_state() -> String:
+	return start_state
+
+func activate():
 	var tween = create_tween()
-	sprite.play("Activate")
+	sprite.play_backwards("Deactivate")
 	var final_pos = Vector2(0, 0)
 	tween.tween_property(block, "position", final_pos, move_duration).set_ease(Tween.EASE_IN)
 
-func was_deactivated():
+func deactivate():
 	var tween = create_tween()
 	sprite.play("Deactivate")
 	var final_pos = Vector2(-moving_distance, 0)

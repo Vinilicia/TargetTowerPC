@@ -1,0 +1,7 @@
+[gd_scene load_steps=2 format=3 uid="uid://cio6ms6wdyswa"]
+
+[ext_resource type="PackedScene" uid="uid://bybtffpifvrse" path="res://Assets/Home_bred/Mechanisms/Platform.aseprite" id="1_hbjra"]
+
+[node name="PlatformSprite" instance=ExtResource("1_hbjra")]
+frame = 8
+frame_progress = 1.0

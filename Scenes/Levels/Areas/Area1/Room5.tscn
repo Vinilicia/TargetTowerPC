@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=4 uid="uid://dnm2n6ldplpwf"]
+[gd_scene load_steps=16 format=4 uid="uid://dnm2n6ldplpwf"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_icml6"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="2_81ee0"]
@@ -6,6 +6,7 @@
 [ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="3_0e60x"]
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="4_i2bly"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="5_0e60x"]
+[ext_resource type="PackedScene" uid="uid://8fltbt7y55sy" path="res://Scenes/Interactibles/Mechanisms/Buttons&Receptors/RedTarget&Block.tscn" id="7_i2bly"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dxxll"]
 resource_local_to_scene = true
@@ -17,14 +18,39 @@ resource_local_to_scene = true
 shader = ExtResource("3_0e60x")
 shader_parameter/enabled = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_2esne"]
+resource_local_to_scene = true
+shader = ExtResource("3_0e60x")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_37qad"]
+resource_local_to_scene = true
+shader = ExtResource("3_0e60x")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_8iqc3"]
+resource_local_to_scene = true
+shader = ExtResource("3_0e60x")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_oog43"]
+resource_local_to_scene = true
+shader = ExtResource("3_0e60x")
+shader_parameter/enabled = true
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_i2bly"]
+resource_local_to_scene = true
+shader = ExtResource("3_0e60x")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wb7xy"]
 resource_local_to_scene = true
 shader = ExtResource("3_0e60x")
 shader_parameter/enabled = true
 
 [node name="Room05" instance=ExtResource("1_icml6")]
 metadata/_edit_vertical_guides_ = [1064.0, 40.0]
-metadata/_edit_horizontal_guides_ = [-427.0, -42.0]
+metadata/_edit_horizontal_guides_ = [-427.0, -42.0, -595.0, -792.0]
 
 [node name="Spooder" parent="Enemies" index="0" instance=ExtResource("2_cfefr")]
 material = SubResource("ShaderMaterial_dxxll")
@@ -35,19 +61,19 @@ material = SubResource("ShaderMaterial_gf5x2")
 position = Vector2(393, -187)
 
 [node name="Slime2" parent="Enemies" index="2" instance=ExtResource("4_i2bly")]
-material = SubResource("ShaderMaterial_gf5x2")
+material = SubResource("ShaderMaterial_2esne")
 position = Vector2(67, -298)
 
 [node name="Slime3" parent="Enemies" index="3" instance=ExtResource("4_i2bly")]
-material = SubResource("ShaderMaterial_gf5x2")
+material = SubResource("ShaderMaterial_37qad")
 position = Vector2(930, -123)
 
 [node name="Slime4" parent="Enemies" index="4" instance=ExtResource("4_i2bly")]
-material = SubResource("ShaderMaterial_gf5x2")
+material = SubResource("ShaderMaterial_8iqc3")
 position = Vector2(825, -394)
 
 [node name="Slime5" parent="Enemies" index="5" instance=ExtResource("4_i2bly")]
-material = SubResource("ShaderMaterial_gf5x2")
+material = SubResource("ShaderMaterial_oog43")
 position = Vector2(924, -426)
 
 [node name="Bat" parent="Enemies" index="6" instance=ExtResource("5_0e60x")]
@@ -55,7 +81,7 @@ material = SubResource("ShaderMaterial_i2bly")
 position = Vector2(424, -216)
 
 [node name="Bat2" parent="Enemies" index="7" instance=ExtResource("5_0e60x")]
-material = SubResource("ShaderMaterial_i2bly")
+material = SubResource("ShaderMaterial_wb7xy")
 position = Vector2(539, -758)
 
 [node name="Terrain" parent="Tilemaps" index="0"]
@@ -75,5 +101,19 @@ target_level_name = "Room3"
 [node name="Camera1" parent="Cameras" index="0"]
 position = Vector2(320, -180)
 limit_left = 0
+limit_top = -792
 limit_right = 1064
 limit_bottom = 0
+
+[node name="RedTarget&Block" parent="." index="4" instance=ExtResource("7_i2bly")]
+position = Vector2(372, -633)
+
+[node name="Block" parent="RedTarget&Block" index="0"]
+position = Vector2(6, -1)
+rotation = 3.14159
+
+[node name="RedTarget" parent="RedTarget&Block" index="1"]
+position = Vector2(-295, -20)
+rotation = 3.14159
+
+[editable path="RedTarget&Block"]

@@ -181,7 +181,7 @@ func _player_exited_area(_player: Node2D) -> void:
 func _idle_entered() -> void:
 	sprite_anim.play("Idle")
 	sight_area.scale = Vector2(300, 170)
-	sight_area.position = Vector2(0, 50)
+	sight_area.position = Vector2(0, 30)
 
 func _idle_exited() -> void:
 	sight_area.scale = Vector2(350, 250)
