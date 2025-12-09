@@ -1,8 +1,10 @@
-[gd_scene load_steps=2 format=3 uid="uid://ds1syl4lpg0s1"]
+[gd_scene load_steps=3 format=3 uid="uid://ds1syl4lpg0s1"]
 
+[ext_resource type="Script" uid="uid://c40e236igu5e3" path="res://Scripts/Interactibles/Objects/arrow_unlocker.gd" id="1_7yud5"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_rf2gw"]
 
 [node name="ArrowUnlocker" type="Area2D"]
+script = ExtResource("1_7yud5")
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="."]
 modulate = Color(1, 0.0470588, 0.956863, 1)
