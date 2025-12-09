@@ -673,3 +673,7 @@ func _on_mana_regen_timer_timeout() -> void:
 func _on_grounded_state_exited() -> void:
 	if AudioManager.is_playing("Footsteps"):
 		AudioManager.stop("Footsteps")
+
+func unlock_arrow(arrow_index : int) -> void:
+	if arrow_index < available_arrows.size():
+		available_arrows[arrow_index] = true
