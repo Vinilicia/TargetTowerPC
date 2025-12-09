@@ -73,10 +73,10 @@ func _snap_to_surface_on_spawn() -> void:
 func _physics_process(_delta: float) -> void:
 	if !is_ready:
 		return
-	
 	if rotating:
 		return
-
+	if not is_on_floor() and not is_on_wall() and not is_on_ceiling():
+		_snap_to_surface_on_spawn()
 	if down_ray.is_colliding():
 		update_direction()
 		v_component.set_proper_velocity(direction * speed, 1)
@@ -213,11 +213,12 @@ func _update_surface_state() -> void:
 	# Se mudou, chama handler de transição
 	if new_state != surface_state:
 		surface_state = new_state
-		_on_surface_changed( new_state)
+		_on_surface_changed(new_state)
 
 
 # Quando muda de superfície, start/stop do timer
 func _on_surface_changed( new_state: String) -> void:
+	up_ray.enabled = false
 	# Start timer quando entrar em floor
 	if new_state == "floor":
 		if _floor_timer and _floor_timer.is_stopped():
@@ -225,9 +226,8 @@ func _on_surface_changed( new_state: String) -> void:
 	elif new_state == "ceiling":
 		if _floor_timer and not _floor_timer.is_stopped():
 			_floor_timer.stop()
-		up_ray.enabled = false
 		up_ray.force_raycast_update()
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(0.4).timeout
 		up_ray.enabled = true
 		up_ray.force_raycast_update()
 	else:

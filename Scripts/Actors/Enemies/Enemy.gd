@@ -26,9 +26,10 @@ func spawn_money() -> void:
 		new_regret.linear_velocity = Vector2(randf_range(-30, 30), randf_range(-70, -150))
 		get_parent().call_deferred("add_child", new_regret)
 
-func took_damage(_amount : float) -> void:
-	AudioManager.play_song("EnemyHit")
-	material_anim.play("hitflash")
+func took_damage(amount : float) -> void:
+	if amount > 0:
+		AudioManager.play_song("EnemyHit")
+		material_anim.play("hitflash")
 
 func run_out_of_health() -> void:
 	die()

@@ -28,6 +28,7 @@ func return_menu_from_game() -> void:
 	title_menu.visible = true
 	file_select_menu.visible = false
 	AudioManager.stop_all()
+	AudioManager.play_song("FemaleTurbulence")
 
 func show_file_select() -> void:
 	title_menu.visible = false
@@ -97,6 +98,7 @@ func load_game(save_id) -> void:
 	instantiate_main_menu()
 	game.save_id = save_id
 	game.load_room(room_scene)
+	AudioManager.stop_all()
 	AudioManager.play_song("LostPaintings")
 
 func load_procedural() -> void:
@@ -106,6 +108,7 @@ func load_procedural() -> void:
 	instantiate_main_menu()
 	game.save_id = 0
 	game.load_room(room_scene)
+	AudioManager.stop_all()
 	AudioManager.play_song("DraculasCastle")
 
 func open_button_pressed() -> void:

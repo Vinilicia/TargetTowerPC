@@ -1,4 +1,4 @@
-[gd_scene load_steps=26 format=4 uid="uid://dn10h68f76vry"]
+[gd_scene load_steps=24 format=4 uid="uid://dn10h68f76vry"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_evn5t"]
 [ext_resource type="PackedScene" uid="uid://rbo0lyegdlbe" path="res://Scenes/Actors/Enemies/Spider.tscn" id="2_f20nt"]
@@ -11,9 +11,7 @@
 [ext_resource type="PackedScene" uid="uid://5y1krmoyg57i" path="res://Scenes/Interactibles/Mechanisms/Windbox.tscn" id="8_wsoaw"]
 [ext_resource type="PackedScene" uid="uid://dgsguis2vqkm7" path="res://Scenes/Interactibles/Mechanisms/Conveyor_belt.tscn" id="9_kfdoy"]
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="10_kfdoy"]
-[ext_resource type="PackedScene" uid="uid://bauqelwnxrt0h" path="res://Scenes/Actors/Enemies/Utilities/Boss_Arena.tscn" id="11_4no8i"]
-[ext_resource type="PackedScene" uid="uid://b3ymhm7i1i4vm" path="res://Scenes/Interactibles/Mechanisms/Boss_Door.tscn" id="12_nh0l2"]
-[ext_resource type="PackedScene" uid="uid://dnm3h4dorha4l" path="res://Scenes/Actors/Enemies/Slime_Boss.tscn" id="12_rd61j"]
+[ext_resource type="PackedScene" uid="uid://dwoiuao00y8oi" path="res://Scenes/Actors/Enemies/Utilities/Slime_Boss_Arena.tscn" id="12_4no8i"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_nh0l2"]
 resource_local_to_scene = true
@@ -148,37 +146,7 @@ length = 7
 position = Vector2(343, 184)
 should_save = false
 
-[node name="BossArena" parent="." index="7" node_paths=PackedStringArray("boss") instance=ExtResource("11_4no8i")]
-position = Vector2(178, -682)
-boss = NodePath("Boss")
-
-[node name="Coll" parent="BossArena" index="0"]
-position = Vector2(-39, -6)
-scale = Vector2(221.652, 197.385)
-
-[node name="BossDoor" parent="BossArena/Doors" index="0" instance=ExtResource("12_nh0l2")]
-position = Vector2(77, 74)
-
-[node name="BossDoor2" parent="BossArena/Doors" index="1" instance=ExtResource("12_nh0l2")]
-position = Vector2(-157, 74)
-
-[node name="Boss" parent="BossArena" index="2" node_paths=PackedStringArray("markers_node") instance=ExtResource("12_rd61j")]
-material = null
-position = Vector2(-90, 74)
-markers_node = NodePath("Markers")
-
-[node name="Markers" type="Node2D" parent="BossArena/Boss" index="3"]
-
-[node name="Marker2D" type="Marker2D" parent="BossArena/Boss/Markers" index="0"]
-position = Vector2(-105, -74)
-
-[node name="Marker2D2" type="Marker2D" parent="BossArena/Boss/Markers" index="1"]
-position = Vector2(208, -73)
-
-[node name="Marker2D3" type="Marker2D" parent="BossArena/Boss/Markers" index="2"]
-position = Vector2(140, 2)
-
-[node name="Marker2D4" type="Marker2D" parent="BossArena/Boss/Markers" index="3"]
-position = Vector2(-39, 0)
+[node name="BossArena" parent="." index="8" instance=ExtResource("12_4no8i")]
+position = Vector2(139, -688)
 
 [editable path="BossArena"]

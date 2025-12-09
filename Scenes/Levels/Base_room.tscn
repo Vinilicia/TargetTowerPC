@@ -1,6 +1,14 @@
-[gd_scene load_steps=2 format=3 uid="uid://cgx0tclss2wsf"]
+[gd_scene load_steps=5 format=3 uid="uid://cgx0tclss2wsf"]
 
 [ext_resource type="Script" uid="uid://c5hbm1bw7awvy" path="res://Scripts/Levels/Rooms/Room.gd" id="1_lclgi"]
+[ext_resource type="Script" uid="uid://bhexx6mj1xv3q" path="res://addons/phantom_camera/scripts/phantom_camera/phantom_camera_2d.gd" id="2_i2khn"]
+[ext_resource type="Script" uid="uid://8umksf8e80fw" path="res://addons/phantom_camera/scripts/resources/tween_resource.gd" id="3_dskbm"]
+
+[sub_resource type="Resource" id="Resource_q6wf0"]
+script = ExtResource("3_dskbm")
+duration = 1.0
+transition = 0
+ease = 2
 
 [node name="Room" type="Node2D" node_paths=PackedStringArray("enemies_node")]
 script = ExtResource("1_lclgi")
@@ -15,3 +23,15 @@ enemies_node = NodePath("Enemies")
 [node name="Background" type="TileMapLayer" parent="Tilemaps"]
 
 [node name="Portals" type="Node2D" parent="."]
+
+[node name="Cameras" type="Node2D" parent="."]
+
+[node name="Camera1" type="Node2D" parent="Cameras"]
+top_level = true
+script = ExtResource("2_i2khn")
+priority = 1
+follow_mode = 1
+tween_resource = SubResource("Resource_q6wf0")
+tween_on_load = false
+follow_offset = Vector2(0, -15)
+metadata/_custom_type_script = "uid://bhexx6mj1xv3q"

@@ -23,8 +23,8 @@ shader_parameter/enabled = false
 material = ExtResource("2_5lx0x")
 script = ExtResource("2_mp5lk")
 start_direction = 1
-walk_speed = 60.0
-chase_speed = 80.0
+walk_speed = 50.0
+chase_speed = 70.0
 jump_force = -300.0
 direction_change_delay = 0.5
 lines_of_sight = [NodePath("Raycasts/LinesOfSight/LineOfSight"), NodePath("Raycasts/LinesOfSight/LineOfSight2"), NodePath("Raycasts/LinesOfSight/LineOfSight3")]
@@ -54,7 +54,7 @@ shape = ExtResource("2_r6q1e")
 material = SubResource("ShaderMaterial_k48vj")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1"]
-max_health = 5.0
+max_health = 4.0
 
 [node name="Hurtbox" parent="BaseEnemyStuff" index="2"]
 scale = Vector2(16, 16)
@@ -75,8 +75,8 @@ texture = ExtResource("7_hjulu")
 [node name="Areas" type="Node2D" parent="." index="2"]
 
 [node name="OuterArrowDetector" type="Area2D" parent="Areas" index="0"]
-position = Vector2(-120, 0)
-scale = Vector2(100, 130)
+position = Vector2(-130, 0)
+scale = Vector2(80, 130)
 collision_layer = 0
 collision_mask = 256
 monitorable = false
@@ -114,7 +114,7 @@ debug_color = Color(0.941452, 0.102353, 0.546891, 0.42)
 
 [node name="StabAttackArea" type="Area2D" parent="Areas" index="4"]
 position = Vector2(-16, 0)
-scale = Vector2(24, 24)
+scale = Vector2(20, 24)
 collision_layer = 0
 
 [node name="CollisionShape2D" type="CollisionShape2D" parent="Areas/StabAttackArea" index="0"]
@@ -124,7 +124,7 @@ debug_color = Color(0.941452, 0.102353, 0.546891, 0.42)
 [node name="AttackHitbox" parent="Areas" index="5" node_paths=PackedStringArray("parent") instance=ExtResource("5_k48vj")]
 visible = false
 position = Vector2(-16, 0)
-scale = Vector2(24, 20)
+scale = Vector2(20, 24)
 collision_layer = 1024
 monitorable = false
 parent = NodePath("../..")

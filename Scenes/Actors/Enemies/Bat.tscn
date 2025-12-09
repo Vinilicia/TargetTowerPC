@@ -53,7 +53,7 @@ shape = ExtResource("3_nstmu")
 material = SubResource("ShaderMaterial_y01to")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1"]
-max_health = 3.0
+max_health = 2.0
 
 [node name="Hurtbox" parent="BaseEnemyStuff" index="2"]
 scale = Vector2(14, 13)
@@ -268,7 +268,6 @@ one_shot = true
 one_shot = true
 
 [node name="FireManager" parent="." index="5" node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("10_hjvma")]
-visible = false
 time_to_burn = 0.5
 can_stack = true
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")

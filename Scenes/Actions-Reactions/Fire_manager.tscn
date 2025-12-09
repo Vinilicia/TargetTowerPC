@@ -1,7 +1,8 @@
-[gd_scene load_steps=3 format=3 uid="uid://d3tputs5bl4tx"]
+[gd_scene load_steps=4 format=3 uid="uid://d3tputs5bl4tx"]
 
 [ext_resource type="Script" uid="uid://hafr0qtutpq1" path="res://Scripts/Actions-Reactions/Fire_manager.gd" id="1_vq16k"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Scenes/Components/Hurtbox.tscn" id="2_ebopb"]
+[ext_resource type="PackedScene" uid="uid://cuyr02d5ffhbw" path="res://Scenes/Interactibles/Mechanisms/Fire_Sprite.tscn" id="3_hxaxt"]
 
 [node name="FireManager" type="Node2D" node_paths=PackedStringArray("hurtbox", "burning_timer")]
 script = ExtResource("1_vq16k")
@@ -15,6 +16,11 @@ can_be_invincible = false
 
 [node name="BurningTimer" type="Timer" parent="."]
 one_shot = true
+
+[node name="FireSprite" parent="." instance=ExtResource("3_hxaxt")]
+visible = false
+modulate = Color(1, 1, 1, 0.701961)
+position = Vector2(0, -4)
 
 [connection signal="area_exited" from="Hurtbox" to="." method="_on_hurtbox_fire_exited"]
 [connection signal="got_hit_by" from="Hurtbox" to="." method="_hurtbox_got_hit"]
