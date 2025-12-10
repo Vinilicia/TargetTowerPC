@@ -119,7 +119,6 @@ func _ready():
 	velocity = Vector2.ZERO
 	#await get_tree().process_frame
 	await HudHandler.hud.ready
-	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health as int)
 	HudHandler.hud.init_mana(max_mana)
 	HudHandler.hud.change_arrow(current_arrow_index)
 	
@@ -618,6 +617,9 @@ func set_available_arrows(available_arrows_loaded: Array[bool]):
 	available_arrows = available_arrows_loaded
 
 func wake_up(use_save : bool = true):
+	($Misc/HealthManager as HealthManager).max_health = SaveManager.save_file_data.get_max_health()
+	($Misc/HealthManager as HealthManager).health = ($Misc/HealthManager as HealthManager).max_health
+	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health as int)
 	if use_save:
 		set_available_arrows(SaveManager.save_file_data.get_available_arrows())
 	else:
@@ -684,4 +686,5 @@ func unlock_arrow(arrow_index : int) -> void:
 
 func increase_total_health(upgrade_index : int) -> void:
 	health_manager.max_health += 1
-	HudHandler.hud.init_hearts(1)
+	health_manager.health += 1
+	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health)
