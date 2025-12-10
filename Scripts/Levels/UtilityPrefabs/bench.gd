@@ -26,11 +26,11 @@ func heal_player() -> void:
 	player.heal_hp_on_bench()
 	player.heal_mana_on_bench()
 
-func bench_used() -> void:	
-	print("merda")
+func bench_used() -> void:
 	SaveManager.save_file_data.set_last_bench_id(bench_id)
 	SaveManager.save_file_data.set_area_of_bench(area)
 	SaveManager.save_file_data.set_available_arrows(player.available_arrows)
+	SaveManager.save_file_data.set_max_health(player.health_manager.max_health)
 	SaveManager._save(save_id)
 	
 func get_room_number() -> int:

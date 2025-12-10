@@ -10,7 +10,7 @@ class_name SaveDataResource
 
 @export var LastBenchID: int = 1
 @export var AreaOfBench: int = 1
-@export var MaxHealth: int = 5
+@export var MaxHealth: int = 12
 @export var MaxMana: int = 5
 @export var Money: int = 0
 @export var MoneyUpgrades: int = 0
