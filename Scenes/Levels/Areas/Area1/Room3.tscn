@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://p0f35mxovxw1"]
+[gd_scene load_steps=19 format=4 uid="uid://p0f35mxovxw1"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_eeqjb"]
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="2_rnn5p"]
@@ -45,6 +45,11 @@ resource_local_to_scene = true
 shader = ExtResource("3_ufr08")
 shader_parameter/enabled = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_3a2ta"]
+resource_local_to_scene = true
+shader = ExtResource("3_ufr08")
+shader_parameter/enabled = true
+
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_kgadu"]
 resource_local_to_scene = true
 shader = ExtResource("3_ufr08")
@@ -86,7 +91,7 @@ material = SubResource("ShaderMaterial_bl5d3")
 position = Vector2(870, -91)
 
 [node name="Bat2" parent="Enemies" index="7" instance=ExtResource("5_w5s0e")]
-material = SubResource("ShaderMaterial_bl5d3")
+material = SubResource("ShaderMaterial_3a2ta")
 position = Vector2(601, -700)
 
 [node name="CommonGoblin" parent="Enemies" index="8" instance=ExtResource("6_bl5d3")]

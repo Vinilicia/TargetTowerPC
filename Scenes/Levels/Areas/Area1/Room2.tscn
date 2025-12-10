@@ -1,4 +1,4 @@
-[gd_scene load_steps=21 format=4 uid="uid://dt34ayv1esh31"]
+[gd_scene load_steps=23 format=4 uid="uid://dt34ayv1esh31"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_3owao"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_ov6pu"]
@@ -8,6 +8,8 @@
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="4_ho8y7"]
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="5_w3eyc"]
 [ext_resource type="PackedScene" uid="uid://xhwqoiulihut" path="res://Scenes/Interactibles/Objects/Box.tscn" id="8_ccum2"]
+[ext_resource type="PackedScene" uid="uid://ds1syl4lpg0s1" path="res://Scenes/Interactibles/Objects/Arrow_Unlocker.tscn" id="9_tygid"]
+[ext_resource type="Texture2D" uid="uid://bthjxgrpvjtq1" path="res://Assets/Home_bred/UI/SaveFile/Firebox.aseprite" id="10_36hqy"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mn7b2"]
 resource_local_to_scene = true
@@ -153,3 +155,10 @@ position = Vector2(1976, -368)
 
 [node name="Box2" parent="." index="6" instance=ExtResource("8_ccum2")]
 position = Vector2(1943, -368)
+
+[node name="ArrowUnlocker" parent="." index="7" instance=ExtResource("9_tygid")]
+position = Vector2(1430, -217)
+arrow_index = 1
+
+[node name="Sprite" type="Sprite2D" parent="ArrowUnlocker" index="1"]
+texture = ExtResource("10_36hqy")

@@ -31,7 +31,7 @@ func activate(direction: int, downward: bool) -> void:
 	if vertical:
 		sprite.rotation = deg_to_rad(90) if !down else deg_to_rad(-90)
 	else:
-		sprite.rotation = 0 if direction == 1 else deg_to_rad(180)
+		sprite.rotation = deg_to_rad(0) if direction == 1 else deg_to_rad(180)
 	$Timer.start(spawning_time)
 
 func spawn() -> void:

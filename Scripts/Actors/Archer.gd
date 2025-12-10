@@ -104,7 +104,7 @@ var enemies_on_sight: Array = []
 var last_safe_position : Vector2
 var frames_until_check : int = 0
 var locked_walk: bool = false
-var available_arrows: Array[bool] = [true, true, true, true, false, false, false, false, false]
+var available_arrows: Array[bool] = [true, false, false, false, false, false, false, false, false]
 var arrows : Array[Arrow] = []
 var in_control : bool = true
 @onready var current_mana : int = max_mana
@@ -678,3 +678,6 @@ func _on_grounded_state_exited() -> void:
 func unlock_arrow(arrow_index : int) -> void:
 	if arrow_index < available_arrows.size():
 		available_arrows[arrow_index] = true
+		current_arrow_index = arrow_index
+		build_arrows()
+	HudHandler.hud.change_arrow(arrow_index)

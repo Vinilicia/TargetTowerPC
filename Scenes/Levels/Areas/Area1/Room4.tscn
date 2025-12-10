@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=4 uid="uid://bfms4o0tag486"]
+[gd_scene load_steps=18 format=4 uid="uid://bfms4o0tag486"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_d0sk3"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="2_ch0e0"]
@@ -9,6 +9,8 @@
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="6_i5j4l"]
 [ext_resource type="PackedScene" uid="uid://xhwqoiulihut" path="res://Scenes/Interactibles/Objects/Box.tscn" id="8_7rix5"]
 [ext_resource type="PackedScene" uid="uid://8fltbt7y55sy" path="res://Scenes/Interactibles/Mechanisms/Buttons&Receptors/RedTarget&Block.tscn" id="9_brqs5"]
+[ext_resource type="PackedScene" uid="uid://ds1syl4lpg0s1" path="res://Scenes/Interactibles/Objects/Arrow_Unlocker.tscn" id="10_t18uw"]
+[ext_resource type="Texture2D" uid="uid://bjvhuvkf6jhed" path="res://Assets/Home_bred/UI/SaveFile/PlatformBox.aseprite" id="11_a2ydx"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_o5032"]
 resource_local_to_scene = true
@@ -100,5 +102,12 @@ start_state = "Deactivated"
 [node name="RedTarget" parent="RedTarget&Block" index="1"]
 position = Vector2(88, -179)
 rotation = -1.5708
+
+[node name="ArrowUnlocker" parent="." index="7" instance=ExtResource("10_t18uw")]
+position = Vector2(-1184, -106)
+arrow_index = 2
+
+[node name="Sprite" type="Sprite2D" parent="ArrowUnlocker" index="1"]
+texture = ExtResource("11_a2ydx")
 
 [editable path="RedTarget&Block"]
