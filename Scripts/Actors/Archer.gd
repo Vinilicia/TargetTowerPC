@@ -113,7 +113,6 @@ var in_control : bool = true
 # READY
 # ============================================================
 func _ready():
-	build_arrows()
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 	velocity = Vector2.ZERO
@@ -617,6 +616,7 @@ func set_available_arrows(available_arrows_loaded: Array[bool]):
 	available_arrows = available_arrows_loaded
 
 func wake_up(use_save : bool = true):
+	build_arrows()
 	($Misc/HealthManager as HealthManager).max_health = SaveManager.save_file_data.get_max_health()
 	($Misc/HealthManager as HealthManager).health = ($Misc/HealthManager as HealthManager).max_health
 	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health as int)
