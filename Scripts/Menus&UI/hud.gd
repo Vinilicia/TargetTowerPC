@@ -14,7 +14,6 @@ var tween : Tween
 var target_money : int = 0
 
 func init_hearts(amount : int = 3) -> void:
-	print("Uau")
 	for i in range(amount):
 		var new_heart : HeartTexture = heart_rect.instantiate()
 		hearts_container.call_deferred("add_child", new_heart)

@@ -1,6 +1,6 @@
 [gd_scene load_steps=6 format=3 uid="uid://ca1y1rpgw0xi6"]
 
-[ext_resource type="Script" uid="uid://bsv2vkl8xd2n8" path="res://Scripts/Main/game.gd" id="1_y5uub"]
+[ext_resource type="Script" uid="uid://beug2ves48cuu" path="res://Scripts/Main/game.gd" id="1_y5uub"]
 [ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Scenes/Actors/Player.tscn" id="2_q8dh3"]
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Scenes/Levels/Camera.tscn" id="3_3wiyf"]
 [ext_resource type="PackedScene" uid="uid://dt34ayv1esh31" path="res://Scenes/Levels/Areas/Area1/Room2.tscn" id="4_q8dh3"]
@@ -24,7 +24,7 @@ shape = SubResource("CapsuleShape2D_q8dh3")
 remote_path = NodePath("../../../Camera")
 
 [node name="Camera" parent="." instance=ExtResource("3_3wiyf")]
-position = Vector2(320, 0)
+position = Vector2(1608, -72)
 limit_right = 2240
 
 [node name="Room02" parent="." instance=ExtResource("4_q8dh3")]

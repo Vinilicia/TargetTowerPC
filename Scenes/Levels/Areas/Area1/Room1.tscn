@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=4 uid="uid://bwktolati234h"]
+[gd_scene load_steps=18 format=4 uid="uid://bwktolati234h"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_qfwnn"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_ho8y7"]
@@ -7,6 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="4_mn7b2"]
 [ext_resource type="PackedScene" uid="uid://rbo0lyegdlbe" path="res://Scenes/Actors/Enemies/Spider.tscn" id="5_vw5jy"]
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="6_l8aai"]
+[ext_resource type="PackedScene" uid="uid://0p4j18uqwi11" path="res://Scenes/Interactibles/Objects/Increase_Health_Area.tscn" id="8_cfyxf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vw5jy"]
 resource_local_to_scene = true
@@ -102,10 +103,13 @@ direction = 1
 target_level_name = "Room2"
 
 [node name="Bench" parent="." index="3" instance=ExtResource("6_l8aai")]
-position = Vector2(326, -37)
+position = Vector2(312, -37)
 area = 1
 
 [node name="Camera1" parent="Cameras" index="0"]
 position = Vector2(336, 0)
 limit_left = 16
 limit_right = 2460
+
+[node name="Increase_Health_Area" parent="." index="5" instance=ExtResource("8_cfyxf")]
+position = Vector2(101, -11)

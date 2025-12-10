@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://x2pfg4af3syy"]
 
-[ext_resource type="Script" uid="uid://ctuv1f48o4cdc" path="res://Scripts/Levels/UtilityPrefabs/bench.gd" id="1_ddysv"]
+[ext_resource type="Script" uid="uid://cvjvyn7evrgi8" path="res://Scripts/Levels/UtilityPrefabs/bench.gd" id="1_ddysv"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_dih4k"]
 [ext_resource type="Texture2D" uid="uid://c5dogybcf6yfo" path="res://godot_state_charts_examples/platformer/breaking_box/idle.png" id="3_dih4k"]
 
