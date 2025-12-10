@@ -58,9 +58,21 @@ target_position = Vector2(0, -300)
 collision_mask = 21
 
 [node name="DownRaycast" type="RayCast2D" parent="." index="3"]
-target_position = Vector2(0, 12)
+target_position = Vector2(0, 7)
 collision_mask = 20
 
 [node name="FrontRaycast" type="RayCast2D" parent="." index="4"]
 target_position = Vector2(7, 0)
 collision_mask = 20
+
+[node name="PlatDetec" type="Area2D" parent="." index="5"]
+position = Vector2(0, 4)
+collision_layer = 0
+collision_mask = 16
+
+[node name="Coll" type="CollisionShape2D" parent="PlatDetec" index="0"]
+scale = Vector2(12, 4)
+shape = ExtResource("2_lo6vr")
+
+[connection signal="body_entered" from="PlatDetec" to="." method="_on_plat_detec_body_entered"]
+[connection signal="body_exited" from="PlatDetec" to="." method="_on_plat_detec_body_exited"]

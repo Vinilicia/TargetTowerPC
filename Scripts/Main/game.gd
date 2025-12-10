@@ -16,6 +16,9 @@ func _ready() -> void:
 	#Engine.time_scale = 0.5
 	connect("level_ready", (find_child("Player") as Player).gain_control)
 	connect("readying_level", (find_child("Player") as Player).lose_control)
+	for child in get_children():
+		if child is Room:
+			current_level = child
 
 func change_level(next_level: String, spawn_position: Vector2, area: LevelDatabase.Areas = LevelDatabase.Areas.AREA_1):
 	readying_level.emit()
@@ -32,7 +35,7 @@ func change_level(next_level: String, spawn_position: Vector2, area: LevelDataba
 	handle_next_level(scene_path, spawn_position)
 	handle_last_level(old_level)
 
-	await get_tree().create_timer(0.5).timeout
+	await get_tree().create_timer(1.2).timeout
 	blackout_fade_out()
 	await get_tree().create_timer(0.5).timeout
 	level_ready.emit()
@@ -46,7 +49,6 @@ func handle_last_level(old_level: Room) -> void:
 
 
 func handle_next_level(scene_path: String, spawn_position: Vector2) -> void:
-	print("Carregando level: ", scene_path)
 	var new_level: Room = load(scene_path).instantiate()
 	call_deferred("add_child", new_level)
 

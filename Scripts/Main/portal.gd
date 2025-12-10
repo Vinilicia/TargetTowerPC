@@ -4,21 +4,18 @@ class_name Portal
 
 @export var spawn_position: Vector2
 
-# 🔹 Enum exportado normalmente
+@export_enum("Left", "Right", "Up", "Down") var direction : int
+
 @export var area: LevelDatabase.Areas = LevelDatabase.Areas.AREA_1:
 	set(value):
 		if area != value:
 			area = value
-			_update_target_level_list() # Atualiza o dropdown e o valor atual
+			_update_target_level_list()
 
 var target_level_name: String = ""
 
 const DB_PATH := "res://Data/LevelDB.tres"
 
-
-# ------------------------------------------------------------
-# 🔹 Atualiza a lista de níveis e define o primeiro como ativo
-# ------------------------------------------------------------
 func _update_target_level_list() -> void:
 	var database := _get_database()
 	if database == null:
@@ -91,10 +88,28 @@ func _get_database() -> LevelDatabase:
 # ------------------------------------------------------------
 # 🔹 Lógica de entrada do jogador no portal
 # ------------------------------------------------------------
-func _on_body_entered(_body: Node2D) -> void:
+func _on_body_entered(body: Node2D) -> void:
+	if body is Player:
+		body.lose_control()
+		var velocity := Vector2.ZERO
+		match direction:
+			0:
+				velocity = Vector2(-body.move_speed, 0)
+			1:
+				velocity = Vector2(body.move_speed, 0)
+			2:
+				velocity = Vector2(body.jump_force, 0)
+			3:
+				velocity = Vector2(body.max_fall_speed, 0)
+		body.v_component.set_proper_velocity(velocity)
+		get_tree().create_timer(0.5).timeout.connect(func():
+			body.v_component.set_proper_velocity(Vector2.ZERO)
+			)
+	else:
+		return
 	var game: Game = get_tree().get_first_node_in_group("Game")
 	if game == null:
 		push_error("❌ Nó 'Game' não encontrado na cena!")
 		return
-
+	
 	game.change_level(target_level_name, spawn_position)

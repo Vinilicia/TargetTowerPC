@@ -1,52 +1,6 @@
-[gd_scene load_steps=6 format=3 uid="uid://nax8k76qlh1"]
+[gd_scene load_steps=2 format=3 uid="uid://nax8k76qlh1"]
 
-[ext_resource type="Texture2D" uid="uid://b3xwxh8slxao6" path="res://Assets/Home_bred/Mechanisms/Blocks/Block.png" id="1_gh8dj"]
+[ext_resource type="PackedScene" uid="uid://c67b78m6biy5d" path="res://Assets/Home_bred/Mechanisms/Blocks/Block.aseprite" id="1_vxf51"]
 
-[sub_resource type="AtlasTexture" id="AtlasTexture_n4xp3"]
-atlas = ExtResource("1_gh8dj")
-region = Rect2(94, 0, 7, 16)
-margin = Rect2(0, 0, 50, 0)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_gq4hg"]
-atlas = ExtResource("1_gh8dj")
-region = Rect2(57, 0, 37, 16)
-margin = Rect2(0, 0, 20, 0)
-
-[sub_resource type="AtlasTexture" id="AtlasTexture_k06gp"]
-atlas = ExtResource("1_gh8dj")
-region = Rect2(0, 0, 57, 16)
-
-[sub_resource type="SpriteFrames" id="SpriteFrames_n082m"]
-animations = [{
-"frames": [{
-"duration": 0.1,
-"texture": SubResource("AtlasTexture_n4xp3")
-}, {
-"duration": 0.1,
-"texture": SubResource("AtlasTexture_gq4hg")
-}, {
-"duration": 0.1,
-"texture": SubResource("AtlasTexture_k06gp")
-}],
-"loop": false,
-"name": &"Activate",
-"speed": 1.0
-}, {
-"frames": [{
-"duration": 0.1,
-"texture": SubResource("AtlasTexture_k06gp")
-}, {
-"duration": 0.1,
-"texture": SubResource("AtlasTexture_gq4hg")
-}, {
-"duration": 0.1,
-"texture": SubResource("AtlasTexture_n4xp3")
-}],
-"loop": false,
-"name": &"Deactivate",
-"speed": 1.0
-}]
-
-[node name="Block" type="AnimatedSprite2D"]
-sprite_frames = SubResource("SpriteFrames_n082m")
+[node name="Block" instance=ExtResource("1_vxf51")]
 animation = &"Deactivate"

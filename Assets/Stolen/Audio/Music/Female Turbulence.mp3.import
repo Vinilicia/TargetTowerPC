@@ -1,0 +1,19 @@
+[remap]
+
+importer="mp3"
+type="AudioStreamMP3"
+uid="uid://cm0fwxjg6shku"
+path="res://.godot/imported/Female Turbulence.mp3-1be7e41e0a95b08eedc2fd9d3f87197b.mp3str"
+
+[deps]
+
+source_file="res://Assets/Stolen/Audio/Music/Female Turbulence.mp3"
+dest_files=["res://.godot/imported/Female Turbulence.mp3-1be7e41e0a95b08eedc2fd9d3f87197b.mp3str"]
+
+[params]
+
+loop=false
+loop_offset=0
+bpm=0
+beat_count=0
+bar_beats=4

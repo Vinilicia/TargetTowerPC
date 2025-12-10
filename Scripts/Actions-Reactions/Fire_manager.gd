@@ -49,6 +49,7 @@ func _on_hurtbox_fire_exited(_area: Area2D) -> void:
 			burning_timer.stop()
 
 func catch_fire() -> void:
+	$FireSprite.visible = true
 	if !(overlapping_fire_count > 0):
 		return
 	on_fire = true
@@ -67,6 +68,7 @@ func catch_fire() -> void:
 	burning_timer.start(burn_duration + time_left)
 
 func extinguish() -> void:
+	$FireSprite.visible = false
 	on_fire = false
 	if has_fire:
 		fire._deactivate()

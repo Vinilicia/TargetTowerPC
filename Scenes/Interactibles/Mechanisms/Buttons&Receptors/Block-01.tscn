@@ -19,8 +19,8 @@ scale = Vector2(53, 10)
 shape = ExtResource("2_xj432")
 
 [node name="BlockSprite" parent="." instance=ExtResource("4_jn313")]
-frame = 2
-frame_progress = 1.0
+animation = &"Idle"
+autoplay = "Idle"
 
 [node name="ReceptorSprite" parent="." instance=ExtResource("4_c6s6k")]
 position = Vector2(-28, -10)

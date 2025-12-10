@@ -50,6 +50,7 @@ const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 @export var jump_queuing_time: float
 @export var air_stall_velocity: float
 @export var coyote_time_timer: float
+@export var max_fall_speed : float = 300
 
 @export_group("Nodes")
 @export var v_component: VelocityComponent
@@ -145,7 +146,7 @@ func _physics_process(delta: float) -> void:
 	handle_arrow_updates()
 	if in_control:
 		handle_aim_enemy()
-	handle_movement()
+		handle_movement()
 	velocity = v_component.get_total_velocity()
 	corner_correction(7, delta)
 	move_and_slide()
@@ -321,7 +322,7 @@ func handle_arrow_updates() -> void:
 # ============================================================
 func apply_gravity(delta: float) -> void:
 	if !is_on_floor():
-		if v_component.get_proper_velocity(2) <= 300:
+		if v_component.get_proper_velocity(2) <= max_fall_speed:
 			v_component.add_proper_velocity(Vector2(0, get_current_gravity(velocity.y) * delta))
 		state_chart.send_event("Falling" if velocity.y >= 0 else "Rising")
 

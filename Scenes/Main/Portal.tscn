@@ -8,7 +8,7 @@ collision_layer = 64
 script = ExtResource("1_ugh02")
 target_level_name = ""
 
-[node name="CollisionShape2D" type="CollisionShape2D" parent="."]
+[node name="Coll" type="CollisionShape2D" parent="."]
 scale = Vector2(10, 100)
 shape = ExtResource("1_m5bqq")
 

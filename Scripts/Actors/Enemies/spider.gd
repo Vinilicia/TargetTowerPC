@@ -15,6 +15,8 @@ var rotating := false
 var surface_state: String = "floor"
 var _floor_timer: Timer
 var is_ready : bool = false
+var on_plat :int = 0
+
 
 func _ready() -> void:
 	match start_surface:
@@ -69,14 +71,16 @@ func _snap_to_surface_on_spawn() -> void:
 
 	ray.target_position = axis.normalized() * original_length
 
+func is_not_grounded() -> bool:
+	return not is_on_floor() and not is_on_wall() and not is_on_ceiling()
 
 func _physics_process(_delta: float) -> void:
 	if !is_ready:
 		return
-	
 	if rotating:
 		return
-
+	if is_not_grounded() and !on_plat:
+		_snap_to_surface_on_spawn()
 	if down_ray.is_colliding():
 		update_direction()
 		v_component.set_proper_velocity(direction * speed, 1)
@@ -213,11 +217,12 @@ func _update_surface_state() -> void:
 	# Se mudou, chama handler de transição
 	if new_state != surface_state:
 		surface_state = new_state
-		_on_surface_changed( new_state)
+		_on_surface_changed(new_state)
 
 
 # Quando muda de superfície, start/stop do timer
 func _on_surface_changed( new_state: String) -> void:
+	up_ray.enabled = false
 	# Start timer quando entrar em floor
 	if new_state == "floor":
 		if _floor_timer and _floor_timer.is_stopped():
@@ -225,9 +230,8 @@ func _on_surface_changed( new_state: String) -> void:
 	elif new_state == "ceiling":
 		if _floor_timer and not _floor_timer.is_stopped():
 			_floor_timer.stop()
-		up_ray.enabled = false
 		up_ray.force_raycast_update()
-		await get_tree().create_timer(1).timeout
+		await get_tree().create_timer(0.4).timeout
 		up_ray.enabled = true
 		up_ray.force_raycast_update()
 	else:
@@ -263,7 +267,7 @@ func _climb_to_ceiling_with_tween() -> void:
 	await tween.finished
 	up_ray.enabled = true
 	side_ray.enabled = true
-	down_ray.target_position = Vector2(0, 12)
+	down_ray.target_position = Vector2(0, 7)
 
 	# Define novo estado e direção aleatória
 	_update_surface_state()
@@ -301,7 +305,7 @@ func _fall_from_ceiling_with_tween() -> void:
 	await tween.finished
 	up_ray.enabled = true
 	side_ray.enabled = true
-	down_ray.target_position = Vector2(0, 12)
+	down_ray.target_position = Vector2(0, 7)
 
 	# Define novo estado e direção aleatória
 	_update_surface_state()
@@ -315,3 +319,9 @@ func _fall_from_ceiling_with_tween() -> void:
 func _randomize_direction_after_fall() -> void:
 	movedir = -1.0 if randf() < 0.5 else 1.0
 	side_ray.target_position.x = abs(side_ray.target_position.x) * movedir
+
+func _on_plat_detec_body_entered(_body: Node2D) -> void:
+	on_plat += 1
+
+func _on_plat_detec_body_exited(_body: Node2D) -> void:
+	on_plat -= 1
