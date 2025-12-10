@@ -681,3 +681,7 @@ func unlock_arrow(arrow_index : int) -> void:
 		current_arrow_index = arrow_index
 		build_arrows()
 	HudHandler.hud.change_arrow(arrow_index)
+
+func increase_total_health(upgrade_index : int) -> void:
+	health_manager.max_health += 1
+	HudHandler.hud.init_hearts(1)

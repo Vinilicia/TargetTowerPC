@@ -1,6 +1,6 @@
 [gd_scene load_steps=3 format=3 uid="uid://d35bisc3r0ixb"]
 
-[ext_resource type="Script" uid="uid://dlbt1g6upvchh" path="res://Scripts/Main/level_db.gd" id="1_rl2af"]
+[ext_resource type="Script" uid="uid://dl4bhs0bl6kkj" path="res://Scripts/Main/level_db.gd" id="1_rl2af"]
 [ext_resource type="Resource" uid="uid://ddqd4ltf81dsu" path="res://Data/LevelDB.tres" id="2_6kdp8"]
 
 [node name="LevelDB" type="Node"]

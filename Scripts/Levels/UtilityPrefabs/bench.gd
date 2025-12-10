@@ -27,6 +27,7 @@ func heal_player() -> void:
 	player.heal_mana_on_bench()
 
 func bench_used() -> void:	
+	print("merda")
 	SaveManager.save_file_data.set_last_bench_id(bench_id)
 	SaveManager.save_file_data.set_area_of_bench(area)
 	SaveManager.save_file_data.set_available_arrows(player.available_arrows)
