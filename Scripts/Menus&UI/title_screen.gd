@@ -73,6 +73,7 @@ func button_pressed(button_id : int) -> void:
 	if on_copy:
 		on_copy = false
 		SaveManager._save(save_selected)
+		_ready()
 	
 func instantiate_main_menu() -> void:
 	var main_menu : Control = load(main_menu_path).instantiate()
@@ -123,8 +124,10 @@ func copy_button_pressed() -> void:
 
 func erase_button_pressed() -> void:
 	on_copy = false
+	SaveManager.save_file_data = SaveDataResource.new()
 	SaveManager._save(save_selected)
 	edit_buttons.visible = false
+	_ready()
 
 func show_settings() -> void:
 	settings_menu.visible = true

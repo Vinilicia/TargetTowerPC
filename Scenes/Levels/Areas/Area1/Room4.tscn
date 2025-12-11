@@ -83,6 +83,7 @@ target_level_name = "Room3"
 
 [node name="Camera1" parent="Cameras" index="0"]
 position = Vector2(-289, -140)
+draw_limits = true
 limit_left = -1254
 limit_right = 32
 limit_bottom = 40

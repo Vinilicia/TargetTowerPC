@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://bb38trgocfjqa"]
+
+[ext_resource type="PackedScene" uid="uid://be3dsa82sbdwg" path="res://Assets/Home_bred/Items/ManaPickup.aseprite" id="1_h1mgt"]
+
+[node name="ManaPickup" instance=ExtResource("1_h1mgt")]
+offset = Vector2(0, 2)
+region_rect = Rect2(0, 0, 11, 10)
+
+[node name="AnimationPlayer" parent="." index="0"]
+autoplay = "Full"

@@ -43,10 +43,8 @@ func change_level(next_level: String, spawn_position: Vector2, area: LevelDataba
 func handle_last_level(old_level: Room) -> void:
 	if old_level:
 		enemy_alive_persistence = old_level.get_enemy_alive_array()
-		print(enemy_alive_persistence)
 		last_room_name = old_level.name
 		call_deferred("remove_child", old_level)
-
 
 func handle_next_level(scene_path: String, spawn_position: Vector2) -> void:
 	var new_level: Room = load(scene_path).instantiate()
@@ -65,7 +63,7 @@ func spaw_player_on_bench() -> void:
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 	get_node("Player").global_position = current_level.get_bench_position()
 	blackout_fade_in()
-	await tween.finished
+	await get_tree().create_timer(1.0)
 	(get_parent().get_parent() as SubViewportContainer).visible = true
 	await get_tree().create_timer(0.2).timeout
 	blackout_fade_out()

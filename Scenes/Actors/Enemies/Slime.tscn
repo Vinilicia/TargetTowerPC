@@ -39,7 +39,7 @@ shape = ExtResource("1_nn6wd")
 material = SubResource("ShaderMaterial_lln2p")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1"]
-max_health = 4.0
+max_health = 3.0
 
 [node name="Hurtbox" parent="BaseEnemyStuff" index="2"]
 scale = Vector2(16, 16)

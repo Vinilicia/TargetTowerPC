@@ -1,0 +1,10 @@
+[gd_scene load_steps=2 format=3 uid="uid://drpidlmtl84tn"]
+
+[ext_resource type="PackedScene" uid="uid://dckpql4qcsg5w" path="res://Assets/Home_bred/Items/SavePoint.aseprite" id="1_plvis"]
+
+[node name="SavePoint" instance=ExtResource("1_plvis")]
+offset = Vector2(0, -3)
+region_rect = Rect2(24, 22, 24, 21)
+
+[node name="AnimationPlayer" parent="." index="0"]
+autoplay = "Idle"

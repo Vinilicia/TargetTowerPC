@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://p0f35mxovxw1"]
+[gd_scene load_steps=20 format=4 uid="uid://p0f35mxovxw1"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_eeqjb"]
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="2_rnn5p"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="6_7jgr4"]
 [ext_resource type="PackedScene" uid="uid://bps57wjl0501i" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="6_bl5d3"]
 [ext_resource type="PackedScene" uid="uid://8fltbt7y55sy" path="res://Scenes/Interactibles/Mechanisms/Buttons&Receptors/RedTarget&Block.tscn" id="8_v1mo1"]
+[ext_resource type="PackedScene" uid="uid://bxlurxugsmp2b" path="res://Scenes/Items/ManaUpgrade.tscn" id="10_qd45j"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_w5s0e"]
 resource_local_to_scene = true
@@ -118,16 +119,19 @@ direction = 1
 target_level_name = "Room5"
 
 [node name="Bench" parent="." index="3" instance=ExtResource("6_7jgr4")]
-position = Vector2(65, -101)
-area = 1
+position = Vector2(83, -19)
+
+[node name="Bench2" parent="." index="4" instance=ExtResource("6_7jgr4")]
+position = Vector2(534, -512)
 
 [node name="Camera1" parent="Cameras" index="0"]
 position = Vector2(272, -140)
+draw_limits = true
 limit_left = -48
 limit_right = 1006
 limit_bottom = 40
 
-[node name="RedTarget&Block" parent="." index="5" instance=ExtResource("8_v1mo1")]
+[node name="RedTarget&Block" parent="." index="6" instance=ExtResource("8_v1mo1")]
 position = Vector2(207, -301)
 
 [node name="Block" parent="RedTarget&Block" index="0"]
@@ -137,5 +141,8 @@ rotation = -1.5708
 [node name="RedTarget" parent="RedTarget&Block" index="1"]
 position = Vector2(-17, -20)
 rotation = -1.5708
+
+[node name="ManaUpgrade" parent="." index="7" instance=ExtResource("10_qd45j")]
+position = Vector2(879, -24)
 
 [editable path="RedTarget&Block"]

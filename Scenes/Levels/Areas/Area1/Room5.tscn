@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://dnm2n6ldplpwf"]
+[gd_scene load_steps=19 format=4 uid="uid://dnm2n6ldplpwf"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_icml6"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="2_81ee0"]
@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://8fltbt7y55sy" path="res://Scenes/Interactibles/Mechanisms/Buttons&Receptors/RedTarget&Block.tscn" id="7_i2bly"]
 [ext_resource type="PackedScene" uid="uid://ds1syl4lpg0s1" path="res://Scenes/Interactibles/Objects/Arrow_Unlocker.tscn" id="8_gf5x2"]
 [ext_resource type="Texture2D" uid="uid://kgj4mdl2d3a7" path="res://Assets/Home_bred/UI/SaveFile/TeleportBox.aseprite" id="9_2esne"]
+[ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="10_2esne"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_dxxll"]
 resource_local_to_scene = true
@@ -102,6 +103,7 @@ target_level_name = "Room3"
 
 [node name="Camera1" parent="Cameras" index="0"]
 position = Vector2(320, -180)
+draw_limits = true
 limit_left = 0
 limit_top = -792
 limit_right = 1064
@@ -124,5 +126,8 @@ arrow_index = 3
 
 [node name="Sprite" type="Sprite2D" parent="ArrowUnlocker" index="1"]
 texture = ExtResource("9_2esne")
+
+[node name="Bench" parent="." index="6" instance=ExtResource("10_2esne")]
+position = Vector2(688, -208)
 
 [editable path="RedTarget&Block"]

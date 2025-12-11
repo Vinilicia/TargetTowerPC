@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=4 uid="uid://dt34ayv1esh31"]
+[gd_scene load_steps=24 format=4 uid="uid://dt34ayv1esh31"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_3owao"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_ov6pu"]
@@ -10,6 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://xhwqoiulihut" path="res://Scenes/Interactibles/Objects/Box.tscn" id="8_ccum2"]
 [ext_resource type="PackedScene" uid="uid://ds1syl4lpg0s1" path="res://Scenes/Interactibles/Objects/Arrow_Unlocker.tscn" id="9_tygid"]
 [ext_resource type="Texture2D" uid="uid://bthjxgrpvjtq1" path="res://Assets/Home_bred/UI/SaveFile/Firebox.aseprite" id="10_36hqy"]
+[ext_resource type="PackedScene" uid="uid://0p4j18uqwi11" path="res://Scenes/Interactibles/Objects/Health_Upgrade.tscn" id="11_v1ku2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mn7b2"]
 resource_local_to_scene = true
@@ -142,11 +143,11 @@ spawn_position = Vector2(2410, -180)
 target_level_name = "Room1"
 
 [node name="Bench" parent="." index="3" instance=ExtResource("4_8dk6u")]
-position = Vector2(95, -69)
-area = 1
+position = Vector2(855, -145)
 
 [node name="Camera1" parent="Cameras" index="0"]
 position = Vector2(320, 0)
+draw_limits = true
 limit_left = 0
 limit_right = 2240
 
@@ -162,3 +163,7 @@ arrow_index = 1
 
 [node name="Sprite" type="Sprite2D" parent="ArrowUnlocker" index="1"]
 texture = ExtResource("10_36hqy")
+
+[node name="HealthUpgrade" parent="." index="8" instance=ExtResource("11_v1ku2")]
+position = Vector2(927, -607)
+upgrade_index = 1

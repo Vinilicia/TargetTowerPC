@@ -29,7 +29,8 @@ func kill_enemies(is_alive : Array[bool]) -> void:
 	var enemies = enemies_node.get_children()
 	for i in range(enemies.size()):
 		if !is_alive[i]:
-			enemies[i].die()
+			(enemies[i] as Enemy).money_amount = 0
+			(enemies[i] as Enemy).die()
 			
 func get_bench_position() -> Vector2:
 	if bench:

@@ -107,7 +107,7 @@ func test_create_new_save_if_missing():
 	var result = save_manager._load(TEST_SLOT)
 	assert_true(result, "Load deve retornar true ao criar novo")
 	assert_true(FileAccess.file_exists(save_manager.get_save_path(TEST_SLOT)), "Arquivo deve ter sido criado")
-	assert_eq(save_manager.save_file_data.MaxHealth, 5)
+	assert_eq(save_manager.save_file_data.MaxHealth, 4)
 
 func test_save_and_load_roundtrip():
 	save_manager._load(TEST_SLOT)

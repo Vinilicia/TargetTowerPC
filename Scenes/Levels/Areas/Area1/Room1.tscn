@@ -7,7 +7,7 @@
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="4_mn7b2"]
 [ext_resource type="PackedScene" uid="uid://rbo0lyegdlbe" path="res://Scenes/Actors/Enemies/Spider.tscn" id="5_vw5jy"]
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="6_l8aai"]
-[ext_resource type="PackedScene" uid="uid://0p4j18uqwi11" path="res://Scenes/Interactibles/Objects/Increase_Health_Area.tscn" id="8_cfyxf"]
+[ext_resource type="PackedScene" uid="uid://0p4j18uqwi11" path="res://Scenes/Interactibles/Objects/Health_Upgrade.tscn" id="8_cfyxf"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vw5jy"]
 resource_local_to_scene = true
@@ -103,13 +103,16 @@ direction = 1
 target_level_name = "Room2"
 
 [node name="Bench" parent="." index="3" instance=ExtResource("6_l8aai")]
-position = Vector2(312, -37)
-area = 1
+position = Vector2(77, -15)
+
+[node name="Bench2" parent="." index="4" instance=ExtResource("6_l8aai")]
+position = Vector2(1447, -79)
 
 [node name="Camera1" parent="Cameras" index="0"]
 position = Vector2(336, 0)
+draw_limits = true
 limit_left = 16
 limit_right = 2460
 
-[node name="Increase_Health_Area" parent="." index="5" instance=ExtResource("8_cfyxf")]
-position = Vector2(101, -11)
+[node name="HealthUpgrade" parent="." index="6" instance=ExtResource("8_cfyxf")]
+position = Vector2(1241, -318)

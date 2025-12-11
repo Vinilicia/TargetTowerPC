@@ -113,12 +113,13 @@ var in_control : bool = true
 # READY
 # ============================================================
 func _ready():
+	build_arrows()
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
 	velocity = Vector2.ZERO
-	#await get_tree().process_frame
 	await HudHandler.hud.ready
 	HudHandler.hud.init_mana(max_mana)
+	HudHandler.hud.init_hearts(health_manager.max_health)
 	HudHandler.hud.change_arrow(current_arrow_index)
 	
 	mana_timer.wait_time = mana_regen_time
@@ -616,9 +617,9 @@ func set_available_arrows(available_arrows_loaded: Array[bool]):
 	available_arrows = available_arrows_loaded
 
 func wake_up(use_save : bool = true):
-	($Misc/HealthManager as HealthManager).max_health = SaveManager.save_file_data.get_max_health()
-	($Misc/HealthManager as HealthManager).health = ($Misc/HealthManager as HealthManager).max_health
-	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health as int)
+	health_manager.max_health = SaveManager.save_file_data.get_max_health()
+	health_manager.health = health_manager.max_health
+	HudHandler.hud.init_hearts(health_manager.max_health as int)
 	if use_save:
 		set_available_arrows(SaveManager.save_file_data.get_available_arrows())
 		build_arrows()
@@ -684,7 +685,12 @@ func unlock_arrow(arrow_index : int) -> void:
 		build_arrows()
 	HudHandler.hud.change_arrow(arrow_index)
 
-func increase_total_health(upgrade_index : int) -> void:
+func increase_total_health() -> void:
 	health_manager.max_health += 1
-	health_manager.health += 1
-	HudHandler.hud.init_hearts(($Misc/HealthManager as HealthManager).max_health)
+	HudHandler.hud.add_heart()
+	heal_hp_on_bench()
+
+func increase_max_mana() -> void:
+	max_mana += 1
+	HudHandler.hud.init_mana(max_mana)
+	gain_mana(max_mana)

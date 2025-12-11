@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=4 uid="uid://ccppx5hdjnx2o"]
+[gd_scene load_steps=22 format=4 uid="uid://ccppx5hdjnx2o"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_gk431"]
 [ext_resource type="PackedScene" uid="uid://doixgcgh3c0mc" path="res://Scenes/Main/Portal.tscn" id="2_cl0jt"]
@@ -8,6 +8,9 @@
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="5_gm6qf"]
 [ext_resource type="PackedScene" uid="uid://bps57wjl0501i" path="res://Scenes/Actors/Enemies/Common_Goblin.tscn" id="6_b2a3t"]
 [ext_resource type="PackedScene" uid="uid://4cb2gyoifqiu" path="res://Scenes/Actors/Enemies/Shaman.tscn" id="7_7gtbj"]
+[ext_resource type="PackedScene" uid="uid://0p4j18uqwi11" path="res://Scenes/Interactibles/Objects/Health_Upgrade.tscn" id="9_6wb7s"]
+[ext_resource type="PackedScene" uid="uid://bxlurxugsmp2b" path="res://Scenes/Items/ManaUpgrade.tscn" id="10_ilgyy"]
+[ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="11_jfhb2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_gm6qf"]
 resource_local_to_scene = true
@@ -121,7 +124,19 @@ target_level_name = "Room7"
 
 [node name="Camera1" parent="Cameras" index="0"]
 position = Vector2(320, 180)
+draw_limits = true
 limit_left = 0
 limit_top = -104
 limit_right = 1626
 limit_bottom = 624
+
+[node name="HealthUpgrade" parent="." index="4" instance=ExtResource("9_6wb7s")]
+position = Vector2(1206, -16)
+upgrade_index = 2
+
+[node name="ManaUpgrade" parent="." index="5" instance=ExtResource("10_ilgyy")]
+position = Vector2(295, 265)
+upgrade_index = 1
+
+[node name="Bench" parent="." index="6" instance=ExtResource("11_jfhb2")]
+position = Vector2(194, 71)

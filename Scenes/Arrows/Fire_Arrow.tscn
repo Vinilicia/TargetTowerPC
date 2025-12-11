@@ -62,6 +62,7 @@ collision = NodePath("../Coll")
 
 [node name="Hitbox" parent="Fire" index="0" node_paths=PackedStringArray("parent")]
 parent = NodePath("..")
+Damage = 1.0
 
 [connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]
 [connection signal="hit" from="Fire/Hitbox" to="Fire" method="_on_hitbox_hit"]

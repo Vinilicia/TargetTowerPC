@@ -146,6 +146,9 @@ length = 7
 position = Vector2(343, 184)
 should_save = false
 
+[node name="Camera1" parent="Cameras" index="0"]
+draw_limits = true
+
 [node name="BossArena" parent="." index="8" instance=ExtResource("12_4no8i")]
 position = Vector2(139, -688)
 

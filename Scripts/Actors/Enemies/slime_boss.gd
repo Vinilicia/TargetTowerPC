@@ -248,6 +248,10 @@ func perform_jump(target: Vector2, offset : float = 10, height_increase : float 
 	
 	v_component.set_proper_velocity(Vector2(vx, vy))
 
+func die() -> void:
+	AudioManager.play_song("BossDeath")
+	super.die()
+
 func grounded_behaviour(delta : float) -> void:
 	if !is_on_floor():
 		apply_gravity(delta)

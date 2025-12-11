@@ -72,6 +72,7 @@ stretch_mode = 2
 [node name="CurrentValueLabel" type="Label" parent="MarginContainer/ElementsContainer/MoneyContainer"]
 layout_mode = 2
 size_flags_horizontal = 2
+mouse_filter = 1
 text = "0"
 
 [connection signal="visibility_changed" from="MarginContainer/ElementsContainer/MoneyContainer/CurrentValueLabel" to="." method="_on_money_label_visibility_changed"]

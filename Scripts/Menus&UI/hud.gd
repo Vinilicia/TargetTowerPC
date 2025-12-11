@@ -23,6 +23,12 @@ func init_hearts(amount : int = 3) -> void:
 		hearts.append(new_heart)
 	full_heart_amount = amount
 
+func add_heart() -> void:
+	var new_heart : HeartTexture = heart_rect.instantiate()
+	hearts_container.call_deferred("add_child", new_heart)
+	hearts.append(new_heart)
+	new_heart.anim.play("Empty")
+
 func init_mana(amount : int = 5) -> void:
 	mana_bar.max_value = amount
 	mana_bar.value = amount
