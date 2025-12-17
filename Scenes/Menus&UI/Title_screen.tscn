@@ -104,7 +104,6 @@ size_flags_vertical = 0
 focus_neighbor_left = NodePath("../SaveFileButton3")
 focus_neighbor_top = NodePath("../../BackButton")
 focus_neighbor_right = NodePath("../SaveFileButton2")
-focus_neighbor_bottom = NodePath("../../EditButtonsContainer/OpenButton")
 
 [node name="SaveFileButton2" parent="FileSelectMenu/VBoxContainer/SaveProfilesContainer" instance=ExtResource("2_vl33i")]
 layout_mode = 2
@@ -113,7 +112,6 @@ size_flags_vertical = 0
 focus_neighbor_left = NodePath("../SaveFileButton")
 focus_neighbor_top = NodePath("../../BackButton")
 focus_neighbor_right = NodePath("../SaveFileButton3")
-focus_neighbor_bottom = NodePath("../../EditButtonsContainer/OpenButton")
 save_slot = 2
 
 [node name="SaveFileButton3" parent="FileSelectMenu/VBoxContainer/SaveProfilesContainer" instance=ExtResource("2_vl33i")]
@@ -123,7 +121,6 @@ size_flags_vertical = 4
 focus_neighbor_left = NodePath("../SaveFileButton2")
 focus_neighbor_top = NodePath("../../BackButton")
 focus_neighbor_right = NodePath("../SaveFileButton")
-focus_neighbor_bottom = NodePath("../../EditButtonsContainer/EraseButton")
 save_slot = 3
 
 [node name="EditButtonsContainer" type="HBoxContainer" parent="FileSelectMenu/VBoxContainer"]
@@ -137,8 +134,7 @@ custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 10
 focus_neighbor_left = NodePath("../EraseButton")
-focus_neighbor_top = NodePath("../../SaveProfilesContainer/SaveFileButton")
-focus_neighbor_right = NodePath("../EraseButton")
+focus_neighbor_right = NodePath("../CopyButton")
 focus_neighbor_bottom = NodePath("../../BackButton")
 text = "TEXT_OPEN"
 
@@ -146,8 +142,7 @@ text = "TEXT_OPEN"
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 10
-focus_neighbor_left = NodePath("../EraseButton")
-focus_neighbor_top = NodePath("../../SaveProfilesContainer/SaveFileButton")
+focus_neighbor_left = NodePath("../OpenButton")
 focus_neighbor_right = NodePath("../EraseButton")
 focus_neighbor_bottom = NodePath("../../BackButton")
 text = "TEXT_COPY"
@@ -156,8 +151,7 @@ text = "TEXT_COPY"
 custom_minimum_size = Vector2(80, 0)
 layout_mode = 2
 size_flags_horizontal = 2
-focus_neighbor_left = NodePath("../OpenButton")
-focus_neighbor_top = NodePath("../../SaveProfilesContainer/SaveFileButton3")
+focus_neighbor_left = NodePath("../CopyButton")
 focus_neighbor_right = NodePath("../OpenButton")
 focus_neighbor_bottom = NodePath("../../BackButton")
 text = "TEXT_ERASE"
@@ -167,7 +161,6 @@ custom_minimum_size = Vector2(120, 20)
 layout_mode = 2
 size_flags_horizontal = 4
 size_flags_vertical = 10
-focus_neighbor_top = NodePath("../EditButtonsContainer/OpenButton")
 focus_neighbor_bottom = NodePath("../SaveProfilesContainer/SaveFileButton")
 text = "TEXT_BACK"
 

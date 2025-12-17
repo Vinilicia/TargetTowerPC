@@ -16,7 +16,7 @@ monitorable = false
 shape = ExtResource("2_dih4k")
 
 [node name="SavePoint" parent="." instance=ExtResource("3_dih4k")]
-position = Vector2(-12, -12)
+position = Vector2(-11, -11)
 
 [connection signal="body_entered" from="CollisionArea" to="." method="_on_player_entered"]
 [connection signal="body_exited" from="CollisionArea" to="." method="_on_player_exited"]

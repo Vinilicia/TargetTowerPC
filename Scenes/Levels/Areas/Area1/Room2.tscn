@@ -10,7 +10,7 @@
 [ext_resource type="PackedScene" uid="uid://xhwqoiulihut" path="res://Scenes/Interactibles/Objects/Box.tscn" id="8_ccum2"]
 [ext_resource type="PackedScene" uid="uid://ds1syl4lpg0s1" path="res://Scenes/Interactibles/Objects/Arrow_Unlocker.tscn" id="9_tygid"]
 [ext_resource type="Texture2D" uid="uid://bthjxgrpvjtq1" path="res://Assets/Home_bred/UI/SaveFile/Firebox.aseprite" id="10_36hqy"]
-[ext_resource type="PackedScene" uid="uid://0p4j18uqwi11" path="res://Scenes/Interactibles/Objects/Health_Upgrade.tscn" id="11_v1ku2"]
+[ext_resource type="PackedScene" uid="uid://0p4j18uqwi11" path="res://Scenes/Items/Health_Upgrade.tscn" id="11_v1ku2"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_mn7b2"]
 resource_local_to_scene = true

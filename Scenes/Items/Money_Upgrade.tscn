@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://buc5fawxkmx4s"]
+
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_e1rx7"]
+[ext_resource type="Script" uid="uid://3nud2bx4hhf0" path="res://Scripts/Items/money_upgrade.gd" id="1_r22km"]
+[ext_resource type="Texture2D" uid="uid://cqt6bgiwgqym7" path="res://godot_state_charts_examples/ant_hill/banana/banana.svg" id="3_e3id4"]
+
+[node name="MoneyUpgrade" type="Area2D"]
+script = ExtResource("1_r22km")
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+scale = Vector2(14, 14)
+shape = ExtResource("1_e1rx7")
+
+[node name="Sprite2D" type="Sprite2D" parent="."]
+scale = Vector2(0.5, 1)
+texture = ExtResource("3_e3id4")
+
+[connection signal="body_entered" from="." to="." method="_on_player_entered"]

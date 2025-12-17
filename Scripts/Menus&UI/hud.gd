@@ -78,7 +78,7 @@ func lose_mana(amount_lost : int ) -> void:
 		mana_bar.tint_progress = Color(1, 0, 1, 1)
 
 func add_money(value: int) -> void:
-	target_money += value
+	target_money = min(SaveManager.save_file_data.get_max_money(), target_money + value)
 	
 	var duration_offset : float = (abs(float(target_money) - float(current_money)) / 100.0)
 	var duration : float = (min(round(duration_offset), 60) * 0.1) + 0.2 if duration_offset >= 0.1 else 0.05
@@ -125,3 +125,4 @@ func _on_tween_finished() -> void:
 
 func _on_money_label_visibility_changed() -> void:
 	money_label.text = str(SaveManager.save_file_data.get_money())
+	target_money = SaveManager.save_file_data.get_money()

@@ -67,13 +67,13 @@ func save_file_3_button_pressed() -> void:
 	button_pressed(3)
 
 func button_pressed(button_id : int) -> void:
-	edit_buttons.visible = true
-	save_file_buttons[button_id-1].grab_focus()
-	save_selected = button_id
 	if on_copy:
 		on_copy = false
 		SaveManager._save(save_selected)
 		_ready()
+	change_edit_buttons(true)
+	edit_buttons.get_child(0).grab_focus()
+	save_selected = button_id
 	
 func instantiate_main_menu() -> void:
 	var main_menu : Control = load(main_menu_path).instantiate()
@@ -115,19 +115,38 @@ func load_procedural() -> void:
 func open_button_pressed() -> void:
 	on_copy = false
 	load_game(save_selected)
-	edit_buttons.visible = false
+	change_edit_buttons(false)
 	
 func copy_button_pressed() -> void:
 	on_copy = true
 	SaveManager._load(save_selected)
-	edit_buttons.visible = false
+	change_edit_buttons(false)
+	save_file_buttons[save_selected].grab_focus()
 
 func erase_button_pressed() -> void:
 	on_copy = false
 	SaveManager.save_file_data = SaveDataResource.new()
 	SaveManager._save(save_selected)
-	edit_buttons.visible = false
+	change_edit_buttons(false)
 	_ready()
+
+func change_edit_buttons(to_visible : bool) -> void:
+	edit_buttons.visible = to_visible
+	var file_select_back_button : Button = $FileSelectMenu/VBoxContainer/BackButton
+	if to_visible:
+		file_select_back_button.focus_neighbor_top = file_select_back_button.get_path_to(edit_buttons.get_child(1))
+		for child : Button in edit_buttons.get_children():
+			child.focus_neighbor_bottom = child.get_path_to(file_select_back_button)
+		for i in range(3):
+			var edit_button : Button = edit_buttons.get_child(i)
+			var save_button := save_file_buttons[i]
+			edit_button.focus_neighbor_bottom = edit_button.get_path_to(file_select_back_button)
+			edit_button.focus_neighbor_top = edit_button.get_path_to(save_button)
+			save_button.focus_neighbor_bottom = save_button.get_path_to(edit_button)
+	else:
+		file_select_back_button.focus_neighbor_top = file_select_back_button.get_path_to(save_file_buttons[1])
+		for button in save_file_buttons:
+			button.focus_neighbor_bottom = button.get_path_to(file_select_back_button)
 
 func show_settings() -> void:
 	settings_menu.visible = true

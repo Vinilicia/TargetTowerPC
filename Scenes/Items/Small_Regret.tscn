@@ -16,6 +16,7 @@ min_delay = 0.5
 max_delay = 5.0
 anim_timer = NodePath("AnimTimer")
 sprite = NodePath("Regret")
+value = 30
 
 [node name="Regret" parent="." instance=ExtResource("1_nay2b")]
 

@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=4 uid="uid://bwktolati234h"]
+[gd_scene load_steps=19 format=4 uid="uid://bwktolati234h"]
 
 [ext_resource type="PackedScene" uid="uid://kmqku4ohfdrp" path="res://Scenes/Levels/Areas/Area1/Area1_Base_Room.tscn" id="1_qfwnn"]
 [ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Scenes/Actors/Enemies/Bat.tscn" id="2_ho8y7"]
@@ -7,7 +7,8 @@
 [ext_resource type="PackedScene" uid="uid://b68l087fc22iq" path="res://Scenes/Actors/Enemies/Slime.tscn" id="4_mn7b2"]
 [ext_resource type="PackedScene" uid="uid://rbo0lyegdlbe" path="res://Scenes/Actors/Enemies/Spider.tscn" id="5_vw5jy"]
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Scenes/Interactibles/Objects/Bench.tscn" id="6_l8aai"]
-[ext_resource type="PackedScene" uid="uid://0p4j18uqwi11" path="res://Scenes/Interactibles/Objects/Health_Upgrade.tscn" id="8_cfyxf"]
+[ext_resource type="PackedScene" uid="uid://0p4j18uqwi11" path="res://Scenes/Items/Health_Upgrade.tscn" id="8_cfyxf"]
+[ext_resource type="PackedScene" uid="uid://buc5fawxkmx4s" path="res://Scenes/Items/Money_Upgrade.tscn" id="9_1gj37"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_vw5jy"]
 resource_local_to_scene = true
@@ -116,3 +117,10 @@ limit_right = 2460
 
 [node name="HealthUpgrade" parent="." index="6" instance=ExtResource("8_cfyxf")]
 position = Vector2(1241, -318)
+
+[node name="MoneyUpgrade" parent="." index="7" instance=ExtResource("9_1gj37")]
+position = Vector2(241, -57)
+
+[node name="MoneyUpgrade2" parent="." index="8" instance=ExtResource("9_1gj37")]
+position = Vector2(710, -158)
+upgrade_index = 1

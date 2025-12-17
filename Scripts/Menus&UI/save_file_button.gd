@@ -4,6 +4,7 @@ extends Button
 @export var arrow_texture_nodes : Array[TextureRect]
 @export var arrow_textures : Array[Texture2D]
 @export var bench_name_label : Label
+@export var money_label : Label
 
 func init_arrow_textures(save_data : SaveDataResource) -> void:
 	for i in range(arrow_texture_nodes.size()):
@@ -18,3 +19,4 @@ func initialize() -> void:
 			return
 		init_arrow_textures(save_data)
 		bench_name_label.text = tr("TEXT_BENCH") + str(" ") + str(save_data.get_last_bench_id())
+		money_label.text = str(save_data.get_money())

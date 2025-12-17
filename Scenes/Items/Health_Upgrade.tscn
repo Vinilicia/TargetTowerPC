@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=3 uid="uid://0p4j18uqwi11"]
+
+[ext_resource type="Script" uid="uid://bbfqnpug81rsu" path="res://Scripts/Interactibles/Objects/health_upgrade.gd" id="1_8tc5l"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_v5el0"]
+[ext_resource type="PackedScene" uid="uid://cb8x6w454loat" path="res://Scenes/Items/HeartPickup_Sprite.tscn" id="3_phrdf"]
+
+[node name="HealthUpgrade" type="Area2D"]
+script = ExtResource("1_8tc5l")
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+scale = Vector2(14, 14)
+shape = ExtResource("2_v5el0")
+debug_color = Color(0.943023, 8.95232e-06, 0.603505, 0.42)
+
+[node name="HeartPickup" parent="." instance=ExtResource("3_phrdf")]
+position = Vector2(-7, -7)
+
+[connection signal="body_entered" from="." to="." method="_on_player_entered"]

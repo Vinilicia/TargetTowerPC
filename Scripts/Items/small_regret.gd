@@ -12,7 +12,7 @@ var player : Node2D = null
 
 func _ready() -> void:
 	anim_timer.start(randf_range(min_delay, max_delay))
-	#dgo_to_player()
+	#go_to_player()
 
 @export var fly_acceleration: float = 300.0
 
@@ -47,5 +47,8 @@ func go_to_player() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 
 func _on_player_detec_body_entered(_body: Node2D) -> void:
-	($PlayerDetec as Area2D).set_deferred("monitoring", false)
-	get_collected()
+	if SaveManager.save_file_data.get_money() == SaveManager.save_file_data.get_max_money():
+		return
+	else:
+		($PlayerDetec as Area2D).set_deferred("monitoring", false)
+		get_collected()

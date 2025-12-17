@@ -145,7 +145,7 @@ func _save(slot_index: int):
 	for prop_info in save_file_data.get_property_list():
 		var prop_name = prop_info.name
 		if prop_name == "Money":
-			print("BANANA ", save_file_data.get("Money"))
+			print("BANANA ", save_file_data.get("MoneyUpgrades"))
 		if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path", "script"]:
 			continue
 		data_to_save[prop_name] = save_file_data.get(prop_name)
@@ -267,6 +267,7 @@ func _load(slot_index: int) -> bool:
 				var new_array: Array = []
 				for v in value:
 					new_array.append(v)
+				print(prop_name, value)
 				loaded_resource.set_array(prop_name, new_array)
 			else:
 				loaded_resource.set(prop_name, value)
