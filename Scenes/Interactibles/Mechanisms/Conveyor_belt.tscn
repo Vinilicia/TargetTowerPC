@@ -17,7 +17,6 @@
 
 [sub_resource type="AnimatedTexture" id="AnimatedTexture_cfxrv"]
 frames = 4
-speed_scale = 2.0
 frame_0/texture = ExtResource("8_21dv2")
 frame_0/duration = 0.1
 frame_1/texture = ExtResource("9_ej8yg")
@@ -29,7 +28,6 @@ frame_3/duration = 0.1
 
 [sub_resource type="AnimatedTexture" id="AnimatedTexture_6l345"]
 frames = 4
-speed_scale = 2.0
 frame_0/texture = ExtResource("4_6l345")
 frame_0/duration = 0.1
 frame_1/texture = ExtResource("5_neywt")
@@ -41,7 +39,6 @@ frame_3/duration = 0.1
 
 [sub_resource type="AnimatedTexture" id="AnimatedTexture_fav8r"]
 frames = 4
-speed_scale = 2.0
 frame_0/texture = ExtResource("12_16462")
 frame_0/duration = 0.1
 frame_1/texture = ExtResource("13_2ov13")
@@ -53,11 +50,12 @@ frame_3/duration = 0.1
 
 [node name="ConveyorBelt" type="Node2D"]
 script = ExtResource("1_g3die")
-length = 10
+belt_dir = 3
+length = 8
 
 [node name="Belt" type="Area2D" parent="."]
-position = Vector2(-80, -8)
-scale = Vector2(-160, 12)
+position = Vector2(6, -64)
+scale = Vector2(12, -128)
 collision_layer = 0
 collision_mask = 25
 monitorable = false
@@ -66,15 +64,18 @@ monitorable = false
 shape = ExtResource("1_36qo6")
 debug_color = Color(1, 1, 0, 0.470588)
 
-[node name="StaticBody" type="StaticBody2D" parent="."]
-position = Vector2(-80, -6)
-scale = Vector2(-160, 12)
+[node name="StaticBody" type="StaticBody2D" parent="." groups=["Attachables"]]
+position = Vector2(4, -64)
+scale = Vector2(12, -128)
 collision_layer = 4
 
 [node name="Coll" type="CollisionShape2D" parent="StaticBody"]
 shape = ExtResource("1_36qo6")
 
 [node name="SpriteNodes" type="Node2D" parent="."]
+visible = false
+rotation = -1.5707964
+scale = Vector2(-1, -1)
 
 [node name="LeftSprite" type="Sprite2D" parent="SpriteNodes"]
 position = Vector2(-8, -6)
@@ -85,14 +86,14 @@ region_rect = Rect2(0, 0, 16, 12)
 
 [node name="MiddleSprite" type="Sprite2D" parent="SpriteNodes"]
 texture_repeat = 2
-position = Vector2(-80, -6)
+position = Vector2(-64, -6)
 scale = Vector2(-1, 1)
 texture = SubResource("AnimatedTexture_6l345")
 region_enabled = true
-region_rect = Rect2(0, 0, 128, 12)
+region_rect = Rect2(0, 0, 96, 12)
 
 [node name="RightSprite" type="Sprite2D" parent="SpriteNodes"]
-position = Vector2(-152, -6)
+position = Vector2(-120, -6)
 scale = Vector2(-1, 1)
 texture = SubResource("AnimatedTexture_fav8r")
 region_enabled = true

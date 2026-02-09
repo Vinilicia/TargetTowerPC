@@ -149,6 +149,7 @@ func reverse_direction() -> void:
 			v_component.add_ground_velocity(belt_direction * belt_speed * 2)
 
 func _on_belt_body_entered(body: Node2D) -> void:
+	print(body.name)
 	var v_component : VelocityComponent = body.find_child("VelocityComponent")
 	if v_component:
 		bodies_inside.append(body)

@@ -1,12 +1,11 @@
 extends CharacterBody2D
-class_name Player
+#class_name Player
 
 # ============================================================
 # CONSTANTES
 # ============================================================
 const ARCHER_OFFSET_X := 24
 const DEFAULT_MOVE_SPEED := 120.0
-const DODGE_KNOCKBACK := 100
 const DODGE_VERTICAL_VELOCITY := 0.0
 const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 
@@ -60,6 +59,10 @@ const SAFE_POSITION_CHECK_FRAME_DELAY : int = 30
 @export var wall_detector : RayCast2D
 @export var health_manager : HealthManager
 @export var mana_timer : Timer
+@export var counter_area : Area2D
+@export var counter_hitbox : Hitbox
+@export var stomp_area : Area2D
+@export var stomp_hitbox : Hitbox
 
 @export_category("Para debugar")
 @export_range(0, 8) var initial_arrow_index: int
@@ -104,7 +107,7 @@ var enemies_on_sight: Array = []
 var last_safe_position : Vector2
 var frames_until_check : int = 0
 var locked_walk: bool = false
-var available_arrows: Array[bool] = [true, false, false, false, false, false, false, false, false]
+var available_arrows: Array[bool] = [true, true, true, true, false, false, false, false, false]
 var arrows : Array[Arrow] = []
 var in_control : bool = true
 @onready var current_mana : int = max_mana
@@ -119,21 +122,11 @@ func _ready():
 	velocity = Vector2.ZERO
 	await HudHandler.hud.ready
 	HudHandler.hud.init_mana(max_mana)
-	HudHandler.hud.init_hearts(health_manager.max_health)
+	HudHandler.hud.init_hearts(health_manager.max_health as int)
 	HudHandler.hud.change_arrow(current_arrow_index)
 	
 	mana_timer.wait_time = mana_regen_time
 	#Engine.time_scale = 0.5
-
-func build_arrows() -> void:
-	if current_arrow and current_arrow.is_inside_tree():
-		current_arrow.queue_free()
-	arrows = []
-	for i in range(arrow_paths.size()):
-		if available_arrows[i]:
-			var new_arrow : Arrow = load(arrow_paths[i]).instantiate()
-			arrows.append(new_arrow)
-	reset_arrow()
 
 # ============================================================
 # MAIN LOOP
@@ -147,6 +140,8 @@ func _physics_process(delta: float) -> void:
 		handle_aim_enemy()
 		handle_movement()
 	velocity = v_component.get_total_velocity()
+	if is_on_floor():
+		velocity.y -= v_component.get_wind_velocity(2)
 	corner_correction(7, delta)
 	move_and_slide()
 	update_safe_position()
@@ -399,8 +394,22 @@ func move(facing_dir: int) -> void:
 func equip_arrow(array_position: int) -> Arrow:
 	var arrow: Arrow = arrows[array_position].duplicate()
 	arrow.position = arrow_spawn_point
-	current_arrow_index = array_position
 	return arrow
+
+func reset_arrow() -> void:
+	current_arrow = equip_arrow(current_arrow_index)
+	combat.update_flying_dir = false
+	combat.holding_time = 0.0
+
+func build_arrows() -> void:
+	if current_arrow and current_arrow.is_inside_tree():
+		current_arrow.queue_free()
+	arrows = []
+	for i in range(arrow_paths.size()):
+		if available_arrows[i]:
+			var new_arrow : Arrow = load(arrow_paths[i]).instantiate()
+			arrows.append(new_arrow)
+	reset_arrow()
 
 func get_current_gravity(velocity_in_y: float) -> float:
 	return gravity * 0.8 if velocity_in_y < 0 else gravity * gravity_multiplier
@@ -424,11 +433,6 @@ func hold_arrow() -> void:
 	current_arrow.setup_hitbox(self)
 	add_child(current_arrow)
 	current_arrow.set_flying_direction(combat.shoot_direction)
-
-func reset_arrow() -> void:
-	current_arrow = equip_arrow(current_arrow_index)
-	combat.update_flying_dir = false
-	combat.holding_time = 0.0
 
 func shoot() -> void:
 	combat.is_holding = false
@@ -683,7 +687,8 @@ func unlock_arrow(arrow_index : int) -> void:
 		available_arrows[arrow_index] = true
 		current_arrow_index = arrow_index
 		build_arrows()
-	HudHandler.hud.change_arrow(arrow_index)
+	if HudHandler.hud:
+		HudHandler.hud.change_arrow(arrow_index)
 
 func increase_total_health() -> void:
 	health_manager.max_health += 1

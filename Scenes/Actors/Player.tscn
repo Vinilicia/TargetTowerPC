@@ -1,6 +1,6 @@
-[gd_scene load_steps=17 format=3 uid="uid://ev1c8jc3dq42"]
+[gd_scene format=3 uid="uid://ev1c8jc3dq42"]
 
-[ext_resource type="Script" uid="uid://dxjmsqyt3rpc1" path="res://Scripts/Actors/Archer.gd" id="1_8nfcn"]
+[ext_resource type="Script" uid="uid://d078mxe0au5lg" path="res://Scripts/Actors/Archer2.gd" id="1_mwnd1"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Scenes/Components/Velocity_component.tscn" id="2_8nfcn"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="4_26aeq"]
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="4_r6772"]
@@ -12,8 +12,10 @@
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="9_12lv1"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
 [ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Scripts/Components/Health_manager.gd" id="11_jfvij"]
+[ext_resource type="Script" uid="uid://cndxom2mo4uqo" path="res://Scripts/Components/anim_handler.gd" id="11_m4vjq"]
 [ext_resource type="Script" uid="uid://bc87qnt24utwm" path="res://Scripts/Components/Aim_Enemy.gd" id="14_rbeol"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Scenes/Actions-Reactions/Fire_manager.tscn" id="15_heh8i"]
+[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Scenes/Components/Hitbox.tscn" id="16_m4vjq"]
 [ext_resource type="PackedScene" uid="uid://caxq1k25oqpqv" path="res://Scenes/Actors/SpriteImports/NewAcherSprite.tscn" id="16_mwnd1"]
 
 [sub_resource type="Resource" id="Resource_rbeol"]
@@ -21,203 +23,195 @@ script = ExtResource("8_r2kji")
 expression = "!crouching"
 metadata/_custom_type_script = "uid://dmfyse5ubg5m5"
 
-[node name="Player" type="CharacterBody2D" node_paths=PackedStringArray("state_chart", "camera_remote", "v_component", "hurtbox", "dodge_cancel_timer", "ledge_detector", "wall_detector", "health_manager", "mana_timer") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1842832799 node_paths=PackedStringArray("v_comp", "mana_timer", "sprite", "melee_area", "stomp_area", "melee_hitbox", "stomp_hitbox", "anim_handler", "hurtbox", "wall_detec", "ledge_detec") groups=["Player"]]
 collision_mask = 20
-script = ExtResource("1_8nfcn")
-state_chart = NodePath("Misc/StateChart")
-camera_distance = 15.0
-camera_move_duration = 1.0
-camera_remote = NodePath("Utilities/Remote")
-arrow_paths = Array[String](["uid://de13e283ng22u", "uid://dos8syduy35sk", "uid://l0kny3w6cbg4", "uid://h5p666cxnxby"])
-max_hold_time = 1.5
-shoot_delay = 0.5
-max_mana = 5
-mana_regen_time = 2.0
-mana_regen_scaling = 0.8
-dodge_cooldown = 0.7
-dodge_horizontal_speed = 200.0
-dodge_up_speed = -100.0
-dodge_down_speed = 135.0
-dodge_cancel_portion = 0.6
-jump_force = -300.0
-gravity_multiplier = 1.0
-jump_queuing_time = 0.1
-air_stall_velocity = 40.0
-coyote_time_timer = 0.05
-v_component = NodePath("Misc/VelocityComponent")
-hurtbox = NodePath("Hurtbox")
-dodge_cancel_timer = NodePath("Misc/DodgeCancelTimer")
-ledge_detector = NodePath("Utilities/LedgeDetector")
-wall_detector = NodePath("Utilities/WallDetector")
-health_manager = NodePath("Misc/HealthManager")
+script = ExtResource("1_mwnd1")
+v_comp = NodePath("Misc/VelocityComponent")
 mana_timer = NodePath("Misc/ManaRegenTimer")
+sprite = NodePath("Utilities/Archer")
+melee_area = NodePath("Utilities/Areas&Boxes/CounterArea")
+stomp_area = NodePath("Utilities/Areas&Boxes/StompArea")
+melee_hitbox = NodePath("Utilities/Areas&Boxes/MeleeHitbox")
+stomp_hitbox = NodePath("Utilities/Areas&Boxes/StompHitbox")
+anim_handler = NodePath("Misc/AnimHandler")
+hurtbox = NodePath("Hurtbox")
+wall_detec = NodePath("Utilities/WallDetector")
+ledge_detec = NodePath("Utilities/LedgeDetector")
+jump_buffer_duration = 0.1
+arrow_paths = Array[String](["res://Scenes/Arrows/Commom_Arrow.tscn", "res://Scenes/Arrows/Fire_Arrow.tscn", "res://Scenes/Arrows/Platform_Arrow.tscn", "res://Scenes/Arrows/Teleport_Arrow.tscn"])
+dodge_duration = 0.3
+dodge_side_speed = 250.0
+dodge_up_speed = 160.0
+dodge_down_speed = 380.0
 
-[node name="Archer" parent="." instance=ExtResource("16_mwnd1")]
-position = Vector2(-24, -26)
+[node name="Misc" type="Node" parent="." unique_id=1195313028]
 
-[node name="Misc" type="Node" parent="."]
-
-[node name="DodgeCancelTimer" type="Timer" parent="Misc"]
+[node name="DodgeCancelTimer" type="Timer" parent="Misc" unique_id=878617368]
 one_shot = true
 
-[node name="VelocityComponent" parent="Misc" instance=ExtResource("2_8nfcn")]
+[node name="VelocityComponent" parent="Misc" unique_id=2136712855 instance=ExtResource("2_8nfcn")]
 knockback_susceptability = 6
 
-[node name="StateChart" type="Node" parent="Misc"]
+[node name="StateChart" type="Node" parent="Misc" unique_id=2080338546]
 script = ExtResource("4_r6772")
 
-[node name="Root" type="Node" parent="Misc/StateChart"]
+[node name="Root" type="Node" parent="Misc/StateChart" unique_id=350508447]
 script = ExtResource("5_wypxn")
 
-[node name="Memes" type="Node" parent="Misc/StateChart/Root"]
+[node name="Memes" type="Node" parent="Misc/StateChart/Root" unique_id=1553293559]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("Grounded")
 
-[node name="Airborne" type="Node" parent="Misc/StateChart/Root/Memes"]
+[node name="Airborne" type="Node" parent="Misc/StateChart/Root/Memes" unique_id=119658129]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("Rising")
 
-[node name="Rising" type="Node" parent="Misc/StateChart/Root/Memes/Airborne"]
+[node name="Rising" type="Node" parent="Misc/StateChart/Root/Memes/Airborne" unique_id=984498088]
 script = ExtResource("7_wypxn")
 
-[node name="ToFalling" type="Node" parent="Misc/StateChart/Root/Memes/Airborne/Rising"]
+[node name="ToFalling" type="Node" parent="Misc/StateChart/Root/Memes/Airborne/Rising" unique_id=1575746707]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Falling")
 event = &"Falling"
 delay_in_seconds = "0.0"
 
-[node name="Falling" type="Node" parent="Misc/StateChart/Root/Memes/Airborne"]
+[node name="Falling" type="Node" parent="Misc/StateChart/Root/Memes/Airborne" unique_id=2087132614]
 script = ExtResource("7_wypxn")
 
-[node name="ToGrounded" type="Node" parent="Misc/StateChart/Root/Memes/Airborne/Falling"]
+[node name="ToGrounded" type="Node" parent="Misc/StateChart/Root/Memes/Airborne/Falling" unique_id=1467787844]
 script = ExtResource("9_12lv1")
 to = NodePath("../../../Grounded")
 event = &"Grounded"
 delay_in_seconds = "0.0"
 
-[node name="ToRising" type="Node" parent="Misc/StateChart/Root/Memes/Airborne/Falling"]
+[node name="ToRising" type="Node" parent="Misc/StateChart/Root/Memes/Airborne/Falling" unique_id=302554749]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Rising")
 event = &"Rising"
 delay_in_seconds = "0.0"
 
-[node name="Grounded" type="Node" parent="Misc/StateChart/Root/Memes"]
+[node name="Grounded" type="Node" parent="Misc/StateChart/Root/Memes" unique_id=146999771]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("Standing")
 
-[node name="Standing" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
+[node name="Standing" type="Node" parent="Misc/StateChart/Root/Memes/Grounded" unique_id=1419945496]
 script = ExtResource("7_wypxn")
 
-[node name="ToCrouched" type="Node" parent="Misc/StateChart/Root/Memes/Grounded/Standing"]
+[node name="ToCrouched" type="Node" parent="Misc/StateChart/Root/Memes/Grounded/Standing" unique_id=1173968501]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Crouched")
 event = &"Crouched"
 delay_in_seconds = "0.0"
 
-[node name="Crouched" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
+[node name="Crouched" type="Node" parent="Misc/StateChart/Root/Memes/Grounded" unique_id=906253861]
 script = ExtResource("7_wypxn")
 
-[node name="ToStanding" type="Node" parent="Misc/StateChart/Root/Memes/Grounded/Crouched"]
+[node name="ToStanding" type="Node" parent="Misc/StateChart/Root/Memes/Grounded/Crouched" unique_id=1785460476]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Standing")
 event = &"Standing"
 delay_in_seconds = "0.0"
 
-[node name="ToFalling" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
+[node name="ToFalling" type="Node" parent="Misc/StateChart/Root/Memes/Grounded" unique_id=1786072255]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Airborne/Falling")
 event = &"Falling"
 guard = SubResource("Resource_rbeol")
 delay_in_seconds = "0.0"
 
-[node name="ToRising" type="Node" parent="Misc/StateChart/Root/Memes/Grounded"]
+[node name="ToRising" type="Node" parent="Misc/StateChart/Root/Memes/Grounded" unique_id=771704984]
 script = ExtResource("9_12lv1")
 to = NodePath("../../Airborne/Rising")
 event = &"Rising"
 delay_in_seconds = "0.0"
 
-[node name="Shooting" type="Node" parent="Misc/StateChart/Root"]
+[node name="Shooting" type="Node" parent="Misc/StateChart/Root" unique_id=2019020070]
 script = ExtResource("6_26aeq")
 initial_state = NodePath("CanShoot")
 
-[node name="CanShoot" type="Node" parent="Misc/StateChart/Root/Shooting"]
+[node name="CanShoot" type="Node" parent="Misc/StateChart/Root/Shooting" unique_id=1743822684]
 script = ExtResource("7_wypxn")
 
-[node name="ToCant" type="Node" parent="Misc/StateChart/Root/Shooting/CanShoot"]
+[node name="ToCant" type="Node" parent="Misc/StateChart/Root/Shooting/CanShoot" unique_id=1413838062]
 script = ExtResource("9_12lv1")
 to = NodePath("../../CantShoot")
 event = &"CantShoot"
 delay_in_seconds = "0.0"
 
-[node name="CantShoot" type="Node" parent="Misc/StateChart/Root/Shooting"]
+[node name="CantShoot" type="Node" parent="Misc/StateChart/Root/Shooting" unique_id=1777602450]
 script = ExtResource("7_wypxn")
 
-[node name="ToCan" type="Node" parent="Misc/StateChart/Root/Shooting/CantShoot"]
+[node name="ToCan" type="Node" parent="Misc/StateChart/Root/Shooting/CantShoot" unique_id=1085925424]
 script = ExtResource("9_12lv1")
 to = NodePath("../../CanShoot")
 event = &"CanShoot"
 delay_in_seconds = "0.0"
 
-[node name="HealthManager" type="Node" parent="Misc"]
+[node name="HealthManager" type="Node" parent="Misc" unique_id=2107208142]
 script = ExtResource("11_jfvij")
-max_health = 7.0
+max_health = 15.0
 seconds_per_fire_tick = 0.05
 
-[node name="ManaRegenTimer" type="Timer" parent="Misc"]
+[node name="ManaRegenTimer" type="Timer" parent="Misc" unique_id=1020804880]
 one_shot = true
 
-[node name="UpColl" type="CollisionShape2D" parent="."]
+[node name="AnimHandler" type="Node" parent="Misc" unique_id=619994739]
+script = ExtResource("11_m4vjq")
+
+[node name="UpColl" type="CollisionShape2D" parent="." unique_id=789121354]
 position = Vector2(0, -7)
 scale = Vector2(6, 11)
 shape = ExtResource("4_26aeq")
 
-[node name="DownColl" type="CollisionShape2D" parent="."]
+[node name="DownColl" type="CollisionShape2D" parent="." unique_id=1224751081]
 position = Vector2(0, 3)
 scale = Vector2(6, 11)
 shape = ExtResource("4_26aeq")
 
-[node name="Hurtbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
+[node name="Hurtbox" parent="." unique_id=9327247 node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
 position = Vector2(0, -2)
 scale = Vector2(7, 10)
 collision_mask = 3072
 parent = NodePath("..")
 invincibility_time = 1.3
 
-[node name="Coll" type="CollisionShape2D" parent="Hurtbox"]
+[node name="Coll" type="CollisionShape2D" parent="Hurtbox" unique_id=640387622]
 shape = ExtResource("11_cdutm")
 
-[node name="Utilities" type="Node2D" parent="."]
+[node name="Utilities" type="Node2D" parent="." unique_id=1565015160]
 
-[node name="AimEnemy" type="Node2D" parent="Utilities"]
+[node name="AimEnemy" type="Node2D" parent="Utilities" unique_id=162088746]
 visible = false
 script = ExtResource("14_rbeol")
 
-[node name="AimSight" type="Area2D" parent="Utilities/AimEnemy"]
+[node name="AimSight" type="Area2D" parent="Utilities/AimEnemy" unique_id=685464018]
 collision_mask = 8
 
-[node name="CollisionShape2D" type="CollisionPolygon2D" parent="Utilities/AimEnemy/AimSight"]
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="Utilities/AimEnemy/AimSight" unique_id=153426943]
 polygon = PackedVector2Array(0, -8, 184, -24, 200, -8, 200, 8, 200, 8, 184, 24, 0, 8)
 
-[node name="EnemyTracker" type="RayCast2D" parent="Utilities/AimEnemy"]
+[node name="EnemyTracker" type="RayCast2D" parent="Utilities/AimEnemy" unique_id=2132463577]
 target_position = Vector2(15, 0)
 collision_mask = 28
 
-[node name="Remote" type="RemoteTransform2D" parent="Utilities"]
+[node name="Remote" type="RemoteTransform2D" parent="Utilities" unique_id=1517377668]
+visible = false
 position = Vector2(0, -40)
 update_rotation = false
 update_scale = false
 
-[node name="LedgeDetector" type="RayCast2D" parent="Utilities"]
-visible = false
+[node name="LedgeDetector" type="RayCast2D" parent="Utilities" unique_id=300590954]
 position = Vector2(8, 0)
 target_position = Vector2(0, 12)
 collision_mask = 20
+hit_from_inside = true
 
-[node name="WallDetector" type="RayCast2D" parent="Utilities"]
+[node name="WallDetector" type="RayCast2D" parent="Utilities" unique_id=179059360]
 target_position = Vector2(7, 0)
 collision_mask = 20
 
-[node name="FireManager" parent="Utilities" node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("15_heh8i")]
+[node name="FireManager" parent="Utilities" unique_id=1039458207 node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("15_heh8i")]
+visible = false
 time_to_burn = 0.05
 burn_duration = 0.05
 ref_hurtbox = NodePath("../../Hurtbox")
@@ -225,6 +219,56 @@ ref_hurtbox = NodePath("../../Hurtbox")
 [node name="Hurtbox" parent="Utilities/FireManager" index="0" node_paths=PackedStringArray("parent")]
 parent = NodePath("../../..")
 
+[node name="Areas&Boxes" type="Node2D" parent="Utilities" unique_id=227684090]
+
+[node name="CounterArea" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=1080931604]
+position = Vector2(14, -3)
+collision_layer = 0
+collision_mask = 3080
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/CounterArea" unique_id=1480838669]
+scale = Vector2(14, 24)
+shape = ExtResource("4_26aeq")
+debug_color = Color(0.105882354, 0.8666667, 0.23529412, 0.41960785)
+
+[node name="StompArea" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=2120579307]
+position = Vector2(2, 9)
+collision_layer = 0
+collision_mask = 3080
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/StompArea" unique_id=649029143]
+scale = Vector2(16, 8)
+shape = ExtResource("4_26aeq")
+debug_color = Color(0.105882354, 0.8666667, 0.23529412, 0.41960785)
+
+[node name="MeleeHitbox" parent="Utilities/Areas&Boxes" unique_id=2111686122 node_paths=PackedStringArray("parent") instance=ExtResource("16_m4vjq")]
+position = Vector2(15, -3)
+collision_layer = 256
+monitorable = false
+parent = NodePath("../../..")
+Damage = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/MeleeHitbox" unique_id=1083267311]
+scale = Vector2(17, 24)
+shape = ExtResource("4_26aeq")
+
+[node name="StompHitbox" parent="Utilities/Areas&Boxes" unique_id=736975502 node_paths=PackedStringArray("parent") instance=ExtResource("16_m4vjq")]
+position = Vector2(2, 9)
+collision_layer = 256
+monitorable = false
+parent = NodePath("../../..")
+Damage = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/StompHitbox" unique_id=1281362792]
+scale = Vector2(19, 14)
+shape = ExtResource("4_26aeq")
+
+[node name="Archer" parent="Utilities" unique_id=1128417846 instance=ExtResource("16_mwnd1")]
+position = Vector2(-24, -26)
+
+[connection signal="mana_changed" from="." to="." method="_on_mana_changed"]
+[connection signal="took_damage" from="." to="Misc/AnimHandler" method="_on_player_took_damage"]
 [connection signal="timeout" from="Misc/DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
 [connection signal="state_entered" from="Misc/StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_state_entered"]
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Memes/Airborne/Rising" to="." method="_rising_physics_processing"]
@@ -246,9 +290,7 @@ parent = NodePath("../../..")
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Shooting/CanShoot" to="." method="_can_shoot_physics_processing"]
 [connection signal="state_entered" from="Misc/StateChart/Root/Shooting/CantShoot" to="." method="_cannot_shoot_state_entered"]
 [connection signal="state_physics_processing" from="Misc/StateChart/Root/Shooting/CantShoot" to="." method="_cant_shoot_physics_processing"]
-[connection signal="gained_health" from="Misc/HealthManager" to="." method="_on_health_manager_gained_health"]
-[connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_lost_health"]
-[connection signal="ran_out" from="Misc/HealthManager" to="." method="_on_health_manager_ran_out"]
+[connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_manager_lost_health"]
 [connection signal="timeout" from="Misc/ManaRegenTimer" to="." method="_on_mana_regen_timer_timeout"]
 [connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
 [connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]

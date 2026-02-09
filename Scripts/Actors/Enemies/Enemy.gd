@@ -2,13 +2,16 @@ extends CharacterBody2D
 
 class_name Enemy
 
+@export_group("Nodes")
 @export var v_component : VelocityComponent
 @export var health_man : HealthManager
-@onready var material_anim : AnimationPlayer = $BaseEnemyStuff/Anim
+@export var hurtbox : Hurtbox
 
+@export_group("Variants")
 @export var spawns_money := true
 @export var money_amount : float = 1
 
+@onready var material_anim : AnimationPlayer = $BaseEnemyStuff/Anim
 @onready var regret_scene : RigidBody2D = preload("res://Scenes/Items/Small_Regret.tscn").instantiate()
 
 signal died

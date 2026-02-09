@@ -1,4 +1,4 @@
-[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://cweshf453isub"]
+[gd_resource type="TileSet" format=3 uid="uid://cweshf453isub"]
 
 [ext_resource type="Texture2D" uid="uid://d1hvuiyfkjgb0" path="res://Assets/Home_bred/Tilemap/chao.aseprite" id="1_fciwh"]
 
@@ -119,15 +119,6 @@ texture = ExtResource("1_fciwh")
 9:2/0/terrains_peering_bit/top_left_corner = 0
 9:2/0/terrains_peering_bit/top_side = 0
 9:2/0/terrains_peering_bit/top_right_corner = 0
-5:3/0 = 0
-5:3/0/terrain_set = 0
-5:3/0/terrain = 0
-5:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
-5:3/0/terrains_peering_bit/right_side = 0
-5:3/0/terrains_peering_bit/bottom_right_corner = 0
-5:3/0/terrains_peering_bit/bottom_side = 0
-5:3/0/terrains_peering_bit/top_side = 0
-5:3/0/terrains_peering_bit/top_right_corner = 0
 6:3/0 = 0
 6:3/0/terrain_set = 0
 6:3/0/terrain = 0
@@ -1828,6 +1819,15 @@ texture = ExtResource("1_fciwh")
 9:11/0/terrains_peering_bit/top_left_corner = 0
 9:11/0/terrains_peering_bit/top_side = 0
 9:11/0/terrains_peering_bit/top_right_corner = 0
+5:3/0 = 0
+5:3/0/terrain_set = 0
+5:3/0/terrain = 0
+5:3/0/physics_layer_0/polygon_0/points = PackedVector2Array(-8, -8, 8, -8, 8, 8, -8, 8)
+5:3/0/terrains_peering_bit/right_side = 0
+5:3/0/terrains_peering_bit/bottom_right_corner = 0
+5:3/0/terrains_peering_bit/bottom_side = 0
+5:3/0/terrains_peering_bit/top_side = 0
+5:3/0/terrains_peering_bit/top_right_corner = 0
 
 [resource]
 physics_layer_0/collision_layer = 4

@@ -29,12 +29,13 @@ _data = {
 &"hitflash": SubResource("Animation_pbpvn")
 }
 
-[node name="BaseEnemy" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "health_man")]
+[node name="BaseEnemy" type="CharacterBody2D" node_paths=PackedStringArray("v_component", "health_man", "hurtbox")]
 collision_layer = 8
 collision_mask = 20
 script = ExtResource("1_o7nfh")
 v_component = NodePath("BaseEnemyStuff/VelocityComponent")
 health_man = NodePath("BaseEnemyStuff/HealthManager")
+hurtbox = NodePath("BaseEnemyStuff/Hurtbox")
 
 [node name="BodyCollision" type="CollisionShape2D" parent="."]
 

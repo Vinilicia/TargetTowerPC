@@ -14,8 +14,8 @@ signal readying_level
 
 func _ready() -> void:
 	#Engine.time_scale = 0.5
-	connect("level_ready", (find_child("Player") as Player).gain_control)
-	connect("readying_level", (find_child("Player") as Player).lose_control)
+	#connect("level_ready", (find_child("Player") as Player).gain_control)
+	#connect("readying_level", (find_child("Player") as Player).lose_control)
 	for child in get_children():
 		if child is Room:
 			current_level = child
@@ -63,7 +63,7 @@ func spaw_player_on_bench() -> void:
 	physics_interpolation_mode = Node.PHYSICS_INTERPOLATION_MODE_ON
 	get_node("Player").global_position = current_level.get_bench_position()
 	blackout_fade_in()
-	await get_tree().create_timer(1.0)
+	await get_tree().create_timer(1.0).timeout
 	(get_parent().get_parent() as SubViewportContainer).visible = true
 	await get_tree().create_timer(0.2).timeout
 	blackout_fade_out()

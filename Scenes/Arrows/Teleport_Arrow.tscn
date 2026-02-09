@@ -20,7 +20,6 @@ anim = NodePath("Anim")
 sprite = NodePath("Sprite")
 trail = NodePath("Arrow_Trail")
 hitbox = NodePath("Hitbox")
-metadata/_custom_type_script = "uid://cdxa4sa0e3u2o"
 
 [node name="Sprite" type="Sprite2D" parent="."]
 texture = ExtResource("2_1yo7r")

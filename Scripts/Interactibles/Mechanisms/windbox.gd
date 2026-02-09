@@ -21,11 +21,17 @@ var bodies_inside: Array[Node2D] = []
 func _on_wind_body_entered(body: Node2D) -> void:
 	var v_component : VelocityComponent = body.find_child("VelocityComponent")
 	if v_component:
-		bodies_inside.append(body)
-		v_component.add_ground_velocity(wind_direction * wind_force)
+		if !bodies_inside.has(body):
+			bodies_inside.append(body)
+			v_component.add_wind_velocity(wind_direction * wind_force)
+		else:
+			push_error("BODY ENTERED WIND BOX WHEN IT WAS ALREADY IN!!!")
 
 func _on_wind_body_exited(body: Node2D) -> void:
 	var v_component : VelocityComponent = body.find_child("VelocityComponent")
 	if v_component:
-		bodies_inside.erase(body)
-		v_component.add_ground_velocity(wind_direction * -wind_force)
+		if bodies_inside.has(body):
+			bodies_inside.erase(body)
+			v_component.add_wind_velocity(wind_direction * -wind_force)
+		else:
+			push_error("BODY EXITED WIND AREA WITHOUT ENTERING!!!")

@@ -18,7 +18,6 @@ const ARROW_AVOID_DELAY : float = 0.15
 @export var jump_force : float
 @export var direction_change_delay : float = 0.3
 @export var lines_of_sight : Array[RayCast2D]
-@export var hurtbox: Hurtbox
 @export var slash_hitbox : Hitbox
 
 # ======================
@@ -329,7 +328,7 @@ func dash() -> void:
 	can_dash = false
 	can_jump_attack = false
 	can_stab_attack = false
-	hurtbox.get_invincible(DASH_DURATION)
+	hurtbox.get_invincible_for(DASH_DURATION)
 
 	current_speed_multiplier = DASH_SPEED_MULTIPLIER
 	

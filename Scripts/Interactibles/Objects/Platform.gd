@@ -7,6 +7,7 @@ extends Node2D
 @export var time_to_pop_up : float = 0.25
 @export var time_to_despawn : float = 10
 @export var sprite : AnimatedSprite2D
+@export var v_component : VelocityComponent
 
 const DESPAWN_CHECK_DELAY : float = 0.5
 const TIME_TO_SHRINK : float = 0.15
@@ -16,6 +17,11 @@ var dir : int = 0
 var vertical: bool = false
 var down: bool = false
 var player_on_top : bool = false
+
+func _physics_process(delta: float) -> void:
+	var velocity : Vector2 = v_component.get_ground_velocity()
+	if velocity != Vector2.ZERO:
+		position += velocity * delta
 
 func set_spawning_time(duration : float) -> void:
 	spawning_time = duration
@@ -32,6 +38,9 @@ func activate(direction: int, downward: bool) -> void:
 		sprite.rotation = deg_to_rad(90) if !down else deg_to_rad(-90)
 	else:
 		sprite.rotation = deg_to_rad(0) if direction == 1 else deg_to_rad(180)
+	var old_pos = global_position
+	top_level = true
+	position = old_pos
 	$Timer.start(spawning_time)
 
 func spawn() -> void:

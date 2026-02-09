@@ -1,4 +1,4 @@
-[gd_resource type="VisualShader" load_steps=5 format=3 uid="uid://dw5q7exg3ylkf"]
+[gd_resource type="VisualShader" format=3 uid="uid://dw5q7exg3ylkf"]
 
 [sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_declk"]
 parameter_name = "Tint"
@@ -16,51 +16,6 @@ parameter_name = "enabled"
 default_value_enabled = true
 
 [resource]
-code = "shader_type canvas_item;
-render_mode blend_mix;
-
-uniform bool enabled = false;
-instance uniform vec4 Tint : source_color = vec4(1.000000, 1.000000, 1.000000, 1.000000);
-
-
-
-void fragment() {
-// BooleanParameter:5
-	bool n_out5p0 = enabled;
-
-
-// ColorParameter:2
-	vec4 n_out2p0 = Tint;
-
-
-// Input:4
-	vec4 n_out4p0 = COLOR;
-
-
-	vec3 n_out3p0;
-// If:3
-	float n_in3p1 = 1.00000;
-	float n_in3p2 = 0.00001;
-	if(abs((n_out5p0 ? 1.0 : 0.0) - n_in3p1) < n_in3p2)
-	{
-		n_out3p0 = vec3(n_out2p0.xyz);
-	}
-	else if((n_out5p0 ? 1.0 : 0.0) < n_in3p1)
-	{
-		n_out3p0 = vec3(n_out4p0.xyz);
-	}
-	else
-	{
-		n_out3p0 = vec3(n_out4p0.xyz);
-	}
-
-
-// Output:0
-	COLOR.rgb = n_out3p0;
-
-
-}
-"
 mode = 1
 flags/light_only = false
 nodes/fragment/0/position = Vector2(740, 180)
