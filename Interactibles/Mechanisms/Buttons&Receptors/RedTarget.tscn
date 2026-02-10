@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://cjd68laeibaxd"]
+
+[ext_resource type="Script" uid="uid://d1oxy8nl1u82p" path="res://Interactibles/Mechanisms/Buttons&Receptors/red_target.gd" id="1_upa32"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="2_0j026"]
+[ext_resource type="PackedScene" uid="uid://dnfcq0yact58d" path="res://Interactibles/Mechanisms/Buttons&Receptors/RedTargetSprite.tscn" id="2_b2dfq"]
+
+[node name="RedTarget" type="Area2D"]
+collision_layer = 0
+collision_mask = 256
+monitorable = false
+script = ExtResource("1_upa32")
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+scale = Vector2(8, 14)
+shape = ExtResource("2_0j026")
+
+[node name="RedTargetSprite" parent="." instance=ExtResource("2_b2dfq")]
+animation = &"Not Shining"
+autoplay = "Shining"
+
+[connection signal="area_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_entered" from="." to="." method="_on_body_entered"]

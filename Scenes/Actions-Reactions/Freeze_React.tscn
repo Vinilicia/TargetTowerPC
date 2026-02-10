@@ -1,7 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://bisws5t2ij3dp"]
-
-[sub_resource type="Resource" id="Resource_ko3fb"]
-metadata/__load_path__ = "res://Scripts/Actions-Reactions/Freeze_react.gd"
-
-[node name="Freeze_React" type="Node"]
-script = SubResource("Resource_ko3fb")

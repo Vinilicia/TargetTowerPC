@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://uk3o7sf5e0ew"]
-
-[ext_resource type="Script" uid="uid://cpbe2wj3d3bkl" path="res://Scripts/Actions-Reactions/Fire_react.gd" id="1_tj8i2"]
-
-[node name="Fire_React" type="Node"]
-script = ExtResource("1_tj8i2")

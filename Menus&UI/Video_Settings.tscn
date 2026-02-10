@@ -1,0 +1,174 @@
+[gd_scene format=3 uid="uid://cvv7jnj3ll1ty"]
+
+[ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_p83ip"]
+[ext_resource type="Script" uid="uid://2wuj6in3o5h4" path="res://Menus&UI/Video_settings.gd" id="2_7rmdv"]
+[ext_resource type="Texture2D" uid="uid://ckhuyfjwgi2lq" path="res://Assets/Home_bred/UI/Audio/Minus.aseprite" id="3_jhx34"]
+[ext_resource type="Texture2D" uid="uid://b5taftcdb8p0u" path="res://Assets/Home_bred/UI/Audio/UnderTexture.aseprite" id="4_1w8dl"]
+[ext_resource type="Texture2D" uid="uid://bn81mpv2lt7cw" path="res://Assets/Home_bred/UI/Audio/OverTexture.aseprite" id="5_o5hmy"]
+[ext_resource type="Texture2D" uid="uid://bm556uiydcj2o" path="res://Assets/Home_bred/UI/Audio/ProgressTexture.aseprite" id="6_5kyso"]
+[ext_resource type="Texture2D" uid="uid://b61g3m1bokp6o" path="res://Assets/Home_bred/UI/Audio/Plus.aseprite" id="7_oc3ci"]
+[ext_resource type="Texture2D" uid="uid://d0q86ii3mxbr0" path="res://Assets/Home_bred/UI/Audio/DarkestButton.aseprite" id="8_0i318"]
+[ext_resource type="Texture2D" uid="uid://bnpht62widde3" path="res://Assets/Home_bred/UI/Audio/BrightestButton.aseprite" id="9_4nbms"]
+
+[node name="VideoMenu" type="Control" node_paths=PackedStringArray("brightness_container")]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_p83ip")
+script = ExtResource("2_7rmdv")
+brightness_container = NodePath("MarginContainer/VBoxContainer/BrightnessContainer")
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 150
+theme_override_constants/margin_right = 150
+theme_override_constants/margin_bottom = 40
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 4
+theme_override_constants/separation = 20
+
+[node name="ModeContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+theme_override_constants/separation = 5
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ModeContainer"]
+layout_mode = 2
+text = "TEXT_WINDOW_MODE"
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/ModeContainer"]
+custom_minimum_size = Vector2(160, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+focus_neighbor_top = NodePath("../../BackButton")
+alignment = 1
+selected = 0
+allow_reselect = true
+item_count = 5
+popup/item_0/text = "TEXT_MODE_WINDOWED"
+popup/item_0/id = 0
+popup/item_1/id = 3
+popup/item_1/separator = true
+popup/item_2/text = "TEXT_MODE_BORDERLESS"
+popup/item_2/id = 1
+popup/item_3/id = 4
+popup/item_3/separator = true
+popup/item_4/text = "TEXT_MODE_FULLSCREEN"
+popup/item_4/id = 2
+
+[node name="ResolutionContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 8
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
+layout_mode = 2
+text = "TEXT_RESOLUTION"
+
+[node name="Control" type="Control" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
+custom_minimum_size = Vector2(5, 0)
+layout_mode = 2
+
+[node name="OptionButton" type="OptionButton" parent="MarginContainer/VBoxContainer/ResolutionContainer"]
+custom_minimum_size = Vector2(110, 20)
+layout_mode = 2
+size_flags_horizontal = 0
+alignment = 1
+selected = 0
+allow_reselect = true
+item_count = 5
+popup/item_0/text = "1280x720"
+popup/item_0/id = 0
+popup/item_1/id = 3
+popup/item_1/separator = true
+popup/item_2/text = "1440x810"
+popup/item_2/id = 1
+popup/item_3/id = 4
+popup/item_3/separator = true
+popup/item_4/text = "1920x1080"
+popup/item_4/id = 2
+
+[node name="BrightnessContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="VBoxContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BrightnessContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer"]
+layout_mode = 2
+text = "TEXT_BRIGHTNESS"
+
+[node name="MarginContainer" type="MarginContainer" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+theme_override_constants/margin_left = 25
+
+[node name="MasterButtonsContainer" type="VBoxContainer" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer/MarginContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="SliderContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer/MarginContainer/MasterButtonsContainer"]
+layout_mode = 2
+
+[node name="MinusButton" type="Button" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/SliderContainer"]
+layout_mode = 2
+icon = ExtResource("3_jhx34")
+
+[node name="BrightnessSlider" type="TextureProgressBar" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/SliderContainer"]
+custom_minimum_size = Vector2(0, 16)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 4
+max_value = 1.0
+step = 0.05
+nine_patch_stretch = true
+stretch_margin_left = 4
+stretch_margin_top = 4
+stretch_margin_right = 4
+stretch_margin_bottom = 4
+texture_under = ExtResource("4_1w8dl")
+texture_over = ExtResource("5_o5hmy")
+texture_progress = ExtResource("6_5kyso")
+
+[node name="PlusButton" type="Button" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/SliderContainer"]
+layout_mode = 2
+icon = ExtResource("7_oc3ci")
+
+[node name="BigBoysContainer" type="HBoxContainer" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer/MarginContainer/MasterButtonsContainer"]
+layout_mode = 2
+
+[node name="DarkestButton" type="Button" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+icon = ExtResource("8_0i318")
+
+[node name="Separator" type="Control" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="BrightestButton" type="Button" parent="MarginContainer/VBoxContainer/BrightnessContainer/VBoxContainer/MarginContainer/MasterButtonsContainer/BigBoysContainer"]
+layout_mode = 2
+size_flags_horizontal = 8
+icon = ExtResource("9_4nbms")
+
+[node name="BackButton" type="Button" parent="MarginContainer/VBoxContainer"]
+custom_minimum_size = Vector2(160, 20)
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 10
+focus_neighbor_bottom = NodePath("../ModeContainer/OptionButton")
+text = "TEXT_BACK"
+
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ModeContainer/OptionButton" to="." method="_on_window_mode_item_selected"]
+[connection signal="item_selected" from="MarginContainer/VBoxContainer/ResolutionContainer/OptionButton" to="." method="_on_resolution_item_selected"]

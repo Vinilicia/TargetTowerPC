@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bec0ix6mqluiy"]
+
+[ext_resource type="Script" uid="uid://thfljq1yky80" path="res://Actors/Enemies/Goblins/shaman_magic_bolt.gd" id="1_nbkg7"]
+[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="2_gomsn"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="3_s4tnc"]
+[ext_resource type="PackedScene" uid="uid://dx5wssyph2nw7" path="res://Actors/Enemies/Goblins/Shaman_bolt_sprite.tscn" id="4_gomsn"]
+
+[node name="ShamanMagicBolt" type="Node2D"]
+script = ExtResource("1_nbkg7")
+speed = 160.0
+
+[node name="Fire-Loop" parent="." instance=ExtResource("4_gomsn")]
+
+[node name="Hitbox" parent="." instance=ExtResource("2_gomsn")]
+position = Vector2(0, 4)
+scale = Vector2(10, 8)
+collision_layer = 1024
+Damage = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+shape = ExtResource("3_s4tnc")

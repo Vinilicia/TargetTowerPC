@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://cobjwip0vo2nw"]
+
+[ext_resource type="PackedScene" uid="uid://dfa4di7v84300" path="res://Levels/ProceduralMap/Procedural_map.tscn" id="1_bm4ef"]
+[ext_resource type="PackedScene" uid="uid://d2hbghv0g000b" path="res://Menus&UI/hud.tscn" id="2_grvqc"]
+[ext_resource type="PackedScene" uid="uid://drfycye8vmmuq" path="res://Menus&UI/Main_menu.tscn" id="3_d8y0m"]
+
+[sub_resource type="Environment" id="Environment_2w1kt"]
+background_mode = 3
+adjustment_enabled = true
+
+[node name="Main2" type="Node2D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_2w1kt")
+
+[node name="GameCanvasLayer" type="CanvasLayer" parent="."]
+
+[node name="UILayer" type="CanvasLayer" parent="."]
+layer = 2
+
+[node name="GameViewportContainer" type="SubViewportContainer" parent="UILayer"]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+stretch_shrink = 2
+
+[node name="GameViewport" type="SubViewport" parent="UILayer/GameViewportContainer"]
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(320, 180)
+render_target_update_mode = 4
+
+[node name="ProceduralMap" parent="UILayer/GameViewportContainer/GameViewport" instance=ExtResource("1_bm4ef")]
+
+[node name="HUD" parent="UILayer/GameViewportContainer" instance=ExtResource("2_grvqc")]
+layout_mode = 2
+
+[node name="Blackout" type="ColorRect" parent="UILayer"]
+process_mode = 3
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MainMenu" parent="UILayer" instance=ExtResource("3_d8y0m")]
+process_mode = 3
+visible = false
+
+[node name="ControlsMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="0"]
+script = null
+
+[node name="AudioMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="1"]
+script = null
+
+[node name="VideoMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="2"]
+script = null
+
+[editable path="UILayer/MainMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/ControlsMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/AudioMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/VideoMenu"]

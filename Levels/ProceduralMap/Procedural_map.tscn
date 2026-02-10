@@ -1,0 +1,17 @@
+[gd_scene format=3 uid="uid://dfa4di7v84300"]
+
+[ext_resource type="Script" uid="uid://ctdeeth1dmuxv" path="res://Levels/procedural_map.gd" id="1_6ntii"]
+[ext_resource type="PackedScene" uid="uid://sj0pbsaa0taq" path="res://Levels/ProceduralMap/Inicial_level.tscn" id="2_6ntii"]
+[ext_resource type="PackedScene" uid="uid://b6cr2ha3js4rb" path="res://Levels/ProceduralMap/Small_level.tscn" id="3_xrb8l"]
+[ext_resource type="PackedScene" uid="uid://ctdgwssxk0oqy" path="res://Levels/ProceduralMap/Medium_level.tscn" id="4_qfu0e"]
+[ext_resource type="PackedScene" uid="uid://ccav44a3mhpqn" path="res://Levels/ProceduralMap/Corridor.tscn" id="5_jxats"]
+[ext_resource type="PackedScene" uid="uid://dj2nfg6f48tss" path="res://Levels/ProceduralMap/Final_level.tscn" id="6_6ntii"]
+
+[node name="ProceduralMap" type="Node2D"]
+script = ExtResource("1_6ntii")
+initial_level_scene = ExtResource("2_6ntii")
+small_level_scene = ExtResource("3_xrb8l")
+medium_level_scene = ExtResource("4_qfu0e")
+corridor_scene = ExtResource("5_jxats")
+final_level_scene = ExtResource("6_6ntii")
+number_of_levels = 6

@@ -1,0 +1,116 @@
+[gd_scene format=3 uid="uid://b46e57ryj7uad"]
+
+[ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Actors/Enemies/Base_Enemy.tscn" id="1_kyqo6"]
+[ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="2_3h5c4"]
+[ext_resource type="Script" uid="uid://bw8vcfs6j3w8c" path="res://Actors/Enemies/Golem/golem.gd" id="2_am4fu"]
+[ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="3_am4fu"]
+[ext_resource type="PackedScene" uid="uid://wgn1wvddnjpg" path="res://Actors/Enemies/Utilities/Detector.tscn" id="5_srxw1"]
+[ext_resource type="Script" uid="uid://bypm66hs22iqi" path="res://Actors/Enemies/Utilities/detector.gd" id="6_srxw1"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="7_45du7"]
+[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="8_4yelb"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_l272h"]
+resource_local_to_scene = true
+shader = ExtResource("2_3h5c4")
+shader_parameter/enabled = false
+
+[node name="Golem" unique_id=1110158404 node_paths=PackedStringArray("ledge_detector", "wall_detector", "sight_area", "attack_area", "slam_hitbox", "idle_timer") instance=ExtResource("1_kyqo6")]
+script = ExtResource("2_am4fu")
+ledge_detector = NodePath("Reversables/LedgeDetector")
+wall_detector = NodePath("Reversables/WallDetector")
+sight_area = NodePath("Reversables/SightArea")
+attack_area = NodePath("Reversables/AttackArea")
+slam_hitbox = NodePath("Reversables/SlamHitbox")
+idle_timer = NodePath("IdleTimer")
+walk_speed = 60.0
+jump_velocity = Vector2(100, -240)
+slam_attack_duration = 0.3
+attack_recovery_time = 3.0
+attack_cooldown = 3.0
+initial_attack_delay = 1.0
+wake_up_delay = 2.0
+walking_time = 10.0
+
+[node name="BodyCollision" parent="." index="0" unique_id=2038690234]
+scale = Vector2(18, 18)
+shape = ExtResource("7_45du7")
+
+[node name="BaseEnemyStuff" parent="." index="1" unique_id=2108870964]
+material = SubResource("ShaderMaterial_l272h")
+
+[node name="HealthManager" parent="BaseEnemyStuff" index="1" unique_id=1842605953]
+max_health = 10.0
+
+[node name="Hurtbox" parent="BaseEnemyStuff" index="2" unique_id=1554320959]
+scale = Vector2(18, 18)
+
+[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
+shape = ExtResource("7_45du7")
+
+[node name="ContactHitbox" parent="BaseEnemyStuff" index="3" unique_id=2114649000]
+scale = Vector2(20, 20)
+
+[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0" unique_id=239826217]
+shape = ExtResource("7_45du7")
+debug_color = Color(1, 0, 0, 0.41960785)
+
+[node name="Sprite" type="Sprite2D" parent="BaseEnemyStuff" index="5" unique_id=946936107]
+modulate = Color(0.27, 0.26775002, 0.243, 1)
+use_parent_material = true
+scale = Vector2(0.12, 0.12)
+texture = ExtResource("3_am4fu")
+
+[node name="Reversables" type="Node2D" parent="." index="2" unique_id=15913598]
+
+[node name="LedgeDetector" parent="Reversables" index="0" unique_id=1647798219 instance=ExtResource("5_srxw1")]
+position = Vector2(10, 0)
+target_position = Vector2(0, 12)
+collision_mask = 20
+hit_from_inside = true
+constant = true
+
+[node name="WallDetector" type="RayCast2D" parent="Reversables" index="1" unique_id=1450214588]
+target_position = Vector2(10, 0)
+collision_mask = 20
+hit_from_inside = true
+script = ExtResource("6_srxw1")
+constant = true
+
+[node name="SightArea" type="Area2D" parent="Reversables" index="2" unique_id=1139078827]
+scale = Vector2(300, 100)
+collision_layer = 0
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="Reversables/SightArea" index="0" unique_id=1280670884]
+shape = ExtResource("7_45du7")
+debug_color = Color(0, 0.6, 0, 0.41960785)
+
+[node name="AttackArea" type="Area2D" parent="Reversables" index="3" unique_id=1049608052]
+position = Vector2(10, 0)
+scale = Vector2(120, 70)
+collision_layer = 0
+monitoring = false
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="Reversables/AttackArea" index="0" unique_id=729571307]
+shape = ExtResource("7_45du7")
+debug_color = Color(0.67058825, 0.039215688, 0.05490196, 0.41960785)
+
+[node name="SlamHitbox" parent="Reversables" index="4" unique_id=2118004098 node_paths=PackedStringArray("parent") instance=ExtResource("8_4yelb")]
+position = Vector2(4, 0)
+collision_layer = 1024
+monitorable = false
+parent = NodePath("../..")
+Damage = 1.0
+
+[node name="ContactCollision" type="CollisionPolygon2D" parent="Reversables/SlamHitbox" index="0" unique_id=49789285]
+polygon = PackedVector2Array(20, 10, 20, -5, 8, -15, -8, -15, -20, -5, -20, 10, 20, 10)
+
+[node name="IdleTimer" type="Timer" parent="." index="3" unique_id=1388696173]
+
+[connection signal="hit_while_invincible" from="BaseEnemyStuff/Hurtbox" to="." method="_on_hurtbox_hit_while_invincible"]
+[connection signal="not_colliding" from="Reversables/LedgeDetector" to="." method="_on_ledge_detector_not_colliding"]
+[connection signal="colliding" from="Reversables/WallDetector" to="." method="_on_wall_detector_colliding"]
+[connection signal="body_entered" from="Reversables/SightArea" to="." method="_on_sight_area_body_entered"]
+[connection signal="body_entered" from="Reversables/AttackArea" to="." method="_on_attack_area_body_entered"]
+[connection signal="timeout" from="IdleTimer" to="." method="_on_idle_timer_timeout"]

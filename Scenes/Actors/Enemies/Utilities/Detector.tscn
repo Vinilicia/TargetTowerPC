@@ -1,6 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://wgn1wvddnjpg"]
-
-[ext_resource type="Script" uid="uid://dnu1ho28ydw5" path="res://Scenes/Actors/Enemies/Utilities/detector.gd" id="1_s3hnd"]
-
-[node name="Detector" type="RayCast2D"]
-script = ExtResource("1_s3hnd")
