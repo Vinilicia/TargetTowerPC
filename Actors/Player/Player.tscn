@@ -1,0 +1,174 @@
+[gd_scene format=3 uid="uid://ev1c8jc3dq42"]
+
+[ext_resource type="Script" uid="uid://d078mxe0au5lg" path="res://Actors/Player/Archer2.gd" id="1_mwnd1"]
+[ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Components/Velocity_component.tscn" id="2_8nfcn"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="4_26aeq"]
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="8_26aeq"]
+[ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
+[ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Components/Health_manager.gd" id="11_jfvij"]
+[ext_resource type="Script" uid="uid://cndxom2mo4uqo" path="res://Components/anim_handler.gd" id="11_m4vjq"]
+[ext_resource type="Script" uid="uid://bc87qnt24utwm" path="res://Components/Aim_Enemy.gd" id="14_rbeol"]
+[ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Components/Actions-Reactions/Fire_manager.tscn" id="15_heh8i"]
+[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="16_m4vjq"]
+[ext_resource type="PackedScene" uid="uid://caxq1k25oqpqv" path="res://Actors/Player/NewAcherSprite.tscn" id="16_mwnd1"]
+
+[node name="Player" type="CharacterBody2D" unique_id=1842832799 node_paths=PackedStringArray("v_comp", "mana_timer", "sprite", "melee_area", "stomp_area", "melee_hitbox", "stomp_hitbox", "anim_handler", "hurtbox", "wall_detec", "ledge_detec") groups=["Player"]]
+collision_mask = 20
+script = ExtResource("1_mwnd1")
+v_comp = NodePath("Misc/VelocityComponent")
+mana_timer = NodePath("Misc/ManaRegenTimer")
+sprite = NodePath("Utilities/Archer")
+melee_area = NodePath("Utilities/Areas&Boxes/CounterArea")
+stomp_area = NodePath("Utilities/Areas&Boxes/StompArea")
+melee_hitbox = NodePath("Utilities/Areas&Boxes/MeleeHitbox")
+stomp_hitbox = NodePath("Utilities/Areas&Boxes/StompHitbox")
+anim_handler = NodePath("Misc/AnimHandler")
+hurtbox = NodePath("Hurtbox")
+wall_detec = NodePath("Utilities/WallDetector")
+ledge_detec = NodePath("Utilities/LedgeDetector")
+jump_buffer_duration = 0.1
+arrow_paths = Array[String](["res://Arrows/Commom_Arrow.tscn", "res://Arrows/Fire_Arrow.tscn", "res://Arrows/Platform_Arrow.tscn", "res://Arrows/Teleport_Arrow.tscn"])
+dodge_duration = 0.3
+dodge_side_speed = 250.0
+dodge_up_speed = 160.0
+dodge_down_speed = 380.0
+
+[node name="Misc" type="Node" parent="." unique_id=1195313028]
+
+[node name="DodgeCancelTimer" type="Timer" parent="Misc" unique_id=878617368]
+one_shot = true
+
+[node name="VelocityComponent" parent="Misc" unique_id=2136712855 instance=ExtResource("2_8nfcn")]
+knockback_susceptability = 6
+
+[node name="HealthManager" type="Node" parent="Misc" unique_id=2107208142]
+script = ExtResource("11_jfvij")
+max_health = 15.0
+seconds_per_fire_tick = 0.05
+
+[node name="ManaRegenTimer" type="Timer" parent="Misc" unique_id=1020804880]
+one_shot = true
+
+[node name="AnimHandler" type="Node" parent="Misc" unique_id=619994739]
+script = ExtResource("11_m4vjq")
+
+[node name="UpColl" type="CollisionShape2D" parent="." unique_id=789121354]
+position = Vector2(0, -7)
+scale = Vector2(6, 11)
+shape = ExtResource("4_26aeq")
+
+[node name="DownColl" type="CollisionShape2D" parent="." unique_id=1224751081]
+position = Vector2(0, 3)
+scale = Vector2(6, 11)
+shape = ExtResource("4_26aeq")
+
+[node name="Hurtbox" parent="." unique_id=9327247 node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
+position = Vector2(0, -2)
+scale = Vector2(7, 10)
+collision_mask = 3072
+parent = NodePath("..")
+invincibility_time = 1.3
+
+[node name="Coll" type="CollisionShape2D" parent="Hurtbox" unique_id=640387622]
+shape = ExtResource("11_cdutm")
+
+[node name="Utilities" type="Node2D" parent="." unique_id=1565015160]
+
+[node name="AimEnemy" type="Node2D" parent="Utilities" unique_id=162088746]
+visible = false
+script = ExtResource("14_rbeol")
+
+[node name="AimSight" type="Area2D" parent="Utilities/AimEnemy" unique_id=685464018]
+collision_mask = 8
+
+[node name="CollisionShape2D" type="CollisionPolygon2D" parent="Utilities/AimEnemy/AimSight" unique_id=153426943]
+polygon = PackedVector2Array(0, -8, 184, -24, 200, -8, 200, 8, 200, 8, 184, 24, 0, 8)
+
+[node name="EnemyTracker" type="RayCast2D" parent="Utilities/AimEnemy" unique_id=2132463577]
+target_position = Vector2(15, 0)
+collision_mask = 28
+
+[node name="Remote" type="RemoteTransform2D" parent="Utilities" unique_id=1517377668]
+visible = false
+position = Vector2(0, -40)
+update_rotation = false
+update_scale = false
+
+[node name="LedgeDetector" type="RayCast2D" parent="Utilities" unique_id=300590954]
+position = Vector2(8, 0)
+target_position = Vector2(0, 12)
+collision_mask = 20
+hit_from_inside = true
+
+[node name="WallDetector" type="RayCast2D" parent="Utilities" unique_id=179059360]
+target_position = Vector2(7, 0)
+collision_mask = 20
+
+[node name="FireManager" parent="Utilities" unique_id=1039458207 node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("15_heh8i")]
+visible = false
+time_to_burn = 0.05
+burn_duration = 0.05
+ref_hurtbox = NodePath("../../Hurtbox")
+
+[node name="Hurtbox" parent="Utilities/FireManager" index="0" node_paths=PackedStringArray("parent")]
+parent = NodePath("../../..")
+
+[node name="Areas&Boxes" type="Node2D" parent="Utilities" unique_id=227684090]
+
+[node name="CounterArea" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=1080931604]
+position = Vector2(14, -3)
+collision_layer = 0
+collision_mask = 3080
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/CounterArea" unique_id=1480838669]
+scale = Vector2(14, 24)
+shape = ExtResource("4_26aeq")
+debug_color = Color(0.105882354, 0.8666667, 0.23529412, 0.41960785)
+
+[node name="StompArea" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=2120579307]
+position = Vector2(2, 9)
+collision_layer = 0
+collision_mask = 3080
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/StompArea" unique_id=649029143]
+scale = Vector2(16, 8)
+shape = ExtResource("4_26aeq")
+debug_color = Color(0.105882354, 0.8666667, 0.23529412, 0.41960785)
+
+[node name="MeleeHitbox" parent="Utilities/Areas&Boxes" unique_id=2111686122 node_paths=PackedStringArray("parent") instance=ExtResource("16_m4vjq")]
+position = Vector2(15, -3)
+collision_layer = 256
+monitorable = false
+parent = NodePath("../../..")
+Damage = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/MeleeHitbox" unique_id=1083267311]
+scale = Vector2(17, 24)
+shape = ExtResource("4_26aeq")
+
+[node name="StompHitbox" parent="Utilities/Areas&Boxes" unique_id=736975502 node_paths=PackedStringArray("parent") instance=ExtResource("16_m4vjq")]
+position = Vector2(2, 9)
+collision_layer = 256
+monitorable = false
+parent = NodePath("../../..")
+Damage = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/StompHitbox" unique_id=1281362792]
+scale = Vector2(19, 14)
+shape = ExtResource("4_26aeq")
+
+[node name="Archer" parent="Utilities" unique_id=1128417846 instance=ExtResource("16_mwnd1")]
+position = Vector2(-24, -26)
+
+[connection signal="mana_changed" from="." to="." method="_on_mana_changed"]
+[connection signal="took_damage" from="." to="Misc/AnimHandler" method="_on_player_took_damage"]
+[connection signal="timeout" from="Misc/DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
+[connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_manager_lost_health"]
+[connection signal="timeout" from="Misc/ManaRegenTimer" to="." method="_on_mana_regen_timer_timeout"]
+[connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
+[connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
+[connection signal="body_exited" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
+[connection signal="caught_fire" from="Utilities/FireManager" to="." method="_on_fire_manager_caught_fire"]
+
+[editable path="Utilities/FireManager"]

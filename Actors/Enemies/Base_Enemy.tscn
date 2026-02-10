@@ -1,0 +1,70 @@
+[gd_scene format=3 uid="uid://vc2ghdvugqqc"]
+
+[ext_resource type="Script" uid="uid://dl0bcgquqsaad" path="res://Actors/Enemies/Enemy.gd" id="1_o22pi"]
+[ext_resource type="Material" uid="uid://djswnephywl88" path="res://Themes/Shaders/hitflash_material.tres" id="1_pbpvn"]
+[ext_resource type="Script" uid="uid://c4xupirqm5ogs" path="res://Components/Velocity_component.gd" id="2_8um0u"]
+[ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Components/Health_manager.gd" id="3_sxwhk"]
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="4_7pv7w"]
+[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="5_o68ib"]
+
+[sub_resource type="Animation" id="Animation_pbpvn"]
+resource_name = "hitflash"
+length = 0.11
+step = 0.01
+tracks/0/type = "value"
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/path = NodePath(".:material:shader_parameter/enabled")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/keys = {
+"times": PackedFloat32Array(0, 0.11),
+"transitions": PackedFloat32Array(1, 1),
+"update": 1,
+"values": [true, false]
+}
+
+[sub_resource type="AnimationLibrary" id="AnimationLibrary_1jhcj"]
+_data = {
+&"hitflash": SubResource("Animation_pbpvn")
+}
+
+[node name="BaseEnemy" type="CharacterBody2D" unique_id=1704693412 node_paths=PackedStringArray("v_component", "health_man", "hurtbox")]
+collision_layer = 8
+collision_mask = 20
+script = ExtResource("1_o22pi")
+v_component = NodePath("BaseEnemyStuff/VelocityComponent")
+health_man = NodePath("BaseEnemyStuff/HealthManager")
+hurtbox = NodePath("BaseEnemyStuff/Hurtbox")
+
+[node name="BodyCollision" type="CollisionShape2D" parent="." unique_id=2038690234]
+
+[node name="BaseEnemyStuff" type="Node2D" parent="." unique_id=2108870964]
+material = ExtResource("1_pbpvn")
+
+[node name="VelocityComponent" type="Node" parent="BaseEnemyStuff" unique_id=1907220242]
+script = ExtResource("2_8um0u")
+
+[node name="HealthManager" type="Node" parent="BaseEnemyStuff" unique_id=1842605953]
+script = ExtResource("3_sxwhk")
+
+[node name="Hurtbox" parent="BaseEnemyStuff" unique_id=1554320959 node_paths=PackedStringArray("parent") instance=ExtResource("4_7pv7w")]
+collision_mask = 2816
+parent = NodePath("../..")
+can_be_invincible = false
+
+[node name="HurtboxCollision" type="CollisionShape2D" parent="BaseEnemyStuff/Hurtbox" unique_id=1633011383]
+
+[node name="ContactHitbox" parent="BaseEnemyStuff" unique_id=2114649000 node_paths=PackedStringArray("parent") instance=ExtResource("5_o68ib")]
+collision_layer = 1024
+parent = NodePath("../..")
+Damage = 1.0
+
+[node name="ContactCollision" type="CollisionShape2D" parent="BaseEnemyStuff/ContactHitbox" unique_id=239826217]
+
+[node name="Anim" type="AnimationPlayer" parent="BaseEnemyStuff" unique_id=532902763]
+libraries/ = SubResource("AnimationLibrary_1jhcj")
+
+[connection signal="lost_health" from="BaseEnemyStuff/HealthManager" to="." method="took_damage"]
+[connection signal="ran_out" from="BaseEnemyStuff/HealthManager" to="." method="run_out_of_health"]
+[connection signal="took_damage" from="BaseEnemyStuff/Hurtbox" to="BaseEnemyStuff/HealthManager" method="lose_health"]

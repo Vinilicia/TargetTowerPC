@@ -1,0 +1,14 @@
+[gd_scene format=3 uid="uid://8fltbt7y55sy"]
+
+[ext_resource type="Script" uid="uid://yylfl2pynxe0" path="res://Interactibles/Mechanisms/Buttons&Receptors/Red_Target&Block.gd" id="1_wfd37"]
+[ext_resource type="PackedScene" uid="uid://cjd68laeibaxd" path="res://Interactibles/Mechanisms/Buttons&Receptors/RedTarget.tscn" id="2_kd8tj"]
+[ext_resource type="PackedScene" uid="uid://dm11p43b6up60" path="res://Interactibles/Mechanisms/Buttons&Receptors/Block-01.tscn" id="3_vn07a"]
+
+[node name="RedTarget&Block" type="Node2D" node_paths=PackedStringArray("target", "block")]
+script = ExtResource("1_wfd37")
+target = NodePath("RedTarget")
+block = NodePath("Block")
+
+[node name="Block" parent="." instance=ExtResource("3_vn07a")]
+
+[node name="RedTarget" parent="." instance=ExtResource("2_kd8tj")]

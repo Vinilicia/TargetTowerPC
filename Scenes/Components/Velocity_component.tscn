@@ -1,8 +1,0 @@
-[gd_scene load_steps=2 format=3 uid="uid://pcmiqqj0ro4w"]
-
-[ext_resource type="Script" uid="uid://c4xupirqm5ogs" path="res://Scripts/Components/Velocity_component.gd" id="1_m4b4b"]
-
-[node name="VelocityComponent" type="Node"]
-script = ExtResource("1_m4b4b")
-
-[connection signal="knockback_changed" from="." to="." method="_on_knockback_changed"]

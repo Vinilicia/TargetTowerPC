@@ -1,0 +1,78 @@
+[gd_scene format=3 uid="uid://d2hbghv0g000b"]
+
+[ext_resource type="Theme" uid="uid://cdltb2eu7esbs" path="res://Themes/Menu.tres" id="1_hqwsg"]
+[ext_resource type="Script" uid="uid://dqwu44m4sxr5n" path="res://Menus&UI/hud.gd" id="1_v2751"]
+[ext_resource type="Texture2D" uid="uid://bm6sl6whs11eu" path="res://Assets/Home_bred/UI/HUD/RegretIcon.aseprite" id="2_vuvra"]
+[ext_resource type="Texture2D" uid="uid://dpcss316mg4ry" path="res://Assets/Home_bred/UI/HUD/ManaBarUnder.aseprite" id="3_hqwsg"]
+[ext_resource type="Texture2D" uid="uid://dc6r8i0huwpum" path="res://Assets/Home_bred/UI/HUD/ManaBarOverFire.aseprite" id="4_74n24"]
+[ext_resource type="Texture2D" uid="uid://cytxaja6vb7r4" path="res://Assets/Home_bred/UI/HUD/ManaBarOver.aseprite" id="4_dha11"]
+[ext_resource type="Texture2D" uid="uid://d1r0hnjn1h3aj" path="res://Assets/Home_bred/UI/HUD/ManaBarOverPlatform.aseprite" id="5_kycnh"]
+[ext_resource type="Texture2D" uid="uid://cvm5amqgku2hn" path="res://Assets/Home_bred/UI/HUD/ManaBarProgress.aseprite" id="5_tx75f"]
+[ext_resource type="Texture2D" uid="uid://dxphknmtwckg0" path="res://Assets/Home_bred/UI/HUD/ManaBarOverTeleport.aseprite" id="6_mfuqb"]
+
+[node name="HUD" type="Control" node_paths=PackedStringArray("hearts_container", "money_label", "mana_bar") groups=["HUD"]]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme = ExtResource("1_hqwsg")
+script = ExtResource("1_v2751")
+hearts_container = NodePath("MarginContainer/ElementsContainer/HealthContainer")
+money_label = NodePath("MarginContainer/ElementsContainer/MoneyContainer/CurrentValueLabel")
+mana_bar = NodePath("MarginContainer/ElementsContainer/ManaContainer/ManaBar")
+mana_bar_textures = Array[Texture]([ExtResource("4_dha11"), ExtResource("4_74n24"), ExtResource("5_kycnh"), ExtResource("6_mfuqb")])
+
+[node name="MarginContainer" type="MarginContainer" parent="."]
+layout_mode = 1
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+theme_override_constants/margin_left = 10
+theme_override_constants/margin_top = 2
+theme_override_constants/margin_right = 10
+theme_override_constants/margin_bottom = 10
+
+[node name="ElementsContainer" type="VBoxContainer" parent="MarginContainer"]
+layout_mode = 2
+
+[node name="HealthContainer" type="HBoxContainer" parent="MarginContainer/ElementsContainer"]
+layout_mode = 2
+theme_override_constants/separation = 0
+
+[node name="ManaContainer" type="HBoxContainer" parent="MarginContainer/ElementsContainer"]
+layout_mode = 2
+
+[node name="ManaBar" type="TextureProgressBar" parent="MarginContainer/ElementsContainer/ManaContainer"]
+custom_minimum_size = Vector2(128, 32)
+layout_mode = 2
+max_value = 5.0
+nine_patch_stretch = true
+stretch_margin_left = 3
+stretch_margin_top = 3
+stretch_margin_right = 3
+stretch_margin_bottom = 3
+texture_under = ExtResource("3_hqwsg")
+texture_over = ExtResource("4_dha11")
+texture_progress = ExtResource("5_tx75f")
+
+[node name="MoneyContainer" type="HBoxContainer" parent="MarginContainer/ElementsContainer"]
+layout_mode = 2
+size_flags_vertical = 10
+
+[node name="MoneyIcon" type="TextureRect" parent="MarginContainer/ElementsContainer/MoneyContainer"]
+layout_mode = 2
+size_flags_horizontal = 0
+texture = ExtResource("2_vuvra")
+stretch_mode = 2
+
+[node name="CurrentValueLabel" type="Label" parent="MarginContainer/ElementsContainer/MoneyContainer"]
+layout_mode = 2
+size_flags_horizontal = 2
+mouse_filter = 1
+text = "0"
+
+[connection signal="visibility_changed" from="MarginContainer/ElementsContainer/MoneyContainer/CurrentValueLabel" to="." method="_on_money_label_visibility_changed"]

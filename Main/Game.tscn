@@ -1,0 +1,31 @@
+[gd_scene format=3 uid="uid://ccg2l16c64hgc"]
+
+[ext_resource type="Script" uid="uid://bsv2vkl8xd2n8" path="res://Main/game.gd" id="1_mu4po"]
+[ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Actors/Player/Player.tscn" id="2_f405u"]
+[ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Levels/Camera.tscn" id="3_73cq8"]
+
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_73cq8"]
+resource_local_to_scene = true
+radius = 0.5
+height = 2.0
+
+[node name="Game" type="Node2D" groups=["Game"]]
+script = ExtResource("1_mu4po")
+
+[node name="Player" parent="." instance=ExtResource("2_f405u")]
+top_level = true
+position = Vector2(93, -116)
+
+[node name="Coll" parent="Player/Hurtbox" index="1"]
+shape = SubResource("CapsuleShape2D_73cq8")
+
+[node name="Remote" parent="Player/Utilities" index="1"]
+remote_path = NodePath("../../../Camera")
+
+[node name="Camera" parent="." instance=ExtResource("3_73cq8")]
+position = Vector2(93, -156)
+limit_right = 2240
+
+[editable path="Player"]
+[editable path="Player/Archer"]
+[editable path="Player/Utilities/FireManager"]

@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://wgn1wvddnjpg"]
+
+[ext_resource type="Script" uid="uid://bypm66hs22iqi" path="res://Actors/Enemies/Utilities/detector.gd" id="1_s3hnd"]
+
+[node name="Detector" type="RayCast2D"]
+script = ExtResource("1_s3hnd")
