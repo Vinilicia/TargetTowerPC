@@ -1,0 +1,71 @@
+[gd_scene format=3 uid="uid://cid14hnxk5wxu"]
+
+[ext_resource type="PackedScene" uid="uid://ca1y1rpgw0xi6" path="res://Main/FakeGame.tscn" id="1_i0aui"]
+[ext_resource type="PackedScene" uid="uid://d2hbghv0g000b" path="res://Menus&UI/hud.tscn" id="2_f7arb"]
+[ext_resource type="PackedScene" uid="uid://drfycye8vmmuq" path="res://Menus&UI/Main_menu.tscn" id="3_ja8sh"]
+
+[sub_resource type="Environment" id="Environment_2w1kt"]
+background_mode = 3
+adjustment_enabled = true
+
+[node name="Main2" type="Node2D" unique_id=1349870319]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="." unique_id=1230184288]
+environment = SubResource("Environment_2w1kt")
+
+[node name="GameCanvasLayer" type="CanvasLayer" parent="." unique_id=415904724]
+
+[node name="UILayer" type="CanvasLayer" parent="." unique_id=1426724582]
+layer = 2
+
+[node name="GameViewportContainer" type="SubViewportContainer" parent="UILayer" unique_id=1236153517]
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+mouse_filter = 2
+stretch = true
+stretch_shrink = 2
+
+[node name="GameViewport" type="SubViewport" parent="UILayer/GameViewportContainer" unique_id=1772936344]
+handle_input_locally = false
+snap_2d_transforms_to_pixel = true
+canvas_item_default_texture_filter = 0
+size = Vector2i(320, 180)
+render_target_update_mode = 4
+
+[node name="FakeGame" parent="UILayer/GameViewportContainer/GameViewport" unique_id=1533925032 node_paths=PackedStringArray("blackout_rect") instance=ExtResource("1_i0aui")]
+blackout_rect = NodePath("../../../Blackout")
+
+[node name="HUD" parent="UILayer/GameViewportContainer" unique_id=1281742651 instance=ExtResource("2_f7arb")]
+layout_mode = 2
+
+[node name="Blackout" type="ColorRect" parent="UILayer" unique_id=1730010448]
+process_mode = 3
+modulate = Color(1, 1, 1, 0)
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+color = Color(0, 0, 0, 1)
+
+[node name="MainMenu" parent="UILayer" unique_id=700020486 instance=ExtResource("3_ja8sh")]
+process_mode = 3
+visible = false
+
+[node name="ControlsMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="0"]
+script = null
+
+[node name="AudioMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="1"]
+script = null
+
+[node name="VideoMenu" parent="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer" index="2"]
+script = null
+
+[editable path="UILayer/MainMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/ControlsMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/AudioMenu"]
+[editable path="UILayer/MainMenu/SettingsMenu/MarginContainer/VBoxContainer/MenusContainer/VideoMenu"]

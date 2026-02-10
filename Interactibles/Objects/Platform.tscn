@@ -1,0 +1,50 @@
+[gd_scene format=3 uid="uid://trih87ps31u"]
+
+[ext_resource type="Script" uid="uid://dkbt73v4lvbap" path="res://Interactibles/Objects/Platform.gd" id="1_kpmhp"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_r1vh8"]
+[ext_resource type="Script" uid="uid://c4xupirqm5ogs" path="res://Components/Velocity_component.gd" id="3_8oink"]
+[ext_resource type="PackedScene" uid="uid://cio6ms6wdyswa" path="res://Interactibles/Mechanisms/Buttons&Receptors/PlatformSprite.tscn" id="4_op0uc"]
+
+[node name="Platform_Spawner" type="Node2D" unique_id=448328344 node_paths=PackedStringArray("player_detec", "sprite", "v_component")]
+script = ExtResource("1_kpmhp")
+spawning_time = 0.6
+player_detec = NodePath("Platform/PlayerDetectorArea")
+sprite = NodePath("PlatformSprite")
+v_component = NodePath("Platform/VelocityComponent")
+
+[node name="Platform" type="CharacterBody2D" parent="." unique_id=2064235932]
+scale = Vector2(4, 4)
+collision_layer = 16
+collision_mask = 27
+
+[node name="PlatformCol" type="CollisionShape2D" parent="Platform" unique_id=1269229271]
+rotation = 3.14159
+shape = ExtResource("2_r1vh8")
+disabled = true
+one_way_collision = true
+debug_color = Color(0.956863, 0.0784314, 0.486275, 0.733333)
+
+[node name="PlayerDetectorArea" type="Area2D" parent="Platform" unique_id=1902707158]
+collision_layer = 0
+monitoring = false
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="Platform/PlayerDetectorArea" unique_id=1063069291]
+shape = ExtResource("2_r1vh8")
+debug_color = Color(0.2, 0.0941176, 0.0392157, 1)
+
+[node name="VelocityComponent" type="Node" parent="Platform" unique_id=1924221931]
+script = ExtResource("3_8oink")
+metadata/_custom_type_script = "uid://c4xupirqm5ogs"
+
+[node name="Timer" type="Timer" parent="." unique_id=1462701973]
+wait_time = 0.1
+one_shot = true
+
+[node name="PlatformSprite" parent="." unique_id=2071898105 instance=ExtResource("4_op0uc")]
+visible = false
+autoplay = "Idle"
+
+[connection signal="body_entered" from="Platform/PlayerDetectorArea" to="." method="_on_player_detector_area_body_entered"]
+[connection signal="body_exited" from="Platform/PlayerDetectorArea" to="." method="_on_player_detector_area_body_exited"]
+[connection signal="timeout" from="Timer" to="." method="spawn"]

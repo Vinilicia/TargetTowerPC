@@ -1,0 +1,14 @@
+[gd_resource type="TileSet" load_steps=3 format=3 uid="uid://bibe8vc18o6ko"]
+
+[ext_resource type="Texture2D" uid="uid://uj70gavwknil" path="res://Assets/Home_bred/Tilemap/parede_fundo.aseprite" id="1_gq0bx"]
+
+[sub_resource type="TileSetAtlasSource" id="TileSetAtlasSource_ev1mv"]
+texture = ExtResource("1_gq0bx")
+0:0/size_in_atlas = Vector2i(4, 1)
+0:0/0 = 0
+0:1/size_in_atlas = Vector2i(4, 1)
+0:1/0 = 0
+
+[resource]
+tile_size = Vector2i(64, 16)
+sources/0 = SubResource("TileSetAtlasSource_ev1mv")

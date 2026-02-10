@@ -1,0 +1,29 @@
+[gd_scene format=3 uid="uid://04ns053vyilq"]
+
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_jrmtp"]
+[ext_resource type="Script" uid="uid://lsopm7gvxjbf" path="res://Interactibles/Mechanisms/bounce.gd" id="1_mnhmj"]
+
+[node name="Bounce" type="Node2D" unique_id=823817498 node_paths=PackedStringArray("static_body", "area")]
+script = ExtResource("1_mnhmj")
+static_body = NodePath("Body")
+area = NodePath("BounceArea")
+
+[node name="Body" type="StaticBody2D" parent="." unique_id=1062760253]
+scale = Vector2(32, 12)
+collision_layer = 16
+collision_mask = 31
+
+[node name="Coll" type="CollisionShape2D" parent="Body" unique_id=635991175]
+shape = ExtResource("1_jrmtp")
+
+[node name="BounceArea" type="Area2D" parent="." unique_id=167007979]
+position = Vector2(0, -6)
+scale = Vector2(30, 8)
+collision_layer = 0
+collision_mask = 25
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="BounceArea" unique_id=1102026837]
+shape = ExtResource("1_jrmtp")
+
+[connection signal="body_entered" from="BounceArea" to="." method="_on_bounce_area_body_entered"]

@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=3 uid="uid://nax8k76qlh1"]
+
+[ext_resource type="PackedScene" uid="uid://c67b78m6biy5d" path="res://Assets/Home_bred/Mechanisms/Blocks/Block.aseprite" id="1_vxf51"]
+
+[node name="Block" instance=ExtResource("1_vxf51")]
+animation = &"Deactivate"

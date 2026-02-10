@@ -1,6 +1,6 @@
-[gd_resource type="Theme" load_steps=21 format=3 uid="uid://cdltb2eu7esbs"]
+[gd_resource type="Theme" format=3 uid="uid://cdltb2eu7esbs"]
 
-[ext_resource type="FontFile" uid="uid://we2hkdmwoyf1" path="res://Assets/HandymandiFree.ttf" id="1_6q32c"]
+[ext_resource type="FontFile" uid="uid://sx3xpma1ldx0" path="res://Assets/Text/Ruler 9.ttf" id="1_kitg8"]
 [ext_resource type="Texture2D" uid="uid://m77evc2pr2lt" path="res://Assets/Home_bred/UI/checked.aseprite" id="2_88617"]
 [ext_resource type="Texture2D" uid="uid://di300dqlykewy" path="res://Assets/Home_bred/UI/checked_radio.aseprite" id="3_f02br"]
 [ext_resource type="Texture2D" uid="uid://b8dhcysvwl1sf" path="res://Assets/Home_bred/UI/unchecked_radio.aseprite" id="4_fvre7"]
@@ -99,14 +99,14 @@ Button/constants/align_to_largest_stylebox = 0
 Button/constants/h_separation = 4
 Button/constants/icon_max_width = 0
 Button/font_sizes/font_size = 16
-Button/fonts/font = ExtResource("1_6q32c")
+Button/fonts/font = ExtResource("1_kitg8")
 Button/styles/disabled = SubResource("StyleBoxFlat_ravda")
 Button/styles/focus = SubResource("StyleBoxFlat_e1cnn")
 Button/styles/hover = SubResource("StyleBoxFlat_ldqb6")
 Button/styles/hover_pressed = SubResource("StyleBoxEmpty_haetg")
 Button/styles/normal = SubResource("StyleBoxFlat_he3cj")
 Button/styles/pressed = SubResource("StyleBoxEmpty_xko0m")
-CheckBox/fonts/font = ExtResource("1_6q32c")
+CheckBox/fonts/font = ExtResource("1_kitg8")
 CheckBox/icons/checked = ExtResource("2_88617")
 CheckBox/icons/radio_checked = ExtResource("3_f02br")
 CheckBox/icons/radio_unchecked = ExtResource("4_fvre7")
@@ -114,16 +114,15 @@ CheckBox/icons/unchecked = ExtResource("5_0ywqo")
 CheckBox/styles/hover_pressed = SubResource("StyleBoxEmpty_crn8t")
 CheckBox/styles/pressed = SubResource("StyleBoxEmpty_xpd52")
 Label/colors/font_outline_color = Color(0, 0, 0, 1)
-Label/constants/outline_size = 1
-Label/fonts/font = ExtResource("1_6q32c")
-OptionButton/fonts/font = ExtResource("1_6q32c")
+Label/fonts/font = ExtResource("1_kitg8")
+OptionButton/fonts/font = ExtResource("1_kitg8")
 OptionButton/icons/arrow = ExtResource("6_kok38")
 OptionButton/styles/focus = SubResource("StyleBoxFlat_7na8f")
 OptionButton/styles/hover = SubResource("StyleBoxFlat_pf1b2")
 OptionButton/styles/normal = SubResource("StyleBoxFlat_kok38")
-PopupMenu/fonts/font = ExtResource("1_6q32c")
-PopupMenu/fonts/font_separator = ExtResource("1_6q32c")
-PopupMenu/fonts/title_font = ExtResource("1_6q32c")
+PopupMenu/fonts/font = ExtResource("1_kitg8")
+PopupMenu/fonts/font_separator = ExtResource("1_kitg8")
+PopupMenu/fonts/title_font = ExtResource("1_kitg8")
 PopupMenu/icons/checked = ExtResource("2_88617")
 PopupMenu/icons/radio_checked = ExtResource("3_f02br")
 PopupMenu/icons/radio_unchecked = ExtResource("4_fvre7")

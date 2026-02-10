@@ -1,0 +1,30 @@
+[gd_resource type="VisualShader" format=3 uid="uid://dw5q7exg3ylkf"]
+
+[sub_resource type="VisualShaderNodeColorParameter" id="VisualShaderNodeColorParameter_declk"]
+parameter_name = "Tint"
+qualifier = 2
+default_value_enabled = true
+
+[sub_resource type="VisualShaderNodeIf" id="VisualShaderNodeIf_asn3t"]
+default_input_values = [0, 0.0, 1, 1.0, 2, 1e-05, 3, Vector3(0, 0, 0), 4, Vector3(0, 0, 0), 5, Vector3(0, 0, 0)]
+
+[sub_resource type="VisualShaderNodeInput" id="VisualShaderNodeInput_aqvuk"]
+input_name = "color"
+
+[sub_resource type="VisualShaderNodeBooleanParameter" id="VisualShaderNodeBooleanParameter_xqi20"]
+parameter_name = "enabled"
+default_value_enabled = true
+
+[resource]
+mode = 1
+flags/light_only = false
+nodes/fragment/0/position = Vector2(740, 180)
+nodes/fragment/2/node = SubResource("VisualShaderNodeColorParameter_declk")
+nodes/fragment/2/position = Vector2(60, 220)
+nodes/fragment/3/node = SubResource("VisualShaderNodeIf_asn3t")
+nodes/fragment/3/position = Vector2(480, 100)
+nodes/fragment/4/node = SubResource("VisualShaderNodeInput_aqvuk")
+nodes/fragment/4/position = Vector2(80, 480)
+nodes/fragment/5/node = SubResource("VisualShaderNodeBooleanParameter_xqi20")
+nodes/fragment/5/position = Vector2(120, 40)
+nodes/fragment/connections = PackedInt32Array(2, 0, 3, 3, 4, 0, 3, 4, 4, 0, 3, 5, 5, 0, 3, 0, 3, 0, 0, 0)

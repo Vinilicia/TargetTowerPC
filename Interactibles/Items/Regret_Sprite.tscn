@@ -1,0 +1,8 @@
+[gd_scene load_steps=2 format=3 uid="uid://df53a8yrwvqb4"]
+
+[ext_resource type="PackedScene" uid="uid://jbgqsrvmb7xh" path="res://Assets/Home_bred/Items/Regret.aseprite" id="1_yfxym"]
+
+[node name="Regret" instance=ExtResource("1_yfxym")]
+animation = &"Shine"
+frame = 12
+frame_progress = 1.0

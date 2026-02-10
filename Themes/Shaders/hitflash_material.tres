@@ -1,0 +1,8 @@
+[gd_resource type="ShaderMaterial" load_steps=2 format=3 uid="uid://djswnephywl88"]
+
+[ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="1_dgjhq"]
+
+[resource]
+resource_local_to_scene = true
+shader = ExtResource("1_dgjhq")
+shader_parameter/enabled = true

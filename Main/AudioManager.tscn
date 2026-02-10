@@ -1,0 +1,80 @@
+[gd_scene format=3 uid="uid://bybaidqwohsvs"]
+
+[ext_resource type="Script" uid="uid://bti8xal7fmd6a" path="res://Main/AudioManager.gd" id="1_4sm43"]
+[ext_resource type="AudioStream" uid="uid://c8b42joe51vlq" path="res://Assets/Stolen/Audio/SFX/arrow-impact-329920.mp3" id="2_8yw1d"]
+[ext_resource type="AudioStream" uid="uid://boar385u8jsck" path="res://Assets/Stolen/Audio/SFX/arrow-swish_03-306040.mp3" id="3_mp20l"]
+[ext_resource type="AudioStream" uid="uid://cg5i4d0dp8lw0" path="res://Assets/Stolen/Audio/SFX/jump.wav" id="3_xkinn"]
+[ext_resource type="AudioStream" uid="uid://b6cgsc4nii2da" path="res://Assets/Stolen/Audio/SFX/concrete-footsteps.mp3" id="4_de5ey"]
+[ext_resource type="AudioStream" uid="uid://b4qxtfpauddid" path="res://Assets/Stolen/Audio/SFX/grunt.wav" id="5_3lfgy"]
+[ext_resource type="AudioStream" uid="uid://dkqmldwiugj5r" path="res://Assets/Stolen/Audio/SFX/money.mp3" id="5_a7o8a"]
+[ext_resource type="AudioStream" uid="uid://ccuybd7mim73t" path="res://Assets/Stolen/Audio/SFX/PickUp.mp3" id="6_0cmn7"]
+[ext_resource type="AudioStream" uid="uid://c481u6r5qmmdj" path="res://Assets/Stolen/Audio/Music/SotN Draculas Castle.mp3" id="6_l0os4"]
+[ext_resource type="AudioStream" uid="uid://b4f80dvtdeij3" path="res://Assets/Stolen/Audio/SFX/Save.mp3" id="7_kfy3h"]
+[ext_resource type="AudioStream" uid="uid://diop8um66nmkn" path="res://Assets/Stolen/Audio/Music/SotN Lost Portrait.mp3" id="7_sfnoe"]
+[ext_resource type="AudioStream" uid="uid://cm0fwxjg6shku" path="res://Assets/Stolen/Audio/Music/Female Turbulence.mp3" id="9_wqjro"]
+
+[node name="AudioManager" type="Node" unique_id=1173554302]
+process_mode = 3
+script = ExtResource("1_4sm43")
+
+[node name="EnemyHit" type="AudioStreamPlayer" parent="." unique_id=1675545361]
+stream = ExtResource("2_8yw1d")
+volume_db = -15.0
+pitch_scale = 1.1
+bus = &"SFX"
+
+[node name="PlayerJump" type="AudioStreamPlayer" parent="." unique_id=1758729632]
+stream = ExtResource("3_xkinn")
+volume_db = -20.0
+pitch_scale = 0.9
+bus = &"SFX"
+
+[node name="ArrowShot" type="AudioStreamPlayer" parent="." unique_id=259716190]
+stream = ExtResource("3_mp20l")
+volume_db = -20.0
+pitch_scale = 1.6
+bus = &"SFX"
+
+[node name="Money" type="AudioStreamPlayer" parent="." unique_id=1516293982]
+stream = ExtResource("5_a7o8a")
+volume_db = -10.0
+pitch_scale = 1.2
+bus = &"SFX"
+
+[node name="BossDeath" type="AudioStreamPlayer" parent="." unique_id=216033995]
+stream = ExtResource("6_0cmn7")
+bus = &"SFX"
+
+[node name="PickUp" type="AudioStreamPlayer" parent="." unique_id=1186324177]
+stream = ExtResource("6_0cmn7")
+bus = &"SFX"
+
+[node name="Save" type="AudioStreamPlayer" parent="." unique_id=1886047003]
+stream = ExtResource("7_kfy3h")
+volume_db = -15.0
+bus = &"SFX"
+
+[node name="Footsteps" type="AudioStreamPlayer" parent="." unique_id=694578883]
+stream = ExtResource("4_de5ey")
+volume_db = -15.0
+pitch_scale = 1.2
+bus = &"SFX"
+
+[node name="PlayerHit" type="AudioStreamPlayer" parent="." unique_id=729878858]
+stream = ExtResource("5_3lfgy")
+volume_db = -10.0
+bus = &"SFX"
+
+[node name="DraculasCastle" type="AudioStreamPlayer" parent="." unique_id=1847664630]
+stream = ExtResource("6_l0os4")
+bus = &"Music"
+
+[node name="FemaleTurbulence" type="AudioStreamPlayer" parent="." unique_id=1186120288]
+stream = ExtResource("9_wqjro")
+volume_db = -10.0
+autoplay = true
+bus = &"Music"
+
+[node name="LostPaintings" type="AudioStreamPlayer" parent="." unique_id=811005608]
+stream = ExtResource("7_sfnoe")
+bus = &"Music"

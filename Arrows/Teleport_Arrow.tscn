@@ -1,0 +1,49 @@
+[gd_scene format=3 uid="uid://h5p666cxnxby"]
+
+[ext_resource type="Script" uid="uid://bf7d3vwk30cyx" path="res://Arrows/teleport_arrow.gd" id="1_1yo7r"]
+[ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_1yo7r"]
+[ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="3_k3own"]
+[ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Arrows/Arrow_trail.tscn" id="4_gbeok"]
+[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="5_1yo7r"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="6_k3own"]
+
+[sub_resource type="Gradient" id="Gradient_j7lj7"]
+resource_local_to_scene = true
+colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
+
+[node name="Arrow" type="CharacterBody2D" node_paths=PackedStringArray("anim", "sprite", "hitbox")]
+modulate = Color(0, 0.333333, 0.454902, 1)
+collision_layer = 0
+collision_mask = 0
+script = ExtResource("1_1yo7r")
+anim = NodePath("Anim")
+sprite = NodePath("Sprite")
+trail = NodePath("Arrow_Trail")
+hitbox = NodePath("Hitbox")
+
+[node name="Sprite" type="Sprite2D" parent="."]
+texture = ExtResource("2_1yo7r")
+offset = Vector2(0, 0.5)
+
+[node name="Anim" type="AnimationPlayer" parent="."]
+
+[node name="Coll" type="CollisionShape2D" parent="."]
+position = Vector2(6, 0)
+scale = Vector2(4, 5)
+shape = ExtResource("3_k3own")
+
+[node name="Arrow_Trail" parent="." instance=ExtResource("4_gbeok")]
+modulate = Color(0, 0.333333, 0.454902, 1)
+gradient = SubResource("Gradient_j7lj7")
+
+[node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_1yo7r")]
+position = Vector2(2, 0)
+scale = Vector2(18, 5)
+collision_layer = 256
+monitorable = false
+parent = NodePath("..")
+
+[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+shape = ExtResource("6_k3own")
+
+[connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]
