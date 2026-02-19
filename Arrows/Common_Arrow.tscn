@@ -1,16 +1,16 @@
 [gd_scene format=3 uid="uid://de13e283ng22u"]
 
-[ext_resource type="Script" uid="uid://crjbypxgv7iff" path="res://Arrows/Commom_Arrow.gd" id="1_g5uwg"]
+[ext_resource type="Script" uid="uid://crjbypxgv7iff" path="res://Arrows/Common_Arrow.gd" id="1_g5uwg"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="1_jx316"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_3qgj2"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Arrows/Arrow_trail.tscn" id="3_wms8w"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="5_2so76"]
 
-[sub_resource type="Gradient" id="Gradient_rhvf2"]
+[sub_resource type="Gradient" id="Gradient_hupdv"]
 resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 0.984314, 1, 0.505882)
 
-[node name="Arrow" type="CharacterBody2D" node_paths=PackedStringArray("anim", "sprite", "hitbox")]
+[node name="Arrow" type="CharacterBody2D" unique_id=980461484 node_paths=PackedStringArray("anim", "sprite", "hitbox")]
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_g5uwg")
@@ -20,7 +20,7 @@ trail = NodePath("Arrow_Trail")
 hitbox = NodePath("Hitbox")
 Despawn_Time = 3.0
 
-[node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_2so76")]
+[node name="Hitbox" parent="." unique_id=34470544 node_paths=PackedStringArray("parent") instance=ExtResource("5_2so76")]
 position = Vector2(2, 0)
 scale = Vector2(18, 5)
 collision_layer = 256
@@ -28,23 +28,23 @@ monitorable = false
 parent = NodePath("..")
 Damage = 1.0
 
-[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+[node name="Coll" type="CollisionShape2D" parent="Hitbox" unique_id=1751414176]
 shape = ExtResource("3_3qgj2")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=47676996]
 texture_filter = 1
 texture = ExtResource("1_jx316")
 offset = Vector2(0, 0.5)
 
-[node name="Coll" type="CollisionShape2D" parent="."]
+[node name="Coll" type="CollisionShape2D" parent="." unique_id=1766489879]
 position = Vector2(6, 0)
 scale = Vector2(4, 3)
 shape = ExtResource("3_3qgj2")
 
-[node name="Anim_Player" type="AnimationPlayer" parent="."]
+[node name="Anim_Player" type="AnimationPlayer" parent="." unique_id=638099544]
 
-[node name="Arrow_Trail" parent="." instance=ExtResource("3_wms8w")]
-gradient = SubResource("Gradient_rhvf2")
+[node name="Arrow_Trail" parent="." unique_id=1092348972 instance=ExtResource("3_wms8w")]
+gradient = SubResource("Gradient_hupdv")
 
 [connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]

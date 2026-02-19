@@ -452,3 +452,9 @@ func _on_fire_manager_caught_fire() -> void:
 		fire_man.extinguished.connect(health_man.stop_burning, 4)
 		health_man.start_burning(0.5)
 #endregion
+
+func _on_ice_manager_froze() -> void:
+	process_mode = Node.PROCESS_MODE_DISABLED
+
+func _on_ice_manager_melt() -> void:
+	process_mode = Node.PROCESS_MODE_INHERIT

@@ -4,13 +4,12 @@ class_name Fire
 @export var instant : bool = false
 @export var scale_increase : Vector2 = Vector2(1.4, 1.6)
 @export_group("Nodes")
-@export var collision : CollisionShape2D
-
+@export var ref_collision : CollisionShape2D
 
 func _ready() -> void:
 	var hitbox_coll : CollisionShape2D = $Hitbox/Coll
-	hitbox_coll.set_deferred("shape", collision.shape)
-	var new_scale : Vector2 = Vector2( collision.scale.x * scale_increase.x, collision.scale.y * scale_increase.y)
+	hitbox_coll.set_deferred("shape", ref_collision.shape)
+	var new_scale : Vector2 = Vector2( ref_collision.scale.x * scale_increase.x, ref_collision.scale.y * scale_increase.y)
 	hitbox_coll.set_deferred("scale", new_scale)
 	_deactivate()
 

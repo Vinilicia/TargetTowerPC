@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://cuyr02d5ffhbw" path="res://Interactibles/Mechanisms/Fire_Sprite.tscn" id="2_mr058"]
 [ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Components/Actions-Reactions/Fire.tscn" id="4_s6yer"]
 
-[node name="FireArea" type="Area2D"]
+[node name="FireArea" type="Area2D" unique_id=2119529606]
 collision_layer = 0
 collision_mask = 20
 script = ExtResource("1_n67fk")
@@ -14,16 +14,16 @@ width = 3
 max_spread_distance = 54.0
 ground_layer = 3
 
-[node name="Coll" type="CollisionShape2D" parent="."]
+[node name="Coll" type="CollisionShape2D" parent="." unique_id=47949639]
 position = Vector2(0, 5)
 scale = Vector2(39, 14)
 shape = ExtResource("1_1l1bj")
 
-[node name="FireSprite" parent="." instance=ExtResource("2_mr058")]
+[node name="FireSprite" parent="." unique_id=472672750 instance=ExtResource("2_mr058")]
 region_rect = Rect2(0, 0, 39, 24)
 
-[node name="Fire" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("4_s6yer")]
+[node name="Fire" parent="." unique_id=2145846696 node_paths=PackedStringArray("ref_collision") instance=ExtResource("4_s6yer")]
 position = Vector2(0, 5)
 instant = true
 scale_increase = Vector2(1, 1)
-collision = NodePath("../Coll")
+ref_collision = NodePath("../Coll")

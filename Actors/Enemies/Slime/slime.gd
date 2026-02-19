@@ -140,3 +140,9 @@ func ran_out_of_health() -> void:
 
 func _on_fire_manager_caught_fire() -> void:
 	change_type(SlimeType.FIRE)
+
+func _on_ice_manager_froze() -> void:
+	set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+
+func _on_ice_manager_melt() -> void:
+	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)

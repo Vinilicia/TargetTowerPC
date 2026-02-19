@@ -13,21 +13,13 @@
 [ext_resource type="PackedScene" uid="uid://dgsguis2vqkm7" path="res://Interactibles/Mechanisms/Conveyor_belt.tscn" id="9_kfdoy"]
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Interactibles/Objects/Bench.tscn" id="10_kfdoy"]
 [ext_resource type="PackedScene" uid="uid://dwoiuao00y8oi" path="res://Actors/Enemies/Utilities/Slime_Boss_Arena.tscn" id="12_4no8i"]
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rwgyr"]
-resource_local_to_scene = true
-shader = ExtResource("3_nh0l2")
-shader_parameter/enabled = false
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_xpb1b"]
-resource_local_to_scene = true
-shader = ExtResource("3_nh0l2")
-shader_parameter/enabled = true
+[ext_resource type="PackedScene" uid="uid://04ns053vyilq" path="res://Interactibles/Mechanisms/bounce.tscn" id="14_xpb1b"]
+[ext_resource type="PackedScene" uid="uid://blu3ir2g8hj6o" path="res://Components/Actions-Reactions/Ice_Block.tscn" id="15_ymqiv"]
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ymqiv"]
 resource_local_to_scene = true
 shader = ExtResource("3_nh0l2")
-shader_parameter/enabled = true
+shader_parameter/enabled = false
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_ion0u"]
 resource_local_to_scene = true
@@ -64,11 +56,21 @@ resource_local_to_scene = true
 shader = ExtResource("3_nh0l2")
 shader_parameter/enabled = true
 
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_qu73n"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_kj02d"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
 [node name="TestRoom" unique_id=1036476317 node_paths=PackedStringArray("bench") instance=ExtResource("1_evn5t")]
 bench = NodePath("Bench")
 
 [node name="Spooder" parent="Enemies" index="0" unique_id=948375727 instance=ExtResource("2_f20nt")]
-material = SubResource("ShaderMaterial_rwgyr")
+material = SubResource("ShaderMaterial_ymqiv")
 position = Vector2(351, 20)
 speed = 35.0
 movedir = -1.0
@@ -76,7 +78,7 @@ start_surface = "ceiling"
 fall_speed = 100.0
 
 [node name="Spooder2" parent="Enemies" index="1" unique_id=1464341476 instance=ExtResource("2_f20nt")]
-material = SubResource("ShaderMaterial_xpb1b")
+material = SubResource("ShaderMaterial_ion0u")
 position = Vector2(278, 116)
 speed = 35.0
 movedir = -1.0
@@ -84,49 +86,49 @@ start_surface = "ceiling"
 fall_speed = 100.0
 
 [node name="Slime2" parent="Enemies" index="2" unique_id=658440982 instance=ExtResource("3_m8jmo")]
-material = SubResource("ShaderMaterial_ymqiv")
+material = SubResource("ShaderMaterial_6y656")
 position = Vector2(885, -203)
-spawns_money = null
-money_amount = null
 type = null
 fire_attack_delay = null
 direction = null
 default_attack_delay = null
+spawns_money = null
+money_amount = null
 
 [node name="Slime3" parent="Enemies" index="3" unique_id=855155162 instance=ExtResource("3_m8jmo")]
-material = SubResource("ShaderMaterial_ion0u")
+material = SubResource("ShaderMaterial_lbl85")
 position = Vector2(882, -376)
-spawns_money = null
-money_amount = null
 type = null
 fire_attack_delay = null
 direction = null
 default_attack_delay = null
+spawns_money = null
+money_amount = null
 
 [node name="Shaman" parent="Enemies" index="4" unique_id=1444588541 instance=ExtResource("4_shaer")]
-material = SubResource("ShaderMaterial_6y656")
+material = SubResource("ShaderMaterial_3rvaw")
 position = Vector2(537, 85)
 magic_bolt_texture = null
 magic_bolt_scale = Vector2(0, 0)
 
 [node name="Bat" parent="Enemies" index="5" unique_id=1730014312 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_lbl85")
+material = SubResource("ShaderMaterial_85ifu")
 position = Vector2(851, 133)
 
 [node name="Bat2" parent="Enemies" index="6" unique_id=1061994402 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_3rvaw")
+material = SubResource("ShaderMaterial_xi5r3")
 position = Vector2(946, -51)
 
 [node name="Bat3" parent="Enemies" index="7" unique_id=678611238 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_85ifu")
+material = SubResource("ShaderMaterial_k5udj")
 position = Vector2(21, -216)
 
 [node name="Bat4" parent="Enemies" index="8" unique_id=769101661 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_xi5r3")
+material = SubResource("ShaderMaterial_qu73n")
 position = Vector2(111, -216)
 
 [node name="CommonGoblin2" parent="Enemies" index="9" unique_id=659796450 instance=ExtResource("6_22qgy")]
-material = SubResource("ShaderMaterial_k5udj")
+material = SubResource("ShaderMaterial_kj02d")
 position = Vector2(587, -169)
 
 [node name="Golem" parent="Enemies" index="10" unique_id=20234462 instance=ExtResource("8_rd61j")]
@@ -161,8 +163,6 @@ draw_limits = true
 position = Vector2(139, -688)
 
 [node name="Boss" parent="BossArena" index="2"]
-spawns_money = null
-money_amount = null
 jump_force = null
 spinning_speed = null
 gravity_scale = null
@@ -170,5 +170,13 @@ bounce_delay = null
 ground_attack_max = null
 top_attack_max = null
 patterned_rand_x_offset = null
+spawns_money = null
+money_amount = null
+
+[node name="Bounce" parent="." index="9" unique_id=823817498 instance=ExtResource("14_xpb1b")]
+position = Vector2(473, -439)
+
+[node name="Ice" parent="." index="10" unique_id=67827782 instance=ExtResource("15_ymqiv")]
+position = Vector2(559, -446)
 
 [editable path="BossArena"]

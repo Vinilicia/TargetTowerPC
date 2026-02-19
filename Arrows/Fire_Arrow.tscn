@@ -7,11 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Arrows/Arrow_trail.tscn" id="5_x8nla"]
 [ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Components/Actions-Reactions/Fire.tscn" id="6_p51ot"]
 
-[sub_resource type="Gradient" id="Gradient_wcnxp"]
+[sub_resource type="Gradient" id="Gradient_osq2d"]
 resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
 
-[node name="Arrow" type="CharacterBody2D" node_paths=PackedStringArray("fire", "anim", "sprite", "hitbox")]
+[node name="Arrow" type="CharacterBody2D" unique_id=1759911550 node_paths=PackedStringArray("fire", "anim", "sprite", "hitbox")]
 modulate = Color(1, 0, 0, 1)
 collision_layer = 0
 collision_mask = 0
@@ -23,14 +23,13 @@ trail = NodePath("Arrow_Trail")
 hitbox = NodePath("Hitbox")
 Despawn_Time = 3.0
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1444738016]
 texture = ExtResource("2_1pd68")
 offset = Vector2(0, 0.5)
 
-[node name="Anim" type="AnimationPlayer" parent="."]
+[node name="Anim" type="AnimationPlayer" parent="." unique_id=1017879555]
 
-[node name="Hitbox" type="Area2D" parent="." node_paths=PackedStringArray("parent")]
-visible = false
+[node name="Hitbox" type="Area2D" parent="." unique_id=1740167390 node_paths=PackedStringArray("parent")]
 position = Vector2(2, 0)
 scale = Vector2(18, 5)
 collision_layer = 256
@@ -41,27 +40,26 @@ script = ExtResource("3_mwrs1")
 parent = NodePath("..")
 Damage = 1.0
 
-[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+[node name="Coll" type="CollisionShape2D" parent="Hitbox" unique_id=22526596]
 shape = ExtResource("4_futqs")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 
-[node name="Arrow_Trail" parent="." instance=ExtResource("5_x8nla")]
+[node name="Arrow_Trail" parent="." unique_id=252693313 instance=ExtResource("5_x8nla")]
 modulate = Color(1, 0, 0, 1)
-gradient = SubResource("Gradient_wcnxp")
+gradient = SubResource("Gradient_osq2d")
 
-[node name="Coll" type="CollisionShape2D" parent="."]
+[node name="Coll" type="CollisionShape2D" parent="." unique_id=1833877219]
 position = Vector2(6, 0)
 scale = Vector2(4, 3)
 shape = ExtResource("4_futqs")
 
-[node name="Fire" parent="." node_paths=PackedStringArray("collision") instance=ExtResource("6_p51ot")]
+[node name="Fire" parent="." unique_id=1877767765 node_paths=PackedStringArray("ref_collision") instance=ExtResource("6_p51ot")]
 position = Vector2(6, 0)
 instant = true
 scale_increase = Vector2(3, 2)
-collision = NodePath("../Coll")
+ref_collision = NodePath("../Coll")
 
-[node name="Hitbox" parent="Fire" index="0" node_paths=PackedStringArray("parent")]
-parent = NodePath("..")
+[node name="Hitbox" parent="Fire" index="0" unique_id=810296504]
 Damage = 1.0
 
 [connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]

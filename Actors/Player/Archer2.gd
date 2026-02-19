@@ -99,7 +99,7 @@ func build_arrows() -> void:
 		current_arrow.queue_free()
 	arrows = []
 	#var available_arrows := SaveManager.save_file_data.get_available_arrows()
-	var available_arrows := [true, true, true, true, false]
+	var available_arrows := [true, true, true, true, true, false]
 	for i in range(arrow_paths.size()):
 		if available_arrows[i]:
 			var new_arrow : Arrow = load(arrow_paths[i]).instantiate()
@@ -325,6 +325,7 @@ func hold_arrow() -> bool:
 		if mana >= current_arrow.Cost:
 			holding_arrow = true
 			current_arrow.call_deferred("set_flying_direction", shoot_direction)
+			current_arrow.setup_hitbox(self)
 			call_deferred("add_child", current_arrow)
 			can_shoot = false
 			return true
@@ -382,8 +383,8 @@ func jump() -> void:
 func get_current_gravity() -> Vector2:
 	var y_vel : float = v_comp.get_proper_velocity(2)
 	if y_vel >= 0.0:
-		if y_vel > 300.0:
-			return get_gravity() * 0.15
+		if y_vel > 400.0:
+			return get_gravity() * 0.01
 		return get_gravity()
 	return get_gravity() * rise_multiplier
 

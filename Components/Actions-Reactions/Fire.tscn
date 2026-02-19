@@ -3,12 +3,13 @@
 [ext_resource type="Script" uid="uid://baqmy8t4y6v05" path="res://Components/Actions-Reactions/Fire.gd" id="1_wlo0t"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="2_3oduh"]
 
-[node name="Fire" type="Node2D"]
+[node name="Fire" type="Node2D" unique_id=89439355]
 script = ExtResource("1_wlo0t")
 
-[node name="Hitbox" parent="." instance=ExtResource("2_3oduh")]
+[node name="Hitbox" parent="." unique_id=810296504 node_paths=PackedStringArray("parent") instance=ExtResource("2_3oduh")]
 process_mode = 4
 collision_layer = 4096
 monitorable = false
+parent = NodePath("..")
 
-[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+[node name="Coll" type="CollisionShape2D" parent="Hitbox" unique_id=836805215]
