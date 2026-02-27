@@ -6,6 +6,7 @@ signal took_damage
 
 @export_group("Nodes")
 @export var v_comp : VelocityComponent
+@export var health_man : HealthManager
 @export var mana_timer : Timer
 @export var sprite : Sprite2D
 @export var melee_area : Area2D
@@ -82,6 +83,7 @@ func _physics_process(delta: float) -> void:
 	move_and_slide()
 
 func _ready() -> void:
+	CameraMan.setup_player(self)
 	build_arrows()
 
 func equip_arrow() -> Arrow:
@@ -154,6 +156,7 @@ func shorten_hitbox() -> void:
 	hurtbox.position.x += 1
 	hurtbox.scale.x += 2
 	$Utilities/FireManager.update_hurtbox()
+	$Utilities/IceManager.update_hurtbox()
 
 func crouch():
 	anim_handler.crouched()
@@ -166,8 +169,9 @@ func increase_hitbox() -> void:
 	hurtbox.position.y -= hurtbox.scale.y / 2
 	hurtbox.position.x -= 1
 	hurtbox.scale.y *= 1.5
-	hurtbox.scale.x -= 2
+	hurtbox.scale.x -= 2	
 	$Utilities/FireManager.update_hurtbox()
+	$Utilities/IceManager.update_hurtbox()
 
 func stand() -> void:
 	anim_handler.stood()
@@ -333,7 +337,10 @@ func hold_arrow() -> bool:
 
 func shoot() -> void:
 	holding_arrow = false
-	current_arrow.reparent(get_parent())
+	current_arrow.process_mode = Node.PROCESS_MODE_DISABLED
+	current_arrow.set_deferred("top_level", true)
+	current_arrow.position = position
+	current_arrow.process_mode = Node.PROCESS_MODE_INHERIT
 	current_arrow.call_deferred("fly", false, self)
 	mana -= current_arrow.Cost
 	mana_changed.emit(-1 * current_arrow.Cost)
@@ -430,3 +437,15 @@ func _on_health_manager_lost_health(amount: int) -> void:
 	if amount > 0:
 		took_damage.emit()
 		flinch()
+
+func _on_ice_manager_froze() -> void:
+	if health_man.health > 0:
+		$Utilities/IceManager.freeze()	
+		set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+		await get_tree().create_timer(0.1).timeout
+		CameraMan.setup_player(get_parent().get_parent())
+
+func _on_ice_manager_melt() -> void:
+	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
+	await get_tree().process_frame
+	CameraMan.setup_player(self)

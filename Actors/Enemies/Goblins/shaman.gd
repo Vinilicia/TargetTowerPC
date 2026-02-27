@@ -2,6 +2,7 @@ extends Enemy
 
 @export var line_of_sight : RayCast2D
 @export var attack_timer : Timer
+@export var ice_manager : IceManager
 
 @export var base_attack_delay := 4.0
 @export var attack_delay_variation := 0.5
@@ -144,3 +145,11 @@ func _on_visible_notifier_screen_exited() -> void:
 func _on_attack_timer_timeout() -> void:
 	if engaging_state:
 		attack()
+
+func _on_ice_manager_froze() -> void:
+	if health_man.health > 0:
+		ice_manager.freeze()
+		set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+
+func _on_ice_manager_melt() -> void:
+	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)

@@ -7,15 +7,17 @@
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
 [ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Components/Health_manager.gd" id="11_jfvij"]
 [ext_resource type="Script" uid="uid://cndxom2mo4uqo" path="res://Components/anim_handler.gd" id="11_m4vjq"]
+[ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_manager.tscn" id="12_upr3p"]
 [ext_resource type="Script" uid="uid://bc87qnt24utwm" path="res://Components/Aim_Enemy.gd" id="14_rbeol"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Components/Actions-Reactions/Fire_manager.tscn" id="15_heh8i"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="16_m4vjq"]
 [ext_resource type="PackedScene" uid="uid://caxq1k25oqpqv" path="res://Actors/Player/NewAcherSprite.tscn" id="16_mwnd1"]
 
-[node name="Player" type="CharacterBody2D" unique_id=1842832799 node_paths=PackedStringArray("v_comp", "mana_timer", "sprite", "melee_area", "stomp_area", "melee_hitbox", "stomp_hitbox", "anim_handler", "hurtbox", "wall_detec", "ledge_detec") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1842832799 node_paths=PackedStringArray("v_comp", "health_man", "mana_timer", "sprite", "melee_area", "stomp_area", "melee_hitbox", "stomp_hitbox", "anim_handler", "hurtbox", "wall_detec", "ledge_detec") groups=["Player"]]
 collision_mask = 20
 script = ExtResource("1_mwnd1")
 v_comp = NodePath("Misc/VelocityComponent")
+health_man = NodePath("Misc/HealthManager")
 mana_timer = NodePath("Misc/ManaRegenTimer")
 sprite = NodePath("Utilities/Archer")
 melee_area = NodePath("Utilities/Areas&Boxes/CounterArea")
@@ -88,12 +90,6 @@ polygon = PackedVector2Array(0, -8, 184, -24, 200, -8, 200, 8, 200, 8, 184, 24, 
 target_position = Vector2(15, 0)
 collision_mask = 28
 
-[node name="Remote" type="RemoteTransform2D" parent="Utilities" unique_id=1517377668]
-visible = false
-position = Vector2(0, -40)
-update_rotation = false
-update_scale = false
-
 [node name="LedgeDetector" type="RayCast2D" parent="Utilities" unique_id=300590954]
 position = Vector2(8, 0)
 target_position = Vector2(0, 12)
@@ -105,12 +101,21 @@ target_position = Vector2(7, 0)
 collision_mask = 20
 
 [node name="FireManager" parent="Utilities" unique_id=1039458207 node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("15_heh8i")]
-visible = false
+position = Vector2(0, -2)
 time_to_burn = 0.05
 burn_duration = 0.05
 ref_hurtbox = NodePath("../../Hurtbox")
 
-[node name="Hurtbox" parent="Utilities/FireManager" index="0" node_paths=PackedStringArray("parent")]
+[node name="Hurtbox" parent="Utilities/FireManager" index="0" unique_id=713515812 node_paths=PackedStringArray("parent")]
+parent = NodePath("../../..")
+
+[node name="IceManager" parent="Utilities" unique_id=1854588271 node_paths=PackedStringArray("parent", "ref_hurtbox") instance=ExtResource("12_upr3p")]
+position = Vector2(0, -2)
+parent = NodePath("../..")
+frozen_duration = 4.0
+ref_hurtbox = NodePath("../../Hurtbox")
+
+[node name="Hurtbox" parent="Utilities/IceManager" index="0" unique_id=492475973 node_paths=PackedStringArray("parent")]
 parent = NodePath("../../..")
 
 [node name="Areas&Boxes" type="Node2D" parent="Utilities" unique_id=227684090]
@@ -170,5 +175,8 @@ position = Vector2(-24, -26)
 [connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
 [connection signal="body_exited" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
 [connection signal="caught_fire" from="Utilities/FireManager" to="." method="_on_fire_manager_caught_fire"]
+[connection signal="froze" from="Utilities/IceManager" to="." method="_on_ice_manager_froze"]
+[connection signal="melt" from="Utilities/IceManager" to="." method="_on_ice_manager_melt"]
 
 [editable path="Utilities/FireManager"]
+[editable path="Utilities/IceManager"]

@@ -9,7 +9,6 @@ class_name Enemy
 @export_group("Variants")
 @export var spawns_money := true
 @export var money_amount : float = 1
-@export var enemy_scale : Vector2i = Vector2i(1, 1)
 
 @onready var material_anim : AnimationPlayer = $BaseEnemyStuff/Anim
 @onready var regret_scene : RigidBody2D = preload("res://Interactibles/Items/Small_Regret.tscn").instantiate()

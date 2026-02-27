@@ -2,20 +2,18 @@
 
 [ext_resource type="PackedScene" uid="uid://de13e283ng22u" path="res://Arrows/Common_Arrow.tscn" id="1_ctyxr"]
 [ext_resource type="Script" uid="uid://dwq3roqafy6dp" path="res://Arrows/ice_arrow.gd" id="2_mo7uw"]
-[ext_resource type="PackedScene" uid="uid://cssq3vg30uf1b" path="res://Components/Actions-Reactions/Ice.tscn" id="3_r1xo3"]
 
-[sub_resource type="Gradient" id="Gradient_r1xo3"]
+[sub_resource type="Gradient" id="Gradient_mo7uw"]
 resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 0.984314, 1, 0.505882)
 
 [node name="Arrow" unique_id=52960362 instance=ExtResource("1_ctyxr")]
 modulate = Color(0, 1, 1, 1)
+position = Vector2(0, 0)
 script = ExtResource("2_mo7uw")
 
-[node name="Arrow_Trail" parent="." index="4" unique_id=1092348972]
-gradient = SubResource("Gradient_r1xo3")
+[node name="Hitbox" parent="." index="0" unique_id=34470544]
+collision_layer = 16640
 
-[node name="Ice" parent="." index="5" unique_id=1776460515 node_paths=PackedStringArray("parent") instance=ExtResource("3_r1xo3")]
-position = Vector2(2, 0)
-scale = Vector2(14, 4)
-parent = NodePath("..")
+[node name="Arrow_Trail" parent="." index="4" unique_id=1092348972]
+gradient = SubResource("Gradient_mo7uw")

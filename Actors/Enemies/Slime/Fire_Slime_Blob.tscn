@@ -11,10 +11,10 @@ script = ExtResource("2_voox2")
 player_detector = NodePath("PlayerDetector")
 fire_spawn = ExtResource("3_pusew")
 
-[node name="Coll" parent="." index="1"]
+[node name="Coll" parent="." index="1" unique_id=1480327026]
 visible = false
 
-[node name="Hitbox" parent="." index="2" node_paths=PackedStringArray("parent")]
+[node name="Hitbox" parent="." index="2" unique_id=1024309594 node_paths=PackedStringArray("parent")]
 visible = false
 parent = NodePath("..")
 

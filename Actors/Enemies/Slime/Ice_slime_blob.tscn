@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://ijulkkvg3xgx"]
+
+[ext_resource type="PackedScene" uid="uid://crq3crt20kp2r" path="res://Actors/Enemies/Slime/Slime_Blob.tscn" id="1_mmfr7"]
+
+[node name="IceSlimeBlob" unique_id=1883528443 instance=ExtResource("1_mmfr7")]
+gravity = 740.0
+
+[node name="Hitbox" parent="." index="2"]
+collision_layer = 19456

@@ -9,7 +9,9 @@ script = ExtResource("1_n3ae8")
 hurtbox = NodePath("Hurtbox")
 ice_block_scene = ExtResource("2_sbwm3")
 
-[node name="Hurtbox" parent="." unique_id=492475973 instance=ExtResource("1_lmoda")]
+[node name="Hurtbox" parent="." unique_id=492475973 node_paths=PackedStringArray("parent") instance=ExtResource("1_lmoda")]
 collision_mask = 16384
+parent = NodePath("..")
+can_be_invincible = false
 
 [connection signal="got_hit_by" from="Hurtbox" to="." method="_hurtbox_got_hit"]

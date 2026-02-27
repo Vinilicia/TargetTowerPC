@@ -23,10 +23,11 @@ resource_local_to_scene = true
 shader = ExtResource("5_4cx4r")
 shader_parameter/enabled = false
 
-[node name="Bat" unique_id=546496135 node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "avoidance_rays", "dash_area", "dive_area", "sight_area", "contact_hitbox") instance=ExtResource("1_nstmu")]
+[node name="Bat" unique_id=546496135 node_paths=PackedStringArray("ice_manager", "chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "avoidance_rays", "dash_area", "dive_area", "sight_area", "contact_hitbox") instance=ExtResource("1_nstmu")]
 material = SubResource("ShaderMaterial_x5tsp")
 script = ExtResource("2_4cx4r")
 starts_chasing = false
+ice_manager = NodePath("IceManager")
 chasing_timer = NodePath("Timers/ChasingTimer")
 giving_up_timer = NodePath("Timers/GivingUpTimer")
 line_of_sight = NodePath("BehaviorChanging/LineOfSight")
@@ -48,7 +49,6 @@ dash_hitbox_increase = 1.2
 chase_retarget_frames = 10
 facing_flip_deadzone = 2.0
 wander_strength = 15.0
-enemy_scale = Vector2i(1, 2)
 metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0" unique_id=2038690234]
@@ -59,7 +59,7 @@ shape = ExtResource("3_nstmu")
 material = SubResource("ShaderMaterial_xk0n8")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1" unique_id=1842605953]
-max_health = 2.0
+max_health = 10.0
 
 [node name="Hurtbox" parent="BaseEnemyStuff" index="2" unique_id=1554320959]
 scale = Vector2(14, 13)
@@ -275,6 +275,7 @@ one_shot = true
 
 [node name="FireManager" parent="." index="5" unique_id=523488755 node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("10_hjvma")]
 process_mode = 3
+visible = false
 time_to_burn = 0.5
 can_stack = true
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")

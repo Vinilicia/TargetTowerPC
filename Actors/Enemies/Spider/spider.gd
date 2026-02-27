@@ -8,6 +8,7 @@ extends Enemy
 @export var up_ray: RayCast2D
 @export var down_ray: RayCast2D
 @export var side_ray: RayCast2D
+@export var ice_manager : IceManager
 
 var direction: Vector2
 var waittime: float = 1.0
@@ -325,3 +326,11 @@ func _on_plat_detec_body_entered(_body: Node2D) -> void:
 
 func _on_plat_detec_body_exited(_body: Node2D) -> void:
 	on_plat -= 1
+
+func _on_ice_manager_froze() -> void:
+	if health_man.health > 0:
+		ice_manager.freeze()
+		set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+
+func _on_ice_manager_melt() -> void:
+	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
