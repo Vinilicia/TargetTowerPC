@@ -80,6 +80,8 @@ func _physics_process(delta: float) -> void:
 			terrain_state = TERRAIN_STATE.Airbone
 			airbone_entered()
 	velocity = v_comp.get_total_velocity()
+	if carrying:
+		carrying_process()
 	move_and_slide()
 
 func _ready() -> void:
@@ -449,3 +451,79 @@ func _on_ice_manager_melt() -> void:
 	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 	await get_tree().process_frame
 	CameraMan.setup_player(self)
+
+var portables_to_carry : Array[Node2D]
+
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("grab"):
+		if not carrying:
+			if !portables_to_carry.is_empty():
+				grab(portables_to_carry[0])
+		else:
+			if not Input.is_action_pressed("down"):
+				throw_portable()
+			else:
+				drop_portable()
+
+func drop_portable() -> void:
+	var portable_h_offset : float = (grabbed_portable.find_child("Coll") as CollisionShape2D).scale.x * 0.5
+	var portable_parent_pos : Vector2 = grabbed_portable.get_parent().global_position
+	var portable_center_height : float = (grabbed_portable.find_child("Coll") as CollisionShape2D).scale.y * 0.5
+	grabbed_portable.position = global_position \
+	 + Vector2((portable_h_offset + 10) * facing_direction, portable_center_height) \
+	 - portable_parent_pos
+	stop_carrying()
+
+var grabbed_portable : Node2D = null
+var current_portable_offset : float = 0.0
+var carrying : bool = false
+
+func grab(portable : Node2D) -> void:
+	grabbed_portable = portable
+	var up_coll : CollisionShape2D = $UpColl
+	var player_top_offset : float = abs(up_coll.position.y) + (0.5 * up_coll.scale.y)
+	var portable_center_height : float = (portable.find_child("Coll") as CollisionShape2D).scale.y * 0.5
+	current_portable_offset = portable_center_height + player_top_offset
+	var portable_parent_pos : Vector2 = grabbed_portable.get_parent().global_position
+	grabbed_portable.position = (global_position - Vector2(0, current_portable_offset)) - portable_parent_pos
+	
+	if grabbed_portable is CharacterBody2D:
+		portable_collision_layers = grabbed_portable.collision_layer
+		grabbed_portable.collision_layer = 0
+	
+	carrying = true
+
+func carrying_process() -> void:
+	if grabbed_portable:
+		var portable_parent_pos : Vector2 = grabbed_portable.get_parent().global_position
+		grabbed_portable.position = (global_position - Vector2(0, current_portable_offset)) - portable_parent_pos
+	else:
+		stop_carrying()
+
+var portable_collision_layers : int = 0
+
+func stop_carrying() -> void:
+	carrying = false
+	if grabbed_portable:
+		if grabbed_portable is CharacterBody2D:
+			grabbed_portable.collision_layer = portable_collision_layers
+	grabbed_portable = null
+	current_portable_offset = 0.0
+
+func throw_portable() -> void:
+	if grabbed_portable is CharacterBody2D:
+		grabbed_portable.position += Vector2(0, -2)
+		grabbed_portable.set_deferred("velocity", Vector2(200 * facing_direction, -250))
+	stop_carrying()
+
+func _on_portable_detector_body_entered(body: Node2D) -> void:
+	if portables_to_carry.has(body):
+		push_error("CARREGAVEL ENTROU DUAS VEZES EM PORTABLES_TO_CARRY (PLAYER)")
+	else:
+		portables_to_carry.append(body)
+
+func _on_portable_detector_body_exited(body: Node2D) -> void:
+	if portables_to_carry.has(body):
+		portables_to_carry.erase(body)
+	else:
+		push_error("CARREGAVEL SAIU DE PORTABLES_TO_CARRY SEM ENTRAR (PLAYER)")

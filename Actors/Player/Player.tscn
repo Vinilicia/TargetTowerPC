@@ -56,12 +56,12 @@ script = ExtResource("11_m4vjq")
 
 [node name="UpColl" type="CollisionShape2D" parent="." unique_id=789121354]
 position = Vector2(0, -7)
-scale = Vector2(6, 11)
+scale = Vector2(7, 11)
 shape = ExtResource("4_26aeq")
 
 [node name="DownColl" type="CollisionShape2D" parent="." unique_id=1224751081]
 position = Vector2(0, 3)
-scale = Vector2(6, 11)
+scale = Vector2(7, 11)
 shape = ExtResource("4_26aeq")
 
 [node name="Hurtbox" parent="." unique_id=9327247 node_paths=PackedStringArray("parent") instance=ExtResource("8_26aeq")]
@@ -91,12 +91,14 @@ target_position = Vector2(15, 0)
 collision_mask = 28
 
 [node name="LedgeDetector" type="RayCast2D" parent="Utilities" unique_id=300590954]
+visible = false
 position = Vector2(8, 0)
 target_position = Vector2(0, 12)
 collision_mask = 20
 hit_from_inside = true
 
 [node name="WallDetector" type="RayCast2D" parent="Utilities" unique_id=179059360]
+visible = false
 target_position = Vector2(7, 0)
 collision_mask = 20
 
@@ -119,6 +121,7 @@ ref_hurtbox = NodePath("../../Hurtbox")
 parent = NodePath("../../..")
 
 [node name="Areas&Boxes" type="Node2D" parent="Utilities" unique_id=227684090]
+visible = false
 
 [node name="CounterArea" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=1080931604]
 position = Vector2(14, -3)
@@ -166,6 +169,17 @@ shape = ExtResource("4_26aeq")
 [node name="Archer" parent="Utilities" unique_id=1128417846 instance=ExtResource("16_mwnd1")]
 position = Vector2(-24, -26)
 
+[node name="PortableDetector" type="Area2D" parent="Utilities" unique_id=1090838288]
+position = Vector2(6, -2)
+scale = Vector2(8, 18)
+collision_layer = 0
+collision_mask = 32
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/PortableDetector" unique_id=228192761]
+shape = ExtResource("4_26aeq")
+debug_color = Color(0.89100564, 0.17486474, 0.67736137, 0.41960785)
+
 [connection signal="mana_changed" from="." to="." method="_on_mana_changed"]
 [connection signal="took_damage" from="." to="Misc/AnimHandler" method="_on_player_took_damage"]
 [connection signal="timeout" from="Misc/DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
@@ -177,6 +191,8 @@ position = Vector2(-24, -26)
 [connection signal="caught_fire" from="Utilities/FireManager" to="." method="_on_fire_manager_caught_fire"]
 [connection signal="froze" from="Utilities/IceManager" to="." method="_on_ice_manager_froze"]
 [connection signal="melt" from="Utilities/IceManager" to="." method="_on_ice_manager_melt"]
+[connection signal="body_entered" from="Utilities/PortableDetector" to="." method="_on_portable_detector_body_entered"]
+[connection signal="body_exited" from="Utilities/PortableDetector" to="." method="_on_portable_detector_body_exited"]
 
 [editable path="Utilities/FireManager"]
 [editable path="Utilities/IceManager"]

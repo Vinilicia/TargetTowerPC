@@ -6,7 +6,7 @@
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="3_aqvjo"]
 
 [node name="Ice" type="CharacterBody2D" unique_id=67827782 node_paths=PackedStringArray("coll", "melting_timer", "hurtbox", "child_container")]
-collision_layer = 16
+collision_layer = 48
 collision_mask = 31
 script = ExtResource("1_qek2v")
 coll = NodePath("Coll")
