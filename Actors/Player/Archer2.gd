@@ -4,6 +4,12 @@ class_name Player
 signal mana_changed(value : int)
 signal took_damage
 
+@export var using_aim_enemy : bool = true
+@export var using_melee_attack : bool = true
+@export var using_stomp : bool = true
+@export var using_dodge : bool = true
+@export var using_slide : bool = true
+
 @export_group("Nodes")
 @export var v_comp : VelocityComponent
 @export var health_man : HealthManager
@@ -17,6 +23,8 @@ signal took_damage
 @export var hurtbox : Hurtbox
 @export var wall_detec : RayCast2D
 @export var ledge_detec : RayCast2D
+@export var enemy_tracker: RayCast2D
+@export var aim_enemy: Area2D
 
 @export_group("Variant values")
 @export_subgroup("Movement")
@@ -64,12 +72,17 @@ var shoot_direction: Vector2 = Vector2.UP
 var update_arrow_dir: bool = false
 var max_mana : int = 6
 var mana : int = 5
+var aim_enemy_pos: Vector2
+var enemy_target: CharacterBody2D
+var enemies_on_sight: Array = []
 
 func _physics_process(delta: float) -> void:
 	if in_control:
 		movement_inputs()
 		direction_inputs()
 		combat_inputs()
+		if using_aim_enemy:
+			handle_aim_enemy()
 	handle_terrain_state(delta)
 	if is_on_floor():
 		if terrain_state != TERRAIN_STATE.Grounded:
@@ -183,44 +196,17 @@ func stand() -> void:
 
 func movement_inputs() -> void:
 	var dir : int = int(Input.get_axis("left", "right"))
-	if dir and !crouching:
-		var x_vel : float = v_comp.get_proper_velocity(1)
-		x_vel = lerp(x_vel, dir * move_speed, 0.3) 
-		v_comp.set_proper_velocity(x_vel, 1)
+	if dir:
+		if !crouching:
+			var x_vel : float = v_comp.get_proper_velocity(1)
+			x_vel = lerp(x_vel, dir * move_speed, 0.3) 
+			v_comp.set_proper_velocity(x_vel, 1)
 		if dir != facing_direction:
 			turn()
 	else:
 		v_comp.set_proper_velocity(0.0, 1)
 		if Input.is_action_pressed("down") and !crouching and is_on_floor():
 			crouch()
-	if Input.is_action_just_released("down") and crouching:
-		stand()
-	
-	if Input.is_action_just_pressed("jump"):
-		if is_on_floor():
-			if crouching:
-				slide()
-			else:
-				jump()
-		else:
-			if stomp_area.has_overlapping_areas():
-				stomp_hitbox.monitorable = true
-				get_tree().create_timer(0.1).timeout.connect(func(): 
-					stomp_hitbox.monitorable = false
-					)
-				jump()
-			if coyote_time:
-				jump()
-			if !jump_buffer:
-				jump_buffer = true
-				get_tree().create_timer(jump_buffer_duration).timeout.connect(func():
-					jump_buffer = false)
-	
-	if Input.is_action_just_released("jump") and v_comp.get_proper_velocity(2) < 0.0:
-		v_comp.set_proper_velocity(-10.0, 2)
-	
-	if Input.is_action_just_pressed("dodge") and can_dodge:
-		dodge()
 
 func slide() -> void:
 	pass
@@ -238,29 +224,7 @@ func combat_inputs() -> void:
 			push_error("FLECHA NAO ESTAVA NA ARVORE MAS HOLDING_ARROW ERA TRUE")
 			return
 		current_arrow.scale.x = scale.x
-		#print(scale.x)
 		current_arrow.set_flying_direction(shoot_direction)
-	
-	if Input.is_action_just_pressed("shoot"):
-		if not melee_area.has_overlapping_areas():
-			if hold_arrow():
-				call_deferred("shoot")
-		else:
-			melee_hitbox.monitorable = true
-			get_tree().create_timer(0.2).timeout.connect(func() :
-				melee_hitbox.monitorable = false
-				)
-	
-	if Input.is_action_just_released("shoot") and holding_arrow:
-		shoot()
-	
-	if Input.is_action_just_pressed("switch arrow"):
-			arrow_index = (arrow_index + 1) % arrows.size()
-			if current_arrow.is_inside_tree():
-				shoot()
-			else:
-				current_arrow = equip_arrow()
-			HudHandler.hud.change_arrow(arrow_index)
 
 func calculate_dodge_vector() -> Vector2:
 	var dodge_vec : Vector2 = Vector2.ZERO
@@ -383,7 +347,13 @@ func direction_inputs() -> void:
 		if is_on_floor():
 			dodge_dir_x = 1
 			dodge_dir_y = 0
-	shoot_direction = Vector2(dir_x, dir_y).normalized()
+	
+	if enemy_target and enemy_tracker.get_collider() == enemy_target:
+		shoot_direction = Vector2(aim_enemy_pos.x * $Utilities.scale.x, aim_enemy_pos.y).normalized()
+	else:
+		shoot_direction = Vector2(dir_x, dir_y).normalized()
+	
+	aim_enemy.rotation = Vector2(abs(dir_x), dir_y).normalized().angle()
 	dodge_direction = Vector2(dodge_dir_x, dodge_dir_y)
 
 func jump() -> void:
@@ -455,6 +425,7 @@ func _on_ice_manager_melt() -> void:
 var portables_to_carry : Array[Node2D]
 
 func _input(event: InputEvent) -> void:
+	# ===== GRAB =====
 	if event.is_action_pressed("grab"):
 		if not carrying:
 			if !portables_to_carry.is_empty():
@@ -464,6 +435,64 @@ func _input(event: InputEvent) -> void:
 				throw_portable()
 			else:
 				drop_portable()
+	# ===== JUMP =====
+	if !in_control:
+		return
+	if event.is_action_pressed("jump"):
+		if is_on_floor():
+			if crouching and using_slide:
+				slide()
+			else:
+				jump()
+		else:
+			if stomp_area.has_overlapping_areas() and using_stomp:
+				stomp_hitbox.monitorable = true
+				get_tree().create_timer(0.1).timeout.connect(func(): 
+					stomp_hitbox.monitorable = false
+					)
+				jump()
+			if coyote_time:
+				jump()
+			if !jump_buffer:
+				jump_buffer = true
+				get_tree().create_timer(jump_buffer_duration).timeout.connect(func():
+					jump_buffer = false)
+
+	# ===== STAND =====
+	if event.is_action_released("down") and crouching:
+		stand()
+	
+	# ===== STOP JUMP =====
+	if event.is_action_released("jump") and v_comp.get_proper_velocity(2) < 0.0:
+		v_comp.set_proper_velocity(-10.0, 2)
+	
+	# ===== DODGE =====
+	if event.is_action_pressed("dodge") and can_dodge and using_dodge:
+		dodge()
+	
+	# ===== HOLDING ARROW =====
+	if event.is_action_pressed("shoot"):
+		if not melee_area.has_overlapping_areas():
+			if hold_arrow():
+				holding_arrow = false
+				call_deferred("shoot")
+		else:
+			melee_hitbox.monitorable = true
+			get_tree().create_timer(0.2).timeout.connect(func() :
+				melee_hitbox.monitorable = false
+				)
+	# ===== SHOOT =====
+	if event.is_action_released("shoot") and holding_arrow:
+		shoot()
+	
+	# ===== SWITCH ARROW =====
+	if event.is_action_pressed("switch arrow"):
+		arrow_index = (arrow_index + 1) % arrows.size()
+		if current_arrow.is_inside_tree():
+			shoot()
+		else:
+			current_arrow = equip_arrow()
+		HudHandler.hud.change_arrow(arrow_index)
 
 func drop_portable() -> void:
 	var portable_h_offset : float = (grabbed_portable.find_child("Coll") as CollisionShape2D).scale.x * 0.5
@@ -527,3 +556,40 @@ func _on_portable_detector_body_exited(body: Node2D) -> void:
 		portables_to_carry.erase(body)
 	else:
 		push_error("CARREGAVEL SAIU DE PORTABLES_TO_CARRY SEM ENTRAR (PLAYER)")
+
+func _on_aim_sight_enemy_entered(enemy: Node2D) -> void:
+	enemies_on_sight.append(enemy)
+	
+func _on_aim_sight_enemy_exited(enemy: Node2D) -> void:
+	enemies_on_sight.erase(enemy)
+	
+func handle_aim_enemy() -> void:
+	var closest: CharacterBody2D = null
+	var min_dist: float = INF
+	for enemy in enemies_on_sight:
+		if not is_instance_valid(enemy):
+			continue
+		var dist = global_position.distance_to(enemy.global_position)
+		if dist < min_dist:
+			min_dist = dist
+			closest = enemy
+	if closest:
+		aim_enemy_pos = closest.global_position - global_position
+		aim_enemy_pos.x *= $Utilities.scale.x
+	enemy_tracker.target_position = aim_enemy_pos
+	enemy_target = closest
+
+func move_smoothly(global_pos : Vector2, duration : float) -> void:
+	var initial_pos : Vector2 = position
+	var initial_distance : float = to_local(global_pos).length()
+	var speed : float = initial_distance / duration
+	var direction : Vector2 = to_local(global_pos).normalized()
+	visible = false
+	in_control = false
+	process_mode = Node.PROCESS_MODE_DISABLED
+	while to_local(initial_pos).length() <= initial_distance:
+		position += direction * speed / Engine.physics_ticks_per_second
+		await get_tree().process_frame
+	visible = true
+	in_control = true
+	process_mode = Node.PROCESS_MODE_INHERIT

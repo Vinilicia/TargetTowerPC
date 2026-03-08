@@ -13,9 +13,10 @@
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="16_m4vjq"]
 [ext_resource type="PackedScene" uid="uid://caxq1k25oqpqv" path="res://Actors/Player/NewAcherSprite.tscn" id="16_mwnd1"]
 
-[node name="Player" type="CharacterBody2D" unique_id=1842832799 node_paths=PackedStringArray("v_comp", "health_man", "mana_timer", "sprite", "melee_area", "stomp_area", "melee_hitbox", "stomp_hitbox", "anim_handler", "hurtbox", "wall_detec", "ledge_detec") groups=["Player"]]
+[node name="Player" type="CharacterBody2D" unique_id=1842832799 node_paths=PackedStringArray("v_comp", "health_man", "mana_timer", "sprite", "melee_area", "stomp_area", "melee_hitbox", "stomp_hitbox", "anim_handler", "hurtbox", "wall_detec", "ledge_detec", "enemy_tracker", "aim_enemy") groups=["Player"]]
 collision_mask = 20
 script = ExtResource("1_mwnd1")
+using_aim_enemy = false
 v_comp = NodePath("Misc/VelocityComponent")
 health_man = NodePath("Misc/HealthManager")
 mana_timer = NodePath("Misc/ManaRegenTimer")
@@ -28,6 +29,8 @@ anim_handler = NodePath("Misc/AnimHandler")
 hurtbox = NodePath("Hurtbox")
 wall_detec = NodePath("Utilities/WallDetector")
 ledge_detec = NodePath("Utilities/LedgeDetector")
+enemy_tracker = NodePath("Utilities/AimEnemy/EnemyTracker")
+aim_enemy = NodePath("Utilities/AimEnemy/AimSight")
 jump_buffer_duration = 0.1
 arrow_paths = Array[String](["res://Arrows/Common_Arrow.tscn", "res://Arrows/Fire_Arrow.tscn", "res://Arrows/Platform_Arrow.tscn", "res://Arrows/Teleport_Arrow.tscn", "res://Arrows/Ice_Arrow.tscn"])
 dodge_duration = 0.3
