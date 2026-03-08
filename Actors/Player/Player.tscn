@@ -21,7 +21,7 @@ v_comp = NodePath("Misc/VelocityComponent")
 health_man = NodePath("Misc/HealthManager")
 mana_timer = NodePath("Misc/ManaRegenTimer")
 sprite = NodePath("Utilities/Archer")
-melee_area = NodePath("Utilities/Areas&Boxes/CounterArea")
+melee_area = NodePath("Utilities/Areas&Boxes/MeleeArea")
 stomp_area = NodePath("Utilities/Areas&Boxes/StompArea")
 melee_hitbox = NodePath("Utilities/Areas&Boxes/MeleeHitbox")
 stomp_hitbox = NodePath("Utilities/Areas&Boxes/StompHitbox")
@@ -79,6 +79,63 @@ shape = ExtResource("11_cdutm")
 
 [node name="Utilities" type="Node2D" parent="." unique_id=1565015160]
 
+[node name="Areas&Boxes" type="Node2D" parent="Utilities" unique_id=227684090]
+
+[node name="MeleeArea" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=1080931604]
+position = Vector2(14, -3)
+scale = Vector2(17, 24)
+collision_layer = 0
+collision_mask = 3080
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/MeleeArea" unique_id=1480838669]
+shape = ExtResource("4_26aeq")
+debug_color = Color(0.105882354, 0.8666667, 0.23529412, 0.41960785)
+
+[node name="StompArea" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=2120579307]
+position = Vector2(2, 9)
+scale = Vector2(19, 14)
+collision_layer = 0
+collision_mask = 3080
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/StompArea" unique_id=649029143]
+shape = ExtResource("4_26aeq")
+debug_color = Color(0.105882354, 0.8666667, 0.23529412, 0.41960785)
+
+[node name="MeleeHitbox" parent="Utilities/Areas&Boxes" unique_id=2111686122 node_paths=PackedStringArray("parent") instance=ExtResource("16_m4vjq")]
+position = Vector2(15, -3)
+scale = Vector2(17, 24)
+collision_layer = 256
+monitorable = false
+parent = NodePath("../../..")
+Damage = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/MeleeHitbox" unique_id=1083267311]
+shape = ExtResource("4_26aeq")
+
+[node name="StompHitbox" parent="Utilities/Areas&Boxes" unique_id=736975502 node_paths=PackedStringArray("parent") instance=ExtResource("16_m4vjq")]
+position = Vector2(2, 9)
+scale = Vector2(19, 14)
+collision_layer = 256
+monitorable = false
+parent = NodePath("../../..")
+Damage = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/StompHitbox" unique_id=1281362792]
+shape = ExtResource("4_26aeq")
+
+[node name="SlideHitbox" parent="Utilities/Areas&Boxes" unique_id=1258031865 node_paths=PackedStringArray("parent") instance=ExtResource("16_m4vjq")]
+position = Vector2(6, 4)
+scale = Vector2(19, 12)
+collision_layer = 256
+monitorable = false
+parent = NodePath("../../..")
+Damage = 1.0
+
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/SlideHitbox" unique_id=1670108779]
+shape = ExtResource("4_26aeq")
+debug_color = Color(0.67058825, 0.67058825, 0.69803923, 0.41960785)
+
 [node name="AimEnemy" type="Node2D" parent="Utilities" unique_id=162088746]
 visible = false
 script = ExtResource("14_rbeol")
@@ -122,52 +179,6 @@ ref_hurtbox = NodePath("../../Hurtbox")
 
 [node name="Hurtbox" parent="Utilities/IceManager" index="0" unique_id=492475973 node_paths=PackedStringArray("parent")]
 parent = NodePath("../../..")
-
-[node name="Areas&Boxes" type="Node2D" parent="Utilities" unique_id=227684090]
-visible = false
-
-[node name="CounterArea" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=1080931604]
-position = Vector2(14, -3)
-collision_layer = 0
-collision_mask = 3080
-monitorable = false
-
-[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/CounterArea" unique_id=1480838669]
-scale = Vector2(14, 24)
-shape = ExtResource("4_26aeq")
-debug_color = Color(0.105882354, 0.8666667, 0.23529412, 0.41960785)
-
-[node name="StompArea" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=2120579307]
-position = Vector2(2, 9)
-collision_layer = 0
-collision_mask = 3080
-
-[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/StompArea" unique_id=649029143]
-scale = Vector2(16, 8)
-shape = ExtResource("4_26aeq")
-debug_color = Color(0.105882354, 0.8666667, 0.23529412, 0.41960785)
-
-[node name="MeleeHitbox" parent="Utilities/Areas&Boxes" unique_id=2111686122 node_paths=PackedStringArray("parent") instance=ExtResource("16_m4vjq")]
-position = Vector2(15, -3)
-collision_layer = 256
-monitorable = false
-parent = NodePath("../../..")
-Damage = 1.0
-
-[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/MeleeHitbox" unique_id=1083267311]
-scale = Vector2(17, 24)
-shape = ExtResource("4_26aeq")
-
-[node name="StompHitbox" parent="Utilities/Areas&Boxes" unique_id=736975502 node_paths=PackedStringArray("parent") instance=ExtResource("16_m4vjq")]
-position = Vector2(2, 9)
-collision_layer = 256
-monitorable = false
-parent = NodePath("../../..")
-Damage = 1.0
-
-[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/StompHitbox" unique_id=1281362792]
-scale = Vector2(19, 14)
-shape = ExtResource("4_26aeq")
 
 [node name="Archer" parent="Utilities" unique_id=1128417846 instance=ExtResource("16_mwnd1")]
 position = Vector2(-24, -26)

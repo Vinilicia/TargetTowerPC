@@ -19,6 +19,7 @@ signal took_damage
 @export var stomp_area : Area2D
 @export var melee_hitbox : Hitbox
 @export var stomp_hitbox : Hitbox
+@export var slide_hitbox : Hitbox
 @export var anim_handler : Anim_Handler
 @export var hurtbox : Hurtbox
 @export var wall_detec : RayCast2D
@@ -36,6 +37,10 @@ signal took_damage
 @export_subgroup("Attacks")
 @export_dir var arrow_paths: Array[String]
 @export var arrow_cooldown : float = 0.5
+@export var melee_attack_duration : float = 0.2
+@export var slide_duration : float = 0.3
+@export var slide_speed : float = 200.0
+@export var slide_cooldown : float = 0.3
 @export var mana_regen_time : float = 1.0
 @export_subgroup("Dodge")
 @export var dodge_duration: float = 0.25
@@ -470,17 +475,14 @@ func _input(event: InputEvent) -> void:
 	if event.is_action_pressed("dodge") and can_dodge and using_dodge:
 		dodge()
 	
-	# ===== HOLDING ARROW =====
+	# ===== HOLDING ARROW / MELEE ATTACK =====
 	if event.is_action_pressed("shoot"):
 		if not melee_area.has_overlapping_areas():
 			if hold_arrow():
 				holding_arrow = false
 				call_deferred("shoot")
 		else:
-			melee_hitbox.monitorable = true
-			get_tree().create_timer(0.2).timeout.connect(func() :
-				melee_hitbox.monitorable = false
-				)
+			melee_attack()
 	# ===== SHOOT =====
 	if event.is_action_released("shoot") and holding_arrow:
 		shoot()
@@ -493,6 +495,12 @@ func _input(event: InputEvent) -> void:
 		else:
 			current_arrow = equip_arrow()
 		HudHandler.hud.change_arrow(arrow_index)
+
+func melee_attack() -> void:
+	melee_hitbox.monitorable = true
+	get_tree().create_timer(melee_attack_duration).timeout.connect(func() :
+		melee_hitbox.monitorable = false
+		)
 
 func drop_portable() -> void:
 	var portable_h_offset : float = (grabbed_portable.find_child("Coll") as CollisionShape2D).scale.x * 0.5
