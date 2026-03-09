@@ -8,7 +8,6 @@ signal took_damage
 @export var using_melee_attack : bool = true
 @export var using_stomp : bool = true
 @export var using_dodge : bool = true
-@export var using_slide : bool = true
 
 @export_group("Nodes")
 @export var v_comp : VelocityComponent
@@ -19,7 +18,6 @@ signal took_damage
 @export var stomp_area : Area2D
 @export var melee_hitbox : Hitbox
 @export var stomp_hitbox : Hitbox
-@export var slide_hitbox : Hitbox
 @export var anim_handler : Anim_Handler
 @export var hurtbox : Hurtbox
 @export var wall_detec : RayCast2D
@@ -38,10 +36,12 @@ signal took_damage
 @export_dir var arrow_paths: Array[String]
 @export var arrow_cooldown : float = 0.5
 @export var melee_attack_duration : float = 0.2
-@export var slide_duration : float = 0.3
-@export var slide_speed : float = 200.0
-@export var slide_cooldown : float = 0.3
 @export var mana_regen_time : float = 1.0
+@export_subgroup("Throw")
+@export var side_throw_speed : Vector2 = Vector2(200, -250)
+@export var up_throw_speed : Vector2 = Vector2(0, -340)
+@export var down_throw_speed : Vector2 = Vector2(0, 200)
+@export var down_throw_lift : float = -200
 @export_subgroup("Dodge")
 @export var dodge_duration: float = 0.25
 @export var dodge_cooldown: float = 0.5
@@ -148,10 +148,7 @@ func airbone_entered() -> void:
 func grounded_entered() -> void:
 	if jump_buffer:
 		jump_buffer = false
-		if crouching:
-			slide()
-		else:
-			jump()
+		jump()
 	else:
 		v_comp.set_proper_velocity(0.0, 2)
 	anim_handler.change_state(Anim_Handler.ANIM_STATE.Grounded)
@@ -211,10 +208,8 @@ func movement_inputs() -> void:
 	else:
 		v_comp.set_proper_velocity(0.0, 1)
 		if Input.is_action_pressed("down") and !crouching and is_on_floor():
-			crouch()
-
-func slide() -> void:
-	pass
+			if v_comp.get_proper_velocity(2) >= 0.0:
+				crouch()
 
 func handle_terrain_state(delta: float) -> void:
 	match terrain_state:
@@ -363,6 +358,8 @@ func direction_inputs() -> void:
 
 func jump() -> void:
 	v_comp.set_proper_velocity(jump_force * Vector2.UP)
+	if crouching:
+		stand()
 
 func get_current_gravity() -> Vector2:
 	var y_vel : float = v_comp.get_proper_velocity(2)
@@ -436,19 +433,19 @@ func _input(event: InputEvent) -> void:
 			if !portables_to_carry.is_empty():
 				grab(portables_to_carry[0])
 		else:
-			if not Input.is_action_pressed("down"):
+			if !is_on_floor():
 				throw_portable()
 			else:
-				drop_portable()
+				if not Input.is_action_pressed("down"):
+					throw_portable()
+				else:
+					drop_portable()
 	# ===== JUMP =====
 	if !in_control:
 		return
 	if event.is_action_pressed("jump"):
 		if is_on_floor():
-			if crouching and using_slide:
-				slide()
-			else:
-				jump()
+			jump()
 		else:
 			if stomp_area.has_overlapping_areas() and using_stomp:
 				stomp_hitbox.monitorable = true
@@ -514,6 +511,7 @@ func drop_portable() -> void:
 var grabbed_portable : Node2D = null
 var current_portable_offset : float = 0.0
 var carrying : bool = false
+var current_modifiers_array : Array[float]
 
 func grab(portable : Node2D) -> void:
 	grabbed_portable = portable
@@ -527,7 +525,13 @@ func grab(portable : Node2D) -> void:
 	if grabbed_portable is CharacterBody2D:
 		portable_collision_layers = grabbed_portable.collision_layer
 		grabbed_portable.collision_layer = 0
+		var portable_info : PortableInfo = grabbed_portable.find_child("PortableInfo")
+		if portable_info:
+			current_modifiers_array = portable_info.get_weight_modifiers()
 	
+	move_speed *= current_modifiers_array[0]
+	jump_force *= current_modifiers_array[1]
+	$Utilities/Archer/AnimationPlayer.speed_scale *= current_modifiers_array[0]
 	carrying = true
 
 func carrying_process() -> void:
@@ -546,11 +550,22 @@ func stop_carrying() -> void:
 			grabbed_portable.collision_layer = portable_collision_layers
 	grabbed_portable = null
 	current_portable_offset = 0.0
+	move_speed /= current_modifiers_array[0]
+	jump_force /= current_modifiers_array[1]
+	$Utilities/Archer/AnimationPlayer.speed_scale /= current_modifiers_array[0]
 
 func throw_portable() -> void:
 	if grabbed_portable is CharacterBody2D:
-		grabbed_portable.position += Vector2(0, -2)
-		grabbed_portable.set_deferred("velocity", Vector2(200 * facing_direction, -250))
+		if shoot_direction.x != 0:
+			grabbed_portable.position += Vector2(0, -2)
+			grabbed_portable.set_deferred("velocity", Vector2(side_throw_speed.x * facing_direction, side_throw_speed.y))
+		elif shoot_direction.y > 0:
+			grabbed_portable.position += 2 * Vector2(0, current_portable_offset)
+			grabbed_portable.set_deferred("velocity", down_throw_speed)
+			v_comp.add_proper_velocity.call_deferred(Vector2(0, down_throw_lift))
+		else:
+			grabbed_portable.position += Vector2(0, -2)
+			grabbed_portable.set_deferred("velocity", up_throw_speed)
 	stop_carrying()
 
 func _on_portable_detector_body_entered(body: Node2D) -> void:

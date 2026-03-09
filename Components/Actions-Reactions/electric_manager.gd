@@ -1,13 +1,12 @@
 extends Node2D
-class_name IceManager
+class_name ElectricManager
 
 @export var parent : CharacterBody2D
-@export var frozen_duration : float = 5.0
 @export var can_stack : bool = false
 @export_group("Nodes")
 @export var hurtbox : Hurtbox
 @export var ref_hurtbox : Hurtbox
-@export var ice_block_scene : PackedScene
+@export var electric_area_scene : PackedScene
 
 var frozen : bool = false
 
@@ -31,12 +30,6 @@ func _hurtbox_got_hit(_hitbox: Hitbox) -> void:
 		return
 	froze.emit()
 
-func freeze() -> void:
-	frozen = true
-	var ice_block : IceBlock = ice_block_scene.instantiate()
-	ice_block.was_melt.connect(melt_away)
-	ice_block.initialize(ref_hurtbox.scale, parent, frozen_duration)
-
-func melt_away() -> void:
+func extinguish() -> void:
 	frozen = false
 	melt.emit()

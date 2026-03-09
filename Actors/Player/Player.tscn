@@ -80,6 +80,7 @@ shape = ExtResource("11_cdutm")
 [node name="Utilities" type="Node2D" parent="." unique_id=1565015160]
 
 [node name="Areas&Boxes" type="Node2D" parent="Utilities" unique_id=227684090]
+visible = false
 
 [node name="MeleeArea" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=1080931604]
 position = Vector2(14, -3)
@@ -124,17 +125,16 @@ Damage = 1.0
 [node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/StompHitbox" unique_id=1281362792]
 shape = ExtResource("4_26aeq")
 
-[node name="SlideHitbox" parent="Utilities/Areas&Boxes" unique_id=1258031865 node_paths=PackedStringArray("parent") instance=ExtResource("16_m4vjq")]
-position = Vector2(6, 4)
-scale = Vector2(19, 12)
-collision_layer = 256
+[node name="PortableDetector" type="Area2D" parent="Utilities/Areas&Boxes" unique_id=1090838288]
+position = Vector2(6, -2)
+scale = Vector2(8, 18)
+collision_layer = 0
+collision_mask = 32
 monitorable = false
-parent = NodePath("../../..")
-Damage = 1.0
 
-[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/SlideHitbox" unique_id=1670108779]
+[node name="Coll" type="CollisionShape2D" parent="Utilities/Areas&Boxes/PortableDetector" unique_id=228192761]
 shape = ExtResource("4_26aeq")
-debug_color = Color(0.67058825, 0.67058825, 0.69803923, 0.41960785)
+debug_color = Color(0.89100564, 0.17486474, 0.67736137, 0.41960785)
 
 [node name="AimEnemy" type="Node2D" parent="Utilities" unique_id=162088746]
 visible = false
@@ -183,30 +183,19 @@ parent = NodePath("../../..")
 [node name="Archer" parent="Utilities" unique_id=1128417846 instance=ExtResource("16_mwnd1")]
 position = Vector2(-24, -26)
 
-[node name="PortableDetector" type="Area2D" parent="Utilities" unique_id=1090838288]
-position = Vector2(6, -2)
-scale = Vector2(8, 18)
-collision_layer = 0
-collision_mask = 32
-monitorable = false
-
-[node name="Coll" type="CollisionShape2D" parent="Utilities/PortableDetector" unique_id=228192761]
-shape = ExtResource("4_26aeq")
-debug_color = Color(0.89100564, 0.17486474, 0.67736137, 0.41960785)
-
 [connection signal="mana_changed" from="." to="." method="_on_mana_changed"]
 [connection signal="took_damage" from="." to="Misc/AnimHandler" method="_on_player_took_damage"]
 [connection signal="timeout" from="Misc/DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
 [connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_manager_lost_health"]
 [connection signal="timeout" from="Misc/ManaRegenTimer" to="." method="_on_mana_regen_timer_timeout"]
 [connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
+[connection signal="body_entered" from="Utilities/Areas&Boxes/PortableDetector" to="." method="_on_portable_detector_body_entered"]
+[connection signal="body_exited" from="Utilities/Areas&Boxes/PortableDetector" to="." method="_on_portable_detector_body_exited"]
 [connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
 [connection signal="body_exited" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
 [connection signal="caught_fire" from="Utilities/FireManager" to="." method="_on_fire_manager_caught_fire"]
 [connection signal="froze" from="Utilities/IceManager" to="." method="_on_ice_manager_froze"]
 [connection signal="melt" from="Utilities/IceManager" to="." method="_on_ice_manager_melt"]
-[connection signal="body_entered" from="Utilities/PortableDetector" to="." method="_on_portable_detector_body_entered"]
-[connection signal="body_exited" from="Utilities/PortableDetector" to="." method="_on_portable_detector_body_exited"]
 
 [editable path="Utilities/FireManager"]
 [editable path="Utilities/IceManager"]
