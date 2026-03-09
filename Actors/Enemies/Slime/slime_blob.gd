@@ -9,6 +9,8 @@ var gravity_multiplier : float
 func _ready() -> void:
 	if not general_damage:
 		($Hitbox as Hitbox).set_collision_layer_value(12, false)
+	await get_tree().create_timer(0.1).timeout
+	$Hitbox.monitorable = true
 	
 	await get_tree().create_timer(5).timeout
 	queue_free()

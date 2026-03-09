@@ -5,7 +5,7 @@
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Levels/Camera.tscn" id="3_3wiyf"]
 [ext_resource type="PackedScene" uid="uid://dn10h68f76vry" path="res://Levels/Test_Room.tscn" id="4_q8dh3"]
 
-[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_1tsk4"]
+[sub_resource type="CapsuleShape2D" id="CapsuleShape2D_5kekk"]
 resource_local_to_scene = true
 radius = 0.5
 height = 2.0
@@ -14,14 +14,10 @@ height = 2.0
 script = ExtResource("1_5kekk")
 
 [node name="Player" parent="." unique_id=688355613 instance=ExtResource("2_q8dh3")]
-top_level = true
 position = Vector2(624, -464)
 
 [node name="Coll" parent="Player/Hurtbox" parent_id_path=PackedInt32Array(688355613, 9327247) index="1" unique_id=640387622]
-shape = SubResource("CapsuleShape2D_1tsk4")
-
-[node name="Remote" parent="Player/Utilities" parent_id_path=PackedInt32Array(688355613, 1565015160) index="1" unique_id=1517377668]
-remote_path = NodePath("../../../Camera")
+shape = SubResource("CapsuleShape2D_5kekk")
 
 [node name="Camera" parent="." unique_id=441321255 instance=ExtResource("3_3wiyf")]
 limit_left = -10000000
@@ -32,3 +28,4 @@ editor_draw_limits = true
 
 [editable path="Player"]
 [editable path="Player/Utilities/FireManager"]
+[editable path="Player/Utilities/IceManager"]

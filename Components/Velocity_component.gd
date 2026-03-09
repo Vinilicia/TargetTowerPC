@@ -87,4 +87,5 @@ func get_wind_velocity(axis : int = -1):
 	return wind_velocity as Vector2
 
 func get_total_velocity() -> Vector2:
-	return proper_velocity + knockback_velocity + ground_velocity + wind_velocity
+	var clamped_knockback := Vector2(clamp(knockback_velocity.x, -400, 400), clamp(knockback_velocity.y, -400, 400))
+	return (proper_velocity + clamped_knockback + ground_velocity + wind_velocity)

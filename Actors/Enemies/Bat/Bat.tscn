@@ -11,21 +11,23 @@
 [ext_resource type="Script" uid="uid://b4dwolbvt8our" path="res://addons/godot_state_charts/history_state.gd" id="8_cp3cr"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Components/Actions-Reactions/Fire_manager.tscn" id="10_hjvma"]
 [ext_resource type="PackedScene" uid="uid://5eo2pd11j7wo" path="res://Actors/Enemies/Bat/BatSprite.tscn" id="11_l4jld"]
+[ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_manager.tscn" id="12_x5tsp"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cxe5n"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_x5tsp"]
 resource_local_to_scene = true
 shader = ExtResource("5_4cx4r")
 shader_parameter/enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_e6q43"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xk0n8"]
 resource_local_to_scene = true
 shader = ExtResource("5_4cx4r")
 shader_parameter/enabled = false
 
-[node name="Bat" unique_id=546496135 node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "avoidance_rays", "dash_area", "dive_area", "sight_area", "contact_hitbox") instance=ExtResource("1_nstmu")]
-material = SubResource("ShaderMaterial_cxe5n")
+[node name="Bat" unique_id=546496135 node_paths=PackedStringArray("ice_manager", "chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "avoidance_rays", "dash_area", "dive_area", "sight_area", "contact_hitbox") instance=ExtResource("1_nstmu")]
+material = SubResource("ShaderMaterial_x5tsp")
 script = ExtResource("2_4cx4r")
 starts_chasing = false
+ice_manager = NodePath("IceManager")
 chasing_timer = NodePath("Timers/ChasingTimer")
 giving_up_timer = NodePath("Timers/GivingUpTimer")
 line_of_sight = NodePath("BehaviorChanging/LineOfSight")
@@ -49,26 +51,26 @@ facing_flip_deadzone = 2.0
 wander_strength = 15.0
 metadata/_edit_pinned_properties_ = [&"material"]
 
-[node name="BodyCollision" parent="." index="0"]
+[node name="BodyCollision" parent="." index="0" unique_id=2038690234]
 scale = Vector2(11, 10)
 shape = ExtResource("3_nstmu")
 
-[node name="BaseEnemyStuff" parent="." index="1"]
-material = SubResource("ShaderMaterial_e6q43")
+[node name="BaseEnemyStuff" parent="." index="1" unique_id=2108870964]
+material = SubResource("ShaderMaterial_xk0n8")
 
-[node name="HealthManager" parent="BaseEnemyStuff" index="1"]
-max_health = 2.0
+[node name="HealthManager" parent="BaseEnemyStuff" index="1" unique_id=1842605953]
+max_health = 10.0
 
-[node name="Hurtbox" parent="BaseEnemyStuff" index="2"]
+[node name="Hurtbox" parent="BaseEnemyStuff" index="2" unique_id=1554320959]
 scale = Vector2(14, 13)
 
-[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1"]
+[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
 shape = ExtResource("3_nstmu")
 
-[node name="ContactHitbox" parent="BaseEnemyStuff" index="3"]
+[node name="ContactHitbox" parent="BaseEnemyStuff" index="3" unique_id=2114649000]
 scale = Vector2(15, 13)
 
-[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0"]
+[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0" unique_id=239826217]
 shape = ExtResource("3_nstmu")
 
 [node name="Bat" parent="BaseEnemyStuff" index="5" unique_id=775546231 instance=ExtResource("11_l4jld")]
@@ -272,8 +274,15 @@ one_shot = true
 one_shot = true
 
 [node name="FireManager" parent="." index="5" unique_id=523488755 node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("10_hjvma")]
+process_mode = 3
+visible = false
 time_to_burn = 0.5
 can_stack = true
+ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
+
+[node name="IceManager" parent="." index="6" unique_id=1854588271 node_paths=PackedStringArray("parent", "ref_hurtbox") instance=ExtResource("12_x5tsp")]
+process_mode = 3
+parent = NodePath("..")
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
 [connection signal="state_entered" from="StateChart/State_Tree/Idle" to="." method="_idle_entered"]
@@ -296,5 +305,7 @@ ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 [connection signal="timeout" from="Timers/ChasingTimer" to="." method="start_chase"]
 [connection signal="timeout" from="Timers/GivingUpTimer" to="." method="give_up_chase"]
 [connection signal="caught_fire" from="FireManager" to="." method="_on_fire_manager_caught_fire"]
+[connection signal="froze" from="IceManager" to="." method="_on_ice_manager_froze"]
+[connection signal="melt" from="IceManager" to="." method="_on_ice_manager_melt"]
 
 [editable path="BaseEnemyStuff/Bat"]

@@ -4,20 +4,21 @@
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="2_ebopb"]
 [ext_resource type="PackedScene" uid="uid://cuyr02d5ffhbw" path="res://Interactibles/Mechanisms/Fire_Sprite.tscn" id="3_hxaxt"]
 
-[node name="FireManager" type="Node2D" node_paths=PackedStringArray("hurtbox", "burning_timer")]
+[node name="FireManager" type="Node2D" unique_id=1858518932 node_paths=PackedStringArray("hurtbox", "burning_timer")]
 script = ExtResource("1_vq16k")
 has_fire = false
 hurtbox = NodePath("Hurtbox")
 burning_timer = NodePath("BurningTimer")
 
-[node name="Hurtbox" parent="." instance=ExtResource("2_ebopb")]
+[node name="Hurtbox" parent="." unique_id=713515812 node_paths=PackedStringArray("parent") instance=ExtResource("2_ebopb")]
 collision_mask = 4096
+parent = NodePath("..")
 can_be_invincible = false
 
-[node name="BurningTimer" type="Timer" parent="."]
+[node name="BurningTimer" type="Timer" parent="." unique_id=132106605]
 one_shot = true
 
-[node name="FireSprite" parent="." instance=ExtResource("3_hxaxt")]
+[node name="FireSprite" parent="." unique_id=247489210 instance=ExtResource("3_hxaxt")]
 visible = false
 modulate = Color(1, 1, 1, 0.701961)
 position = Vector2(0, -4)

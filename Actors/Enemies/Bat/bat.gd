@@ -3,6 +3,7 @@ extends Enemy
 @onready var state_chart = $StateChart as StateChart
 
 @export var starts_chasing := false
+@export var ice_manager : IceManager
 @export_subgroup("Timers")
 @export var chasing_timer: Timer
 @export var giving_up_timer: Timer
@@ -436,8 +437,8 @@ func _recovering_state_entered() -> void:
 #endregion
 
 #region Dano / Vida
-func _took_damage(_amount: float) -> void:
-	pass
+func took_damage(_amount: float) -> void:
+	super.took_damage(_amount)
 
 func _ran_out_of_health() -> void:
 	stop(0.1)
@@ -452,3 +453,11 @@ func _on_fire_manager_caught_fire() -> void:
 		fire_man.extinguished.connect(health_man.stop_burning, 4)
 		health_man.start_burning(0.5)
 #endregion
+
+func _on_ice_manager_froze() -> void:
+	if health_man.health > 0:
+		ice_manager.freeze()
+		set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+
+func _on_ice_manager_melt() -> void:
+	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)

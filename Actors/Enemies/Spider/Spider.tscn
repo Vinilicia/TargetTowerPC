@@ -1,19 +1,24 @@
 [gd_scene format=3 uid="uid://rbo0lyegdlbe"]
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Actors/Enemies/Base_Enemy.tscn" id="1_bh22r"]
-[ext_resource type="Material" uid="uid://djswnephywl88" path="res://Themes/Shaders/hitflash_material.tres" id="2_bnyj6"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_lo6vr"]
 [ext_resource type="Script" uid="uid://cg0oxq3oymvc0" path="res://Actors/Enemies/Spider/spider.gd" id="2_wapg0"]
 [ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="4_wapg0"]
 [ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="5_yj5ul"]
+[ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_manager.tscn" id="6_wrmyj"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_yj5ul"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wrmyj"]
+resource_local_to_scene = true
+shader = ExtResource("5_yj5ul")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rn7qp"]
 resource_local_to_scene = true
 shader = ExtResource("5_yj5ul")
 shader_parameter/enabled = false
 
-[node name="Spooder" node_paths=PackedStringArray("up_ray", "down_ray", "side_ray") instance=ExtResource("1_bh22r")]
-material = ExtResource("2_bnyj6")
+[node name="Spooder" unique_id=450815639 node_paths=PackedStringArray("up_ray", "down_ray", "side_ray", "ice_manager") instance=ExtResource("1_bh22r")]
+material = SubResource("ShaderMaterial_wrmyj")
 script = ExtResource("2_wapg0")
 speed = 25.0
 movedir = 1.0
@@ -22,57 +27,64 @@ fall_speed = 150.0
 up_ray = NodePath("UpRaycast")
 down_ray = NodePath("DownRaycast")
 side_ray = NodePath("FrontRaycast")
+ice_manager = NodePath("IceManager")
 metadata/_edit_pinned_properties_ = [&"material"]
 
-[node name="BodyCollision" parent="." index="0"]
+[node name="BodyCollision" parent="." index="0" unique_id=2038690234]
 scale = Vector2(10, 7)
 shape = ExtResource("2_lo6vr")
 
-[node name="BaseEnemyStuff" parent="." index="1"]
-material = SubResource("ShaderMaterial_yj5ul")
+[node name="BaseEnemyStuff" parent="." index="1" unique_id=2108870964]
+material = SubResource("ShaderMaterial_rn7qp")
 
-[node name="VelocityComponent" parent="BaseEnemyStuff" index="0"]
+[node name="VelocityComponent" parent="BaseEnemyStuff" index="0" unique_id=1907220242]
 knockback_susceptability = 1
 
-[node name="HealthManager" parent="BaseEnemyStuff" index="1"]
+[node name="HealthManager" parent="BaseEnemyStuff" index="1" unique_id=1842605953]
 max_health = 2.0
 
-[node name="Hurtbox" parent="BaseEnemyStuff" index="2"]
+[node name="Hurtbox" parent="BaseEnemyStuff" index="2" unique_id=1554320959]
 scale = Vector2(12, 9)
 
-[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1"]
+[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
 shape = ExtResource("2_lo6vr")
 
-[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0"]
+[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" parent_id_path=PackedInt32Array(2114649000) index="0" unique_id=239826217]
 scale = Vector2(12, 9)
 shape = ExtResource("2_lo6vr")
 
-[node name="Sprite" type="Sprite2D" parent="BaseEnemyStuff" index="5"]
+[node name="Sprite" type="Sprite2D" parent="BaseEnemyStuff" index="5" unique_id=542293403]
 modulate = Color(0.34902, 0, 0.537255, 1)
 use_parent_material = true
 scale = Vector2(0.1, 0.08)
 texture = ExtResource("4_wapg0")
 
-[node name="UpRaycast" type="RayCast2D" parent="." index="2"]
+[node name="UpRaycast" type="RayCast2D" parent="." index="2" unique_id=553438371]
 target_position = Vector2(0, -300)
 collision_mask = 21
 
-[node name="DownRaycast" type="RayCast2D" parent="." index="3"]
+[node name="DownRaycast" type="RayCast2D" parent="." index="3" unique_id=526841289]
 target_position = Vector2(0, 7)
 collision_mask = 20
 
-[node name="FrontRaycast" type="RayCast2D" parent="." index="4"]
+[node name="FrontRaycast" type="RayCast2D" parent="." index="4" unique_id=287593064]
 target_position = Vector2(7, 0)
 collision_mask = 20
 
-[node name="PlatDetec" type="Area2D" parent="." index="5"]
+[node name="PlatDetec" type="Area2D" parent="." index="5" unique_id=443062096]
 position = Vector2(0, 4)
 collision_layer = 0
 collision_mask = 16
 
-[node name="Coll" type="CollisionShape2D" parent="PlatDetec" index="0"]
+[node name="Coll" type="CollisionShape2D" parent="PlatDetec" index="0" unique_id=1340696898]
 scale = Vector2(12, 4)
 shape = ExtResource("2_lo6vr")
 
+[node name="IceManager" parent="." index="6" unique_id=1854588271 node_paths=PackedStringArray("parent", "ref_hurtbox") instance=ExtResource("6_wrmyj")]
+parent = NodePath("..")
+ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
+
 [connection signal="body_entered" from="PlatDetec" to="." method="_on_plat_detec_body_entered"]
 [connection signal="body_exited" from="PlatDetec" to="." method="_on_plat_detec_body_exited"]
+[connection signal="froze" from="IceManager" to="." method="_on_ice_manager_froze"]
+[connection signal="melt" from="IceManager" to="." method="_on_ice_manager_melt"]

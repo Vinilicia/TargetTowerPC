@@ -7,11 +7,11 @@
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="5_1yo7r"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="6_k3own"]
 
-[sub_resource type="Gradient" id="Gradient_j7lj7"]
+[sub_resource type="Gradient" id="Gradient_ukgqa"]
 resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
 
-[node name="Arrow" type="CharacterBody2D" node_paths=PackedStringArray("anim", "sprite", "hitbox")]
+[node name="Arrow" type="CharacterBody2D" unique_id=2035832883 node_paths=PackedStringArray("anim", "sprite", "hitbox")]
 modulate = Color(0, 0.333333, 0.454902, 1)
 collision_layer = 0
 collision_mask = 0
@@ -21,29 +21,29 @@ sprite = NodePath("Sprite")
 trail = NodePath("Arrow_Trail")
 hitbox = NodePath("Hitbox")
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1357391603]
 texture = ExtResource("2_1yo7r")
 offset = Vector2(0, 0.5)
 
-[node name="Anim" type="AnimationPlayer" parent="."]
+[node name="Anim" type="AnimationPlayer" parent="." unique_id=1616942579]
 
-[node name="Coll" type="CollisionShape2D" parent="."]
+[node name="Coll" type="CollisionShape2D" parent="." unique_id=1517551508]
 position = Vector2(6, 0)
 scale = Vector2(4, 5)
 shape = ExtResource("3_k3own")
 
-[node name="Arrow_Trail" parent="." instance=ExtResource("4_gbeok")]
+[node name="Arrow_Trail" parent="." unique_id=1701424295 instance=ExtResource("4_gbeok")]
 modulate = Color(0, 0.333333, 0.454902, 1)
-gradient = SubResource("Gradient_j7lj7")
+gradient = SubResource("Gradient_ukgqa")
 
-[node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_1yo7r")]
+[node name="Hitbox" parent="." unique_id=921120133 node_paths=PackedStringArray("parent") instance=ExtResource("5_1yo7r")]
 position = Vector2(2, 0)
 scale = Vector2(18, 5)
 collision_layer = 256
 monitorable = false
 parent = NodePath("..")
 
-[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+[node name="Coll" type="CollisionShape2D" parent="Hitbox" unique_id=1348689369]
 shape = ExtResource("6_k3own")
 
 [connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]

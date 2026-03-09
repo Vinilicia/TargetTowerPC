@@ -1,0 +1,6 @@
+[gd_scene format=3 uid="uid://xqa03v1h4rqk"]
+
+[ext_resource type="Script" uid="uid://ujb5quvl27hh" path="res://Components/portable_info.gd" id="1_hfqt5"]
+
+[node name="PortableInfo" type="Node" unique_id=550341684]
+script = ExtResource("1_hfqt5")

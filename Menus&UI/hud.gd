@@ -34,7 +34,8 @@ func init_mana(amount : int = 5) -> void:
 	mana_bar.value = amount
 
 func change_arrow(index : int) -> void:
-	mana_bar.texture_over = mana_bar_textures[index]
+	pass
+	#mana_bar.texture_over = mana_bar_textures[index]
 
 func _ready() -> void:
 	pass

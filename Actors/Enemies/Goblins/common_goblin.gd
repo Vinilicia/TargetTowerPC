@@ -26,6 +26,7 @@ const ARROW_AVOID_DELAY : float = 0.15
 @export_group("Nodes")
 @export var state_chart: StateChart
 @export var coll: CollisionShape2D
+@export var ice_manager : IceManager
 
 @export_subgroup("RayCasts")
 @export var wall_detector: RayCast2D 
@@ -368,3 +369,11 @@ func _on_fire_manager_caught_fire() -> void:
 	if not fire_man.extinguished.is_connected(health_man.stop_burning):
 		fire_man.extinguished.connect(health_man.stop_burning, 4)
 		health_man.start_burning(0.5)
+
+func _on_ice_manager_froze() -> void:
+	if health_man.health > 0:
+		ice_manager.freeze()
+		set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+
+func _on_ice_manager_melt() -> void:
+	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)

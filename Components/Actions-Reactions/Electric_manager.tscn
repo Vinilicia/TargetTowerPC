@@ -1,0 +1,11 @@
+[gd_scene format=3 uid="uid://dqt80jjuf3br"]
+
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="1_oxqni"]
+[ext_resource type="Script" uid="uid://e7aqt53x3f6y" path="res://Components/Actions-Reactions/electric_manager.gd" id="1_rxja7"]
+
+[node name="ElectricManager" type="Node2D" unique_id=2039134817 node_paths=PackedStringArray("hurtbox")]
+script = ExtResource("1_rxja7")
+hurtbox = NodePath("Hurtbox")
+
+[node name="Hurtbox" parent="." unique_id=1268442995 node_paths=PackedStringArray("parent") instance=ExtResource("1_oxqni")]
+parent = NodePath("..")
