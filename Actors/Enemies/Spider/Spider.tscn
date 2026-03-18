@@ -17,15 +17,16 @@ resource_local_to_scene = true
 shader = ExtResource("5_yj5ul")
 shader_parameter/enabled = false
 
-[node name="Spooder" unique_id=450815639 node_paths=PackedStringArray("up_ray", "down_ray", "side_ray", "ice_manager") instance=ExtResource("1_bh22r")]
+[node name="Spooder" unique_id=450815639 node_paths=PackedStringArray("up_ray", "down_ray", "backup_down_ray", "side_ray", "ice_manager") instance=ExtResource("1_bh22r")]
 material = SubResource("ShaderMaterial_wrmyj")
 script = ExtResource("2_wapg0")
 speed = 25.0
 movedir = 1.0
-start_surface = "floor"
+start_surface = 0
 fall_speed = 150.0
 up_ray = NodePath("UpRaycast")
 down_ray = NodePath("DownRaycast")
+backup_down_ray = NodePath("DownRaycast2")
 side_ray = NodePath("FrontRaycast")
 ice_manager = NodePath("IceManager")
 metadata/_edit_pinned_properties_ = [&"material"]
@@ -62,16 +63,27 @@ texture = ExtResource("4_wapg0")
 [node name="UpRaycast" type="RayCast2D" parent="." index="2" unique_id=553438371]
 target_position = Vector2(0, -300)
 collision_mask = 21
+hit_from_inside = true
 
 [node name="DownRaycast" type="RayCast2D" parent="." index="3" unique_id=526841289]
-target_position = Vector2(0, 7)
+modulate = Color(1, 0, 0, 1)
+target_position = Vector2(0, 15)
 collision_mask = 20
+hit_from_inside = true
 
-[node name="FrontRaycast" type="RayCast2D" parent="." index="4" unique_id=287593064]
+[node name="DownRaycast2" type="RayCast2D" parent="." index="4" unique_id=166687626]
+modulate = Color(1, 0, 0, 1)
+position = Vector2(-4, 0)
+target_position = Vector2(0, 15)
+collision_mask = 20
+hit_from_inside = true
+
+[node name="FrontRaycast" type="RayCast2D" parent="." index="5" unique_id=287593064]
 target_position = Vector2(7, 0)
 collision_mask = 20
+hit_from_inside = true
 
-[node name="PlatDetec" type="Area2D" parent="." index="5" unique_id=443062096]
+[node name="PlatDetec" type="Area2D" parent="." index="6" unique_id=443062096]
 position = Vector2(0, 4)
 collision_layer = 0
 collision_mask = 16
@@ -80,11 +92,10 @@ collision_mask = 16
 scale = Vector2(12, 4)
 shape = ExtResource("2_lo6vr")
 
-[node name="IceManager" parent="." index="6" unique_id=1854588271 node_paths=PackedStringArray("parent", "ref_hurtbox") instance=ExtResource("6_wrmyj")]
+[node name="IceManager" parent="." index="7" unique_id=1854588271 node_paths=PackedStringArray("parent", "parent_health_man", "ref_hurtbox") instance=ExtResource("6_wrmyj")]
 parent = NodePath("..")
+parent_health_man = NodePath("../BaseEnemyStuff/HealthManager")
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
 [connection signal="body_entered" from="PlatDetec" to="." method="_on_plat_detec_body_entered"]
 [connection signal="body_exited" from="PlatDetec" to="." method="_on_plat_detec_body_exited"]
-[connection signal="froze" from="IceManager" to="." method="_on_ice_manager_froze"]
-[connection signal="melt" from="IceManager" to="." method="_on_ice_manager_melt"]

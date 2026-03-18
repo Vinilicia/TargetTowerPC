@@ -8,18 +8,18 @@
 [ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="6_tpsco"]
 [ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_manager.tscn" id="7_4busn"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_40g7a"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_4busn"]
 resource_local_to_scene = true
 shader = ExtResource("6_tpsco")
 shader_parameter/enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4busn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_02v53"]
 resource_local_to_scene = true
 shader = ExtResource("6_tpsco")
 shader_parameter/enabled = false
 
 [node name="Shaman" unique_id=1980174944 node_paths=PackedStringArray("line_of_sight", "attack_timer", "ice_manager") instance=ExtResource("1_nyc18")]
-material = SubResource("ShaderMaterial_40g7a")
+material = SubResource("ShaderMaterial_4busn")
 script = ExtResource("2_3ef5p")
 line_of_sight = NodePath("LineOfSight")
 attack_timer = NodePath("AttackTimer")
@@ -40,7 +40,7 @@ scale = Vector2(16, 20)
 shape = ExtResource("2_klb6c")
 
 [node name="BaseEnemyStuff" parent="." index="1" unique_id=2108870964]
-material = SubResource("ShaderMaterial_4busn")
+material = SubResource("ShaderMaterial_02v53")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1" unique_id=1842605953]
 max_health = 6.0
@@ -73,12 +73,11 @@ collision_mask = 21
 [node name="AttackTimer" type="Timer" parent="." index="4" unique_id=1017326262]
 one_shot = true
 
-[node name="IceManager" parent="." index="5" unique_id=1854588271 node_paths=PackedStringArray("parent", "ref_hurtbox") instance=ExtResource("7_4busn")]
+[node name="IceManager" parent="." index="5" unique_id=1854588271 node_paths=PackedStringArray("parent", "parent_health_man", "ref_hurtbox") instance=ExtResource("7_4busn")]
 parent = NodePath("..")
+parent_health_man = NodePath("../BaseEnemyStuff/HealthManager")
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
 [connection signal="screen_entered" from="VisibleNotifier" to="." method="_on_visible_notifier_screen_entered"]
 [connection signal="screen_exited" from="VisibleNotifier" to="." method="_on_visible_notifier_screen_exited"]
 [connection signal="timeout" from="AttackTimer" to="." method="_on_attack_timer_timeout"]
-[connection signal="froze" from="IceManager" to="." method="_on_ice_manager_froze"]
-[connection signal="melt" from="IceManager" to="." method="_on_ice_manager_melt"]

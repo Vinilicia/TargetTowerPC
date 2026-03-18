@@ -14,18 +14,18 @@
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="12_o1mr1"]
 [ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_manager.tscn" id="13_cerc6"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nnwu0"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_cerc6"]
 resource_local_to_scene = true
 shader = ExtResource("5_mp5lk")
 shader_parameter/enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ra0ym"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_nnwu0"]
 resource_local_to_scene = true
 shader = ExtResource("5_mp5lk")
 shader_parameter/enabled = false
 
 [node name="CommonGoblin" unique_id=1436648139 node_paths=PackedStringArray("lines_of_sight", "slash_hitbox", "state_chart", "coll", "ice_manager", "wall_detector", "jump_detector", "fall_detector", "ground_detector", "jump_attack_area", "stab_attack_area", "sight_area", "outer_arrow_detec", "inner_arrow_detec", "giving_up_timer", "jump_attack_timer", "stab_attack_timer") instance=ExtResource("1_j75sw")]
-material = SubResource("ShaderMaterial_nnwu0")
+material = SubResource("ShaderMaterial_cerc6")
 script = ExtResource("2_mp5lk")
 start_direction = 1
 walk_speed = 50.0
@@ -56,7 +56,7 @@ scale = Vector2(16, 16)
 shape = ExtResource("2_r6q1e")
 
 [node name="BaseEnemyStuff" parent="." index="1" unique_id=2108870964]
-material = SubResource("ShaderMaterial_ra0ym")
+material = SubResource("ShaderMaterial_nnwu0")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1" unique_id=1842605953]
 max_health = 3.0
@@ -239,8 +239,9 @@ to = NodePath("../../Chasing")
 event = &"Chase"
 delay_in_seconds = "0.0"
 
-[node name="IceManager" parent="." index="6" unique_id=1854588271 node_paths=PackedStringArray("parent", "ref_hurtbox") instance=ExtResource("13_cerc6")]
+[node name="IceManager" parent="." index="6" unique_id=1854588271 node_paths=PackedStringArray("parent", "parent_health_man", "ref_hurtbox") instance=ExtResource("13_cerc6")]
 parent = NodePath("..")
+parent_health_man = NodePath("../BaseEnemyStuff/HealthManager")
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
 [connection signal="area_entered" from="Areas/OuterArrowDetector" to="." method="_on_outer_detector_entered"]
@@ -260,5 +261,3 @@ ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 [connection signal="state_entered" from="WhiteNodes/StateChart/StateTree/Chasing" to="." method="_on_chasing_state_entered"]
 [connection signal="state_physics_processing" from="WhiteNodes/StateChart/StateTree/Chasing" to="." method="_on_chasing_state_physics_processing"]
 [connection signal="state_physics_processing" from="WhiteNodes/StateChart/StateTree/Attack" to="." method="_on_attack_state_physics_processing"]
-[connection signal="froze" from="IceManager" to="." method="_on_ice_manager_froze"]
-[connection signal="melt" from="IceManager" to="." method="_on_ice_manager_melt"]

@@ -4,36 +4,39 @@
 [ext_resource type="Script" uid="uid://gftrahe783kp" path="res://Interactibles/Items/small_regret.gd" id="1_ybkoh"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="2_ybkoh"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="3_x05w7"]
+[ext_resource type="Script" uid="uid://c4xupirqm5ogs" path="res://Components/Velocity_component.gd" id="5_pucdn"]
 
-[node name="SmallRegret" type="RigidBody2D" node_paths=PackedStringArray("anim_timer", "sprite")]
+[node name="SmallRegret" type="CharacterBody2D" unique_id=1760961199 node_paths=PackedStringArray("anim_timer", "sprite", "v_comp")]
 collision_layer = 128
 collision_mask = 148
-center_of_mass_mode = 1
-center_of_mass = Vector2(2, 0)
-lock_rotation = true
 script = ExtResource("1_ybkoh")
 min_delay = 0.5
 max_delay = 5.0
 anim_timer = NodePath("AnimTimer")
 sprite = NodePath("Regret")
 value = 30
+v_comp = NodePath("VelocityComponent")
 
-[node name="Regret" parent="." instance=ExtResource("1_nay2b")]
+[node name="Regret" parent="." unique_id=1799170147 instance=ExtResource("1_nay2b")]
 
-[node name="Coll" type="CollisionShape2D" parent="."]
+[node name="Coll" type="CollisionShape2D" parent="." unique_id=1526715923]
 scale = Vector2(7, 5)
 shape = ExtResource("3_x05w7")
 
-[node name="AnimTimer" type="Timer" parent="."]
+[node name="AnimTimer" type="Timer" parent="." unique_id=279650382]
 one_shot = true
 
-[node name="PlayerDetec" type="Area2D" parent="."]
+[node name="PlayerDetec" type="Area2D" parent="." unique_id=747267397]
 visible = false
 scale = Vector2(12, 12)
 collision_layer = 0
 
-[node name="Coll" type="CollisionShape2D" parent="PlayerDetec"]
+[node name="Coll" type="CollisionShape2D" parent="PlayerDetec" unique_id=1588379501]
 shape = ExtResource("2_ybkoh")
+
+[node name="VelocityComponent" type="Node" parent="." unique_id=1486085467]
+script = ExtResource("5_pucdn")
+metadata/_custom_type_script = "uid://c4xupirqm5ogs"
 
 [connection signal="timeout" from="AnimTimer" to="." method="_on_anim_timer_timeout"]
 [connection signal="body_entered" from="PlayerDetec" to="." method="_on_player_detec_body_entered"]

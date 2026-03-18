@@ -9,7 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://bps57wjl0501i" path="res://Actors/Enemies/Goblins/Common_Goblin.tscn" id="6_22qgy"]
 [ext_resource type="PackedScene" uid="uid://b46e57ryj7uad" path="res://Actors/Enemies/Golem/Golem.tscn" id="8_rd61j"]
 [ext_resource type="PackedScene" uid="uid://5y1krmoyg57i" path="res://Interactibles/Mechanisms/Windbox.tscn" id="8_wsoaw"]
-[ext_resource type="PackedScene" uid="uid://dgsguis2vqkm7" path="res://Interactibles/Mechanisms/Conveyor_belt.tscn" id="9_kfdoy"]
+[ext_resource type="PackedScene" uid="uid://by2xx524a8stk" path="res://Interactibles/Mechanisms/Conveyor_belt.tscn" id="9_kfdoy"]
 [ext_resource type="PackedScene" uid="uid://x2pfg4af3syy" path="res://Interactibles/Objects/Bench.tscn" id="10_kfdoy"]
 [ext_resource type="PackedScene" uid="uid://dwoiuao00y8oi" path="res://Actors/Enemies/Utilities/Slime_Boss_Arena.tscn" id="12_4no8i"]
 [ext_resource type="PackedScene" uid="uid://04ns053vyilq" path="res://Interactibles/Mechanisms/bounce.tscn" id="14_xpb1b"]
@@ -59,65 +59,51 @@ resource_local_to_scene = true
 shader = ExtResource("3_nh0l2")
 shader_parameter/enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_k5udj"]
-resource_local_to_scene = true
-shader = ExtResource("3_nh0l2")
-shader_parameter/enabled = true
-
 [node name="TestRoom" unique_id=1036476317 node_paths=PackedStringArray("bench") instance=ExtResource("1_evn5t")]
 bench = NodePath("Bench")
 
 [node name="Spooder" parent="Enemies" index="0" unique_id=948375727 instance=ExtResource("2_f20nt")]
 material = SubResource("ShaderMaterial_rwgyr")
-position = Vector2(351, 20)
+position = Vector2(-135, 129)
 speed = 35.0
 movedir = -1.0
-start_surface = "ceiling"
 fall_speed = 100.0
 
-[node name="Spooder2" parent="Enemies" index="1" unique_id=1464341476 instance=ExtResource("2_f20nt")]
+[node name="Slime2" parent="Enemies" index="1" unique_id=658440982 instance=ExtResource("3_m8jmo")]
 material = SubResource("ShaderMaterial_xpb1b")
-position = Vector2(278, 116)
-speed = 35.0
-movedir = -1.0
-start_surface = "ceiling"
-fall_speed = 100.0
-
-[node name="Slime2" parent="Enemies" index="2" unique_id=658440982 instance=ExtResource("3_m8jmo")]
-material = SubResource("ShaderMaterial_ymqiv")
 position = Vector2(885, -203)
 
-[node name="Slime3" parent="Enemies" index="3" unique_id=855155162 instance=ExtResource("3_m8jmo")]
-material = SubResource("ShaderMaterial_ion0u")
+[node name="Slime3" parent="Enemies" index="2" unique_id=855155162 instance=ExtResource("3_m8jmo")]
+material = SubResource("ShaderMaterial_ymqiv")
 position = Vector2(882, -376)
 
-[node name="Shaman" parent="Enemies" index="4" unique_id=1444588541 instance=ExtResource("4_shaer")]
-material = SubResource("ShaderMaterial_6y656")
+[node name="Shaman" parent="Enemies" index="3" unique_id=1444588541 instance=ExtResource("4_shaer")]
+material = SubResource("ShaderMaterial_ion0u")
 position = Vector2(537, 85)
 magic_bolt_texture = null
 magic_bolt_scale = Vector2(0, 0)
 
-[node name="Bat" parent="Enemies" index="5" unique_id=1730014312 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_lbl85")
+[node name="Bat" parent="Enemies" index="4" unique_id=1730014312 instance=ExtResource("5_6vixh")]
+material = SubResource("ShaderMaterial_6y656")
 position = Vector2(851, 133)
 
-[node name="Bat2" parent="Enemies" index="6" unique_id=1061994402 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_3rvaw")
+[node name="Bat2" parent="Enemies" index="5" unique_id=1061994402 instance=ExtResource("5_6vixh")]
+material = SubResource("ShaderMaterial_lbl85")
 position = Vector2(946, -51)
 
-[node name="Bat3" parent="Enemies" index="7" unique_id=678611238 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_85ifu")
+[node name="Bat3" parent="Enemies" index="6" unique_id=678611238 instance=ExtResource("5_6vixh")]
+material = SubResource("ShaderMaterial_3rvaw")
 position = Vector2(21, -216)
 
-[node name="Bat4" parent="Enemies" index="8" unique_id=769101661 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_xi5r3")
+[node name="Bat4" parent="Enemies" index="7" unique_id=769101661 instance=ExtResource("5_6vixh")]
+material = SubResource("ShaderMaterial_85ifu")
 position = Vector2(111, -216)
 
-[node name="CommonGoblin2" parent="Enemies" index="9" unique_id=659796450 instance=ExtResource("6_22qgy")]
-material = SubResource("ShaderMaterial_k5udj")
+[node name="CommonGoblin2" parent="Enemies" index="8" unique_id=659796450 instance=ExtResource("6_22qgy")]
+material = SubResource("ShaderMaterial_xi5r3")
 position = Vector2(587, -169)
 
-[node name="Golem" parent="Enemies" index="10" unique_id=20234462 instance=ExtResource("8_rd61j")]
+[node name="Golem" parent="Enemies" index="9" unique_id=20234462 instance=ExtResource("8_rd61j")]
 position = Vector2(82, -319)
 
 [node name="Terrain" parent="Tilemaps" index="0"]
@@ -129,20 +115,14 @@ wind_direction = Vector2(1, 0)
 wind_force = 30.0
 size = Vector2i(8, 3)
 
-[node name="ConveyorBelt" parent="." index="4" unique_id=478473031 instance=ExtResource("9_kfdoy")]
-position = Vector2(330, -182)
-belt_dir = 0
-belt_speed = 60.0
-length = 7
-
-[node name="Bench" parent="." index="5" unique_id=214183703 instance=ExtResource("10_kfdoy")]
+[node name="Bench" parent="." index="4" unique_id=214183703 instance=ExtResource("10_kfdoy")]
 position = Vector2(343, 184)
 should_save = false
 
 [node name="Camera1" parent="Cameras" index="0"]
 draw_limits = true
 
-[node name="BossArena" parent="." index="7" unique_id=201900382 instance=ExtResource("12_4no8i")]
+[node name="BossArena" parent="." index="6" unique_id=201900382 instance=ExtResource("12_4no8i")]
 position = Vector2(139, -688)
 
 [node name="Boss" parent="BossArena" index="2"]
@@ -156,7 +136,12 @@ patterned_rand_x_offset = null
 spawns_money = null
 money_amount = null
 
-[node name="Bounce" parent="." index="8" unique_id=823817498 instance=ExtResource("14_xpb1b")]
+[node name="Bounce" parent="." index="7" unique_id=823817498 instance=ExtResource("14_xpb1b")]
 position = Vector2(473, -439)
+
+[node name="ConveyorBelt" parent="." index="8" unique_id=207515394 instance=ExtResource("9_kfdoy")]
+position = Vector2(464, -181)
+belt_dir = 1
+length = 10
 
 [editable path="BossArena"]
