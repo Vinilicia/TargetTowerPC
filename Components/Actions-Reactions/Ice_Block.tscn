@@ -37,7 +37,6 @@ shape = ExtResource("2_aqvjo")
 
 [node name="PortableInfo" type="Node" parent="." unique_id=621030583]
 script = ExtResource("5_8at2o")
-weight = "Heavy"
 metadata/_custom_type_script = "uid://ujb5quvl27hh"
 
 [connection signal="timeout" from="MeltingTimer" to="." method="_on_melting_timer_timeout"]

@@ -14,7 +14,7 @@ height = 2.0
 script = ExtResource("1_5kekk")
 
 [node name="Player" parent="." unique_id=688355613 instance=ExtResource("2_q8dh3")]
-position = Vector2(624, -464)
+position = Vector2(-29, 168)
 
 [node name="Coll" parent="Player/Hurtbox" parent_id_path=PackedInt32Array(688355613, 9327247) index="1" unique_id=640387622]
 shape = SubResource("CapsuleShape2D_5kekk")

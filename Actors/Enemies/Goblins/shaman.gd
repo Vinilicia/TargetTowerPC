@@ -145,11 +145,3 @@ func _on_visible_notifier_screen_exited() -> void:
 func _on_attack_timer_timeout() -> void:
 	if engaging_state:
 		attack()
-
-func _on_ice_manager_froze() -> void:
-	if health_man.health > 0:
-		ice_manager.freeze()
-		set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
-
-func _on_ice_manager_melt() -> void:
-	set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)

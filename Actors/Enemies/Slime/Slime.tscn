@@ -100,6 +100,7 @@ ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
 [node name="IceManager" parent="." index="6" unique_id=1854588271 node_paths=PackedStringArray("parent", "ref_hurtbox") instance=ExtResource("8_ef4uu")]
 parent = NodePath("..")
+regular_behaviour = false
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
 [node name="VisibleNotifier" type="VisibleOnScreenNotifier2D" parent="." index="7" unique_id=1651489017]

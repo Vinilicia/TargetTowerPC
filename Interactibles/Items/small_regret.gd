@@ -1,4 +1,4 @@
-extends RigidBody2D
+extends CharacterBody2D
 
 @export var min_delay : float
 @export var max_delay : float
@@ -7,23 +7,30 @@ extends RigidBody2D
 @export var sprite : AnimatedSprite2D
 @export var value : int = 1
 @export var flying_speed : float = 100
+@export var fly_acceleration: float = 300.0
+@export var v_comp : VelocityComponent
 
 var player : Node2D = null
+var on_ground : bool = false
 
 func _ready() -> void:
 	anim_timer.start(randf_range(min_delay, max_delay))
 	#go_to_player()
 
-@export var fly_acceleration: float = 300.0
-
 func _physics_process(delta: float) -> void:
-	if player == null:
-		return
-
-	var direction = to_local(player.global_position + Vector2(0, -5)).normalized()
-	var target_velocity = direction * flying_speed
-	linear_velocity = linear_velocity.lerp(target_velocity, delta * 5.0)
-
+	if player != null:
+		var direction = to_local(player.global_position + Vector2(0, -5)).normalized()
+		var target_velocity = direction * flying_speed
+		v_comp.proper_velocity.lerp(target_velocity, delta * 5)
+	
+	if is_on_floor():
+		if not on_ground:
+			on_ground = true
+			v_comp.set_proper_velocity(Vector2.ZERO)
+	else:
+		v_comp.add_proper_velocity(get_gravity() * delta)
+	velocity = v_comp.get_total_velocity()
+	move_and_slide()
 
 func _on_anim_timer_timeout() -> void:
 	sprite.play("Shine")
@@ -31,18 +38,15 @@ func _on_anim_timer_timeout() -> void:
 
 func get_collected() -> void:
 	AudioManager.play_song("Money")
-	gravity_scale = 0.0
-	collision_mask = 0
 	anim_timer.stop()
 	flying_speed = 0.0
-	linear_velocity = Vector2.ZERO
+	v_comp.set_proper_velocity(Vector2.ZERO)
 	sprite.play("Collected")
 	HudHandler.hud.add_money(value)
 	await sprite.animation_finished
 	queue_free()
 
 func go_to_player() -> void:
-	gravity_scale = 0.0
 	collision_mask = 0
 	player = get_tree().get_first_node_in_group("Player")
 

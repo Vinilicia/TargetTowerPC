@@ -2,6 +2,8 @@ extends Node2D
 class_name IceManager
 
 @export var parent : CharacterBody2D
+@export var parent_health_man : HealthManager
+@export var regular_behaviour : bool = true
 @export var frozen_duration : float = 5.0
 @export var can_stack : bool = false
 @export_group("Nodes")
@@ -30,6 +32,19 @@ func _hurtbox_got_hit(_hitbox: Hitbox) -> void:
 	if frozen and !can_stack:
 		return
 	froze.emit()
+	if regular_behaviour:
+		assert(parent_health_man != null, "SEM parent_health_man EM ICE MANAGER DE " + parent.name)
+		if parent_health_man.health > 0:
+			parent.set_deferred("process_mode", PROCESS_MODE_DISABLED)
+			freeze()
+
+func regular_hit_behaviour() -> void:
+	froze.emit()
+	parent.set_deferred("process_mode", PROCESS_MODE_DISABLED)
+	freeze()
+
+func regular_melt_behaviour() -> void:
+	parent.set_deferred("process_mode", PROCESS_MODE_INHERIT)
 
 func freeze() -> void:
 	frozen = true
@@ -40,3 +55,5 @@ func freeze() -> void:
 func melt_away() -> void:
 	frozen = false
 	melt.emit()
+	if regular_behaviour:
+		regular_melt_behaviour()

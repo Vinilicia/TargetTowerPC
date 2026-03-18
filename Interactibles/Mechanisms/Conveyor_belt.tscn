@@ -1,7 +1,7 @@
-[gd_scene format=3 uid="uid://dgsguis2vqkm7"]
+[gd_scene format=3 uid="uid://by2xx524a8stk"]
 
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="1_36qo6"]
-[ext_resource type="Script" uid="uid://wos726xx1aqj" path="res://Interactibles/Mechanisms/conveyor_belt.gd" id="1_g3die"]
+[ext_resource type="Script" uid="uid://boc37i7dct5b6" path="res://Interactibles/Mechanisms/conveyor_belt.gd" id="1_g3die"]
 [ext_resource type="Texture2D" uid="uid://dia7ftiyc16tf" path="res://Assets/Home_bred/Mechanisms/conveyor_belt/conveyor_belt_middle1.png" id="4_6l345"]
 [ext_resource type="Texture2D" uid="uid://cwjdos024c2ni" path="res://Assets/Home_bred/Mechanisms/conveyor_belt/conveyor_belt_middle2.png" id="5_neywt"]
 [ext_resource type="Texture2D" uid="uid://c78nc3cmbh7tq" path="res://Assets/Home_bred/Mechanisms/conveyor_belt/conveyor_belt_middle3.png" id="6_rd6sa"]
@@ -48,43 +48,43 @@ frame_2/duration = 0.1
 frame_3/texture = ExtResource("15_nkw8s")
 frame_3/duration = 0.1
 
-[node name="ConveyorBelt" type="Node2D"]
+[node name="ConveyorBelt" type="Node2D" unique_id=207515394]
 script = ExtResource("1_g3die")
 belt_dir = 3
 length = 8
 
-[node name="Belt" type="Area2D" parent="."]
+[node name="Belt" type="Area2D" parent="." unique_id=1960152240]
 position = Vector2(6, -64)
 scale = Vector2(12, -128)
 collision_layer = 0
-collision_mask = 25
+collision_mask = 153
 monitorable = false
 
-[node name="Coll" type="CollisionShape2D" parent="Belt"]
+[node name="Coll" type="CollisionShape2D" parent="Belt" unique_id=119019328]
 shape = ExtResource("1_36qo6")
 debug_color = Color(1, 1, 0, 0.470588)
 
-[node name="StaticBody" type="StaticBody2D" parent="." groups=["Attachables"]]
+[node name="StaticBody" type="StaticBody2D" parent="." unique_id=1001178836 groups=["Attachables"]]
 position = Vector2(4, -64)
 scale = Vector2(12, -128)
 collision_layer = 4
 
-[node name="Coll" type="CollisionShape2D" parent="StaticBody"]
+[node name="Coll" type="CollisionShape2D" parent="StaticBody" unique_id=1684016817]
 shape = ExtResource("1_36qo6")
 
-[node name="SpriteNodes" type="Node2D" parent="."]
+[node name="SpriteNodes" type="Node2D" parent="." unique_id=1803409715]
 visible = false
 rotation = -1.5707964
 scale = Vector2(-1, -1)
 
-[node name="LeftSprite" type="Sprite2D" parent="SpriteNodes"]
+[node name="LeftSprite" type="Sprite2D" parent="SpriteNodes" unique_id=1534050237]
 position = Vector2(-8, -6)
 scale = Vector2(-1, 1)
 texture = SubResource("AnimatedTexture_cfxrv")
 region_enabled = true
 region_rect = Rect2(0, 0, 16, 12)
 
-[node name="MiddleSprite" type="Sprite2D" parent="SpriteNodes"]
+[node name="MiddleSprite" type="Sprite2D" parent="SpriteNodes" unique_id=1027691378]
 texture_repeat = 2
 position = Vector2(-64, -6)
 scale = Vector2(-1, 1)
@@ -92,7 +92,7 @@ texture = SubResource("AnimatedTexture_6l345")
 region_enabled = true
 region_rect = Rect2(0, 0, 96, 12)
 
-[node name="RightSprite" type="Sprite2D" parent="SpriteNodes"]
+[node name="RightSprite" type="Sprite2D" parent="SpriteNodes" unique_id=2020460467]
 position = Vector2(-120, -6)
 scale = Vector2(-1, 1)
 texture = SubResource("AnimatedTexture_fav8r")

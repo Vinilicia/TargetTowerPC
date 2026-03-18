@@ -11,7 +11,7 @@ class_name Enemy
 @export var money_amount : float = 1
 
 @onready var material_anim : AnimationPlayer = $BaseEnemyStuff/Anim
-@onready var regret_scene : RigidBody2D = preload("res://Interactibles/Items/Small_Regret.tscn").instantiate()
+@onready var regret_scene : CharacterBody2D = preload("res://Interactibles/Items/Small_Regret.tscn").instantiate()
 
 signal died
 
@@ -23,9 +23,9 @@ func die() -> void:
 
 func spawn_money() -> void:
 	for i in range(money_amount):
-		var new_regret : RigidBody2D = regret_scene.duplicate()
+		var new_regret : CharacterBody2D = regret_scene.duplicate()
 		new_regret.position = position + Vector2(randf_range(-5, 5), randf_range(-4, 2))
-		new_regret.linear_velocity = Vector2(randf_range(-30, 30), randf_range(-70, -150))
+		new_regret.v_comp.set_proper_velocity(Vector2(randf_range(-30, 30), randf_range(-70, -150)))
 		get_parent().call_deferred("add_child", new_regret)
 
 func took_damage(amount : float) -> void:

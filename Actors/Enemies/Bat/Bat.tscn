@@ -280,9 +280,10 @@ time_to_burn = 0.5
 can_stack = true
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
-[node name="IceManager" parent="." index="6" unique_id=1854588271 node_paths=PackedStringArray("parent", "ref_hurtbox") instance=ExtResource("12_x5tsp")]
+[node name="IceManager" parent="." index="6" unique_id=1854588271 node_paths=PackedStringArray("parent", "parent_health_man", "ref_hurtbox") instance=ExtResource("12_x5tsp")]
 process_mode = 3
 parent = NodePath("..")
+parent_health_man = NodePath("../BaseEnemyStuff/HealthManager")
 ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
 [connection signal="state_entered" from="StateChart/State_Tree/Idle" to="." method="_idle_entered"]
@@ -305,7 +306,5 @@ ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 [connection signal="timeout" from="Timers/ChasingTimer" to="." method="start_chase"]
 [connection signal="timeout" from="Timers/GivingUpTimer" to="." method="give_up_chase"]
 [connection signal="caught_fire" from="FireManager" to="." method="_on_fire_manager_caught_fire"]
-[connection signal="froze" from="IceManager" to="." method="_on_ice_manager_froze"]
-[connection signal="melt" from="IceManager" to="." method="_on_ice_manager_melt"]
 
 [editable path="BaseEnemyStuff/Bat"]
