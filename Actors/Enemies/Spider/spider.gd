@@ -12,6 +12,7 @@ const PIVOT_OFFSET := Vector2(0, 4.0) # ponto fixo relativo ao inimigo
 @export var backup_down_ray: RayCast2D
 @export var side_ray: RayCast2D
 @export var ice_manager : IceManager
+@export var plat_detec : Area2D
 
 enum moveState{ walking, falling, descending }
 enum surfaceState{ ground, wall_left, wall_right, ceiling }
@@ -20,7 +21,6 @@ var direction: Vector2
 var waittime: float = 1.0
 var rotating := false
 var is_ready : bool = false
-var on_plat :int = 0
 var surface_state : surfaceState = surfaceState.ground
 var move_state : moveState = moveState.falling
 
@@ -36,7 +36,8 @@ func set_start_rotation() -> void:
 			rotate(deg_to_rad(180))
 
 func snap_to_surface() -> void:
-	position = down_ray.get_collision_point() - Vector2(0, $BodyCollision.scale.y / 2 - 1).rotated(rotation)
+	if down_ray.is_colliding():
+		position = down_ray.get_collision_point() - Vector2(0, $BodyCollision.scale.y / 2 - 1).rotated(rotation)
 
 func _ready() -> void:
 	var original_down_ray_pos := down_ray.target_position
@@ -52,7 +53,45 @@ func _ready() -> void:
 		push_error("ARANHA " + name + " NÃO ENCONTROU SUPERFÍCIE!")
 
 func is_not_grounded() -> bool:
-	return not is_on_floor() and not is_on_wall() and not is_on_ceiling()
+	match surface_state:
+		surfaceState.ground:
+			return not is_on_floor()
+		surfaceState.ceiling:
+			return not is_on_ceiling()
+		_:
+			return not is_on_wall()
+
+func walking_state_process() -> void:
+	down_ray.force_update_transform()
+	down_ray.force_raycast_update()
+	backup_down_ray.force_update_transform()
+	backup_down_ray.force_raycast_update()
+	force_update_transform()
+	if is_not_grounded() and !plat_detec.has_overlapping_bodies():
+		if !down_ray.is_colliding():
+			move_state = moveState.falling
+			v_component.set_proper_velocity(Vector2.ZERO)
+			return
+	if !down_ray.is_colliding() and backup_down_ray.is_colliding():
+		rotate_and_snap(90 * movedir)
+	elif movedir != sign(backup_down_ray.position.x) or direction == Vector2.ZERO:
+		update_direction()
+		v_component.set_proper_velocity(direction * speed, 1)
+
+	if side_ray.is_colliding():
+		if surface_state == surfaceState.ceiling and randf() < 0.7:
+			movedir *= -1
+			update_direction()
+		else:
+			rotate_and_snap(90 * -movedir)
+	
+
+	if surface_state == surfaceState.ceiling:
+		if up_ray.is_colliding():
+			var collider = up_ray.get_collider()
+			if collider is Player:
+				rotate_and_snap(180)
+				fall_from_ceiling()
 
 func _physics_process(delta: float) -> void:
 	if !is_ready:
@@ -61,46 +100,10 @@ func _physics_process(delta: float) -> void:
 		return
 	
 	if move_state == moveState.walking:
-	
-		down_ray.force_update_transform()
-		down_ray.force_raycast_update()
-		backup_down_ray.force_update_transform()
-		backup_down_ray.force_raycast_update()
-		force_update_transform()
-		
-		if is_not_grounded():
-			if to_local(down_ray.get_collision_point()).length() - ($BodyCollision.scale.x / 2) < 2.0:
-				snap_to_surface()
-			else:
-				move_state = moveState.falling
-				v_component.set_proper_velocity(Vector2.ZERO)
-				return
-		
-		if down_ray.is_colliding():
-			update_direction()
-			v_component.set_proper_velocity(direction * speed, 1)
-		elif backup_down_ray.is_colliding():
-			rotate_and_snap(90 * movedir)
-			position += Vector2(-movedir * direction.y, movedir * direction.x) * 10
-
-		if side_ray.is_colliding():
-			if surface_state == surfaceState.ceiling and randf() < 0.7:
-				movedir *= -1
-				update_direction()
-				side_ray.set_deferred("target_position.x", abs(side_ray.target_position.x) * movedir)
-			else:
-				rotate_and_snap(90 * -movedir)
-
-		if surface_state == surfaceState.ceiling:
-			if up_ray.is_colliding():
-				var collider = up_ray.get_collider()
-				if collider is Player:
-					rotate_and_snap(180)
-					fall_from_ceiling()
-	
+		walking_state_process()
 	elif move_state == moveState.falling:
 		if is_on_floor():
-			rotate_and_snap(-rotation_degrees)
+			await rotate_and_snap(-rotation_degrees)
 			move_state = moveState.walking
 			choose_random_direction()
 		grounded_behaviour(delta)
@@ -127,13 +130,7 @@ func update_direction() -> void:
 	direction *= movedir
 	side_ray.target_position.x = abs(side_ray.target_position.x) * movedir
 	backup_down_ray.position.x = abs(backup_down_ray.position.x) * -movedir
-
-func _on_floor_timer_timeout() -> void:
-	if surface_state != surfaceState.ground:
-		return
-
-	if up_ray.is_colliding() and randf() < 0.3:
-		rotate_and_snap(180)
+	down_ray.position.x = abs(down_ray.position.x) * -movedir
 
 func rotate_and_snap(degrees: float, duration := 0.3) -> void:
 	if rotating:
@@ -141,48 +138,55 @@ func rotate_and_snap(degrees: float, duration := 0.3) -> void:
 	rotating = true
 
 	var abs_deg := absf(degrees)
-	var use_pivot := abs_deg < 91.0  # ou abs_deg < 91.0 se quiser tolerância
-
-	var pivot: Vector2
-	if use_pivot:
-		# Pivô fixo relativo
-		var local_pivot := Vector2(PIVOT_OFFSET.x * movedir * -signf(degrees), PIVOT_OFFSET.y * signf(degrees) * movedir)
-		pivot = global_position + local_pivot.rotated(rotation)
-	else:
-		# Se não for 90°, gira no próprio eixo
-		pivot = global_position
-
-	# Estados iniciais
-	var start_rotation := rotation
-	var target_rotation := rotation + deg_to_rad(degrees)
-	var start_position := global_position
-
-	var to_pivot := start_position - pivot
+	var use_pivot := abs_deg < 91.0 
 	
-	# Tween de rotação
+	var total_angle_rad := deg_to_rad(degrees)
+	var state := {"last_angle": 0.0,
+		"first": true,
+		}
+
 	var tween := create_tween()
-	tween.tween_method(func(value):
-		var current_angle: float = lerp(start_rotation, target_rotation, value)
-		var rotated_offset := to_pivot.rotated(current_angle - start_rotation)
-		global_position = pivot + rotated_offset
-		rotation = current_angle
-	, 0.0, 1.0, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
+	tween.tween_method(func(current_tweened_angle: float):
+		if state.first:
+			state.first = false
+		var delta_angle: float = current_tweened_angle - state.last_angle
+		state.last_angle = current_tweened_angle
+		
+		if use_pivot:
+			var local_pivot_pos := Vector2(
+				PIVOT_OFFSET.x * movedir * -signf(degrees), 
+				PIVOT_OFFSET.y * signf(degrees) * movedir
+			).rotated(rotation)
+			
+			var current_pivot_global = global_position + local_pivot_pos
+			
+			# 3. Rotacionamos a posição global em relação a esse pivô instantâneo
+			var diff = global_position - current_pivot_global
+			global_position = current_pivot_global + diff.rotated(delta_angle)
+		
+		# 4. Aplica a rotação (seja com pivô ou no próprio eixo)
+		rotation += delta_angle
+		
+	, 0.0, total_angle_rad, duration).set_trans(Tween.TRANS_SINE).set_ease(Tween.EASE_IN_OUT)
 
 	await tween.finished
 	change_state()
-	rotating = false
+	set_deferred("rotating", false)
+	snap_to_surface.call_deferred()
 
 func change_state() -> void:
-	if abs(rotation_degrees) < 2 and abs(rotation_degrees) > -2:
+	var vector := Vector2(1, 0).rotated(rotation)
+	if vector.is_equal_approx(Vector2.RIGHT):
 		surface_state = surfaceState.ground
-	elif rotation_degrees < 91 and rotation_degrees > 89:
+	elif vector.is_equal_approx(Vector2.UP):
 		surface_state = surfaceState.wall_left
-	elif rotation_degrees < -89 and rotation_degrees > 91:
+	elif vector.is_equal_approx(Vector2.DOWN):
 		surface_state = surfaceState.wall_right
-	elif abs(rotation_degrees) < 181 and abs(rotation_degrees) > 179:
+	elif vector.is_equal_approx(Vector2.LEFT):
 		surface_state = surfaceState.ceiling
 
 func choose_random_direction() -> void:
+	print("Dir")
 	var rand : float = randf()
 	if rand < 0.5:
 		movedir = -1.0
@@ -190,9 +194,3 @@ func choose_random_direction() -> void:
 	else:
 		movedir = 1.0
 		update_direction()
-
-func _on_plat_detec_body_entered(_body: Node2D) -> void:
-	on_plat += 1
-
-func _on_plat_detec_body_exited(_body: Node2D) -> void:
-	on_plat -= 1

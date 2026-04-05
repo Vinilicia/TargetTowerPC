@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://dsfecke3dr6ur"]
 
 [ext_resource type="PackedScene" uid="uid://df53a8yrwvqb4" path="res://Interactibles/Items/Regret_Sprite.tscn" id="1_nay2b"]
-[ext_resource type="Script" uid="uid://gftrahe783kp" path="res://Interactibles/Items/small_regret.gd" id="1_ybkoh"]
+[ext_resource type="Script" uid="uid://b7lijpqx66n27" path="res://Interactibles/Items/small_regret.gd" id="1_ybkoh"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="2_ybkoh"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="3_x05w7"]
-[ext_resource type="Script" uid="uid://c4xupirqm5ogs" path="res://Components/Velocity_component.gd" id="5_pucdn"]
+[ext_resource type="Script" uid="uid://b3onmxyq5x1od" path="res://Components/Velocity_component.gd" id="5_pucdn"]
 
 [node name="SmallRegret" type="CharacterBody2D" unique_id=1760961199 node_paths=PackedStringArray("anim_timer", "sprite", "v_comp")]
 collision_layer = 128
@@ -34,9 +34,9 @@ collision_layer = 0
 [node name="Coll" type="CollisionShape2D" parent="PlayerDetec" unique_id=1588379501]
 shape = ExtResource("2_ybkoh")
 
-[node name="VelocityComponent" type="Node" parent="." unique_id=1486085467]
+[node name="VelocityComponent" type="Node" parent="." unique_id=1486085467 node_paths=PackedStringArray("parent")]
 script = ExtResource("5_pucdn")
-metadata/_custom_type_script = "uid://c4xupirqm5ogs"
+parent = NodePath("..")
 
 [connection signal="timeout" from="AnimTimer" to="." method="_on_anim_timer_timeout"]
 [connection signal="body_entered" from="PlayerDetec" to="." method="_on_player_detec_body_entered"]

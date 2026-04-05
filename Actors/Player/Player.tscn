@@ -1,19 +1,20 @@
 [gd_scene format=3 uid="uid://ev1c8jc3dq42"]
 
-[ext_resource type="Script" uid="uid://d078mxe0au5lg" path="res://Actors/Player/Archer2.gd" id="1_mwnd1"]
+[ext_resource type="Script" uid="uid://0y7qd2fjwqbp" path="res://Actors/Player/Player.gd" id="1_mwnd1"]
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Components/Velocity_component.tscn" id="2_8nfcn"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="4_26aeq"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="8_26aeq"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
-[ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Components/Health_manager.gd" id="11_jfvij"]
-[ext_resource type="Script" uid="uid://cndxom2mo4uqo" path="res://Components/anim_handler.gd" id="11_m4vjq"]
+[ext_resource type="Script" uid="uid://dql6mh1dioxux" path="res://Components/Health_manager.gd" id="11_jfvij"]
+[ext_resource type="Script" uid="uid://b42aiooam7el4" path="res://Components/anim_handler.gd" id="11_m4vjq"]
 [ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_manager.tscn" id="12_upr3p"]
-[ext_resource type="Script" uid="uid://bc87qnt24utwm" path="res://Components/Aim_Enemy.gd" id="14_rbeol"]
+[ext_resource type="Script" uid="uid://y7jlv7ex7los" path="res://Components/Aim_Enemy.gd" id="14_rbeol"]
 [ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Components/Actions-Reactions/Fire_manager.tscn" id="15_heh8i"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="16_m4vjq"]
 [ext_resource type="PackedScene" uid="uid://caxq1k25oqpqv" path="res://Actors/Player/NewAcherSprite.tscn" id="16_mwnd1"]
 
 [node name="Player" type="CharacterBody2D" unique_id=1842832799 node_paths=PackedStringArray("v_comp", "health_man", "mana_timer", "sprite", "melee_area", "stomp_area", "melee_hitbox", "stomp_hitbox", "anim_handler", "hurtbox", "wall_detec", "ledge_detec", "enemy_tracker", "aim_enemy") groups=["Player"]]
+position = Vector2(0, 1)
 collision_mask = 20
 script = ExtResource("1_mwnd1")
 using_aim_enemy = false
@@ -32,7 +33,9 @@ ledge_detec = NodePath("Utilities/LedgeDetector")
 enemy_tracker = NodePath("Utilities/AimEnemy/EnemyTracker")
 aim_enemy = NodePath("Utilities/AimEnemy/AimSight")
 jump_buffer_duration = 0.1
-arrow_paths = Array[String](["res://Arrows/Common_Arrow.tscn", "res://Arrows/Fire_Arrow.tscn", "res://Arrows/Platform_Arrow.tscn", "res://Arrows/Teleport_Arrow.tscn", "res://Arrows/Ice_Arrow.tscn"])
+arrow_paths = Array[String](["res://Arrows/Common_Arrow.tscn", "res://Arrows/Fire_Arrow.tscn", "res://Arrows/Platform_Arrow.tscn", "res://Arrows/Teleport_Arrow.tscn", "res://Arrows/Ice_Arrow.tscn", "res://Arrows/Wind_Arrow.tscn", "res://Arrows/Phantom_Arrow.tscn", "res://Arrows/Shock_Arrow.tscn"])
+arrow_cooldown = 0.3
+mana_regen_time = 0.01
 dodge_duration = 0.3
 dodge_side_speed = 250.0
 dodge_up_speed = 160.0
@@ -43,8 +46,9 @@ dodge_down_speed = 380.0
 [node name="DodgeCancelTimer" type="Timer" parent="Misc" unique_id=878617368]
 one_shot = true
 
-[node name="VelocityComponent" parent="Misc" unique_id=2136712855 instance=ExtResource("2_8nfcn")]
+[node name="VelocityComponent" parent="Misc" unique_id=2136712855 node_paths=PackedStringArray("parent") instance=ExtResource("2_8nfcn")]
 knockback_susceptability = 6
+parent = NodePath("../..")
 
 [node name="HealthManager" type="Node" parent="Misc" unique_id=2107208142]
 script = ExtResource("11_jfvij")
@@ -71,6 +75,7 @@ shape = ExtResource("4_26aeq")
 position = Vector2(0, -2)
 scale = Vector2(7, 10)
 collision_mask = 3072
+monitoring = false
 parent = NodePath("..")
 invincibility_time = 1.3
 

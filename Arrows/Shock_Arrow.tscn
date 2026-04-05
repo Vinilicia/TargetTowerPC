@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://vnql3xwv8k0m"]
+
+[ext_resource type="PackedScene" uid="uid://de13e283ng22u" path="res://Arrows/Common_Arrow.tscn" id="1_23epu"]
+[ext_resource type="Script" uid="uid://blsubqg83ysqr" path="res://Arrows/shock_arrow.gd" id="2_qddl6"]
+[ext_resource type="PackedScene" uid="uid://sb6tth1guvsx" path="res://Arrows/Surface_checker.tscn" id="3_tcgmn"]
+[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="4_q7y3h"]
+
+[sub_resource type="Gradient" id="Gradient_q7y3h"]
+resource_local_to_scene = true
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.984314, 1, 0.505882)
+
+[node name="ShockArrow" unique_id=980461484 node_paths=PackedStringArray("shock_hitbox") instance=ExtResource("1_23epu")]
+modulate = Color(1, 1, 0, 1)
+script = ExtResource("2_qddl6")
+surface_checker = ExtResource("3_tcgmn")
+shock_hitbox = NodePath("ShockHitbox")
+area_length = 200.0
+Despawn_Time = 40.0
+
+[node name="Hitbox" parent="." index="0" unique_id=34470544]
+visible = false
+
+[node name="Sprite" parent="." index="1" unique_id=47676996]
+visible = false
+
+[node name="Arrow_Trail" parent="." index="4" unique_id=1092348972]
+gradient = SubResource("Gradient_q7y3h")
+
+[node name="ShockHitbox" parent="." index="5" unique_id=1773352715 node_paths=PackedStringArray("parent") instance=ExtResource("4_q7y3h")]
+collision_layer = 8192
+parent = NodePath("..")
+Damage = 1.0

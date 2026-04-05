@@ -2,6 +2,7 @@ extends Node
 class_name VelocityComponent
 
 @export var knockback_susceptability : int
+@export var parent : CharacterBody2D
 
 var proper_velocity : Vector2
 var knockback_velocity : Vector2
@@ -9,6 +10,10 @@ var ground_velocity : Vector2
 var wind_velocity : Vector2
 
 signal knockback_changed
+
+func _ready() -> void:
+	assert(parent != null, "PARENT NOT SET ON VCOMP OF: " + get_parent().name)
+
 func _physics_process(_delta: float) -> void:
 	if knockback_velocity != Vector2.ZERO:
 		var reduction := knockback_velocity.length() / knockback_susceptability
@@ -88,4 +93,6 @@ func get_wind_velocity(axis : int = -1):
 
 func get_total_velocity() -> Vector2:
 	var clamped_knockback := Vector2(clamp(knockback_velocity.x, -400, 400), clamp(knockback_velocity.y, -400, 400))
-	return (proper_velocity + clamped_knockback + ground_velocity + wind_velocity)
+	var selected_wind_velocity := wind_velocity if !parent.is_on_floor() else Vector2.ZERO
+	var selected_ground_velocity := ground_velocity if parent.is_on_floor() else Vector2.ZERO
+	return (proper_velocity + clamped_knockback + selected_ground_velocity + selected_wind_velocity)

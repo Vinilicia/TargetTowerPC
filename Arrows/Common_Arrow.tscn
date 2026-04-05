@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://de13e283ng22u"]
 
-[ext_resource type="Script" uid="uid://crjbypxgv7iff" path="res://Arrows/Common_Arrow.gd" id="1_g5uwg"]
+[ext_resource type="Script" uid="uid://djj7lbmbd7u8q" path="res://Arrows/Arrow.gd" id="1_g5uwg"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="1_jx316"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_3qgj2"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Arrows/Arrow_trail.tscn" id="3_wms8w"]
@@ -11,7 +11,6 @@ resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 0.984314, 1, 0.505882)
 
 [node name="Arrow" type="CharacterBody2D" unique_id=980461484 node_paths=PackedStringArray("anim", "sprite", "hitbox")]
-position = Vector2(-1, 0)
 collision_layer = 0
 collision_mask = 0
 script = ExtResource("1_g5uwg")

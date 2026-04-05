@@ -1,39 +1,41 @@
 [gd_scene format=3 uid="uid://l0kny3w6cbg4"]
 
-[ext_resource type="Script" uid="uid://c7n2rnxslbue6" path="res://Arrows/Platform_Arrow.gd" id="1_a3nj1"]
+[ext_resource type="Script" uid="uid://bxmhvjsmnkmpb" path="res://Arrows/Platform_Arrow.gd" id="1_a3nj1"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_ftbuc"]
+[ext_resource type="PackedScene" uid="uid://trih87ps31u" path="res://Interactibles/Objects/Platform.tscn" id="2_vyrxc"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Arrows/Arrow_trail.tscn" id="4_5kcse"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="5_fh7sq"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="5_sgxhr"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="6_fh7sq"]
 
-[sub_resource type="Gradient" id="Gradient_fvltu"]
+[sub_resource type="Gradient" id="Gradient_dwhor"]
 resource_local_to_scene = true
 colors = PackedColorArray(1, 1, 1, 1, 1, 1, 1, 0.505882)
 
-[node name="Arrow" type="CharacterBody2D" node_paths=PackedStringArray("anim", "sprite", "hitbox")]
+[node name="Arrow" type="CharacterBody2D" unique_id=1890214604 node_paths=PackedStringArray("anim", "sprite", "hitbox")]
 modulate = Color(0.192157, 0.0862745, 0.027451, 1)
 collision_layer = 0
 collision_mask = 0
 safe_margin = 1.0
 script = ExtResource("1_a3nj1")
+plat_spawner = ExtResource("2_vyrxc")
 anim = NodePath("Anim_Player")
 sprite = NodePath("Sprite")
 hitbox = NodePath("Hitbox")
 Despawn_Time = 3.0
 
-[node name="Sprite" type="Sprite2D" parent="."]
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1606909902]
 texture_filter = 1
 texture = ExtResource("2_ftbuc")
 offset = Vector2(0, 0.5)
 
-[node name="Anim_Player" type="AnimationPlayer" parent="."]
+[node name="Anim_Player" type="AnimationPlayer" parent="." unique_id=880166667]
 
-[node name="Arrow_Trail" parent="." instance=ExtResource("4_5kcse")]
+[node name="Arrow_Trail" parent="." unique_id=180467758 instance=ExtResource("4_5kcse")]
 modulate = Color(0.192157, 0.0862745, 0.027451, 1)
-gradient = SubResource("Gradient_fvltu")
+gradient = SubResource("Gradient_dwhor")
 
-[node name="Hitbox" parent="." node_paths=PackedStringArray("parent") instance=ExtResource("5_fh7sq")]
+[node name="Hitbox" parent="." unique_id=43918906 node_paths=PackedStringArray("parent") instance=ExtResource("5_fh7sq")]
 position = Vector2(2, 0)
 scale = Vector2(18, 5)
 collision_layer = 256
@@ -41,11 +43,11 @@ monitorable = false
 parent = NodePath("..")
 Damage = 1.0
 
-[node name="Coll" type="CollisionShape2D" parent="Hitbox"]
+[node name="Coll" type="CollisionShape2D" parent="Hitbox" unique_id=348741858]
 shape = ExtResource("5_sgxhr")
 debug_color = Color(0.79584, 0.243833, 0.855937, 0.42)
 
-[node name="Coll" type="CollisionShape2D" parent="."]
+[node name="Coll" type="CollisionShape2D" parent="." unique_id=325083097]
 position = Vector2(6, 0)
 scale = Vector2(4, 4)
 shape = ExtResource("6_fh7sq")

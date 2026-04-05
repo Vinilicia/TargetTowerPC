@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://ca1y1rpgw0xi6"]
 
-[ext_resource type="Script" uid="uid://bsv2vkl8xd2n8" path="res://Main/game.gd" id="1_5kekk"]
+[ext_resource type="Script" uid="uid://dlfdag23gige4" path="res://Main/game.gd" id="1_5kekk"]
 [ext_resource type="PackedScene" uid="uid://ev1c8jc3dq42" path="res://Actors/Player/Player.tscn" id="2_q8dh3"]
 [ext_resource type="PackedScene" uid="uid://dvp60ktk2vxdt" path="res://Levels/Camera.tscn" id="3_3wiyf"]
 [ext_resource type="PackedScene" uid="uid://dn10h68f76vry" path="res://Levels/Test_Room.tscn" id="4_q8dh3"]
@@ -14,7 +14,7 @@ height = 2.0
 script = ExtResource("1_5kekk")
 
 [node name="Player" parent="." unique_id=688355613 instance=ExtResource("2_q8dh3")]
-position = Vector2(-29, 168)
+position = Vector2(-58, 152)
 
 [node name="Coll" parent="Player/Hurtbox" parent_id_path=PackedInt32Array(688355613, 9327247) index="1" unique_id=640387622]
 shape = SubResource("CapsuleShape2D_5kekk")

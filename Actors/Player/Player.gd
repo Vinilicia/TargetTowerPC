@@ -121,7 +121,7 @@ func build_arrows() -> void:
 		current_arrow.queue_free()
 	arrows = []
 	#var available_arrows := SaveManager.save_file_data.get_available_arrows()
-	var available_arrows := [true, true, true, true, true, false]
+	var available_arrows := [true, true, true, true, true, true, true, true, false]
 	for i in range(arrow_paths.size()):
 		if available_arrows[i]:
 			var new_arrow : Arrow = load(arrow_paths[i]).instantiate()
@@ -278,7 +278,7 @@ func reset_speed(speed_to_reset : float, start_direction : int) -> void:
 		get_tree().process_frame.disconnect(reset_speed)
 
 func end_dodge() -> bool:
-	var dodge_ended := dodging;
+	var dodge_ended := dodging
 	if dodging:
 		in_control = true
 		dodging = false
@@ -288,6 +288,8 @@ func end_dodge() -> bool:
 		get_tree().create_timer(dodge_cooldown).timeout.connect(func():
 			can_dodge = true
 			)
+		if crouching and not Input.is_action_pressed("down"):
+			stand()
 	return dodge_ended
 
 func hold_arrow() -> bool:
@@ -360,6 +362,16 @@ func jump() -> void:
 	v_comp.set_proper_velocity(jump_force * Vector2.UP)
 	if crouching:
 		stand()
+		
+	var jump_stop_check_func : Callable = func(check_func : Callable):
+			if v_comp.get_proper_velocity(2) >= 0.0:
+				get_tree().process_frame.disconnect(check_func)
+				return
+			if Input.is_action_just_released("jump"):
+				v_comp.set_proper_velocity(-10.0, 2)
+				get_tree().process_frame.disconnect(check_func)
+	
+	get_tree().process_frame.connect(jump_stop_check_func.bind(jump_stop_check_func))
 
 func get_current_gravity() -> Vector2:
 	var y_vel : float = v_comp.get_proper_velocity(2)
@@ -377,7 +389,7 @@ func _on_mana_changed(value : int) -> void:
 			hold_arrow()
 
 func _on_mana_regen_timer_timeout() -> void:
-	mana += 1
+	gain_mana(1)
 	mana_changed.emit(1)
 	if mana < max_mana:
 		mana_timer.start(mana_regen_time)
@@ -463,10 +475,6 @@ func _input(event: InputEvent) -> void:
 	# ===== STAND =====
 	if event.is_action_released("down") and crouching:
 		stand()
-	
-	# ===== STOP JUMP =====
-	if event.is_action_released("jump") and v_comp.get_proper_velocity(2) < 0.0:
-		v_comp.set_proper_velocity(-10.0, 2)
 	
 	# ===== DODGE =====
 	if event.is_action_pressed("dodge") and can_dodge and using_dodge:
@@ -616,3 +624,11 @@ func move_smoothly(global_pos : Vector2, duration : float) -> void:
 	visible = true
 	in_control = true
 	process_mode = Node.PROCESS_MODE_INHERIT
+
+func gain_mana(value : int) -> void:
+	var true_value : int = min(max_mana - mana, value)
+	mana += true_value
+
+func heal_on_bench() -> void:
+	health_man.gain_health(health_man.max_health)
+	gain_mana(max_mana)

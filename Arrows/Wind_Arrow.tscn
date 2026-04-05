@@ -1,0 +1,36 @@
+[gd_scene format=3 uid="uid://chh6d7xkw0opb"]
+
+[ext_resource type="PackedScene" uid="uid://de13e283ng22u" path="res://Arrows/Common_Arrow.tscn" id="1_r464g"]
+[ext_resource type="Script" uid="uid://cmu52cspktynx" path="res://Arrows/wind_arrow.gd" id="2_1nc5y"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="2_27plv"]
+
+[sub_resource type="Gradient" id="Gradient_27plv"]
+resource_local_to_scene = true
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.984314, 1, 0.505882)
+
+[node name="WindArrow" unique_id=980461484 instance=ExtResource("1_r464g")]
+modulate = Color(0.5137255, 0.5686275, 0.57254905, 1)
+script = ExtResource("2_1nc5y")
+wind_force_air = 260.0
+wind_force_ground = 180.0
+wind_force_jump = 340.0
+wind_duration = 0.3
+
+[node name="Hitbox" parent="." index="0" unique_id=34470544]
+process_mode = 4
+
+[node name="Arrow_Trail" parent="." index="4" unique_id=1092348972]
+gradient = SubResource("Gradient_27plv")
+
+[node name="WindArea" type="Area2D" parent="." index="5" unique_id=958635677]
+position = Vector2(2, 0)
+scale = Vector2(22, 20)
+collision_layer = 0
+collision_mask = 8
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="WindArea" index="0" unique_id=1057813124]
+shape = ExtResource("2_27plv")
+debug_color = Color(0.8154948, 0.22315449, 0.8384402, 0.41960785)
+
+[connection signal="body_entered" from="WindArea" to="." method="_on_wind_area_body_entered"]

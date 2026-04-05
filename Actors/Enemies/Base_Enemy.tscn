@@ -1,9 +1,9 @@
 [gd_scene format=3 uid="uid://vc2ghdvugqqc"]
 
-[ext_resource type="Script" uid="uid://dl0bcgquqsaad" path="res://Actors/Enemies/Enemy.gd" id="1_o22pi"]
+[ext_resource type="Script" uid="uid://wapnmbk60bqv" path="res://Actors/Enemies/Enemy.gd" id="1_o22pi"]
 [ext_resource type="Material" uid="uid://djswnephywl88" path="res://Themes/Shaders/hitflash_material.tres" id="1_pbpvn"]
-[ext_resource type="Script" uid="uid://c4xupirqm5ogs" path="res://Components/Velocity_component.gd" id="2_8um0u"]
-[ext_resource type="Script" uid="uid://1bldcnf0qc2d" path="res://Components/Health_manager.gd" id="3_sxwhk"]
+[ext_resource type="Script" uid="uid://b3onmxyq5x1od" path="res://Components/Velocity_component.gd" id="2_8um0u"]
+[ext_resource type="Script" uid="uid://dql6mh1dioxux" path="res://Components/Health_manager.gd" id="3_sxwhk"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="4_7pv7w"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="5_o68ib"]
 
@@ -42,8 +42,9 @@ hurtbox = NodePath("BaseEnemyStuff/Hurtbox")
 [node name="BaseEnemyStuff" type="Node2D" parent="." unique_id=2108870964]
 material = ExtResource("1_pbpvn")
 
-[node name="VelocityComponent" type="Node" parent="BaseEnemyStuff" unique_id=1907220242]
+[node name="VelocityComponent" type="Node" parent="BaseEnemyStuff" unique_id=1907220242 node_paths=PackedStringArray("parent")]
 script = ExtResource("2_8um0u")
+parent = NodePath("../..")
 
 [node name="HealthManager" type="Node" parent="BaseEnemyStuff" unique_id=1842605953]
 script = ExtResource("3_sxwhk")

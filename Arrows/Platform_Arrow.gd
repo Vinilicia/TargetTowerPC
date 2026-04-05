@@ -1,6 +1,6 @@
 extends Arrow
 
-@onready var plat_spawner = preload("res://Interactibles/Objects/Platform.tscn")
+@export var plat_spawner : PackedScene
 
 var can_spawn : bool = true 
 

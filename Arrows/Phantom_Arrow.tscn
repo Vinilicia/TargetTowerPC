@@ -1,0 +1,32 @@
+[gd_scene format=3 uid="uid://b1r0kpduu630y"]
+
+[ext_resource type="PackedScene" uid="uid://de13e283ng22u" path="res://Arrows/Common_Arrow.tscn" id="1_ewpmg"]
+[ext_resource type="Script" uid="uid://v5xxq70n1pg2" path="res://Arrows/phantom_arrow.gd" id="2_34ml8"]
+[ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_r5a8j"]
+
+[sub_resource type="Gradient" id="Gradient_r5a8j"]
+resource_local_to_scene = true
+colors = PackedColorArray(1, 1, 1, 1, 1, 0.984314, 1, 0.505882)
+
+[node name="PhantomArrow" unique_id=980461484 node_paths=PackedStringArray("coll_check_area") instance=ExtResource("1_ewpmg")]
+modulate = Color(0.32941177, 0.26666668, 0.5568628, 0.49019608)
+script = ExtResource("2_34ml8")
+coll_check_area = NodePath("CollCheckArea")
+
+[node name="Arrow_Trail" parent="." index="4" unique_id=1092348972]
+gradient = SubResource("Gradient_r5a8j")
+
+[node name="CollCheckArea" type="Area2D" parent="." index="5" unique_id=1055495528]
+collision_layer = 0
+collision_mask = 28
+monitoring = false
+monitorable = false
+
+[node name="Coll" type="CollisionShape2D" parent="CollCheckArea" index="0" unique_id=1425888446]
+position = Vector2(2, 0)
+scale = Vector2(12, 5)
+shape = ExtResource("3_r5a8j")
+debug_color = Color(0.18039216, 0.6431373, 0, 1)
+
+[connection signal="body_entered" from="CollCheckArea" to="." method="_on_coll_check_area_body_entered"]
+[connection signal="body_exited" from="CollCheckArea" to="." method="_on_coll_check_area_body_exited"]

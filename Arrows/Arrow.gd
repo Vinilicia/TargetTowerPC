@@ -3,7 +3,7 @@ class_name Arrow
 
 @export var anim : AnimationPlayer
 @export var sprite : Sprite2D
-@export var trail : NodePath # ou o tipo real, mantive NodePath para generalizar
+@export var trail : NodePath
 @export var hitbox : Hitbox
 
 @export var Flying_Speed : float = 400
@@ -17,7 +17,7 @@ var facing_direction : int = 1
 var charged : bool = false
 var has_collided : bool = false
 var bouncing : bool = false
-var has_bounced : bool = false    # novo: indica se já deu o bounce
+var has_bounced : bool = false
 
 func _physics_process(delta):
 	if bouncing:
@@ -26,14 +26,11 @@ func _physics_process(delta):
 	var collision := move_and_collide(velocity * delta)
 	if collision:
 
-		# Pega múltiplos contatos na POSIÇÃO ATUAL usando collide_shape
 		var contacts := _get_contacts_at_position($Coll.global_position)
 
 		if contacts.size() >= 2:
 			position -= velocity * delta * 2
 			return
-
-		# Lógica de impacto (spawn, prender, etc.)
 		_handle_collision(collision)
 
 func get_real_collision(delta : float) -> KinematicCollision2D:
@@ -54,14 +51,12 @@ func _get_contacts_at_position(pos: Vector2) -> Array:
 	params.collide_with_areas = false
 
 	var space := get_world_2d().direct_space_state
-	# Importante: collide_shape retorna múltiplos contatos (inclusive do mesmo collider/tilemap)
-	return space.intersect_shape(params, 16) # pega até 16 contatos
+	return space.intersect_shape(params, 16)
 
-func fly(is_charged: bool, _player: CharacterBody2D) -> void:
+func fly(is_charged: bool, _player: Player) -> void:
 	await get_tree().process_frame
 	AudioManager.play_song("ArrowShot")
 	_enable_collision()
-	hitbox.set_deferred("monitorable", true)
 	if is_charged:
 		charged = true
 		velocity = flying_direction.normalized() * Flying_Speed * Charge_Multiplier
@@ -81,10 +76,12 @@ func set_flying_direction(dir_vector: Vector2) -> void:
 func _disable_collision() -> void:
 	set_collision_mask_value(3, false)
 	set_collision_mask_value(5, false)
+	hitbox.set_deferred("monitorable", false)
 
 func _enable_collision() -> void:
 	set_collision_mask_value(3, true)
 	set_collision_mask_value(5, true)
+	hitbox.set_deferred("monitorable", true)
 
 func spawn_joint(body) -> void:
 	_disable_collision()
@@ -99,7 +96,6 @@ func spawn_joint(body) -> void:
 func bounce() -> void:
 	var dir = -int(sign(flying_direction.x))
 	if dir == 0:
-		# se não houver componente X (vertical), usa facing_direction
 		dir = -facing_direction
 	var bounce_vector = Vector2(default_bounce.x * dir, default_bounce.y)
 	bouncing = true

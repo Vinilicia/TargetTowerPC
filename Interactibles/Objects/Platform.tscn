@@ -1,14 +1,15 @@
 [gd_scene format=3 uid="uid://trih87ps31u"]
 
-[ext_resource type="Script" uid="uid://dkbt73v4lvbap" path="res://Interactibles/Objects/Platform.gd" id="1_kpmhp"]
+[ext_resource type="Script" uid="uid://cd7ejyfej3t2b" path="res://Interactibles/Objects/Platform.gd" id="1_kpmhp"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_r1vh8"]
-[ext_resource type="Script" uid="uid://c4xupirqm5ogs" path="res://Components/Velocity_component.gd" id="3_8oink"]
+[ext_resource type="Script" uid="uid://b3onmxyq5x1od" path="res://Components/Velocity_component.gd" id="3_8oink"]
 [ext_resource type="PackedScene" uid="uid://cio6ms6wdyswa" path="res://Interactibles/Mechanisms/Buttons&Receptors/PlatformSprite.tscn" id="4_op0uc"]
 
 [node name="Platform_Spawner" type="Node2D" unique_id=448328344 node_paths=PackedStringArray("player_detec", "sprite", "v_component")]
 script = ExtResource("1_kpmhp")
 spawning_time = 0.6
 player_detec = NodePath("Platform/PlayerDetectorArea")
+time_to_despawn = 4.0
 sprite = NodePath("PlatformSprite")
 v_component = NodePath("Platform/VelocityComponent")
 
@@ -33,9 +34,9 @@ monitorable = false
 shape = ExtResource("2_r1vh8")
 debug_color = Color(0.2, 0.0941176, 0.0392157, 1)
 
-[node name="VelocityComponent" type="Node" parent="Platform" unique_id=1924221931]
+[node name="VelocityComponent" type="Node" parent="Platform" unique_id=1924221931 node_paths=PackedStringArray("parent")]
 script = ExtResource("3_8oink")
-metadata/_custom_type_script = "uid://c4xupirqm5ogs"
+parent = NodePath("..")
 
 [node name="Timer" type="Timer" parent="." unique_id=1462701973]
 wait_time = 0.1

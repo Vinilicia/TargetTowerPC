@@ -8,11 +8,11 @@ var player: Player = null
 @onready var bench_id : int = get_room_number()
 @onready var save_id : int = get_tree().get_first_node_in_group("Game").save_id
 
-func _physics_process(_delta: float) -> void:
-	if player and Input.is_action_just_pressed("down"):
+func _input(event: InputEvent) -> void:
+	if event.is_action_pressed("down") and player:
 		heal_player()
 		if should_save:
-			bench_used()
+			save()
 
 func _on_player_entered(body: Node2D) -> void:
 	if body is Player:
@@ -23,10 +23,9 @@ func _on_player_exited(body: Node2D) -> void:
 		player = null
 
 func heal_player() -> void:
-	player.heal_hp_on_bench()
-	player.heal_mana_on_bench()
+	player.heal_on_bench()
 
-func bench_used() -> void:
+func save() -> void:
 	AudioManager.play_song("Save")
 	SaveManager.save_file_data.set_last_bench_id(bench_id)
 	SaveManager.save_file_data.set_area_of_bench(area)

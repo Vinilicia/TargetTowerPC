@@ -1,0 +1,22 @@
+[gd_scene format=3 uid="uid://sb6tth1guvsx"]
+
+[ext_resource type="Script" uid="uid://cd6copcgw4e7o" path="res://Arrows/surface_checker.gd" id="1_x44k3"]
+[ext_resource type="Texture2D" uid="uid://dgrx1yyq26jhe" path="res://Assets/Home_bred/UI/one.png" id="2_dqsxm"]
+
+[node name="SurfaceChecker" type="Node2D" unique_id=1837889651 node_paths=PackedStringArray("horizontal_checker", "vertical_checker")]
+script = ExtResource("1_x44k3")
+horizontal_checker = NodePath("HorizontalChecker")
+vertical_checker = NodePath("VerticalChecker")
+
+[node name="HorizontalChecker" type="RayCast2D" parent="." unique_id=1034546814]
+modulate = Color(0, 0, 0, 1)
+target_position = Vector2(0, -8)
+collision_mask = 4
+
+[node name="VerticalChecker" type="RayCast2D" parent="." unique_id=742955618]
+target_position = Vector2(10, 0)
+collision_mask = 4
+
+[node name="Sprite" type="Sprite2D" parent="." unique_id=1293410686]
+scale = Vector2(0.4, 0.4)
+texture = ExtResource("2_dqsxm")

@@ -252,7 +252,7 @@ func dodge(dodge_dir : Vector2, duration_multiplier : float) -> void:
 	elif dodge_dir.y < 0:
 		v_component.set_proper_velocity(0.0, 2)
 	v_component.add_proper_velocity(dodge_dir)
-	hurtbox.get_invincible(dodge_duration * duration_multiplier)
+	#hurtbox.get_invincible(dodge_duration * duration_multiplier)
 	if duration_multiplier == 1:
 		play_anim("FrontDodge")
 		if !is_ledge_ahead():
@@ -439,7 +439,7 @@ func shoot() -> void:
 	combat.update_flying_dir = false
 	current_arrow.top_level = true
 	current_arrow.global_position = global_position + arrow_spawn_point
-	current_arrow.fly(combat.holding_time > max_hold_time, self)
+	#current_arrow.fly(combat.holding_time > max_hold_time, self)
 	reset_arrow()
 	state_chart.send_event("CantShoot")
 	lose_mana(current_arrow.Cost)
@@ -527,7 +527,7 @@ func _can_shoot_physics_processing(_delta: float) -> void:
 		shoot()
 
 func heal_hp_on_bench() -> void:
-	health_manager.gain_health(health_manager.max_health)
+	pass
 
 func heal_mana_on_bench() -> void:
 	gain_mana(max_mana)
