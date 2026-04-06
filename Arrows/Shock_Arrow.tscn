@@ -27,6 +27,6 @@ visible = false
 gradient = SubResource("Gradient_q7y3h")
 
 [node name="ShockHitbox" parent="." index="5" unique_id=1773352715 node_paths=PackedStringArray("parent") instance=ExtResource("4_q7y3h")]
-collision_layer = 8192
+collision_layer = 256
 parent = NodePath("..")
 Damage = 1.0

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://c4slmrws5ya4m"]
 
-[ext_resource type="Script" uid="uid://o2g1efop53wp" path="res://Components/Hurtbox.gd" id="1_mlsjm"]
+[ext_resource type="Script" uid="uid://dtlfihll5v4sl" path="res://Components/Hurtbox.gd" id="1_mlsjm"]
 
-[node name="Add_Collision" type="Area2D" node_paths=PackedStringArray("invincibility_timer")]
+[node name="Hurtbox" type="Area2D" unique_id=87970197 node_paths=PackedStringArray("invincibility_timer")]
 modulate = Color(1, 0, 1, 1)
 collision_layer = 0
 collision_mask = 2048
@@ -10,6 +10,6 @@ monitorable = false
 script = ExtResource("1_mlsjm")
 invincibility_timer = NodePath("Invincibility_Timer")
 
-[node name="Invincibility_Timer" type="Timer" parent="."]
+[node name="Invincibility_Timer" type="Timer" parent="." unique_id=216814527]
 
 [connection signal="area_entered" from="." to="." method="got_hit"]

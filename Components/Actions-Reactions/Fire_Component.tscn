@@ -1,0 +1,21 @@
+[gd_scene format=3 uid="uid://bbxexy2tea2hc"]
+
+[ext_resource type="Script" uid="uid://dbwo6e7ci8a4u" path="res://Components/Actions-Reactions/FireComponent.gd" id="1_63hem"]
+[ext_resource type="PackedScene" uid="uid://cuyr02d5ffhbw" path="res://Interactibles/Mechanisms/Fire_Sprite.tscn" id="2_dj87v"]
+[ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Components/Actions-Reactions/Fire.tscn" id="3_cjb5e"]
+
+[node name="FireComponent" type="Node" unique_id=28466235 node_paths=PackedStringArray("extinguishing_timer", "burning_timer")]
+script = ExtResource("1_63hem")
+extinguishing_timer = NodePath("ExtinguishingTimer")
+burning_timer = NodePath("BurningTimer")
+fire_sprite = ExtResource("2_dj87v")
+fire = ExtResource("3_cjb5e")
+
+[node name="ExtinguishingTimer" type="Timer" parent="." unique_id=1700458456]
+one_shot = true
+
+[node name="BurningTimer" type="Timer" parent="." unique_id=1355227721]
+one_shot = true
+
+[connection signal="timeout" from="ExtinguishingTimer" to="." method="extinguish"]
+[connection signal="timeout" from="BurningTimer" to="." method="catch_fire"]

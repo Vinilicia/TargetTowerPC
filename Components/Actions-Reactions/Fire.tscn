@@ -1,15 +1,11 @@
 [gd_scene format=3 uid="uid://c4wp68he0ocwp"]
 
-[ext_resource type="Script" uid="uid://baqmy8t4y6v05" path="res://Components/Actions-Reactions/Fire.gd" id="1_wlo0t"]
-[ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="2_3oduh"]
+[ext_resource type="Script" uid="uid://pb1mur3mtfub" path="res://Components/Actions-Reactions/Fire.gd" id="1_wlo0t"]
 
-[node name="Fire" type="Node2D" unique_id=89439355]
-script = ExtResource("1_wlo0t")
-
-[node name="Hitbox" parent="." unique_id=810296504 node_paths=PackedStringArray("parent") instance=ExtResource("2_3oduh")]
+[node name="Fire" type="Area2D" unique_id=231911331]
 process_mode = 4
 collision_layer = 4096
-monitorable = false
-parent = NodePath("..")
-
-[node name="Coll" type="CollisionShape2D" parent="Hitbox" unique_id=836805215]
+collision_mask = 0
+monitoring = false
+script = ExtResource("1_wlo0t")
+metadata/_custom_type_script = "uid://bjnqgsvn27e15"

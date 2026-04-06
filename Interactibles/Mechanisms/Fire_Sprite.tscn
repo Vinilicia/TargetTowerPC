@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=3 uid="uid://cuyr02d5ffhbw"]
+[gd_scene format=3 uid="uid://cuyr02d5ffhbw"]
 
 [ext_resource type="Texture2D" uid="uid://gx6aetvv68e4" path="res://Assets/Stolen/FireSprite/Fire-Loop1.png" id="1_d2h0y"]
 [ext_resource type="Texture2D" uid="uid://dsbhs3illb3aj" path="res://Assets/Stolen/FireSprite/Fire-Loop2.png" id="1_xwejc"]
@@ -28,7 +28,7 @@ frame_6/duration = 1.0
 frame_7/texture = ExtResource("7_u6bfa")
 frame_7/duration = 1.0
 
-[node name="FireSprite" type="Sprite2D"]
+[node name="FireSprite" type="Sprite2D" unique_id=378843761]
 texture_repeat = 2
 texture = SubResource("AnimatedTexture_uojqh")
 region_enabled = true
