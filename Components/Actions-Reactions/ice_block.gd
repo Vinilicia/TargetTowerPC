@@ -19,7 +19,6 @@ func initialize(this_scale : Vector2 = Vector2(16, 16), child : Node2D = null, f
 		child.call_deferred("reparent", child_container)
 	if melts:
 		call_deferred("start_melting_timer", freeze_duration)
-	$FireManager.call_deferred("update_hurtbox")
 
 func start_melting_timer(freeze_duration) -> void:
 	melting_timer.start(freeze_duration)

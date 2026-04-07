@@ -26,7 +26,6 @@ const ARROW_AVOID_DELAY : float = 0.15
 @export_group("Nodes")
 @export var state_chart: StateChart
 @export var coll: CollisionShape2D
-@export var ice_manager : IceManager
 
 @export_subgroup("RayCasts")
 @export var wall_detector: RayCast2D 
@@ -76,6 +75,7 @@ var stopped : bool = false
 # CICLO DE VIDA
 # ======================
 func _ready() -> void:
+	super._ready()
 	direction = -1 if start_direction == 0 else 1
 	if direction == 1:
 		flip()
@@ -363,9 +363,3 @@ func _on_guarding_state_entered() -> void:
 
 func _on_chasing_state_entered() -> void:
 	current_speed = chase_speed
-
-func _on_fire_manager_caught_fire() -> void:
-	var fire_man : FireManager = $FireManager
-	if not fire_man.extinguished.is_connected(health_man.stop_burning):
-		fire_man.extinguished.connect(health_man.stop_burning, 4)
-		health_man.start_burning(0.5)

@@ -20,7 +20,6 @@ enum SlimeType { COMMON, FIRE, ICE }
 @export var blob : PackedScene
 @export var sight_area : Area2D
 @export var blob_spawner : Marker2D
-@export var ice_manager : IceManager
 @export var look_around_timer : Timer
 @export var attack_timer : Timer
 @export var default_attack_delay : float = 2.0
@@ -62,6 +61,7 @@ func change_type(new_type : SlimeType) -> void:
 	type = new_type
 
 func _ready() -> void:
+	super._ready()
 	change_type(type)
 
 func _physics_process(delta: float) -> void:
@@ -114,7 +114,7 @@ func _on_attack_timer_timeout() -> void:
 func ran_out_of_health() -> void:
 	queue_free()
 
-func _on_fire_manager_caught_fire() -> void:
+func _on_fire_comp_caught_fire() -> void:
 	change_type(SlimeType.FIRE)
 
 func _on_ice_manager_froze() -> void:

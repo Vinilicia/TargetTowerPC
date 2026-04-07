@@ -2,7 +2,8 @@ extends Enemy
 
 @export var line_of_sight : RayCast2D
 @export var attack_timer : Timer
-@export var ice_manager : IceManager
+@export var bat_scene : PackedScene
+@export var bolt_scene : PackedScene
 
 @export var base_attack_delay := 4.0
 @export var attack_delay_variation := 0.5
@@ -21,12 +22,8 @@ var engaging_state := false
 var idle_state := true
 var preparing_attack := false
 
-var bat_scene : Enemy
-var bolt_scene : Node2D
-
 func _ready() -> void:
-	bat_scene = preload("res://Actors/Enemies/Bat/Bat.tscn").instantiate()
-	bolt_scene = preload("res://Actors/Enemies/Goblins/shaman_magic_bolt.tscn").instantiate()
+	super._ready()
 
 func _physics_process(delta: float) -> void:
 	if player:
@@ -88,7 +85,7 @@ func get_random_empty_position() -> Vector2:
 func summon_bat() -> void:
 	modulate = Color(1, 0, 0, 1)
 	await get_tree().create_timer(0.5).timeout
-	var new_bat = bat_scene.duplicate()
+	var new_bat = bat_scene.instantiate()
 	new_bat.starts_chasing = true
 	var bat_pos := get_random_empty_position()
 	if bat_pos != Vector2.ZERO:
@@ -104,7 +101,7 @@ func shoot_bolt() -> void:
 	var direction : Vector2 = to_local(player.global_position + Vector2(0, -10)).normalized()
 	modulate = Color(0, 1, 0, 1)
 	await get_tree().create_timer(0.3).timeout
-	var new_bolt : Node2D = bolt_scene.duplicate()
+	var new_bolt : Node2D = bolt_scene.instantiate()
 	new_bolt.top_level = true
 	new_bolt.position = global_position
 	new_bolt.rotation = direction.angle() - (PI / 2)

@@ -1,8 +1,8 @@
 [gd_scene format=3 uid="uid://dos8syduy35sk"]
 
-[ext_resource type="Script" uid="uid://rtghyoid1gn7" path="res://Arrows/Fire_Arrow.gd" id="1_futqs"]
+[ext_resource type="Script" uid="uid://cpjqc8c4axi1v" path="res://Arrows/Fire_Arrow.gd" id="1_futqs"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_1pd68"]
-[ext_resource type="Script" uid="uid://ciy6s7pn2rp1q" path="res://Components/Hitbox.gd" id="3_mwrs1"]
+[ext_resource type="Script" uid="uid://bjnqgsvn27e15" path="res://Components/Hitbox.gd" id="3_mwrs1"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="4_futqs"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Arrows/Arrow_trail.tscn" id="5_x8nla"]
 [ext_resource type="PackedScene" uid="uid://c4wp68he0ocwp" path="res://Components/Actions-Reactions/Fire.tscn" id="6_p51ot"]
@@ -53,16 +53,15 @@ position = Vector2(6, 0)
 scale = Vector2(4, 3)
 shape = ExtResource("4_futqs")
 
-[node name="Fire" parent="." unique_id=1877767765 node_paths=PackedStringArray("ref_collision") instance=ExtResource("6_p51ot")]
-position = Vector2(6, 0)
+[node name="Fire" parent="." unique_id=1877767765 instance=ExtResource("6_p51ot")]
+position = Vector2(2, 0)
+scale = Vector2(18, 5)
 instant = true
 scale_increase = Vector2(3, 2)
-ref_collision = NodePath("../Coll")
 
-[node name="Hitbox" parent="Fire" index="0" unique_id=810296504]
-Damage = 1.0
+[node name="Coll" type="CollisionShape2D" parent="Fire" unique_id=654359956]
+shape = ExtResource("4_futqs")
 
 [connection signal="hit" from="Hitbox" to="." method="_on_hitbox_hit"]
-[connection signal="hit" from="Fire/Hitbox" to="Fire" method="_on_hitbox_hit"]
 
 [editable path="Fire"]

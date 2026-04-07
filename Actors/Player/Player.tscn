@@ -4,12 +4,12 @@
 [ext_resource type="PackedScene" uid="uid://pcmiqqj0ro4w" path="res://Components/Velocity_component.tscn" id="2_8nfcn"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="4_26aeq"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="8_26aeq"]
+[ext_resource type="PackedScene" uid="uid://bbxexy2tea2hc" path="res://Components/Actions-Reactions/Fire_Component.tscn" id="8_upr3p"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="11_cdutm"]
 [ext_resource type="Script" uid="uid://dql6mh1dioxux" path="res://Components/Health_manager.gd" id="11_jfvij"]
 [ext_resource type="Script" uid="uid://b42aiooam7el4" path="res://Components/anim_handler.gd" id="11_m4vjq"]
-[ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_manager.tscn" id="12_upr3p"]
+[ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_Component.tscn" id="12_upr3p"]
 [ext_resource type="Script" uid="uid://y7jlv7ex7los" path="res://Components/Aim_Enemy.gd" id="14_rbeol"]
-[ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Components/Actions-Reactions/Fire_manager.tscn" id="15_heh8i"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="16_m4vjq"]
 [ext_resource type="PackedScene" uid="uid://caxq1k25oqpqv" path="res://Actors/Player/NewAcherSprite.tscn" id="16_mwnd1"]
 
@@ -77,10 +77,19 @@ scale = Vector2(7, 10)
 collision_mask = 3072
 monitoring = false
 parent = NodePath("..")
-invincibility_time = 1.3
 
 [node name="Coll" type="CollisionShape2D" parent="Hurtbox" unique_id=640387622]
 shape = ExtResource("11_cdutm")
+
+[node name="FireComponent" parent="Hurtbox" unique_id=28466235 node_paths=PackedStringArray("hurtbox") instance=ExtResource("8_upr3p")]
+hurtbox = NodePath("..")
+has_basic_fire = false
+burn_time = 0.01
+
+[node name="IceManager" parent="Hurtbox" unique_id=1854588271 node_paths=PackedStringArray("parent") instance=ExtResource("12_upr3p")]
+parent = NodePath("../..")
+regular_behaviour = false
+frozen_duration = 4.0
 
 [node name="Utilities" type="Node2D" parent="." unique_id=1565015160]
 
@@ -167,25 +176,6 @@ visible = false
 target_position = Vector2(7, 0)
 collision_mask = 20
 
-[node name="FireManager" parent="Utilities" unique_id=1039458207 node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("15_heh8i")]
-position = Vector2(0, -2)
-time_to_burn = 0.05
-burn_duration = 0.05
-ref_hurtbox = NodePath("../../Hurtbox")
-
-[node name="Hurtbox" parent="Utilities/FireManager" index="0" unique_id=713515812 node_paths=PackedStringArray("parent")]
-parent = NodePath("../../..")
-
-[node name="IceManager" parent="Utilities" unique_id=1854588271 node_paths=PackedStringArray("parent", "ref_hurtbox") instance=ExtResource("12_upr3p")]
-position = Vector2(0, -2)
-parent = NodePath("../..")
-regular_behaviour = false
-frozen_duration = 4.0
-ref_hurtbox = NodePath("../../Hurtbox")
-
-[node name="Hurtbox" parent="Utilities/IceManager" index="0" unique_id=492475973 node_paths=PackedStringArray("parent")]
-parent = NodePath("../../..")
-
 [node name="Archer" parent="Utilities" unique_id=1128417846 instance=ExtResource("16_mwnd1")]
 position = Vector2(-24, -26)
 
@@ -195,13 +185,12 @@ position = Vector2(-24, -26)
 [connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_manager_lost_health"]
 [connection signal="timeout" from="Misc/ManaRegenTimer" to="." method="_on_mana_regen_timer_timeout"]
 [connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
+[connection signal="caught_fire" from="Hurtbox/FireComponent" to="." method="_on_fire_component_caught_fire"]
+[connection signal="froze" from="Hurtbox/IceManager" to="." method="_on_ice_manager_froze"]
+[connection signal="melt" from="Hurtbox/IceManager" to="." method="_on_ice_manager_melt"]
 [connection signal="body_entered" from="Utilities/Areas&Boxes/PortableDetector" to="." method="_on_portable_detector_body_entered"]
 [connection signal="body_exited" from="Utilities/Areas&Boxes/PortableDetector" to="." method="_on_portable_detector_body_exited"]
 [connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
 [connection signal="body_exited" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
-[connection signal="caught_fire" from="Utilities/FireManager" to="." method="_on_fire_manager_caught_fire"]
-[connection signal="froze" from="Utilities/IceManager" to="." method="_on_ice_manager_froze"]
-[connection signal="melt" from="Utilities/IceManager" to="." method="_on_ice_manager_melt"]
 
-[editable path="Utilities/FireManager"]
-[editable path="Utilities/IceManager"]
+[editable path="Hurtbox/IceManager"]

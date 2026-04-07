@@ -11,7 +11,6 @@ const PIVOT_OFFSET := Vector2(0, 4.0) # ponto fixo relativo ao inimigo
 @export var down_ray: RayCast2D
 @export var backup_down_ray: RayCast2D
 @export var side_ray: RayCast2D
-@export var ice_manager : IceManager
 @export var plat_detec : Area2D
 
 enum moveState{ walking, falling, descending }
@@ -40,6 +39,7 @@ func snap_to_surface() -> void:
 		position = down_ray.get_collision_point() - Vector2(0, $BodyCollision.scale.y / 2 - 1).rotated(rotation)
 
 func _ready() -> void:
+	super._ready()
 	var original_down_ray_pos := down_ray.target_position
 	down_ray.target_position = Vector2(0, 50)
 	set_start_rotation()

@@ -3,7 +3,6 @@ class_name Fire
 
 @export var instant : bool = false
 @export var scale_increase : Vector2 = Vector2(1, 1)
-@export_group("Nodes")
 
 func _ready() -> void:
 	_deactivate()

@@ -1,29 +1,32 @@
 [gd_scene format=3 uid="uid://4cb2gyoifqiu"]
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Actors/Enemies/Base_Enemy.tscn" id="1_nyc18"]
-[ext_resource type="Script" uid="uid://5uvuhdk58wj0" path="res://Actors/Enemies/Goblins/shaman.gd" id="2_3ef5p"]
+[ext_resource type="Script" uid="uid://mlkjtwv8644u" path="res://Actors/Enemies/Goblins/shaman.gd" id="2_3ef5p"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_klb6c"]
 [ext_resource type="Texture2D" uid="uid://gx6aetvv68e4" path="res://Assets/Stolen/FireSprite/Fire-Loop1.png" id="3_3ef5p"]
+[ext_resource type="PackedScene" uid="uid://1ra02226sph7" path="res://Actors/Enemies/Bat/Bat.tscn" id="4_txapo"]
+[ext_resource type="PackedScene" uid="uid://bec0ix6mqluiy" path="res://Actors/Enemies/Goblins/shaman_magic_bolt.tscn" id="5_q8ktp"]
 [ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="5_yejv2"]
 [ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="6_tpsco"]
-[ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_manager.tscn" id="7_4busn"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_4busn"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_02v53"]
 resource_local_to_scene = true
 shader = ExtResource("6_tpsco")
 shader_parameter/enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_02v53"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_txapo"]
 resource_local_to_scene = true
 shader = ExtResource("6_tpsco")
 shader_parameter/enabled = false
 
 [node name="Shaman" unique_id=1980174944 node_paths=PackedStringArray("line_of_sight", "attack_timer", "ice_manager") instance=ExtResource("1_nyc18")]
-material = SubResource("ShaderMaterial_4busn")
+material = SubResource("ShaderMaterial_02v53")
 script = ExtResource("2_3ef5p")
 line_of_sight = NodePath("LineOfSight")
 attack_timer = NodePath("AttackTimer")
-ice_manager = NodePath("IceManager")
+ice_manager = NodePath("")
+bat_scene = ExtResource("4_txapo")
+bolt_scene = ExtResource("5_q8ktp")
 base_attack_delay = 1.5
 attack_delay_variation = 0.5
 giving_up_delay = 0.4
@@ -40,7 +43,7 @@ scale = Vector2(16, 20)
 shape = ExtResource("2_klb6c")
 
 [node name="BaseEnemyStuff" parent="." index="1" unique_id=2108870964]
-material = SubResource("ShaderMaterial_02v53")
+material = SubResource("ShaderMaterial_txapo")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1" unique_id=1842605953]
 max_health = 6.0
@@ -48,13 +51,13 @@ max_health = 6.0
 [node name="Hurtbox" parent="BaseEnemyStuff" index="2" unique_id=1554320959]
 scale = Vector2(18, 22)
 
-[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
+[node name="Coll" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
 shape = ExtResource("2_klb6c")
 
 [node name="ContactHitbox" parent="BaseEnemyStuff" index="3" unique_id=2114649000]
 scale = Vector2(18, 22)
 
-[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0" unique_id=239826217]
+[node name="Coll" parent="BaseEnemyStuff/ContactHitbox" index="0" unique_id=239826217]
 shape = ExtResource("2_klb6c")
 
 [node name="Sprite" type="Sprite2D" parent="BaseEnemyStuff" index="5" unique_id=1777705710]
@@ -72,11 +75,6 @@ collision_mask = 21
 
 [node name="AttackTimer" type="Timer" parent="." index="4" unique_id=1017326262]
 one_shot = true
-
-[node name="IceManager" parent="." index="5" unique_id=1854588271 node_paths=PackedStringArray("parent", "parent_health_man", "ref_hurtbox") instance=ExtResource("7_4busn")]
-parent = NodePath("..")
-parent_health_man = NodePath("../BaseEnemyStuff/HealthManager")
-ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 
 [connection signal="screen_entered" from="VisibleNotifier" to="." method="_on_visible_notifier_screen_entered"]
 [connection signal="screen_exited" from="VisibleNotifier" to="." method="_on_visible_notifier_screen_exited"]

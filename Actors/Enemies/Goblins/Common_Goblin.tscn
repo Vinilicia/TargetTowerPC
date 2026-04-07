@@ -1,31 +1,29 @@
 [gd_scene format=3 uid="uid://bps57wjl0501i"]
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Actors/Enemies/Base_Enemy.tscn" id="1_j75sw"]
-[ext_resource type="Script" uid="uid://b8mvsm4mmyvd1" path="res://Actors/Enemies/Goblins/common_goblin.gd" id="2_mp5lk"]
+[ext_resource type="Script" uid="uid://1ex82omrwukc" path="res://Actors/Enemies/Goblins/common_goblin.gd" id="2_mp5lk"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_r6q1e"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_5lx0x"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="5_k48vj"]
 [ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="5_mp5lk"]
 [ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="7_hjulu"]
-[ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Components/Actions-Reactions/Fire_manager.tscn" id="8_dopws"]
 [ext_resource type="Script" uid="uid://couw105c3bde4" path="res://addons/godot_state_charts/state_chart.gd" id="9_yymsn"]
 [ext_resource type="Script" uid="uid://jk2jm1g6q853" path="res://addons/godot_state_charts/compound_state.gd" id="10_tcc3x"]
 [ext_resource type="Script" uid="uid://cytafq8i1y8qm" path="res://addons/godot_state_charts/atomic_state.gd" id="11_f0pr3"]
 [ext_resource type="Script" uid="uid://cf1nsco3w0mf6" path="res://addons/godot_state_charts/transition.gd" id="12_o1mr1"]
-[ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_manager.tscn" id="13_cerc6"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_cerc6"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_q4346"]
 resource_local_to_scene = true
 shader = ExtResource("5_mp5lk")
 shader_parameter/enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_nnwu0"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rl2if"]
 resource_local_to_scene = true
 shader = ExtResource("5_mp5lk")
 shader_parameter/enabled = false
 
-[node name="CommonGoblin" unique_id=1436648139 node_paths=PackedStringArray("lines_of_sight", "slash_hitbox", "state_chart", "coll", "ice_manager", "wall_detector", "jump_detector", "fall_detector", "ground_detector", "jump_attack_area", "stab_attack_area", "sight_area", "outer_arrow_detec", "inner_arrow_detec", "giving_up_timer", "jump_attack_timer", "stab_attack_timer") instance=ExtResource("1_j75sw")]
-material = SubResource("ShaderMaterial_cerc6")
+[node name="CommonGoblin" unique_id=1436648139 node_paths=PackedStringArray("lines_of_sight", "slash_hitbox", "state_chart", "coll", "wall_detector", "jump_detector", "fall_detector", "ground_detector", "jump_attack_area", "stab_attack_area", "sight_area", "outer_arrow_detec", "inner_arrow_detec", "giving_up_timer", "jump_attack_timer", "stab_attack_timer") instance=ExtResource("1_j75sw")]
+material = SubResource("ShaderMaterial_q4346")
 script = ExtResource("2_mp5lk")
 start_direction = 1
 walk_speed = 50.0
@@ -36,7 +34,6 @@ lines_of_sight = [NodePath("Raycasts/LinesOfSight/LineOfSight"), NodePath("Rayca
 slash_hitbox = NodePath("Areas/AttackHitbox")
 state_chart = NodePath("WhiteNodes/StateChart")
 coll = NodePath("BodyCollision")
-ice_manager = NodePath("IceManager")
 wall_detector = NodePath("Raycasts/Detectors/WallDetector")
 jump_detector = NodePath("Raycasts/Detectors/JumpDetector")
 fall_detector = NodePath("Raycasts/Detectors/FallDetector")
@@ -56,7 +53,7 @@ scale = Vector2(16, 16)
 shape = ExtResource("2_r6q1e")
 
 [node name="BaseEnemyStuff" parent="." index="1" unique_id=2108870964]
-material = SubResource("ShaderMaterial_nnwu0")
+material = SubResource("ShaderMaterial_rl2if")
 
 [node name="HealthManager" parent="BaseEnemyStuff" index="1" unique_id=1842605953]
 max_health = 3.0
@@ -64,11 +61,10 @@ max_health = 3.0
 [node name="Hurtbox" parent="BaseEnemyStuff" index="2" unique_id=1554320959]
 scale = Vector2(16, 16)
 
-[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
+[node name="Coll" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
 shape = ExtResource("2_r6q1e")
 
-[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" parent_id_path=PackedInt32Array(2114649000) index="0" unique_id=239826217]
-scale = Vector2(16, 16)
+[node name="Coll" parent="BaseEnemyStuff/ContactHitbox" parent_id_path=PackedInt32Array(2114649000) index="0" unique_id=239826217]
 shape = ExtResource("2_r6q1e")
 
 [node name="Sprite" type="Sprite2D" parent="BaseEnemyStuff" index="5" unique_id=1294876503]
@@ -141,12 +137,7 @@ Knockback_angle = 30.0
 shape = ExtResource("3_5lx0x")
 debug_color = Color(1, 0.6, 0.701961, 0.419608)
 
-[node name="FireManager" parent="." index="3" unique_id=1960971007 node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("8_dopws")]
-time_to_burn = 0.5
-can_stack = true
-ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
-
-[node name="Raycasts" type="Node2D" parent="." index="4" unique_id=1057946552]
+[node name="Raycasts" type="Node2D" parent="." index="3" unique_id=1057946552]
 
 [node name="LinesOfSight" type="Node2D" parent="Raycasts" index="0" unique_id=1801009311]
 
@@ -183,7 +174,7 @@ position = Vector2(-11, 0)
 target_position = Vector2(0, 12)
 collision_mask = 20
 
-[node name="WhiteNodes" type="Node" parent="." index="5" unique_id=1890205490]
+[node name="WhiteNodes" type="Node" parent="." index="4" unique_id=1890205490]
 
 [node name="Timers" type="Node" parent="WhiteNodes" index="0" unique_id=6236732]
 
@@ -239,11 +230,6 @@ to = NodePath("../../Chasing")
 event = &"Chase"
 delay_in_seconds = "0.0"
 
-[node name="IceManager" parent="." index="6" unique_id=1854588271 node_paths=PackedStringArray("parent", "parent_health_man", "ref_hurtbox") instance=ExtResource("13_cerc6")]
-parent = NodePath("..")
-parent_health_man = NodePath("../BaseEnemyStuff/HealthManager")
-ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
-
 [connection signal="area_entered" from="Areas/OuterArrowDetector" to="." method="_on_outer_detector_entered"]
 [connection signal="area_entered" from="Areas/InnerArrowDetector" to="." method="_on_inner_detector_entered"]
 [connection signal="body_entered" from="Areas/SightArea" to="." method="_player_entered_sight_area"]
@@ -252,7 +238,6 @@ ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
 [connection signal="body_exited" from="Areas/JumpAttackArea" to="." method="_player_exited_jump_attack_area"]
 [connection signal="body_entered" from="Areas/StabAttackArea" to="." method="_player_entered_stab_attack_area"]
 [connection signal="body_exited" from="Areas/StabAttackArea" to="." method="_player_exited_stab_attack_area"]
-[connection signal="caught_fire" from="FireManager" to="." method="_on_fire_manager_caught_fire"]
 [connection signal="timeout" from="WhiteNodes/Timers/GivingUpTimer" to="." method="_on_giving_up_timer_timeout"]
 [connection signal="timeout" from="WhiteNodes/Timers/JumpAttackTimer" to="." method="_on_jump_attack_timer_timeout"]
 [connection signal="timeout" from="WhiteNodes/Timers/StabAttackTimer" to="." method="_on_stab_attack_timer_timeout"]

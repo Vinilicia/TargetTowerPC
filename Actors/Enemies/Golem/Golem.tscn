@@ -2,10 +2,10 @@
 
 [ext_resource type="PackedScene" uid="uid://vc2ghdvugqqc" path="res://Actors/Enemies/Base_Enemy.tscn" id="1_kyqo6"]
 [ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="2_3h5c4"]
-[ext_resource type="Script" uid="uid://bw8vcfs6j3w8c" path="res://Actors/Enemies/Golem/golem.gd" id="2_am4fu"]
+[ext_resource type="Script" uid="uid://bigxnyl1e65ci" path="res://Actors/Enemies/Golem/golem.gd" id="2_am4fu"]
 [ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="3_am4fu"]
 [ext_resource type="PackedScene" uid="uid://wgn1wvddnjpg" path="res://Actors/Enemies/Utilities/Detector.tscn" id="5_srxw1"]
-[ext_resource type="Script" uid="uid://bypm66hs22iqi" path="res://Actors/Enemies/Utilities/detector.gd" id="6_srxw1"]
+[ext_resource type="Script" uid="uid://cs6kyku4sfnrq" path="res://Actors/Enemies/Utilities/detector.gd" id="6_srxw1"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="7_45du7"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="8_4yelb"]
 
@@ -30,6 +30,9 @@ attack_cooldown = 3.0
 initial_attack_delay = 1.0
 wake_up_delay = 2.0
 walking_time = 10.0
+regular_flammable = false
+regular_freezable = false
+regular_shockable = false
 
 [node name="BodyCollision" parent="." index="0" unique_id=2038690234]
 scale = Vector2(18, 18)
@@ -44,15 +47,14 @@ max_health = 10.0
 [node name="Hurtbox" parent="BaseEnemyStuff" index="2" unique_id=1554320959]
 scale = Vector2(18, 18)
 
-[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
+[node name="Coll" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
 shape = ExtResource("7_45du7")
 
 [node name="ContactHitbox" parent="BaseEnemyStuff" index="3" unique_id=2114649000]
 scale = Vector2(20, 20)
 
-[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" index="0" unique_id=239826217]
+[node name="Coll" parent="BaseEnemyStuff/ContactHitbox" index="0" unique_id=239826217]
 shape = ExtResource("7_45du7")
-debug_color = Color(1, 0, 0, 0.41960785)
 
 [node name="Sprite" type="Sprite2D" parent="BaseEnemyStuff" index="5" unique_id=946936107]
 modulate = Color(0.27, 0.26775002, 0.243, 1)

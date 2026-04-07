@@ -3,7 +3,6 @@ extends Enemy
 @onready var state_chart = $StateChart as StateChart
 
 @export var starts_chasing := false
-@export var ice_manager : IceManager
 @export_subgroup("Timers")
 @export var chasing_timer: Timer
 @export var giving_up_timer: Timer
@@ -65,6 +64,7 @@ var attack_delay_timer : Timer
 
 #region Built-In
 func _ready() -> void:
+	super._ready()
 	if starts_chasing:
 		start_at_chase()
 	
@@ -446,10 +446,4 @@ func _ran_out_of_health() -> void:
 
 func _hurtbox_got_knocked(_hitbox : Hitbox) -> void:
 	pass
-
-func _on_fire_manager_caught_fire() -> void:
-	var fire_man : FireManager = $FireManager
-	if not fire_man.extinguished.is_connected(health_man.stop_burning):
-		fire_man.extinguished.connect(health_man.stop_burning, 4)
-		health_man.start_burning(0.5)
 #endregion

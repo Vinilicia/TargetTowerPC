@@ -24,6 +24,7 @@ var state : State = State.Idle
 var direction : int = 1
 
 func _ready() -> void:
+	super._ready()
 	go_to_idle()
 
 func go_to_walk_state() -> void:

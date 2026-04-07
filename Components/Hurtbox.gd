@@ -24,11 +24,8 @@ signal lost_invencibility
 signal hit_while_invincible(hitbox : Hitbox)
 
 signal fire_entered(hitbox : Hitbox)
-signal fire_exited(hitbox : Hitbox)
 signal ice_entered(hitbox : Hitbox)
-signal ice_exited(hitbox : Hitbox)
 signal electric_entered(hitbox : Hitbox)
-signal electric_exited(hitbox : Hitbox)
 
 const fire_layer : int = 13
 const electric_layer : int = 14
@@ -59,6 +56,7 @@ func handle_hit(hitbox : Hitbox) -> void:
 	if hitbox.get_collision_layer_value(fire_layer) and flammable:
 		fire_entered.emit(hitbox)
 	elif hitbox.get_collision_layer_value(ice_layer) and freezable:
+		print("sex")
 		ice_entered.emit(hitbox)
 	elif hitbox.get_collision_layer_value(electric_layer) and shockable:
 		electric_entered.emit(hitbox)

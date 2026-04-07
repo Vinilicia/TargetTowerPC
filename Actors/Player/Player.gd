@@ -172,8 +172,6 @@ func shorten_hitbox() -> void:
 	hurtbox.position.y += hurtbox.scale.y / 2
 	hurtbox.position.x += 1
 	hurtbox.scale.x += 2
-	$Utilities/FireManager.update_hurtbox()
-	$Utilities/IceManager.update_hurtbox()
 
 func crouch():
 	anim_handler.crouched()
@@ -186,9 +184,7 @@ func increase_hitbox() -> void:
 	hurtbox.position.y -= hurtbox.scale.y / 2
 	hurtbox.position.x -= 1
 	hurtbox.scale.y *= 1.5
-	hurtbox.scale.x -= 2	
-	$Utilities/FireManager.update_hurtbox()
-	$Utilities/IceManager.update_hurtbox()
+	hurtbox.scale.x -= 2
 
 func stand() -> void:
 	anim_handler.stood()
@@ -426,7 +422,7 @@ func _on_health_manager_lost_health(amount: int) -> void:
 
 func _on_ice_manager_froze() -> void:
 	if health_man.health > 0:
-		$Utilities/IceManager.freeze()	
+		$Hurtbox/IceComponent.freeze()
 		set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 		await get_tree().create_timer(0.1).timeout
 		CameraMan.setup_player(get_parent().get_parent())
@@ -632,3 +628,6 @@ func gain_mana(value : int) -> void:
 func heal_on_bench() -> void:
 	health_man.gain_health(health_man.max_health)
 	gain_mana(max_mana)
+
+func _on_fire_component_caught_fire() -> void:
+	print("bananas")

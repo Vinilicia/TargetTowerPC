@@ -1,10 +1,10 @@
 [gd_scene format=3 uid="uid://blu3ir2g8hj6o"]
 
-[ext_resource type="Script" uid="uid://b3vnneb0e0ajo" path="res://Components/Actions-Reactions/ice_block.gd" id="1_qek2v"]
+[ext_resource type="Script" uid="uid://ymoh2u8bq41f" path="res://Components/Actions-Reactions/ice_block.gd" id="1_qek2v"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="2_aqvjo"]
-[ext_resource type="PackedScene" uid="uid://d3tputs5bl4tx" path="res://Components/Actions-Reactions/Fire_manager.tscn" id="2_eqpm1"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="3_aqvjo"]
-[ext_resource type="Script" uid="uid://ujb5quvl27hh" path="res://Components/portable_info.gd" id="5_8at2o"]
+[ext_resource type="PackedScene" uid="uid://bbxexy2tea2hc" path="res://Components/Actions-Reactions/Fire_Component.tscn" id="4_8at2o"]
+[ext_resource type="Script" uid="uid://p270vhsshqi7" path="res://Components/portable_info.gd" id="5_8at2o"]
 
 [node name="Ice" type="CharacterBody2D" unique_id=67827782 node_paths=PackedStringArray("coll", "melting_timer", "hurtbox", "child_container")]
 collision_layer = 48
@@ -21,24 +21,22 @@ shape = ExtResource("2_aqvjo")
 [node name="MeltingTimer" type="Timer" parent="." unique_id=1726188402]
 one_shot = true
 
-[node name="FireManager" parent="." unique_id=2058523878 node_paths=PackedStringArray("ref_hurtbox") instance=ExtResource("2_eqpm1")]
-time_to_burn = 1.0
-burn_duration = 2.0
-ref_hurtbox = NodePath("../Hurtbox")
-
 [node name="Hurtbox" parent="." unique_id=1762171066 node_paths=PackedStringArray("parent") instance=ExtResource("3_aqvjo")]
-collision_mask = 2816
+collision_mask = 6912
 parent = NodePath("..")
+flammable = true
 
 [node name="Coll" type="CollisionShape2D" parent="Hurtbox" unique_id=589489563]
 shape = ExtResource("2_aqvjo")
+
+[node name="FireComponent" parent="Hurtbox" unique_id=28466235 node_paths=PackedStringArray("hurtbox") instance=ExtResource("4_8at2o")]
+hurtbox = NodePath("..")
 
 [node name="ChildContainer" type="Node2D" parent="." unique_id=1889173639]
 
 [node name="PortableInfo" type="Node" parent="." unique_id=621030583]
 script = ExtResource("5_8at2o")
-metadata/_custom_type_script = "uid://ujb5quvl27hh"
 
 [connection signal="timeout" from="MeltingTimer" to="." method="_on_melting_timer_timeout"]
-[connection signal="caught_fire" from="FireManager" to="." method="melt"]
 [connection signal="got_hit_by" from="Hurtbox" to="." method="_on_hurtbox_got_hit_by"]
+[connection signal="caught_fire" from="Hurtbox/FireComponent" to="." method="melt"]

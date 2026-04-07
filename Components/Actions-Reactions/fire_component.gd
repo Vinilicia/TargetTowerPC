@@ -1,11 +1,11 @@
-extends Node2D
+extends Node
 class_name FireComponent
 
 @export var hurtbox : Hurtbox
 @export var extinguishing_timer : Timer
 @export var burning_timer : Timer
-@export var fire_sprite : PackedScene
-@export var fire : PackedScene
+@export var fire_sprite_scene : PackedScene
+@export var fire_scene : PackedScene
 @export_group("Variant values")
 @export var has_basic_fire : bool = true
 @export var burn_time : float = 2.5
@@ -23,27 +23,28 @@ signal extinguished
 func hurtbox_check() -> void:
 	if !hurtbox:
 		push_warning("FireComponent sem hurtbox assinalada! Em " + get_parent().get_parent().name)
-		if get_parent() is Hurtbox:
-			hurtbox = get_parent()
-		else:
-			push_error("FireComponent não é filho de hurtbox! Em " + get_parent().get_parent().name)
+		assert(get_parent() is Hurtbox, "FireComponent não é filho de hurtbox! Em " + get_parent().get_parent().name)
+		hurtbox = get_parent()
+	hurtbox.flammable = true
+	hurtbox.set_collision_mask_value(hurtbox.fire_layer, true)
 
 func instantiate_fire() -> void:
-	fire_instance = fire.instantiate()
+	fire_instance = fire_scene.instantiate()
 	var hurtbox_coll : CollisionShape2D = hurtbox.find_child("Coll", false)
-	assert(hurtbox_coll, "Hurtbox de " + hurtbox.parent.name + " não em 'Coll' como filho!")
+	assert(hurtbox_coll, "Hurtbox de " + hurtbox.parent.name + " não tem 'Coll' como filho!")
 	fire_instance.set_collision(hurtbox_coll)
 	caught_fire.connect(fire_instance._activate)
 	extinguished.connect(fire_instance._deactivate)
 
 func instantiate_fire_sprite() -> void:
-	fire_sprite_instance = fire_sprite.instantiate()
+	fire_sprite_instance = fire_sprite_scene.instantiate()
 	fire_sprite_instance.visible = false
-	caught_fire.connect(func(): 
-		fire_sprite_instance.visible = true
-		)
-	extinguished.connect(func():
-		fire_sprite_instance.visible = false)
+	if has_basic_fire:
+		caught_fire.connect(func(): 
+			fire_sprite_instance.visible = true
+			)
+		extinguished.connect(func():
+			fire_sprite_instance.visible = false)
 
 func _ready() -> void:
 	hurtbox_check()
@@ -55,15 +56,14 @@ func _ready() -> void:
 		instantiate_fire()
 		instantiate_fire_sprite()
 		fire_instance.call_deferred("add_child", fire_sprite_instance)
-		hurtbox.parent.call_deferred("add_child", fire)
+		hurtbox.parent.call_deferred("add_child", fire_instance)
 
 func _got_hit(hitbox: Hitbox) -> void:
 	overlapping_fire_count += 1
 	if on_fire and !can_stack:
 		return
-	var hitbox_parent = hitbox.get_parent()
-	if hitbox_parent is Fire:
-		if hitbox_parent.instant:
+	if hitbox is Fire:
+		if hitbox.instant:
 			catch_fire()
 		else:
 			burning_timer.start(burn_time)

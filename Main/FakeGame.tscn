@@ -14,7 +14,7 @@ height = 2.0
 script = ExtResource("1_5kekk")
 
 [node name="Player" parent="." unique_id=688355613 instance=ExtResource("2_q8dh3")]
-position = Vector2(-58, 152)
+position = Vector2(750, -148)
 
 [node name="Coll" parent="Player/Hurtbox" parent_id_path=PackedInt32Array(688355613, 9327247) index="1" unique_id=640387622]
 shape = SubResource("CapsuleShape2D_5kekk")
@@ -27,5 +27,4 @@ editor_draw_limits = true
 [node name="TestRoom" parent="." unique_id=2100409232 instance=ExtResource("4_q8dh3")]
 
 [editable path="Player"]
-[editable path="Player/Utilities/FireManager"]
 [editable path="Player/Utilities/IceManager"]

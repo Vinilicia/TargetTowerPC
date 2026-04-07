@@ -2,9 +2,12 @@
 
 [ext_resource type="Script" uid="uid://wapnmbk60bqv" path="res://Actors/Enemies/Enemy.gd" id="1_o22pi"]
 [ext_resource type="Material" uid="uid://djswnephywl88" path="res://Themes/Shaders/hitflash_material.tres" id="1_pbpvn"]
+[ext_resource type="PackedScene" uid="uid://dsfecke3dr6ur" path="res://Interactibles/Items/Small_Regret.tscn" id="2_6c138"]
 [ext_resource type="Script" uid="uid://b3onmxyq5x1od" path="res://Components/Velocity_component.gd" id="2_8um0u"]
+[ext_resource type="PackedScene" uid="uid://bbxexy2tea2hc" path="res://Components/Actions-Reactions/Fire_Component.tscn" id="3_kr3ad"]
 [ext_resource type="Script" uid="uid://dql6mh1dioxux" path="res://Components/Health_manager.gd" id="3_sxwhk"]
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="4_7pv7w"]
+[ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_Component.tscn" id="4_ggygh"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="5_o68ib"]
 
 [sub_resource type="Animation" id="Animation_pbpvn"]
@@ -29,13 +32,17 @@ _data = {
 &"hitflash": SubResource("Animation_pbpvn")
 }
 
-[node name="BaseEnemy" type="CharacterBody2D" unique_id=1704693412 node_paths=PackedStringArray("v_component", "health_man", "hurtbox")]
+[node name="BaseEnemy" type="CharacterBody2D" unique_id=1704693412 node_paths=PackedStringArray("v_component", "health_man", "hurtbox", "material_anim")]
 collision_layer = 8
 collision_mask = 20
 script = ExtResource("1_o22pi")
+regret_scene = ExtResource("2_6c138")
+fire_component_scene = ExtResource("3_kr3ad")
+ice_component_scene = ExtResource("4_ggygh")
 v_component = NodePath("BaseEnemyStuff/VelocityComponent")
 health_man = NodePath("BaseEnemyStuff/HealthManager")
 hurtbox = NodePath("BaseEnemyStuff/Hurtbox")
+material_anim = NodePath("BaseEnemyStuff/Anim")
 
 [node name="BodyCollision" type="CollisionShape2D" parent="." unique_id=2038690234]
 
@@ -54,14 +61,14 @@ collision_mask = 2816
 parent = NodePath("../..")
 can_be_invincible = false
 
-[node name="HurtboxCollision" type="CollisionShape2D" parent="BaseEnemyStuff/Hurtbox" unique_id=1633011383]
+[node name="Coll" type="CollisionShape2D" parent="BaseEnemyStuff/Hurtbox" unique_id=1633011383]
 
 [node name="ContactHitbox" parent="BaseEnemyStuff" unique_id=2114649000 node_paths=PackedStringArray("parent") instance=ExtResource("5_o68ib")]
 collision_layer = 1024
 parent = NodePath("../..")
 Damage = 1.0
 
-[node name="ContactCollision" type="CollisionShape2D" parent="BaseEnemyStuff/ContactHitbox" unique_id=239826217]
+[node name="Coll" type="CollisionShape2D" parent="BaseEnemyStuff/ContactHitbox" unique_id=239826217]
 
 [node name="Anim" type="AnimationPlayer" parent="BaseEnemyStuff" unique_id=532902763]
 libraries/ = SubResource("AnimationLibrary_1jhcj")

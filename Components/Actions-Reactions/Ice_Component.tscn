@@ -1,0 +1,9 @@
+[gd_scene format=3 uid="uid://dvo74hfh77vsa"]
+
+[ext_resource type="Script" uid="uid://cf1okf8k3w0xu" path="res://Components/Actions-Reactions/ice_component.gd" id="1_bxbor"]
+[ext_resource type="PackedScene" uid="uid://blu3ir2g8hj6o" path="res://Components/Actions-Reactions/Ice_Block.tscn" id="2_rjpcs"]
+
+[node name="IceManager" type="Node" unique_id=357971855 node_paths=PackedStringArray("hurtbox")]
+script = ExtResource("1_bxbor")
+hurtbox = NodePath("")
+ice_block_scene = ExtResource("2_rjpcs")

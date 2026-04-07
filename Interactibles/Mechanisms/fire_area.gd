@@ -1,5 +1,4 @@
-@tool
-extends Area2D
+extends Fire
 
 @onready var sprite: Sprite2D = $FireSprite
 @onready var coll: CollisionShape2D = $Coll
@@ -14,8 +13,6 @@ extends Area2D
 @export var wall_check_distance := 13.0
 
 func _ready() -> void:
-	if Engine.is_editor_hint():
-		return
 	await get_tree().process_frame
 	adjust_to_ground()
 	if extinguishes:
@@ -76,5 +73,3 @@ func update_length(new_width: int) -> void:
 		sprite.region_rect = Rect2(0, 0, 13 * new_width, 24)
 		coll.scale = Vector2(new_width * 13 - 4, 20)
 		await get_tree().process_frame
-		$Fire._ready()
-		$Fire._activate()

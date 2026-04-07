@@ -5,20 +5,19 @@
 [ext_resource type="Script" uid="uid://cpxo4tfexvi6h" path="res://Actors/Enemies/Spider/spider.gd" id="2_wapg0"]
 [ext_resource type="Texture2D" uid="uid://c3wfmk2aih37f" path="res://icon.svg" id="4_wapg0"]
 [ext_resource type="Shader" uid="uid://dw5q7exg3ylkf" path="res://Themes/Shaders/hitflash_shader.tres" id="5_yj5ul"]
-[ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_manager.tscn" id="6_wrmyj"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_wrmyj"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_rw2p2"]
 resource_local_to_scene = true
 shader = ExtResource("5_yj5ul")
 shader_parameter/enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_rn7qp"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_wrmyj"]
 resource_local_to_scene = true
 shader = ExtResource("5_yj5ul")
 shader_parameter/enabled = false
 
-[node name="Spooder" unique_id=450815639 node_paths=PackedStringArray("up_ray", "down_ray", "backup_down_ray", "side_ray", "ice_manager", "plat_detec") instance=ExtResource("1_bh22r")]
-material = SubResource("ShaderMaterial_wrmyj")
+[node name="Spooder" unique_id=450815639 node_paths=PackedStringArray("up_ray", "down_ray", "backup_down_ray", "side_ray", "plat_detec") instance=ExtResource("1_bh22r")]
+material = SubResource("ShaderMaterial_rw2p2")
 script = ExtResource("2_wapg0")
 speed = 25.0
 movedir = 1.0
@@ -28,8 +27,8 @@ up_ray = NodePath("UpRaycast")
 down_ray = NodePath("DownRaycast")
 backup_down_ray = NodePath("BackupDownRay")
 side_ray = NodePath("FrontRaycast")
-ice_manager = NodePath("IceManager")
 plat_detec = NodePath("PlatDetec")
+regular_shockable = false
 metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0" unique_id=2038690234]
@@ -37,7 +36,7 @@ scale = Vector2(10, 7)
 shape = ExtResource("2_lo6vr")
 
 [node name="BaseEnemyStuff" parent="." index="1" unique_id=2108870964]
-material = SubResource("ShaderMaterial_rn7qp")
+material = SubResource("ShaderMaterial_wrmyj")
 
 [node name="VelocityComponent" parent="BaseEnemyStuff" index="0" unique_id=1907220242]
 knockback_susceptability = 1
@@ -48,11 +47,13 @@ max_health = 10.0
 [node name="Hurtbox" parent="BaseEnemyStuff" index="2" unique_id=1554320959]
 scale = Vector2(12, 9)
 
-[node name="HurtboxCollision" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
+[node name="Coll" parent="BaseEnemyStuff/Hurtbox" index="1" unique_id=1633011383]
 shape = ExtResource("2_lo6vr")
 
-[node name="ContactCollision" parent="BaseEnemyStuff/ContactHitbox" parent_id_path=PackedInt32Array(2114649000) index="0" unique_id=239826217]
+[node name="ContactHitbox" parent="BaseEnemyStuff" index="3" unique_id=2114649000]
 scale = Vector2(12, 9)
+
+[node name="Coll" parent="BaseEnemyStuff/ContactHitbox" index="0" unique_id=239826217]
 shape = ExtResource("2_lo6vr")
 
 [node name="Sprite" type="Sprite2D" parent="BaseEnemyStuff" index="5" unique_id=542293403]
@@ -84,12 +85,7 @@ target_position = Vector2(7, 0)
 collision_mask = 20
 hit_from_inside = true
 
-[node name="IceManager" parent="." index="6" unique_id=1854588271 node_paths=PackedStringArray("parent", "parent_health_man", "ref_hurtbox") instance=ExtResource("6_wrmyj")]
-parent = NodePath("..")
-parent_health_man = NodePath("../BaseEnemyStuff/HealthManager")
-ref_hurtbox = NodePath("../BaseEnemyStuff/Hurtbox")
-
-[node name="PlatDetec" type="Area2D" parent="." index="7" unique_id=2054910867]
+[node name="PlatDetec" type="Area2D" parent="." index="6" unique_id=2054910867]
 position = Vector2(0, 5)
 scale = Vector2(12, 2)
 collision_layer = 0
