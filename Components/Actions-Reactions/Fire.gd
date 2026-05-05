@@ -7,10 +7,10 @@ class_name Fire
 func _ready() -> void:
 	_deactivate()
 
-func set_collision(new_coll : CollisionShape2D) -> void:
+func set_collision(new_coll : CollisionShape2D, hurtbox_scale : Vector2) -> void:
 	var coll := new_coll.duplicate()
-	coll.scale.x *= scale_increase.x
-	coll.scale.y *= scale_increase.y
+	coll.scale.x *= scale_increase.x * hurtbox_scale.x
+	coll.scale.y *= scale_increase.y * hurtbox_scale.y
 	call_deferred("add_child", coll)
 
 func _deactivate() -> void:

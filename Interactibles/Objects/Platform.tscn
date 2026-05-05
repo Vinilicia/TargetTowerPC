@@ -43,7 +43,6 @@ wait_time = 0.1
 one_shot = true
 
 [node name="PlatformSprite" parent="." unique_id=2071898105 instance=ExtResource("4_op0uc")]
-visible = false
 autoplay = "Idle"
 
 [connection signal="body_entered" from="Platform/PlayerDetectorArea" to="." method="_on_player_detector_area_body_entered"]

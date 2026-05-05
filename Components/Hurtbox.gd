@@ -56,7 +56,6 @@ func handle_hit(hitbox : Hitbox) -> void:
 	if hitbox.get_collision_layer_value(fire_layer) and flammable:
 		fire_entered.emit(hitbox)
 	elif hitbox.get_collision_layer_value(ice_layer) and freezable:
-		print("sex")
 		ice_entered.emit(hitbox)
 	elif hitbox.get_collision_layer_value(electric_layer) and shockable:
 		electric_entered.emit(hitbox)
@@ -70,7 +69,7 @@ func handle_hit(hitbox : Hitbox) -> void:
 			get_invincible_for()
 
 func get_invincible_for(duration_override : float = -1.0) -> void:
-	if not can_be_invincible:
+	if not can_be_invincible or is_invincible:
 		return
 	get_invincible()
 	var duration = duration_override if duration_override > 0 else invincibility_duration

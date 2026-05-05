@@ -193,6 +193,7 @@ event = &"Recovered"
 delay_in_seconds = "0.0"
 
 [node name="BehaviorChanging" type="Node2D" parent="." index="3" unique_id=713151956]
+visible = false
 
 [node name="SightArea" type="Area2D" parent="BehaviorChanging" index="0" unique_id=815519487]
 position = Vector2(0, 50)

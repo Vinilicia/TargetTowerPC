@@ -13,11 +13,9 @@
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="16_m4vjq"]
 [ext_resource type="PackedScene" uid="uid://caxq1k25oqpqv" path="res://Actors/Player/NewAcherSprite.tscn" id="16_mwnd1"]
 
-[node name="Player" type="CharacterBody2D" unique_id=1842832799 node_paths=PackedStringArray("v_comp", "health_man", "mana_timer", "sprite", "melee_area", "stomp_area", "melee_hitbox", "stomp_hitbox", "anim_handler", "hurtbox", "wall_detec", "ledge_detec", "enemy_tracker", "aim_enemy") groups=["Player"]]
-position = Vector2(0, 1)
+[node name="Player" type="CharacterBody2D" unique_id=1842832799 node_paths=PackedStringArray("v_comp", "health_man", "mana_timer", "sprite", "melee_area", "stomp_area", "melee_hitbox", "stomp_hitbox", "anim_handler", "hurtbox", "wall_detec", "ledge_detec", "enemy_tracker", "aim_enemy", "fire_comp", "ice_comp") groups=["Player"]]
 collision_mask = 20
 script = ExtResource("1_mwnd1")
-using_aim_enemy = false
 v_comp = NodePath("Misc/VelocityComponent")
 health_man = NodePath("Misc/HealthManager")
 mana_timer = NodePath("Misc/ManaRegenTimer")
@@ -32,6 +30,8 @@ wall_detec = NodePath("Utilities/WallDetector")
 ledge_detec = NodePath("Utilities/LedgeDetector")
 enemy_tracker = NodePath("Utilities/AimEnemy/EnemyTracker")
 aim_enemy = NodePath("Utilities/AimEnemy/AimSight")
+fire_comp = NodePath("Hurtbox/FireComponent")
+ice_comp = NodePath("Hurtbox/IceComponent")
 jump_buffer_duration = 0.1
 arrow_paths = Array[String](["res://Arrows/Common_Arrow.tscn", "res://Arrows/Fire_Arrow.tscn", "res://Arrows/Platform_Arrow.tscn", "res://Arrows/Teleport_Arrow.tscn", "res://Arrows/Ice_Arrow.tscn", "res://Arrows/Wind_Arrow.tscn", "res://Arrows/Phantom_Arrow.tscn", "res://Arrows/Shock_Arrow.tscn"])
 arrow_cooldown = 0.3
@@ -53,7 +53,7 @@ parent = NodePath("../..")
 [node name="HealthManager" type="Node" parent="Misc" unique_id=2107208142]
 script = ExtResource("11_jfvij")
 max_health = 15.0
-seconds_per_fire_tick = 0.05
+seconds_per_fire_tick = 1.1
 
 [node name="ManaRegenTimer" type="Timer" parent="Misc" unique_id=1020804880]
 one_shot = true
@@ -77,6 +77,7 @@ scale = Vector2(7, 10)
 collision_mask = 3072
 monitoring = false
 parent = NodePath("..")
+invincibility_duration = 1.1
 
 [node name="Coll" type="CollisionShape2D" parent="Hurtbox" unique_id=640387622]
 shape = ExtResource("11_cdutm")
@@ -85,9 +86,9 @@ shape = ExtResource("11_cdutm")
 hurtbox = NodePath("..")
 has_basic_fire = false
 burn_time = 0.01
+extinguish_time = 1.0
 
-[node name="IceManager" parent="Hurtbox" unique_id=1854588271 node_paths=PackedStringArray("parent") instance=ExtResource("12_upr3p")]
-parent = NodePath("../..")
+[node name="IceComponent" parent="Hurtbox" unique_id=1854588271 instance=ExtResource("12_upr3p")]
 regular_behaviour = false
 frozen_duration = 4.0
 
@@ -186,11 +187,11 @@ position = Vector2(-24, -26)
 [connection signal="timeout" from="Misc/ManaRegenTimer" to="." method="_on_mana_regen_timer_timeout"]
 [connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
 [connection signal="caught_fire" from="Hurtbox/FireComponent" to="." method="_on_fire_component_caught_fire"]
-[connection signal="froze" from="Hurtbox/IceManager" to="." method="_on_ice_manager_froze"]
-[connection signal="melt" from="Hurtbox/IceManager" to="." method="_on_ice_manager_melt"]
+[connection signal="froze" from="Hurtbox/IceComponent" to="." method="_on_ice_manager_froze"]
+[connection signal="melt" from="Hurtbox/IceComponent" to="." method="_on_ice_manager_melt"]
 [connection signal="body_entered" from="Utilities/Areas&Boxes/PortableDetector" to="." method="_on_portable_detector_body_entered"]
 [connection signal="body_exited" from="Utilities/Areas&Boxes/PortableDetector" to="." method="_on_portable_detector_body_exited"]
 [connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]
 [connection signal="body_exited" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_exited"]
 
-[editable path="Hurtbox/IceManager"]
+[editable path="Hurtbox/IceComponent"]

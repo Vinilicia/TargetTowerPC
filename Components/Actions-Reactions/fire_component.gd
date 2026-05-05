@@ -32,7 +32,7 @@ func instantiate_fire() -> void:
 	fire_instance = fire_scene.instantiate()
 	var hurtbox_coll : CollisionShape2D = hurtbox.find_child("Coll", false)
 	assert(hurtbox_coll, "Hurtbox de " + hurtbox.parent.name + " não tem 'Coll' como filho!")
-	fire_instance.set_collision(hurtbox_coll)
+	fire_instance.set_collision(hurtbox_coll, hurtbox.scale)
 	caught_fire.connect(fire_instance._activate)
 	extinguished.connect(fire_instance._deactivate)
 
@@ -54,9 +54,9 @@ func _ready() -> void:
 	
 	if has_basic_fire:
 		instantiate_fire()
+		hurtbox.parent.call_deferred("add_child", fire_instance)
 		instantiate_fire_sprite()
 		fire_instance.call_deferred("add_child", fire_sprite_instance)
-		hurtbox.parent.call_deferred("add_child", fire_instance)
 
 func _got_hit(hitbox: Hitbox) -> void:
 	overlapping_fire_count += 1

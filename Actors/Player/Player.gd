@@ -24,6 +24,8 @@ signal took_damage
 @export var ledge_detec : RayCast2D
 @export var enemy_tracker: RayCast2D
 @export var aim_enemy: Area2D
+@export var fire_comp : FireComponent
+@export var ice_comp : IceComponent
 
 @export_group("Variant values")
 @export_subgroup("Movement")
@@ -32,11 +34,12 @@ signal took_damage
 @export var coyote_time_duration : float = 0.08
 @export var jump_buffer_duration : float = 0.08
 @export var rise_multiplier : float = 0.75
-@export_subgroup("Attacks")
+@export_subgroup("Combat")
 @export_dir var arrow_paths: Array[String]
 @export var arrow_cooldown : float = 0.5
 @export var melee_attack_duration : float = 0.2
 @export var mana_regen_time : float = 1.0
+@export var flinch_duration : float = 0.25
 @export_subgroup("Throw")
 @export var side_throw_speed : Vector2 = Vector2(200, -250)
 @export var up_throw_speed : Vector2 = Vector2(0, -340)
@@ -44,7 +47,7 @@ signal took_damage
 @export var down_throw_lift : float = -200
 @export_subgroup("Dodge")
 @export var dodge_duration: float = 0.25
-@export var dodge_cooldown: float = 0.5
+@export var dodge_cooldown: float = 0.4
 @export var dodge_side_speed: float = 360.0
 @export var dodge_up_speed: float = 200.0
 @export var dodge_down_speed: float = 560.0
@@ -400,9 +403,9 @@ func flinch() -> void:
 	reset_arrow()
 	can_shoot = false
 	modulate = Color(1, 0, 0, 1)
-	await get_tree().create_timer(0.25).timeout
+	hurtbox.get_invincible_for()
+	await get_tree().create_timer(flinch_duration).timeout
 	modulate = Color(1, 1, 1, 1)
-	hurtbox.get_invincible()
 	arrow_cooldown_end()
 	in_control = true
 	invincible_flicker()
@@ -416,6 +419,7 @@ func invincible_flicker() -> void:
 		invincible_flicker()
 
 func _on_health_manager_lost_health(amount: int) -> void:
+	
 	if amount > 0:
 		took_damage.emit()
 		flinch()
@@ -630,4 +634,5 @@ func heal_on_bench() -> void:
 	gain_mana(max_mana)
 
 func _on_fire_component_caught_fire() -> void:
-	print("bananas")
+	fire_comp.extinguished.connect(health_man.stop_burning, 4)
+	health_man.start_burning(1.0)

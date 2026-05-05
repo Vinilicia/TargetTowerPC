@@ -66,7 +66,7 @@ shape = ExtResource("1_nn6wd")
 hurtbox = NodePath("..")
 has_basic_fire = false
 
-[node name="IceManager" parent="BaseEnemyStuff/Hurtbox" index="3" unique_id=1854588271 node_paths=PackedStringArray("parent_health_man", "hurtbox") instance=ExtResource("8_ef4uu")]
+[node name="IceComponent" parent="BaseEnemyStuff/Hurtbox" index="3" unique_id=1854588271 node_paths=PackedStringArray("parent_health_man", "hurtbox") instance=ExtResource("8_ef4uu")]
 parent_health_man = NodePath("../../HealthManager")
 regular_behaviour = false
 hurtbox = NodePath("..")
@@ -85,6 +85,7 @@ scale = Vector2(0.12, 0.12)
 texture = ExtResource("4_jrs23")
 
 [node name="SightArea" type="Area2D" parent="." index="2" unique_id=2071669319]
+visible = false
 scale = Vector2(300, 200)
 collision_layer = 0
 monitorable = false
@@ -108,8 +109,8 @@ one_shot = true
 [node name="VisibleNotifier" type="VisibleOnScreenNotifier2D" parent="." index="5" unique_id=1651489017]
 
 [connection signal="caught_fire" from="BaseEnemyStuff/Hurtbox/FireComponent" to="." method="_on_fire_comp_caught_fire"]
-[connection signal="froze" from="BaseEnemyStuff/Hurtbox/IceManager" to="." method="_on_ice_manager_froze"]
-[connection signal="melt" from="BaseEnemyStuff/Hurtbox/IceManager" to="." method="_on_ice_manager_melt"]
+[connection signal="froze" from="BaseEnemyStuff/Hurtbox/IceComponent" to="." method="_on_ice_manager_froze"]
+[connection signal="melt" from="BaseEnemyStuff/Hurtbox/IceComponent" to="." method="_on_ice_manager_melt"]
 [connection signal="body_entered" from="SightArea" to="." method="_player_entered_sight_area"]
 [connection signal="body_exited" from="SightArea" to="." method="_player_exited_sight_area"]
 [connection signal="timeout" from="Timers/AttackTimer" to="." method="_on_attack_timer_timeout"]

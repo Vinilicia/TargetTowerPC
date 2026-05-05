@@ -31,9 +31,9 @@ func _physics_process(delta: float) -> void:
 
 func explode(pos : Vector2) -> void:
 	var fire_area: Area2D = fire_spawn.instantiate()
-	get_parent().call_deferred("add_child", fire_area)
-	fire_area.set_deferred("width", 5)
 	fire_area.set_deferred("position", pos + Vector2(0, -12))
+	fire_area.set_deferred("width", 5)
+	get_parent().call_deferred("add_child", fire_area)
 	queue_free()
 
 func _on_player_detector_body_entered(_body: Node2D) -> void:

@@ -74,6 +74,7 @@ scale = Vector2(0.12, 0.12)
 texture = ExtResource("7_hjulu")
 
 [node name="Areas" type="Node2D" parent="." index="2" unique_id=160294315]
+visible = false
 
 [node name="OuterArrowDetector" type="Area2D" parent="Areas" index="0" unique_id=693904988]
 position = Vector2(-130, 0)
@@ -142,14 +143,17 @@ debug_color = Color(1, 0.6, 0.701961, 0.419608)
 [node name="LinesOfSight" type="Node2D" parent="Raycasts" index="0" unique_id=1801009311]
 
 [node name="LineOfSight" type="RayCast2D" parent="Raycasts/LinesOfSight" index="0" unique_id=2131510899]
+target_position = Vector2(0, 0)
 collision_mask = 21
 
 [node name="LineOfSight2" type="RayCast2D" parent="Raycasts/LinesOfSight" index="1" unique_id=1059482031]
 position = Vector2(0, -10)
+target_position = Vector2(0, 0)
 collision_mask = 21
 
 [node name="LineOfSight3" type="RayCast2D" parent="Raycasts/LinesOfSight" index="2" unique_id=481153787]
 position = Vector2(-9, 0)
+target_position = Vector2(0, 0)
 collision_mask = 21
 
 [node name="Detectors" type="Node2D" parent="Raycasts" index="1" unique_id=843363206]
