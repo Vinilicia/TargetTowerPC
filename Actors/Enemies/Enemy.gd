@@ -72,7 +72,7 @@ func apply_gravity(delta : float) -> void:
 func grounded_behaviour(delta : float) -> void:
 	if stunned:
 		return
-	if !is_on_floor() -> void:
+	if !is_on_floor():
 		apply_gravity(delta)
 	else:
 		v_component.set_proper_velocity(0.0, 2)

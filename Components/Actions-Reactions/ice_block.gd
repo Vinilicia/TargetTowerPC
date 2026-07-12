@@ -24,7 +24,7 @@ func start_melting_timer(freeze_duration : float) -> void:
 	melting_timer.start(freeze_duration)
 
 func _physics_process(delta: float) -> void:
-	if is_on_floor() -> void:
+	if is_on_floor():
 		velocity = Vector2.ZERO
 	else:
 		velocity.y += get_gravity().y * delta

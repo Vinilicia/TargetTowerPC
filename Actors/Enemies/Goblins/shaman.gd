@@ -27,7 +27,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if player:
-		if look_for_player() -> void:
+		if look_for_player():
 			if !saw_player:
 				saw_player = true
 				engaging_state = true
@@ -77,7 +77,7 @@ func get_random_empty_position() -> Vector2:
 		query.collision_mask = collision_mask
 
 		var result := space.intersect_shape(query, 1)
-		if result.is_empty() -> void:
+		if result.is_empty():
 			return random_pos
 
 	return Vector2.ZERO
@@ -126,7 +126,7 @@ func give_up_chase() -> void:
 func look_for_player() -> bool:
 	line_of_sight.target_position = to_local(player.global_position)
 	line_of_sight.force_raycast_update()
-	if line_of_sight.is_colliding() -> void:
+	if line_of_sight.is_colliding():
 		if line_of_sight.get_collider() is Player:
 			return true
 	return false

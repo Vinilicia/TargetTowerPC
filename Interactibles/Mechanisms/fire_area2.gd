@@ -18,7 +18,7 @@ func _ready() -> void:
 		queue_free()
 
 func update_length(new_width : int) -> void:
-	if not is_node_ready() -> void:
+	if not is_node_ready():
 		await ready
 	sprite.region_rect = Rect2(0, 0, 13 * new_width, 24)
 	coll.scale = Vector2(new_width * 13 - 2, 22)

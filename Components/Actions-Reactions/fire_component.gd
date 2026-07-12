@@ -63,7 +63,7 @@ func _hurtbox_exited(area: Area2D) -> void:
 		if overlapping_fire_count < 0:
 			overlapping_fire_count = 0
 		if overlapping_fire_count == 0 and !on_fire:
-			if !burning_timer.is_stopped() -> void:
+			if !burning_timer.is_stopped():
 				burning_timer.stop()
 
 func start() -> void:
@@ -73,7 +73,7 @@ func start() -> void:
 	effect_started.emit()
 	
 	var time_left : float = 0
-	if can_stack and !extinguishing_timer.is_stopped() -> void:
+	if can_stack and !extinguishing_timer.is_stopped():
 		time_left = extinguishing_timer.time_left
 	extinguishing_timer.start(extinguish_time + time_left)
 

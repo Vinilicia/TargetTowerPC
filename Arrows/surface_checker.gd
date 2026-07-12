@@ -35,25 +35,25 @@ func optimize_polygon(points: Array[Vector2]) -> Array[Vector2]:
 	optimized.append(points[0])
 
 	for i in range(1, points.size()):
-		var p_prev = optimized[-1]
-		var p_curr = points[i]
+		var p_prev := optimized[-1]
+		var p_curr := points[i]
 		
 		# 1. Ignorar se o ponto for virtualmente igual ao anterior
 		if p_curr.is_equal_approx(p_prev):
 			continue
 			
 		if i < points.size() - 1:
-			var p_next = points[i + 1]
+			var p_next : Vector2 = points[i + 1]
 			
 			# Vetores de direção
-			var dir_a = (p_curr - p_prev).normalized()
-			var dir_b = (p_next - p_curr).normalized()
+			var dir_a : Vector2 = (p_curr - p_prev).normalized()
+			var dir_b : Vector2 = (p_next - p_curr).normalized()
 			
 			# 2. Checar Colinearidade e Backtracking usando o Produto Escalar (Dot Product)
 			# O dot_product de dois vetores normalizados resulta em:
 			#  1.0 se apontam para o mesmo lado (linha reta)
 			# -1.0 se apontam para lados opostos (volta de 180 graus)
-			var dot = dir_a.dot(dir_b)
+			var dot : float = dir_a.dot(dir_b)
 			
 			# Se o dot for quase 1 (reta) ou quase -1 (dobra/backtrack)
 			if abs(dot) > 0.99:
@@ -77,15 +77,15 @@ func check() -> void:
 	global_position = get_parent().to_global(original_pos)
 	global_rotation = get_parent().global_rotation
 	
-	var start_global_transform = global_transform
+	var start_global_transform := global_transform
 	
 	left_side.clear()
 	right_side.clear()
 
 	# Rodamos o processo para as duas direções
-	var directions = [-1, 1]
+	var directions := [-1, 1]
 	
-	for dir in directions:
+	for dir : int in directions:
 		direction = dir
 		# Reseta o "fantasma" para a posição inicial antes de cada lado
 		global_transform = start_global_transform
@@ -99,24 +99,24 @@ func check() -> void:
 			horizontal_checker.force_raycast_update()
 			vertical_checker.force_raycast_update()
 
-			if vertical_checker.is_colliding() -> void:
-				var g_col = vertical_checker.get_collision_point()
-				var g_norm = vertical_checker.get_collision_normal()
-				var g_off = g_col + (g_norm * vertical_offset)
+			if vertical_checker.is_colliding():
+				var g_col := vertical_checker.get_collision_point()
+				var g_norm := vertical_checker.get_collision_normal()
+				var g_off := g_col + (g_norm * vertical_offset)
 
 				# Converte a posição global para o local relativo ao início (ponto zero)
 				current_surface.append(start_global_transform.affine_inverse() * g_col)
 				current_offset.append(start_global_transform.affine_inverse() * g_off)
 
-				if horizontal_checker.is_colliding() -> void:
+				if horizontal_checker.is_colliding():
 					global_position = g_col + (g_norm * vertical_offset)
 					global_rotation += deg_to_rad(90) * -direction
 				else:
 					# Reta: move para o lado baseando-se na normal da superfície
-					var side_dir = g_norm.rotated(deg_to_rad(90) * direction)
+					var side_dir : Vector2 = g_norm.rotated(deg_to_rad(90) * direction)
 					global_position += side_dir * jump_dist
 			else:
-				if !current_offset.is_empty() -> void:
+				if !current_offset.is_empty():
 					current_offset.append(current_offset.back() + horizontal_checker.target_position.rotated(rotation))
 				global_rotation += deg_to_rad(90) * direction
 				global_position += Vector2(0, -direction * vertical_offset).rotated(global_rotation)

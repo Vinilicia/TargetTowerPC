@@ -16,7 +16,7 @@ func _ready() -> void:
 	#Engine.time_scale = 0.5
 	#connect("level_ready", (find_child("Player") as Player).gain_control)
 	#connect("readying_level", (find_child("Player") as Player).lose_control)
-	for child in get_children() -> void:
+	for child in get_children():
 		if child is Room:
 			current_level = child
 

@@ -37,11 +37,11 @@ func can_attack() -> bool:
 		and is_instance_valid(player_target)
 
 func try_start_attack() -> void:
-	if can_attack() and attack_timer.is_stopped() -> void:
+	if can_attack() and attack_timer.is_stopped():
 		attack_timer.start()
 
 func stop_attack() -> void:
-	if not attack_timer.is_stopped() -> void:
+	if not attack_timer.is_stopped():
 		attack_timer.stop()
 
 func change_type(new_type : SlimeType) -> void:
@@ -68,7 +68,7 @@ func _physics_process(delta: float) -> void:
 	grounded_behaviour(delta)
 
 func _throw_blob() -> void:
-	if not can_attack() -> void:
+	if not can_attack():
 		return
 
 	var instance : SlimeBlob = current_blob.instantiate()
@@ -81,12 +81,12 @@ func _player_entered_sight_area(player: Node2D) -> void:
 	player_target = player
 	player_is_nearby = true
 
-	if lose_sight_timer.is_inside_tree() -> void:
+	if lose_sight_timer.is_inside_tree():
 		lose_sight_timer.stop()
 	try_start_attack()
 
 func _player_exited_sight_area(_player: Node2D) -> void:
-	if lose_sight_timer.is_inside_tree() -> void:
+	if lose_sight_timer.is_inside_tree():
 		lose_sight_timer.start()
 
 func _on_lose_sight_timer_timeout() -> void:

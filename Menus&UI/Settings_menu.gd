@@ -48,14 +48,14 @@ func give_focus() -> void:
 func setup_menu() -> void:
 	Menus_Container.visible = true
 	Buttons_Container.visible = false
-	for menu in Menus_Container.get_children() -> void:
+	for menu in Menus_Container.get_children():
 		if menu is not ColorRect:
 			menu.visible = false
 
 func setup_buttons() -> void:
 	Menus_Container.visible = false
 	Buttons_Container.visible = true
-	for menu in Menus_Container.get_children() -> void:
+	for menu in Menus_Container.get_children():
 		if menu is not ColorRect:
 			menu.visible = false
 	last_button_pressed.grab_focus()
@@ -131,7 +131,7 @@ func _on_language_button_item_selected(index: int) -> void:
 	# index é o índice do item no OptionButton (conta separadores).
 	# precisamos do id (0..16) para mapear ao array languages
 	var item_id := language_button.get_item_id(index)
-	if item_id < 0 or item_id >= languages.size() -> void:
+	if item_id < 0 or item_id >= languages.size():
 		return
 
 	var chosen_locale : String = languages[item_id]

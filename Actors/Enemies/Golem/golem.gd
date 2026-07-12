@@ -69,7 +69,7 @@ func attack() -> void:
 	get_tree().process_frame.connect(ground_check_for_attack)
 
 func ground_check_for_attack() -> void:
-	if is_on_floor() -> void:
+	if is_on_floor():
 		get_tree().process_frame.disconnect(ground_check_for_attack)
 		slam()
 

@@ -32,7 +32,7 @@ signal landed
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
-	for marker : Marker2D in markers_node.get_children() -> void:
+	for marker : Marker2D in markers_node.get_children():
 		marker.top_level = true
 		marker.position += global_position
 	top_left_marker = markers_node.get_child(0)
@@ -70,7 +70,7 @@ func _physics_process(delta: float) -> void:
 		raycast.target_position = to_local(player.global_position)
 	grounded_behaviour(delta * gravity_scale)
 	
-	if jumping and is_on_floor() -> void:
+	if jumping and is_on_floor():
 		jumping = false
 		on_land()
 
@@ -251,7 +251,7 @@ func die() -> void:
 	super.die()
 
 func grounded_behaviour(delta : float) -> void:
-	if !is_on_floor() -> void:
+	if !is_on_floor():
 		apply_gravity(delta)
 	else:
 		v_component.set_gravity_velocity(Vector2.ZERO)

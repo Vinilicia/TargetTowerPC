@@ -35,7 +35,7 @@ func set_start_rotation() -> void:
 			rotate(deg_to_rad(180))
 
 func snap_to_surface() -> void:
-	if down_ray.is_colliding() -> void:
+	if down_ray.is_colliding():
 		position = down_ray.get_collision_point() - Vector2(0, $BodyCollision.scale.y / 2 - 1).rotated(rotation)
 
 func _ready() -> void:
@@ -44,7 +44,7 @@ func _ready() -> void:
 	down_ray.target_position = Vector2(0, 50)
 	set_start_rotation()
 	await get_tree().create_timer(1).timeout
-	if down_ray.is_colliding() -> void:
+	if down_ray.is_colliding():
 		snap_to_surface()
 		down_ray.target_position = original_down_ray_pos
 		is_ready = true
@@ -67,18 +67,18 @@ func walking_state_process() -> void:
 	backup_down_ray.force_update_transform()
 	backup_down_ray.force_raycast_update()
 	force_update_transform()
-	if is_not_grounded() and !plat_detec.has_overlapping_bodies() -> void:
-		if !down_ray.is_colliding() -> void:
+	if is_not_grounded() and !plat_detec.has_overlapping_bodies():
+		if !down_ray.is_colliding():
 			move_state = moveState.falling
 			v_component.set_proper_velocity(Vector2.ZERO)
 			return
-	if !down_ray.is_colliding() and backup_down_ray.is_colliding() -> void:
+	if !down_ray.is_colliding() and backup_down_ray.is_colliding():
 		rotate_and_snap(90 * movedir)
 	elif movedir != sign(backup_down_ray.position.x) or direction == Vector2.ZERO:
 		update_direction()
 		v_component.set_proper_velocity(direction * speed, 1)
 
-	if side_ray.is_colliding() -> void:
+	if side_ray.is_colliding():
 		if surface_state == surfaceState.ceiling and randf() < 0.7:
 			movedir *= -1
 			update_direction()
@@ -87,7 +87,7 @@ func walking_state_process() -> void:
 	
 
 	if surface_state == surfaceState.ceiling:
-		if up_ray.is_colliding() -> void:
+		if up_ray.is_colliding():
 			var collider := up_ray.get_collider()
 			if collider is Player:
 				rotate_and_snap(180)
@@ -102,7 +102,7 @@ func _physics_process(delta: float) -> void:
 	if move_state == moveState.walking:
 		walking_state_process()
 	elif move_state == moveState.falling:
-		if is_on_floor() -> void:
+		if is_on_floor():
 			await rotate_and_snap(-rotation_degrees)
 			move_state = moveState.walking
 			choose_random_direction()
@@ -118,7 +118,7 @@ func fall_from_ceiling() -> void:
 	get_tree().process_frame.connect(check_to_stop_fall)
 
 func check_to_stop_fall() -> void:
-	if is_on_floor() -> void:
+	if is_on_floor():
 		move_state = moveState.walking
 		v_component.set_proper_velocity(Vector2.ZERO)
 		get_tree().process_frame.disconnect(check_to_stop_fall)

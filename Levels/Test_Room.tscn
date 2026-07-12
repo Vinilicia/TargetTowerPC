@@ -15,10 +15,20 @@
 [ext_resource type="PackedScene" uid="uid://ywbtl3afqht4" path="res://Interactibles/Mechanisms/Buttons&Receptors/electric_activator.tscn" id="13_xpb1b"]
 [ext_resource type="Script" uid="uid://dosdyxpm24s7m" path="res://Interactibles/Mechanisms/mechanism.gd" id="14_ymqiv"]
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_ion0u"]
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xpb1b"]
 resource_local_to_scene = true
 shader = ExtResource("3_nh0l2")
 shader_parameter/enabled = false
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ymqiv"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_ion0u"]
+resource_local_to_scene = true
+shader = ExtResource("3_nh0l2")
+shader_parameter/enabled = true
 
 [sub_resource type="ShaderMaterial" id="ShaderMaterial_6y656"]
 resource_local_to_scene = true
@@ -50,58 +60,80 @@ resource_local_to_scene = true
 shader = ExtResource("3_nh0l2")
 shader_parameter/enabled = true
 
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_qu73n"]
-resource_local_to_scene = true
-shader = ExtResource("3_nh0l2")
-shader_parameter/enabled = true
-
-[sub_resource type="ShaderMaterial" id="ShaderMaterial_kj02d"]
-resource_local_to_scene = true
-shader = ExtResource("3_nh0l2")
-shader_parameter/enabled = true
-
 [node name="TestRoom" unique_id=1036476317 node_paths=PackedStringArray("bench") instance=ExtResource("1_evn5t")]
 bench = NodePath("Bench")
 
 [node name="Spooder" parent="Enemies" parent_id_path=PackedInt32Array(30417903) index="0" unique_id=948375727 instance=ExtResource("2_f20nt")]
-material = SubResource("ShaderMaterial_ion0u")
+material = SubResource("ShaderMaterial_xpb1b")
 position = Vector2(-11, 70)
 speed = 35.0
 start_surface = 3
 fall_speed = 100.0
 
 [node name="Slime2" parent="Enemies" parent_id_path=PackedInt32Array(30417903) index="1" unique_id=658440982 instance=ExtResource("3_m8jmo")]
-material = SubResource("ShaderMaterial_6y656")
+material = SubResource("ShaderMaterial_ymqiv")
 position = Vector2(885, -203)
 
 [node name="Slime3" parent="Enemies" parent_id_path=PackedInt32Array(30417903) index="2" unique_id=855155162 instance=ExtResource("3_m8jmo")]
-material = SubResource("ShaderMaterial_lbl85")
+material = SubResource("ShaderMaterial_ion0u")
 position = Vector2(964, -601)
 
 [node name="Shaman" parent="Enemies" parent_id_path=PackedInt32Array(30417903) index="3" unique_id=1444588541 instance=ExtResource("4_shaer")]
-material = SubResource("ShaderMaterial_3rvaw")
+material = SubResource("ShaderMaterial_6y656")
 position = Vector2(537, 85)
 magic_bolt_texture = null
 magic_bolt_scale = Vector2(0, 0)
 
 [node name="Bat" parent="Enemies" parent_id_path=PackedInt32Array(30417903) index="4" unique_id=1730014312 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_85ifu")
+material = SubResource("ShaderMaterial_lbl85")
 position = Vector2(851, 133)
+spawns_money = null
+money_amount = null
+regular_flammable = null
+regular_freezable = null
+regular_shockable = null
+starts_chasing = null
+facing_flip_deadzone = null
+wander_strength = null
 
 [node name="Bat2" parent="Enemies" parent_id_path=PackedInt32Array(30417903) index="5" unique_id=1061994402 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_xi5r3")
+material = SubResource("ShaderMaterial_3rvaw")
 position = Vector2(946, -51)
+spawns_money = null
+money_amount = null
+regular_flammable = null
+regular_freezable = null
+regular_shockable = null
+starts_chasing = null
+facing_flip_deadzone = null
+wander_strength = null
 
 [node name="Bat3" parent="Enemies" parent_id_path=PackedInt32Array(30417903) index="6" unique_id=678611238 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_k5udj")
+material = SubResource("ShaderMaterial_85ifu")
 position = Vector2(21, -216)
+spawns_money = null
+money_amount = null
+regular_flammable = null
+regular_freezable = null
+regular_shockable = null
+starts_chasing = null
+facing_flip_deadzone = null
+wander_strength = null
 
 [node name="Bat4" parent="Enemies" parent_id_path=PackedInt32Array(30417903) index="7" unique_id=769101661 instance=ExtResource("5_6vixh")]
-material = SubResource("ShaderMaterial_qu73n")
+material = SubResource("ShaderMaterial_xi5r3")
 position = Vector2(111, -216)
+spawns_money = null
+money_amount = null
+regular_flammable = null
+regular_freezable = null
+regular_shockable = null
+starts_chasing = null
+facing_flip_deadzone = null
+wander_strength = null
 
 [node name="CommonGoblin2" parent="Enemies" parent_id_path=PackedInt32Array(30417903) index="8" unique_id=659796450 instance=ExtResource("6_22qgy")]
-material = SubResource("ShaderMaterial_kj02d")
+material = SubResource("ShaderMaterial_k5udj")
 position = Vector2(587, -169)
 
 [node name="Golem" parent="Enemies" parent_id_path=PackedInt32Array(30417903) index="9" unique_id=20234462 instance=ExtResource("8_rd61j")]
@@ -131,8 +163,9 @@ position = Vector2(464, -181)
 belt_dir = 1
 length = 10
 
-[node name="ElectricActivator" parent="." index="8" unique_id=754888994 instance=ExtResource("13_xpb1b")]
+[node name="ElectricActivator" parent="." index="8" unique_id=754888994 node_paths=PackedStringArray("mechanism") instance=ExtResource("13_xpb1b")]
 position = Vector2(170, 50)
+mechanism = NodePath("../Mechanism")
 
 [node name="Mechanism" type="Node2D" parent="." index="9" unique_id=922774968]
 position = Vector2(136, -8)

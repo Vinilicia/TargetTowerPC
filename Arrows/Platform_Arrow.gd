@@ -8,9 +8,9 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 	if has_collided:
 		return
 
-	var body = collision.get_collider()
-	var normal = collision.get_normal()
-	var contact_point = collision.get_position()
+	var body := collision.get_collider()
+	var normal := collision.get_normal()
+	var contact_point := collision.get_position()
 
 	if not has_bounced and not body.is_in_group("Attachables"):
 		bounce()
@@ -18,8 +18,8 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 
 	# cria plataforma
 	if body.is_in_group("Attachables"):
-		var platform = plat_spawner.instantiate()
-		var local_pos = body.to_local(contact_point)
+		var platform : = plat_spawner.instantiate()
+		var local_pos : Vector2 = body.to_local(contact_point)
 		body.add_child(platform)
 		platform.position = local_pos
 		

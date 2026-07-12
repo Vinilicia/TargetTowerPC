@@ -78,7 +78,7 @@ func _get(property: StringName):
 # 🔹 Helper: obtém o banco de dados de forma segura
 # ------------------------------------------------------------
 func _get_database() -> LevelDatabase:
-	if Engine.is_editor_hint() -> void:
+	if Engine.is_editor_hint():
 		return load(DB_PATH) as LevelDatabase
 	elif Engine.has_singleton("LevelDB"):
 		return LevelDB.database as LevelDatabase

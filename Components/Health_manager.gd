@@ -49,7 +49,7 @@ func stop_burning() -> void:
 
 func burning_loop(damage : float) -> void:
 		while (status_mask & Status.BURNING):
-			if !is_inside_tree() -> void:
+			if !is_inside_tree():
 				break
 			await get_tree().create_timer(seconds_per_fire_tick).timeout
 			lose_health(damage)

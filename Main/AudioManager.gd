@@ -6,7 +6,7 @@ func _ready() -> void:
 	create_sound_list(self)
 
 func create_sound_list(node : Node) -> void:
-	for child in node.get_children() -> void:
+	for child in node.get_children():
 		if child is AudioStreamPlayer:
 			_sounds[child.name] = child
 		else:

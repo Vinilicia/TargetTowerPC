@@ -1,23 +1,21 @@
 [gd_scene format=3 uid="uid://ywbtl3afqht4"]
 
 [ext_resource type="Script" uid="uid://baecb7qqnmgig" path="res://Interactibles/Mechanisms/Buttons&Receptors/electric_activator.gd" id="1_4pd00"]
-[ext_resource type="Script" uid="uid://dtlfihll5v4sl" path="res://Components/Hurtbox.gd" id="2_wqowu"]
+[ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="2_4pd00"]
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_bwd2v"]
 [ext_resource type="Script" uid="uid://p778jnxt7dbn" path="res://Components/Actions-Reactions/electric_component.gd" id="4_bik6k"]
 
 [node name="ElectricActivator" type="Node2D" unique_id=754888994 node_paths=PackedStringArray("hurtbox")]
 script = ExtResource("1_4pd00")
-hurtbox = NodePath("Hurtbox")
+hurtbox = NodePath("")
 metadata/_custom_type_script = "uid://bg8pwgi4g5mmq"
 
-[node name="Hurtbox" type="Area2D" parent="." unique_id=1537296751 node_paths=PackedStringArray("parent")]
-scale = Vector2(30, 30)
-script = ExtResource("2_wqowu")
+[node name="Hurtbox" parent="." unique_id=87970197 node_paths=PackedStringArray("parent") instance=ExtResource("2_4pd00")]
+modulate = Color(1, 1, 1, 1)
 parent = NodePath("..")
-can_be_invincible = false
-metadata/_custom_type_script = "uid://dtlfihll5v4sl"
 
 [node name="Coll" type="CollisionShape2D" parent="Hurtbox" unique_id=361963868]
+scale = Vector2(30, 30)
 shape = ExtResource("3_bwd2v")
 debug_color = Color(0.7137255, 1, 0, 0.53333336)
 

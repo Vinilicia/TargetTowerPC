@@ -135,7 +135,7 @@ func change_edit_buttons(to_visible : bool) -> void:
 	var file_select_back_button : Button = $FileSelectMenu/VBoxContainer/BackButton
 	if to_visible:
 		file_select_back_button.focus_neighbor_top = file_select_back_button.get_path_to(edit_buttons.get_child(1))
-		for child : Button in edit_buttons.get_children() -> void:
+		for child : Button in edit_buttons.get_children():
 			child.focus_neighbor_bottom = child.get_path_to(file_select_back_button)
 		for i in range(3):
 			var edit_button : Button = edit_buttons.get_child(i)

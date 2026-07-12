@@ -67,7 +67,7 @@ func adjust_to_ground() -> void:
 	position.x -= (left_dist - right_dist) * 0.5
 
 func update_length(new_width: int) -> void:
-	if not is_node_ready() -> void:
+	if not is_node_ready():
 		await ready
 	if sprite and coll:
 		sprite.region_rect = Rect2(0, 0, 13 * new_width, 24)

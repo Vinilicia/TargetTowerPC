@@ -36,7 +36,7 @@ func _ready() -> void:
 		direction = 1;
 
 func _physics_process(delta: float) -> void:
-	if not is_on_floor() -> void:
+	if not is_on_floor():
 		velocity += get_gravity() * delta
 
 	if (wall_detector.is_colliding() or not ground_detector.is_colliding()) and not saw_player:

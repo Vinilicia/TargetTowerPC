@@ -117,7 +117,7 @@ func _physics_process(_delta: float) -> void:
 
 #region Movimento baseado em tempo e velocidade
 func move_for(duration: float, direction: Vector2, speed: float, to_do: Callable = func() -> void: pass) -> void:
-	if stopping_tween and stopping_tween.is_running() -> void:
+	if stopping_tween and stopping_tween.is_running():
 		stopping_tween.kill()
 	if move_timer.is_connected("timeout", Callable(self, "_on_move_timeout")):
 		move_timer.timeout.disconnect(Callable(self, "_on_move_timeout"))
@@ -147,7 +147,7 @@ func set_facing(dir: int) -> void:
 		return
 	$BaseEnemyStuff/Bat.flip_h = !($BaseEnemyStuff/Bat.flip_h)
 	facing_direction = dir
-	for child in $BehaviorChanging.get_children() -> void:
+	for child in $BehaviorChanging.get_children():
 		child.position = Vector2(child.position.x * -1, child.position.y)
 	_update_ray_directions()
 #endregion
@@ -203,12 +203,12 @@ func _starting_chase_physics_processing(_delta : float) -> void:
 	var sees_player := line_of_sight.get_collider() == player_target
 	if sees_player:
 		giving_up_timer.stop()
-		if chasing_timer.is_stopped() -> void:
+		if chasing_timer.is_stopped():
 			chasing_timer.start(remaining_time_for_chase)
 	else:
 		remaining_time_for_chase = chasing_timer.time_left
 		chasing_timer.stop()
-		if giving_up_timer.is_stopped() -> void:
+		if giving_up_timer.is_stopped():
 			giving_up_timer.start(give_up_time)
 
 func start_chase() -> void:
@@ -244,7 +244,7 @@ func _chasing_state_physics_processing(_delta: float) -> void:
 	if sees_player:
 		giving_up_timer.stop()
 	else:
-		if giving_up_timer.is_stopped() -> void:
+		if giving_up_timer.is_stopped():
 			giving_up_timer.start(give_up_time)
 
 	# retarget periódico
@@ -268,7 +268,7 @@ func _chasing_state_physics_processing(_delta: float) -> void:
 		var avoidance_strength := 0.45  # ajuste fino: 0.2 .. 0.6
 
 		for ray in avoidance_rays:
-			if ray.is_colliding() -> void:
+			if ray.is_colliding():
 				active_rays += 1
 				var collision_point := ray.get_collision_point()
 				var away := global_position - collision_point
@@ -310,7 +310,7 @@ func _try_find_ceiling() -> void:
 	else:
 		var dir := Vector2(0, -1)
 		move_for(2.0, dir, current_speed)
-		if ceiling_retry_timer.is_stopped() -> void:
+		if ceiling_retry_timer.is_stopped():
 			ceiling_retry_timer.start()
 
 func _on_ceiling_retry_timeout() -> void:
@@ -323,7 +323,7 @@ func _find_best_ceiling_spot() -> Vector2:
 		var dir : Vector2 = Vector2(cos(deg_to_rad(angle_deg)), -sin(deg_to_rad(angle_deg)))
 		ceiling_detector.target_position = dir * 500
 		ceiling_detector.force_raycast_update()
-		if ceiling_detector.is_colliding() -> void:
+		if ceiling_detector.is_colliding():
 			var normal := ceiling_detector.get_collision_normal()
 			if is_zero_approx(normal.y - 1):
 				var dist : float = (ceiling_detector.get_collision_point() - global_position).length()
@@ -381,11 +381,11 @@ func _dive_area_body_exited(_body: Node2D) -> void:
 
 
 func _start_attack_delay() -> void:
-	if attack_delay_timer.is_stopped() -> void:
+	if attack_delay_timer.is_stopped():
 		attack_delay_timer.start(attack_reaction_delay)
 
 func _cancel_attack_delay_if_running() -> void:
-	if not attack_delay_timer.is_stopped() -> void:
+	if not attack_delay_timer.is_stopped():
 		attack_delay_timer.stop()
 
 func _on_attack_delay_timeout() -> void:

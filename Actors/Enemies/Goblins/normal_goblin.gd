@@ -83,7 +83,7 @@ func _physics_process(delta: float) -> void:
 	if not (attacking or player_in_range):
 		v_component.set_proper_velocity(current_speed * direction * current_speed_multiplier, 1)
 	
-	if not is_on_floor() -> void:
+	if not is_on_floor():
 		v_component.add_proper_velocity(get_current_gravity() * delta)
 	else:
 		if is_jumping:
@@ -100,7 +100,7 @@ func _physics_process(delta: float) -> void:
 
 	if player_is_nearby:
 		_update_lines_of_sight()
-		if not saw_player and _player_visible_in_sight() -> void:
+		if not saw_player and _player_visible_in_sight():
 			_start_chase()
 
 	if !is_changing_direction:
@@ -134,7 +134,7 @@ func _start_chase() -> void:
 
 func _player_entered_sight_area(player: Node2D) -> void:
 	assign_player(player)
-	if !giving_up_timer.is_stopped() -> void:
+	if !giving_up_timer.is_stopped():
 		giving_up_timer.stop()
 
 func assign_player(player : Node2D) -> void:
@@ -147,7 +147,7 @@ func unnasign_player() -> void:
 
 func _player_exited_sight_area(_player: Node2D) -> void:
 	player_is_nearby = false
-	if giving_up_timer.is_stopped() and giving_up_timer.is_inside_tree() -> void:
+	if giving_up_timer.is_stopped() and giving_up_timer.is_inside_tree():
 		giving_up_timer.start()
 
 func look_for_player() -> void:
@@ -189,7 +189,7 @@ func attack() -> void:
 func jump_attack() -> void:
 	can_jump_attack = false
 	can_stab_attack = false
-	if !stab_attack_timer.is_stopped() -> void:
+	if !stab_attack_timer.is_stopped():
 		stab_attack_timer.stop()
 	v_component.set_proper_velocity(Vector2(100 * direction, -80))
 	attack()
@@ -199,7 +199,7 @@ func jump_attack() -> void:
 func stab_attack() -> void:
 	can_stab_attack = false
 	can_jump_attack = false
-	if !jump_attack_timer.is_stopped() -> void:
+	if !jump_attack_timer.is_stopped():
 		jump_attack_timer.stop()
 	attack()
 	_reset_cooldown(jump_attack_timer)
@@ -222,7 +222,7 @@ func jump() -> void:
 	v_component.set_proper_velocity(jump_force, 2)
 
 func _on_attack_state_physics_processing(_delta: float) -> void:
-	if is_on_floor() -> void:
+	if is_on_floor():
 		v_component.set_proper_velocity(0.0, 1)
 		if player_in_range and can_stab_attack:
 			stab_attack()
@@ -255,7 +255,7 @@ func _on_chasing_state_physics_processing(_delta: float) -> void:
 			v_component.set_proper_velocity(0.0, 1)
 
 	if not _player_visible_in_sight() and saw_player:
-		if giving_up_timer.is_stopped() -> void:
+		if giving_up_timer.is_stopped():
 			giving_up_timer.start()
 
 	var position_difference = player_target.position.x - position.x
@@ -277,7 +277,7 @@ func _on_guarding_state_physics_processing(_delta: float) -> void:
 	var hit_wall := wall_detector.is_colliding()
 	var no_ground := !ground_detector.is_colliding()
 
-	if (hit_wall or no_ground) and is_on_floor() -> void:
+	if (hit_wall or no_ground) and is_on_floor():
 		_change_direction()
 
 

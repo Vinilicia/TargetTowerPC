@@ -14,11 +14,11 @@ func _on_body_entered(body: Node2D) -> void:
 		close()
 
 func close() -> void:
-	for door in get_children() -> void:
+	for door in get_children():
 		if door is BossDoor:
 			door.close()
 
 func open() -> void:
-	for door in get_children() -> void:
+	for door in get_children():
 		if door is BossDoor:
 			door.open()

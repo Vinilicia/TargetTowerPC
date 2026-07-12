@@ -92,7 +92,7 @@ func _physics_process(delta: float) -> void:
 		if using_aim_enemy:
 			handle_aim_enemy()
 	handle_terrain_state(delta)
-	if is_on_floor() -> void:
+	if is_on_floor():
 		if terrain_state != TERRAIN_STATE.Grounded:
 			terrain_state = TERRAIN_STATE.Grounded
 			grounded_entered()
@@ -120,7 +120,7 @@ func reset_arrow() -> void:
 	holding_time = 0.0
 
 func build_arrows() -> void:
-	if current_arrow and current_arrow.is_inside_tree() -> void:
+	if current_arrow and current_arrow.is_inside_tree():
 		current_arrow.queue_free()
 	arrows = []
 	#var available_arrows := SaveManager.save_file_data.get_available_arrows()
@@ -160,7 +160,7 @@ func grounded_entered() -> void:
 func airbone_process(delta : float) -> void:
 	v_comp.add_gravity_velocity(Vector2.DOWN * get_current_gravity() * delta)
 	corner_correction(7, delta)
-	if is_on_ceiling() -> void:
+	if is_on_ceiling():
 		v_comp.set_proper_velocity((v_comp.get_proper_velocity(2) * 0.4), 2)
 		v_comp.set_gravity_velocity(v_comp.get_gravity_velocity(2) * 0.4, 2)
 
@@ -208,7 +208,7 @@ func movement_inputs() -> void:
 			turn()
 	else:
 		v_comp.set_proper_velocity(0.0, 1)
-		if Input.is_action_pressed("down") and !crouching and is_on_floor() -> void:
+		if Input.is_action_pressed("down") and !crouching and is_on_floor():
 			if v_comp.get_proper_velocity(2) >= 0.0:
 				crouch()
 
@@ -221,7 +221,7 @@ func handle_terrain_state(delta: float) -> void:
 
 func combat_inputs() -> void:
 	if holding_arrow:
-		if !current_arrow.is_inside_tree() -> void:
+		if !current_arrow.is_inside_tree():
 			push_error("FLECHA NAO ESTAVA NA ARVORE MAS HOLDING_ARROW ERA TRUE")
 			return
 		current_arrow.scale.x = scale.x
@@ -262,9 +262,9 @@ func dodge() -> void:
 	get_tree().process_frame.connect(dodge_process.bind(can_jump_at_end, sign(dodge_vec.x)))
 
 func end_dodge_check(can_jump_at_end : bool, start_direction : int) -> void:
-	if !end_dodge() -> void:
+	if !end_dodge():
 		return
-	if can_jump_at_end and Input.is_action_pressed("jump") and is_on_floor() -> void:
+	if can_jump_at_end and Input.is_action_pressed("jump") and is_on_floor():
 		jump()
 		get_tree().process_frame.connect(reset_speed.bind(move_speed, start_direction))
 		move_speed *= 2
@@ -272,7 +272,7 @@ func end_dodge_check(can_jump_at_end : bool, start_direction : int) -> void:
 		get_tree().process_frame.disconnect(dodge_process)
 
 func dodge_process(can_jump_at_end : bool, start_direction : int) -> void:
-	if is_on_floor() and !ledge_detec.is_colliding() -> void:
+	if is_on_floor() and !ledge_detec.is_colliding():
 		end_dodge_check(can_jump_at_end, start_direction)
 
 func reset_speed(speed_to_reset : float, start_direction : int) -> void:
@@ -281,7 +281,7 @@ func reset_speed(speed_to_reset : float, start_direction : int) -> void:
 		going_foward = Input.is_action_pressed("right")
 	else:
 		going_foward = Input.is_action_pressed("left")
-	if is_on_floor() or !going_foward or wall_detec.is_colliding() -> void:
+	if is_on_floor() or !going_foward or wall_detec.is_colliding():
 		move_speed = speed_to_reset
 		get_tree().process_frame.disconnect(reset_speed)
 
@@ -341,20 +341,20 @@ func direction_inputs() -> void:
 	if Input.is_action_pressed("up"):
 		dir_x = 0
 		dir_y = -1
-		if !is_on_floor() -> void:
+		if !is_on_floor():
 			dodge_dir_y = -1
 			dodge_dir_x = 0
-	if Input.is_action_pressed("down") and !is_on_floor() -> void:
+	if Input.is_action_pressed("down") and !is_on_floor():
 		dir_x = 0
 		dir_y = 1
 		dodge_dir_y = 1
 		dodge_dir_x = 0
 	if Input.is_action_pressed("left"):
-		if is_on_floor() -> void:
+		if is_on_floor():
 			dodge_dir_x = -1
 			dodge_dir_y = 0
 	elif Input.is_action_pressed("right"):
-		if is_on_floor() -> void:
+		if is_on_floor():
 			dodge_dir_x = 1
 			dodge_dir_y = 0
 	
@@ -454,10 +454,10 @@ func _input(event: InputEvent) -> void:
 	# ===== GRAB =====
 	if event.is_action_pressed("grab"):
 		if not carrying:
-			if !portables_to_carry.is_empty() -> void:
+			if !portables_to_carry.is_empty():
 				grab(portables_to_carry[0])
 		else:
-			if !is_on_floor() -> void:
+			if !is_on_floor():
 				throw_portable()
 			else:
 				if not Input.is_action_pressed("down"):
@@ -468,7 +468,7 @@ func _input(event: InputEvent) -> void:
 	if !in_control:
 		return
 	if event.is_action_pressed("jump"):
-		if is_on_floor() -> void:
+		if is_on_floor():
 			jump()
 		else:
 			if stomp_area.has_overlapping_areas() and using_stomp:
@@ -494,8 +494,8 @@ func _input(event: InputEvent) -> void:
 	
 	# ===== HOLDING ARROW / MELEE ATTACK =====
 	if event.is_action_pressed("shoot"):
-		if not melee_area.has_overlapping_areas() -> void:
-			if hold_arrow() -> void:
+		if not melee_area.has_overlapping_areas():
+			if hold_arrow():
 				holding_arrow = false
 				call_deferred("shoot")
 		else:
@@ -507,7 +507,7 @@ func _input(event: InputEvent) -> void:
 	# ===== SWITCH ARROW =====
 	if event.is_action_pressed("switch arrow"):
 		arrow_index = (arrow_index + 1) % arrows.size()
-		if current_arrow.is_inside_tree() -> void:
+		if current_arrow.is_inside_tree():
 			shoot()
 		else:
 			current_arrow = equip_arrow()

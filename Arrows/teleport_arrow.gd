@@ -9,8 +9,8 @@ func setup_hitbox(parent : Node2D) -> void:
 	this_parent = parent
 
 func _handle_collision(collision: KinematicCollision2D) -> void:
-	var normal = collision.get_normal()
-	var contact_point = collision.get_position()
+	var normal := collision.get_normal()
+	var contact_point := collision.get_position()
 	move_parent(contact_point + normal * 8)
 	queue_free()
 
@@ -29,7 +29,7 @@ func move_target(target : Node2D, pos : Vector2) -> void:
 
 func _on_hitbox_hit(target: Node2D) -> void:
 	velocity = Vector2.ZERO
-	var target_position = target.global_position
+	var target_position := target.global_position
 	move_target(target, get_parent().global_position)
 	move_parent(target_position)
 	queue_free()

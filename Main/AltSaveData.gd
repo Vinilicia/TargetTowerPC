@@ -18,37 +18,37 @@ extends Resource
 # -----------------------------------
 
 func get_health_upgrade(index: int) -> bool:
-	if index >= 0 and index < HealthUpgrades.size() -> void:
+	if index >= 0 and index < HealthUpgrades.size():
 		return HealthUpgrades[index]
 	print("Erro: Índice de HealthUpgrades fora do alcance.")
 	return false
 
 func set_health_upgrade(index: int):
-	if index >= 0 and index < HealthUpgrades.size() -> void:
+	if index >= 0 and index < HealthUpgrades.size():
 		HealthUpgrades[index] = true
 	else:
 		print("Erro: Índice de HealthUpgrades fora do alcance.")
 
 func get_mana_upgrade(index: int) -> bool:
-	if index >= 0 and index < ManaUpgrades.size() -> void:
+	if index >= 0 and index < ManaUpgrades.size():
 		return ManaUpgrades[index]
 	print("Erro: Índice de ManaUpgrades fora do alcance.")
 	return false
 
 func set_mana_upgrade(index: int):
-	if index >= 0 and index < ManaUpgrades.size() -> void:
+	if index >= 0 and index < ManaUpgrades.size():
 		ManaUpgrades[index] = true
 	else:
 		print("Erro: Índice de ManaUpgrades fora do alcance.")
 
 func get_available_arrow(index: int) -> bool:
-	if index >= 0 and index < AvailableArrows.size() -> void:
+	if index >= 0 and index < AvailableArrows.size():
 		return AvailableArrows[index]
 	print("Erro: Índice de AvailableArrows fora do alcance.")
 	return false
 
 func set_available_arrow(index: int):
-	if index >= 0 and index < AvailableArrows.size() -> void:
+	if index >= 0 and index < AvailableArrows.size():
 		AvailableArrows[index] = true
 	else:
 		print("Erro: Índice de AvailableArrows fora do alcance.")

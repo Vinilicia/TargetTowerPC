@@ -42,7 +42,7 @@ func save_controls(path: String) -> void:
 	var controls_data: Dictionary = {}
 
 	# Só salva ações personalizáveis (não as de UI internas)
-	for action_name in InputMap.get_actions() -> void:
+	for action_name in InputMap.get_actions():
 		if action_name.begins_with("ui_"):
 			continue
 
@@ -88,12 +88,12 @@ func load_controls(path: String) -> void:
 	var data: Dictionary = parse_res
 
 	# Apenas limpa as ações que estão no arquivo salvo (nunca as 'ui_*')
-	for action_name : String in data.keys() -> void:
+	for action_name : String in data.keys():
 		if InputMap.has_action(action_name):
 			InputMap.action_erase_events(action_name)
 
 	# Restaura bindings do arquivo
-	for action_name : String in data.keys() -> void:
+	for action_name : String in data.keys():
 		if not InputMap.has_action(action_name):
 			print("⚠ Ação '%s' não existe no projeto, ignorando." % action_name)
 			continue
@@ -141,7 +141,7 @@ func _save(slot_index: int) -> void:
 	var file := FileAccess.open_encrypted_with_pass(save_path, FileAccess.WRITE, "1n1c19a436")
 
 	var data_to_save: Dictionary = {}
-	for prop_info in save_file_data.get_property_list() -> void:
+	for prop_info in save_file_data.get_property_list():
 		var prop_name : String = prop_info.name
 		if prop_name == "Money":
 			print("BANANA ", save_file_data.get("MoneyUpgrades"))
@@ -206,7 +206,7 @@ func _load(slot_index: int) -> bool:
 	# SAVE ANTIGO (migração)
 	elif saved_version < current_version:
 		print("Save antigo (%d < %d) — migrando..." % [saved_version, current_version])
-		for prop_info in default_data.get_property_list() -> void:
+		for prop_info in default_data.get_property_list():
 			var prop_name : String = prop_info.name
 			if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path", "script"]:
 				continue
@@ -241,7 +241,7 @@ func _load(slot_index: int) -> bool:
 
 	# MESMA VERSÃO
 	else:
-		for prop_info in default_data.get_property_list() -> void:
+		for prop_info in default_data.get_property_list():
 			var prop_name : String = prop_info.name
 			if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path", "script"]:
 				continue
@@ -356,7 +356,7 @@ func load_settings() -> void:
 	if saved_version < current_version:
 		print("Settings antigo (%d < %d) — migrando..." % [saved_version, current_version])
 		var new_settings: Dictionary = default_settings.duplicate(true)
-		for key : String in default_settings.keys() -> void:
+		for key : String in default_settings.keys():
 			if key == "SettingsVersion":
 				continue
 			if data.has(key):
@@ -374,7 +374,7 @@ func load_settings() -> void:
 
 	# MESMA VERSÃO — valida e preenche faltantes
 	var merged: Dictionary = default_settings.duplicate(true)
-	for key : String in default_settings.keys() -> void:
+	for key : String in default_settings.keys():
 		if data.has(key):
 			var def_val : Variant = default_settings[key]
 			var val : Variant = data[key]

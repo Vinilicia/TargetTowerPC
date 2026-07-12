@@ -47,7 +47,7 @@ func _create_action_list() -> void:
 	var created_buttons: Array[Button] = []
 	
 	# Remove botões antigos
-	for button in buttons_container.get_children() -> void:
+	for button in buttons_container.get_children():
 		if button is Button:
 			if button.pressed.is_connected(remap_action):
 				button.pressed.disconnect(remap_action)
@@ -79,7 +79,7 @@ func _create_action_list() -> void:
 		last_button.focus_neighbor_bottom = reset_button.get_path()
 	
 	for i in range(0, created_buttons.size(), 2):
-		if i + 1 < created_buttons.size() -> void:
+		if i + 1 < created_buttons.size():
 			var left_button : Button = created_buttons[i]
 			var right_button : Button = created_buttons[i + 1]
 			
@@ -124,7 +124,7 @@ func remap_input(action : String, event: InputEvent) -> void:
 	var previous_action : String = find_action_by_event(event)
 	if previous_action != "":
 		if previous_action != action:
-			for button in buttons_container.get_children() -> void:
+			for button in buttons_container.get_children():
 				if button.find_child("ActionLabel").text == input_actions[previous_action]:
 					previous_button = button
 			InputMap.action_erase_events(previous_action)
