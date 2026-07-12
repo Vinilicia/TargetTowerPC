@@ -69,7 +69,7 @@ func attack() -> void:
 	get_tree().process_frame.connect(ground_check_for_attack)
 
 func ground_check_for_attack() -> void:
-	if is_on_floor():
+	if is_on_floor() -> void:
 		get_tree().process_frame.disconnect(ground_check_for_attack)
 		slam()
 
@@ -86,13 +86,13 @@ func go_to_crumbled() -> void:
 	await get_tree().create_timer(attack_recovery_time).timeout
 	hurtbox.get_invincible()
 	go_to_walk_state()
-	get_tree().create_timer(attack_cooldown).timeout.connect(func() : 
+	get_tree().create_timer(attack_cooldown).timeout.connect(func() -> void: 
 		attack_area.set_deferred("monitoring", true))
 
 func _on_sight_area_body_entered(_body: Node2D) -> void:
 	if state == State.Idle:
 		go_to_walk_state()
-		get_tree().create_timer(initial_attack_delay + wake_up_delay).timeout.connect(func() :
+		get_tree().create_timer(initial_attack_delay + wake_up_delay).timeout.connect(func() -> void:
 			attack_area.set_deferred("monitoring", true))
 
 func _on_attack_area_body_entered(body: Node2D) -> void:

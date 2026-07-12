@@ -5,6 +5,7 @@ class_name VelocityComponent
 @export var parent : CharacterBody2D
 
 var proper_velocity : Vector2
+var gravity_velocity : Vector2
 var knockback_velocity : Vector2
 var ground_velocity : Vector2
 var wind_velocity : Vector2
@@ -22,36 +23,48 @@ func _physics_process(_delta: float) -> void:
 		var reduction_vector : Vector2 = knockback_velocity.normalized() * reduction
 		knockback_velocity -= reduction_vector
 
-func set_proper_velocity(value, axis : int = -1) -> void:
+func set_proper_velocity(value : Variant, axis : int = -1) -> void:
 	if value is Vector2:
 		proper_velocity = value
-	elif value is float:
+	elif value is float or value is int:
 		if axis == 1:
 			proper_velocity.x = value
 		elif axis == 2:
 			proper_velocity.y = value
 
-func set_knockback_velocity(value) -> void:
+func set_gravity_velocity(value : Variant, axis : int = -1) -> void:
+	if value is Vector2:
+		gravity_velocity = value
+	elif value is float or value is int:
+		if axis == 1:
+			gravity_velocity.x = value
+		elif axis == 2:
+			gravity_velocity.y = value
+
+func set_knockback_velocity(value : Variant) -> void:
 	if value is Vector2:
 		knockback_velocity = value
-	elif value is float:
+	elif value is float or value is int:
 		knockback_velocity *= value
 	emit_signal("knockback_changed")
 
-func set_ground_velocity(value) -> void:
+func set_ground_velocity(value : Variant) -> void:
 	if value is Vector2:
 		ground_velocity = value
-	elif value is float:
+	elif value is float or value is int:
 		ground_velocity *= value
 
-func set_wind_velocity(value) -> void:
+func set_wind_velocity(value : Variant) -> void:
 	if value is Vector2:
 		wind_velocity = value
-	elif value is float:
+	elif value is float or value is int:
 		wind_velocity *= value
 
 func add_proper_velocity(value : Vector2) -> void:
 	proper_velocity += value
+
+func add_gravity_velocity(value : Vector2) -> void:
+	gravity_velocity += value
 
 func add_knockback_velocity(value : Vector2) -> void:
 	knockback_velocity += value
@@ -63,36 +76,45 @@ func add_ground_velocity(value : Vector2) -> void:
 func add_wind_velocity(value : Vector2) -> void:
 	wind_velocity += value
 
-func get_proper_velocity(axis : int = -1):
+func get_proper_velocity(axis : int = -1) -> Variant:
 	if axis == 1:
 		return proper_velocity.x as float
 	elif axis == 2:
 		return proper_velocity.y as float
 	return proper_velocity as Vector2
 
-func get_knockback_velocity(axis : int = -1):
+func get_gravity_velocity(axis : int = -1) -> Variant:
+	if axis == 1:
+		return gravity_velocity.x as float
+	elif axis == 2:
+		return gravity_velocity.y as float
+	return gravity_velocity as Vector2
+
+func get_knockback_velocity(axis : int = -1) -> Variant:
 	if axis == 1:
 		return knockback_velocity.x as float
 	elif axis == 2:
 		return knockback_velocity.y as float
 	return knockback_velocity as Vector2
 	
-func get_ground_velocity(axis : int = -1):
+func get_ground_velocity(axis : int = -1) -> Variant:
 	if axis == 1:
 		return ground_velocity.x as float
 	elif axis == 2:
 		return ground_velocity.y as float
 	return ground_velocity as Vector2
 
-func get_wind_velocity(axis : int = -1):
+func get_wind_velocity(axis : int = -1) -> Variant:
 	if axis == 1:
 		return wind_velocity.x as float
 	elif axis == 2:
 		return wind_velocity.y as float
 	return wind_velocity as Vector2
 
+
 func get_total_velocity() -> Vector2:
 	var clamped_knockback := Vector2(clamp(knockback_velocity.x, -400, 400), clamp(knockback_velocity.y, -400, 400))
 	var selected_wind_velocity := wind_velocity if !parent.is_on_floor() else Vector2.ZERO
 	var selected_ground_velocity := ground_velocity if parent.is_on_floor() else Vector2.ZERO
-	return (proper_velocity + clamped_knockback + selected_ground_velocity + selected_wind_velocity)
+	var selected_gravity_velocity := gravity_velocity if !parent.is_on_floor() else Vector2.ZERO
+	return (proper_velocity + selected_gravity_velocity + clamped_knockback + selected_ground_velocity + selected_wind_velocity)

@@ -52,14 +52,14 @@ func _on_resolution_item_selected(index: int) -> void:
 
 func _on_brightness_bar_value_changed(value: float) -> void:
 	if environment and environment.environment:
-		var mapped_value = lerp(BRIGHTNESS_MIN, BRIGHTNESS_MAX, value)
+		var mapped_value : float = lerp(BRIGHTNESS_MIN, BRIGHTNESS_MAX, value)
 		environment.environment.adjustment_brightness = mapped_value
 
 	# Salva na estrutura de configurações gerais
 	SaveManager.settings_data.brightness_value = value
 
-func _apply_saved_settings():
-	var s = SaveManager.settings_data
+func _apply_saved_settings() -> void:
+	var s : Dictionary = SaveManager.settings_data
 
 	# Aplica modo de exibição salvo
 	if s.display_mode != null:
@@ -82,7 +82,7 @@ func _set_window_size() -> void:
 
 
 func _connect_signal(container : MarginContainer, button_name: String, bar : TextureProgressBar, value: float) -> void:
-	var button = container.find_child(button_name, true)
+	var button : Button = container.find_child(button_name, true)
 	if button:
 		button.pressed.connect(_change_bar_value.bind(bar, value))
 
@@ -92,10 +92,10 @@ func _change_bar_value(bar : TextureProgressBar, added_value : float) -> void:
 
 
 func _connect_focus_neighbors(container : MarginContainer) -> void:
-	var minus_button = container.find_child("MinusButton", true)
-	var plus_button = container.find_child("PlusButton", true)
-	var min_button = container.find_child("DarkestButton", true)
-	var full_button = container.find_child("BrightestButton", true)
+	var minus_button : Button = container.find_child("MinusButton", true)
+	var plus_button : Button = container.find_child("PlusButton", true)
+	var min_button : Button = container.find_child("DarkestButton", true)
+	var full_button : Button = container.find_child("BrightestButton", true)
 	
 	if minus_button and plus_button:
 		minus_button.focus_neighbor_right = plus_button.get_path()
@@ -128,5 +128,5 @@ func _ready() -> void:
 # =================== SAIR DA TELA =====================
 # ======================================================
 
-func _on_back_button_pressed():
+func _on_back_button_pressed() -> void:
 	SaveManager.save_settings()

@@ -16,6 +16,7 @@
 [node name="Player" type="CharacterBody2D" unique_id=1842832799 node_paths=PackedStringArray("v_comp", "health_man", "mana_timer", "sprite", "melee_area", "stomp_area", "melee_hitbox", "stomp_hitbox", "anim_handler", "hurtbox", "wall_detec", "ledge_detec", "enemy_tracker", "aim_enemy", "fire_comp", "ice_comp") groups=["Player"]]
 collision_mask = 20
 script = ExtResource("1_mwnd1")
+using_aim_enemy = false
 v_comp = NodePath("Misc/VelocityComponent")
 health_man = NodePath("Misc/HealthManager")
 mana_timer = NodePath("Misc/ManaRegenTimer")
@@ -75,7 +76,6 @@ shape = ExtResource("4_26aeq")
 position = Vector2(0, -2)
 scale = Vector2(7, 10)
 collision_mask = 3072
-monitoring = false
 parent = NodePath("..")
 invincibility_duration = 1.1
 
@@ -83,10 +83,9 @@ invincibility_duration = 1.1
 shape = ExtResource("11_cdutm")
 
 [node name="FireComponent" parent="Hurtbox" unique_id=28466235 node_paths=PackedStringArray("hurtbox") instance=ExtResource("8_upr3p")]
-hurtbox = NodePath("..")
 has_basic_fire = false
 burn_time = 0.01
-extinguish_time = 1.0
+hurtbox = NodePath("..")
 
 [node name="IceComponent" parent="Hurtbox" unique_id=1854588271 instance=ExtResource("12_upr3p")]
 regular_behaviour = false
@@ -186,9 +185,9 @@ position = Vector2(-24, -26)
 [connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_manager_lost_health"]
 [connection signal="timeout" from="Misc/ManaRegenTimer" to="." method="_on_mana_regen_timer_timeout"]
 [connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]
-[connection signal="caught_fire" from="Hurtbox/FireComponent" to="." method="_on_fire_component_caught_fire"]
-[connection signal="froze" from="Hurtbox/IceComponent" to="." method="_on_ice_manager_froze"]
-[connection signal="melt" from="Hurtbox/IceComponent" to="." method="_on_ice_manager_melt"]
+[connection signal="effect_started" from="Hurtbox/FireComponent" to="." method="_on_fire_component_caught_fire"]
+[connection signal="effect_ended" from="Hurtbox/IceComponent" to="." method="_on_ice_manager_melt"]
+[connection signal="effect_started" from="Hurtbox/IceComponent" to="." method="_on_ice_manager_froze"]
 [connection signal="body_entered" from="Utilities/Areas&Boxes/PortableDetector" to="." method="_on_portable_detector_body_entered"]
 [connection signal="body_exited" from="Utilities/Areas&Boxes/PortableDetector" to="." method="_on_portable_detector_body_exited"]
 [connection signal="body_entered" from="Utilities/AimEnemy/AimSight" to="." method="_on_aim_sight_enemy_entered"]

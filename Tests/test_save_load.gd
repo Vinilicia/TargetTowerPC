@@ -29,7 +29,7 @@ func assert_eq(a, b, msg: String = "") -> void:
 	assert(ok, "assert_eq failed: %s != %s. %s" % [str(a), str(b), msg])
 
 # --- CICLO DE VIDA DO TESTE ---
-func _ready():
+func _ready() -> void:
 	print("\n█▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀▀█")
 	print("█      INICIANDO BATERIA DE TESTES        █")
 	print("█▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄▄█\n")
@@ -66,7 +66,7 @@ func _run(test_func: Callable):
 	after_each()
 	print("✔ PASSOU: ", test_func.get_method(), "\n")
 
-func before_each():
+func before_each() -> void:
 	save_manager = SaveLoadManager.new()
 	# Limpeza brutal para garantir isolamento
 	var dir = DirAccess.open("user://")
@@ -76,7 +76,7 @@ func before_each():
 			if f.begins_with("SaveFile_") or f.begins_with("Controls_") or f == "settings.json":
 				dir.remove("user://" + f)
 
-func after_each():
+func after_each() -> void:
 	# Pode ser usado para liberar memória explícita se necessário
 	if save_manager:
 		save_manager.free()
@@ -102,14 +102,14 @@ func verify_system_integrity(context: String):
 # TESTES ORIGINAIS (Mantidos para Regressão)
 # ==========================================
 
-func test_create_new_save_if_missing():
+func test_create_new_save_if_missing() -> void:
 	assert_false(FileAccess.file_exists(save_manager.get_save_path(TEST_SLOT)), "Arquivo não deveria existir")
 	var result = save_manager._load(TEST_SLOT)
 	assert_true(result, "Load deve retornar true ao criar novo")
 	assert_true(FileAccess.file_exists(save_manager.get_save_path(TEST_SLOT)), "Arquivo deve ter sido criado")
 	assert_eq(save_manager.save_file_data.MaxHealth, 4)
 
-func test_save_and_load_roundtrip():
+func test_save_and_load_roundtrip() -> void:
 	save_manager._load(TEST_SLOT)
 	save_manager.save_file_data.set_money(123)
 	save_manager.save_file_data.set_max_health(9)
@@ -121,7 +121,7 @@ func test_save_and_load_roundtrip():
 	assert_eq(new_manager.save_file_data.MaxHealth, 9)
 	new_manager.free()
 
-func test_save_migration():
+func test_save_migration() -> void:
 	# Simula versão antiga v0
 	var path = save_manager.get_save_path(TEST_SLOT)
 	var file = FileAccess.open_encrypted_with_pass(path, FileAccess.WRITE, "1n1c19a436")
@@ -140,7 +140,7 @@ func test_save_migration():
 	# Verifica se atualizou a versão
 	assert_true(save_manager.save_file_data.SaveVersion > 0, "Versão do save deve ter subido")
 
-func test_settings_save_and_load():
+func test_settings_save_and_load() -> void:
 	save_manager.settings_data["master_volume"] = 0.33
 	save_manager.save_settings()
 	var new := SaveLoadManager.new()
@@ -148,7 +148,7 @@ func test_settings_save_and_load():
 	assert_eq(new.settings_data["master_volume"], 0.33)
 	new.free()
 
-func test_settings_migration():
+func test_settings_migration() -> void:
 	var file = FileAccess.open(TEST_SETTINGS_PATH, FileAccess.WRITE)
 	file.store_string(JSON.stringify({
 		"SettingsVersion": 0,
@@ -160,7 +160,7 @@ func test_settings_migration():
 	assert_eq(save_manager.settings_data["master_volume"], 0.1)
 	assert_eq(save_manager.settings_data["locale"], "es")
 
-func test_controls_save_and_load():
+func test_controls_save_and_load() -> void:
 	InputMap.add_action("attack")
 	var ev := InputEventKey.new()
 	ev.keycode = KEY_K
@@ -176,7 +176,7 @@ func test_controls_save_and_load():
 	if events.size() > 0:
 		assert_eq(events[0].keycode, KEY_K)
 
-func test_copy_slot():
+func test_copy_slot() -> void:
 	save_manager._load(TEST_SLOT)
 	save_manager.save_file_data.set_money(500)
 	save_manager._save(TEST_SLOT)
@@ -187,7 +187,7 @@ func test_copy_slot():
 	assert_eq(m2.save_file_data.Money, 500)
 	m2.free()
 
-func test_delete_slot():
+func test_delete_slot() -> void:
 	save_manager._load(TEST_SLOT)
 	save_manager._save(TEST_SLOT)
 	assert_true(FileAccess.file_exists(save_manager.get_save_path(TEST_SLOT)))
@@ -198,7 +198,7 @@ func test_delete_slot():
 # NOVOS TESTES DE ESTRESSE E ROBUSTEZ
 # ==========================================
 
-func test_corrupted_save_file():
+func test_corrupted_save_file() -> void:
 	# 1. Cria um arquivo totalmente corrompido (Lixo binário ou texto aleatório)
 	var path = save_manager.get_save_path(TEST_SLOT)
 	var file = FileAccess.open(path, FileAccess.WRITE) # Sem criptografia para estragar propositalmente
@@ -218,7 +218,7 @@ func test_corrupted_save_file():
 	# Amostrador: O objeto data ainda existe?
 	assert_true(save_manager.save_file_data != null, "Resource de dados não deve ser destruído no erro")
 
-func test_controls_complex_inputs():
+func test_controls_complex_inputs() -> void:
 	# Testa Joystick e Mouse (que costumam dar erro de serialização JSON)
 	var action_name = "complex_jump"
 	if InputMap.has_action(action_name): InputMap.erase_action(action_name)
@@ -257,7 +257,7 @@ func test_controls_complex_inputs():
 	assert_true(recovered_joy, "Deve recuperar evento de Joystick")
 	assert_true(recovered_mouse, "Deve recuperar evento de Mouse")
 
-func test_migration_bad_types():
+func test_migration_bad_types() -> void:
 	# Simula um save antigo onde 'Money' foi salvo como String errada, 
 	# para ver se o jogo crasha ao tentar somar Int com String.
 	var path = save_manager.get_save_path(TEST_SLOT)

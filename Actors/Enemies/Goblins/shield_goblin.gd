@@ -36,7 +36,7 @@ func _ready() -> void:
 		direction = 1;
 
 func _physics_process(delta: float) -> void:
-	if not is_on_floor():
+	if not is_on_floor() -> void:
 		velocity += get_gravity() * delta
 
 	if (wall_detector.is_colliding() or not ground_detector.is_colliding()) and not saw_player:
@@ -117,7 +117,7 @@ func flip() -> void:
 	shield.position.x *= -1
 	area_shield.position.x *= -1
 
-func shield_up():
+func shield_up() -> void:
 	shield.rotation = deg_to_rad(90)
 	shield.position.x = 0
 	shield.position.y = -16
@@ -125,7 +125,7 @@ func shield_up():
 	area_shield.position.x = 0
 	area_shield.position.y = -18
 	
-func shield_down():
+func shield_down() -> void:
 	shield.rotation = 0
 	area_shield.rotation = 0
 	if direction == -1:

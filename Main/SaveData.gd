@@ -21,49 +21,49 @@ class_name SaveDataResource
 # -----------------------------------
 
 func get_health_upgrade(index: int) -> bool:
-	if index >= 0 and index < HealthUpgrades.size():
+	if index >= 0 and index < HealthUpgrades.size() -> void:
 		return HealthUpgrades[index]
 	push_error("Erro: Índice de HealthUpgrades fora do alcance (%d)." % index)
 	return false
 
 func set_health_upgrade(index: int) -> void:
-	if index >= 0 and index < HealthUpgrades.size():
+	if index >= 0 and index < HealthUpgrades.size() -> void:
 		HealthUpgrades[index] = true
 	else:
 		push_error("Erro: Índice de HealthUpgrades fora do alcance (%d)." % index)
 
 func get_mana_upgrade(index: int) -> bool:
-	if index >= 0 and index < ManaUpgrades.size():
+	if index >= 0 and index < ManaUpgrades.size() -> void:
 		return ManaUpgrades[index]
 	push_error("Erro: Índice de ManaUpgrades fora do alcance (%d)." % index)
 	return false
 
 func set_mana_upgrade(index: int) -> void:
-	if index >= 0 and index < ManaUpgrades.size():
+	if index >= 0 and index < ManaUpgrades.size() -> void:
 		ManaUpgrades[index] = true
 	else:
 		push_error("Erro: Índice de ManaUpgrades fora do alcance (%d)." % index)
 
 func get_money_upgrade(index: int) -> bool:
-	if index >= 0 and index < MoneyUpgrades.size():
+	if index >= 0 and index < MoneyUpgrades.size() -> void:
 		return MoneyUpgrades[index]
 	push_error("Erro: Índice de MoneyUpgrades" % index)
 	return false
 
 func set_money_upgrade(index: int) -> void:
-	if index >= 0 and index < MoneyUpgrades.size():
+	if index >= 0 and index < MoneyUpgrades.size() -> void:
 		MoneyUpgrades[index] = true
 	else:
 		push_error("Erro: Índice de MoneyUpgrades" % index)
 
 func get_available_arrow(index: int) -> bool:
-	if index >= 0 and index < AvailableArrows.size():
+	if index >= 0 and index < AvailableArrows.size() -> void:
 		return AvailableArrows[index]
 	push_error("Erro: Índice de AvailableArrows fora do alcance (%d)." % index)
 	return false
 
 func set_available_arrow(index: int) -> void:
-	if index >= 0 and index < AvailableArrows.size():
+	if index >= 0 and index < AvailableArrows.size() -> void:
 		AvailableArrows[index] = true
 	else:
 		push_error("Erro: Índice de AvailableArrows fora do alcance (%d)." % index)
@@ -123,6 +123,6 @@ func set_max_money(value: int) -> void:
 
 func create_bool_array(array : Array) -> Array[bool]:
 	var new_array : Array[bool] = []
-	for value in array:
-		new_array.append(bool(value))
+	for value : bool in array:
+		new_array.append(value)
 	return new_array

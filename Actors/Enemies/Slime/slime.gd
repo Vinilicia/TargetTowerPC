@@ -37,11 +37,11 @@ func can_attack() -> bool:
 		and is_instance_valid(player_target)
 
 func try_start_attack() -> void:
-	if can_attack() and attack_timer.is_stopped():
+	if can_attack() and attack_timer.is_stopped() -> void:
 		attack_timer.start()
 
 func stop_attack() -> void:
-	if not attack_timer.is_stopped():
+	if not attack_timer.is_stopped() -> void:
 		attack_timer.stop()
 
 func change_type(new_type : SlimeType) -> void:
@@ -65,19 +65,13 @@ func _ready() -> void:
 	change_type(type)
 
 func _physics_process(delta: float) -> void:
-	if not is_on_floor():
-		v_component.add_proper_velocity(get_gravity() * delta)
-	else:
-		v_component.set_proper_velocity(Vector2.ZERO)
-
-	velocity = v_component.get_total_velocity()
-	move_and_slide()
+	grounded_behaviour(delta)
 
 func _throw_blob() -> void:
-	if not can_attack():
+	if not can_attack() -> void:
 		return
 
-	var instance = current_blob.instantiate()
+	var instance : SlimeBlob = current_blob.instantiate()
 	get_parent().call_deferred("add_child", instance)
 	instance.top_level = true
 	instance.global_position = blob_spawner.global_position
@@ -87,12 +81,12 @@ func _player_entered_sight_area(player: Node2D) -> void:
 	player_target = player
 	player_is_nearby = true
 
-	if lose_sight_timer.is_inside_tree():
+	if lose_sight_timer.is_inside_tree() -> void:
 		lose_sight_timer.stop()
 	try_start_attack()
 
 func _player_exited_sight_area(_player: Node2D) -> void:
-	if lose_sight_timer.is_inside_tree():
+	if lose_sight_timer.is_inside_tree() -> void:
 		lose_sight_timer.start()
 
 func _on_lose_sight_timer_timeout() -> void:
@@ -114,8 +108,8 @@ func _on_attack_timer_timeout() -> void:
 func ran_out_of_health() -> void:
 	queue_free()
 
-func _on_fire_comp_caught_fire() -> void:
+func _on_fire_comp_effect_started() -> void:
 	change_type(SlimeType.FIRE)
 
-func _on_ice_manager_froze() -> void:
+func _on_ice_comp_froze() -> void:
 	change_type(SlimeType.ICE)

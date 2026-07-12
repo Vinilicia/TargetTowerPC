@@ -17,12 +17,12 @@ func _ready() -> void:
 
 func arc_throw(position_target : Vector2, max_height : float = 30, gravity_mult : float = 0.6) -> void:
 	gravity_multiplier = gravity_mult
-	var x0 = position.x
-	var y0 = position.y
-	var xf = position_target.x
-	var yf = position_target.y - 7
-	var g = gravity * gravity_multiplier
-	var yMax
+	var x0 : float = position.x
+	var y0 : float = position.y
+	var xf : float = position_target.x
+	var yf : float = position_target.y - 7
+	var g : float = gravity * gravity_multiplier
+	var yMax : float
 	
 	# Define a altura máxima do arco
 	if round(yf - y0) == 3:
@@ -33,10 +33,10 @@ func arc_throw(position_target : Vector2, max_height : float = 30, gravity_mult 
 		yMax = y0 - max_height
 
 	# Cálculo das velocidades iniciais (mesmo que no RigidBody)
-	var vy = sqrt(2 * g * abs(yMax - y0))
-	var t1 = vy / g
-	var t2 = sqrt(2 * (yf - yMax) / g)
-	var vx = (xf - x0) / (t1 + t2)
+	var vy : float = sqrt(2 * g * abs(yMax - y0))
+	var t1 : float = vy / g
+	var t2 : float = sqrt(2 * (yf - yMax) / g)
+	var vx : float = (xf - x0) / (t1 + t2)
 
 	# Define a velocidade inicial
 	velocity = Vector2(vx, -vy)

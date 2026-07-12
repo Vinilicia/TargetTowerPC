@@ -19,7 +19,7 @@ var has_collided : bool = false
 var bouncing : bool = false
 var has_bounced : bool = false
 
-func _physics_process(delta):
+func _physics_process(delta : float) -> void:
 	if bouncing:
 		velocity.y += 980 * delta
 
@@ -83,21 +83,21 @@ func _enable_collision() -> void:
 	set_collision_mask_value(5, true)
 	hitbox.set_deferred("monitorable", true)
 
-func spawn_joint(body) -> void:
+func spawn_joint(body : Object) -> void:
 	_disable_collision()
 	velocity = Vector2.ZERO
-	var pos_relativa = global_position - body.global_position
+	var relative_pos : Vector2 = global_position - body.global_position
 	var remote_pos : RemoteTransform2D = RemoteTransform2D.new()
 	remote_pos.update_rotation = false
 	body.add_child(remote_pos)
-	remote_pos.set_deferred("position", pos_relativa)
+	remote_pos.set_deferred("position", relative_pos)
 	remote_pos.set_deferred("remote_path", remote_pos.get_path_to(self))
 
 func bounce() -> void:
-	var dir = -int(sign(flying_direction.x))
+	var dir : int = -int(sign(flying_direction.x))
 	if dir == 0:
 		dir = -facing_direction
-	var bounce_vector = Vector2(default_bounce.x * dir, default_bounce.y)
+	var bounce_vector := Vector2(default_bounce.x * dir, default_bounce.y)
 	bouncing = true
 	has_bounced = true
 	velocity = bounce_vector
@@ -113,7 +113,7 @@ func _handle_collision(collision: KinematicCollision2D) -> void:
 	if has_collided:
 		return
 
-	var body = collision.get_collider()
+	var body := collision.get_collider()
 
 	if body.is_in_group("Attachables"):
 		has_collided = true

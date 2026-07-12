@@ -92,7 +92,7 @@ func _physics_process(delta: float) -> void:
 		if using_aim_enemy:
 			handle_aim_enemy()
 	handle_terrain_state(delta)
-	if is_on_floor():
+	if is_on_floor() -> void:
 		if terrain_state != TERRAIN_STATE.Grounded:
 			terrain_state = TERRAIN_STATE.Grounded
 			grounded_entered()
@@ -120,7 +120,7 @@ func reset_arrow() -> void:
 	holding_time = 0.0
 
 func build_arrows() -> void:
-	if current_arrow and current_arrow.is_inside_tree():
+	if current_arrow and current_arrow.is_inside_tree() -> void:
 		current_arrow.queue_free()
 	arrows = []
 	#var available_arrows := SaveManager.save_file_data.get_available_arrows()
@@ -144,11 +144,12 @@ func corner_correction(amount: int, delta: float) -> void:
 
 func airbone_entered() -> void:
 	coyote_time = true
-	get_tree().create_timer(coyote_time_duration).timeout.connect(func():
+	get_tree().create_timer(coyote_time_duration).timeout.connect(func() -> void:
 		coyote_time = false)
 	anim_handler.change_state(Anim_Handler.ANIM_STATE.Airbone)
 
 func grounded_entered() -> void:
+	v_comp.set_gravity_velocity(Vector2.ZERO)
 	if jump_buffer:
 		jump_buffer = false
 		jump()
@@ -157,10 +158,11 @@ func grounded_entered() -> void:
 	anim_handler.change_state(Anim_Handler.ANIM_STATE.Grounded)
 
 func airbone_process(delta : float) -> void:
-	v_comp.add_proper_velocity(Vector2.DOWN * get_current_gravity() * delta)
+	v_comp.add_gravity_velocity(Vector2.DOWN * get_current_gravity() * delta)
 	corner_correction(7, delta)
-	if is_on_ceiling():
-		v_comp.add_proper_velocity(abs(v_comp.get_proper_velocity(2) * 0.4) * Vector2.DOWN)
+	if is_on_ceiling() -> void:
+		v_comp.set_proper_velocity((v_comp.get_proper_velocity(2) * 0.4), 2)
+		v_comp.set_gravity_velocity(v_comp.get_gravity_velocity(2) * 0.4, 2)
 
 func grounded_process(_delta: float) -> void:
 	pass
@@ -176,7 +178,7 @@ func shorten_hitbox() -> void:
 	hurtbox.position.x += 1
 	hurtbox.scale.x += 2
 
-func crouch():
+func crouch() -> void:
 	anim_handler.crouched()
 	crouching = true
 	shorten_hitbox()
@@ -206,7 +208,7 @@ func movement_inputs() -> void:
 			turn()
 	else:
 		v_comp.set_proper_velocity(0.0, 1)
-		if Input.is_action_pressed("down") and !crouching and is_on_floor():
+		if Input.is_action_pressed("down") and !crouching and is_on_floor() -> void:
 			if v_comp.get_proper_velocity(2) >= 0.0:
 				crouch()
 
@@ -219,7 +221,7 @@ func handle_terrain_state(delta: float) -> void:
 
 func combat_inputs() -> void:
 	if holding_arrow:
-		if !current_arrow.is_inside_tree():
+		if !current_arrow.is_inside_tree() -> void:
 			push_error("FLECHA NAO ESTAVA NA ARVORE MAS HOLDING_ARROW ERA TRUE")
 			return
 		current_arrow.scale.x = scale.x
@@ -242,10 +244,12 @@ func dodge() -> void:
 	var dodge_vec := calculate_dodge_vector()
 	if dodge_vec.x != 0:
 		v_comp.set_proper_velocity(Vector2.ZERO)
+		v_comp.set_gravity_velocity(Vector2.ZERO)
 		shorten_hitbox()
 	elif dodge_vec.y < 0:
-		if abs(v_comp.get_proper_velocity(2)) < dodge_up_limit:
+		if abs(v_comp.get_total_velocity().y) < dodge_up_limit:
 			v_comp.set_proper_velocity(0.0, 2)
+			v_comp.set_gravity_velocity(Vector2.ZERO)
 		else:
 			dodge_vec = Vector2.ZERO
 	v_comp.add_proper_velocity(dodge_vec)
@@ -258,9 +262,9 @@ func dodge() -> void:
 	get_tree().process_frame.connect(dodge_process.bind(can_jump_at_end, sign(dodge_vec.x)))
 
 func end_dodge_check(can_jump_at_end : bool, start_direction : int) -> void:
-	if !end_dodge():
+	if !end_dodge() -> void:
 		return
-	if can_jump_at_end and Input.is_action_pressed("jump") and is_on_floor():
+	if can_jump_at_end and Input.is_action_pressed("jump") and is_on_floor() -> void:
 		jump()
 		get_tree().process_frame.connect(reset_speed.bind(move_speed, start_direction))
 		move_speed *= 2
@@ -268,11 +272,16 @@ func end_dodge_check(can_jump_at_end : bool, start_direction : int) -> void:
 		get_tree().process_frame.disconnect(dodge_process)
 
 func dodge_process(can_jump_at_end : bool, start_direction : int) -> void:
-	if is_on_floor() and !ledge_detec.is_colliding():
+	if is_on_floor() and !ledge_detec.is_colliding() -> void:
 		end_dodge_check(can_jump_at_end, start_direction)
 
 func reset_speed(speed_to_reset : float, start_direction : int) -> void:
-	if is_on_floor() or sign(v_comp.get_proper_velocity(1)) != sign(start_direction) or wall_detec.is_colliding():
+	var going_foward: bool
+	if sign(start_direction) == 1:
+		going_foward = Input.is_action_pressed("right")
+	else:
+		going_foward = Input.is_action_pressed("left")
+	if is_on_floor() or !going_foward or wall_detec.is_colliding() -> void:
 		move_speed = speed_to_reset
 		get_tree().process_frame.disconnect(reset_speed)
 
@@ -284,7 +293,7 @@ func end_dodge() -> bool:
 		modulate = Color(1, 1, 1, 1)
 		if $UpColl.disabled:
 			increase_hitbox()
-		get_tree().create_timer(dodge_cooldown).timeout.connect(func():
+		get_tree().create_timer(dodge_cooldown).timeout.connect(func() -> void:
 			can_dodge = true
 			)
 		if crouching and not Input.is_action_pressed("down"):
@@ -332,20 +341,20 @@ func direction_inputs() -> void:
 	if Input.is_action_pressed("up"):
 		dir_x = 0
 		dir_y = -1
-		if !is_on_floor():
+		if !is_on_floor() -> void:
 			dodge_dir_y = -1
 			dodge_dir_x = 0
-	if Input.is_action_pressed("down") and !is_on_floor():
+	if Input.is_action_pressed("down") and !is_on_floor() -> void:
 		dir_x = 0
 		dir_y = 1
 		dodge_dir_y = 1
 		dodge_dir_x = 0
 	if Input.is_action_pressed("left"):
-		if is_on_floor():
+		if is_on_floor() -> void:
 			dodge_dir_x = -1
 			dodge_dir_y = 0
 	elif Input.is_action_pressed("right"):
-		if is_on_floor():
+		if is_on_floor() -> void:
 			dodge_dir_x = 1
 			dodge_dir_y = 0
 	
@@ -359,23 +368,25 @@ func direction_inputs() -> void:
 
 func jump() -> void:
 	v_comp.set_proper_velocity(jump_force * Vector2.UP)
+	v_comp.set_gravity_velocity(Vector2.ZERO)
 	if crouching:
 		stand()
-		
-	var jump_stop_check_func : Callable = func(check_func : Callable):
-			if v_comp.get_proper_velocity(2) >= 0.0:
+	
+	var jump_stop_check_func : Callable = func(check_func : Callable) -> void:
+			if v_comp.get_total_velocity().y >= 0.0:
 				get_tree().process_frame.disconnect(check_func)
 				return
 			if Input.is_action_just_released("jump"):
-				v_comp.set_proper_velocity(-10.0, 2)
+				v_comp.set_proper_velocity(0.0, 2)
+				v_comp.set_gravity_velocity(Vector2.ZERO)
 				get_tree().process_frame.disconnect(check_func)
 	
 	get_tree().process_frame.connect(jump_stop_check_func.bind(jump_stop_check_func))
 
 func get_current_gravity() -> Vector2:
-	var y_vel : float = v_comp.get_proper_velocity(2)
+	var y_vel : float = v_comp.get_total_velocity().y
 	if y_vel >= 0.0:
-		if y_vel > 400.0:
+		if y_vel > 350.0:
 			return get_gravity() * 0.01
 		return get_gravity()
 	return get_gravity() * rise_multiplier
@@ -398,6 +409,7 @@ var default_knockback : Vector2 = Vector2(170, 0)
 func flinch() -> void:
 	in_control = false
 	v_comp.set_proper_velocity(Vector2.ZERO)
+	v_comp.set_gravity_velocity(Vector2.ZERO)
 	v_comp.add_knockback_velocity(Vector2(default_knockback.x * -facing_direction, default_knockback.y))
 	current_arrow.queue_free()
 	reset_arrow()
@@ -426,7 +438,7 @@ func _on_health_manager_lost_health(amount: int) -> void:
 
 func _on_ice_manager_froze() -> void:
 	if health_man.health > 0:
-		$Hurtbox/IceComponent.freeze()
+		$Hurtbox/IceComponent.start()
 		set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
 		await get_tree().create_timer(0.1).timeout
 		CameraMan.setup_player(get_parent().get_parent())
@@ -442,10 +454,10 @@ func _input(event: InputEvent) -> void:
 	# ===== GRAB =====
 	if event.is_action_pressed("grab"):
 		if not carrying:
-			if !portables_to_carry.is_empty():
+			if !portables_to_carry.is_empty() -> void:
 				grab(portables_to_carry[0])
 		else:
-			if !is_on_floor():
+			if !is_on_floor() -> void:
 				throw_portable()
 			else:
 				if not Input.is_action_pressed("down"):
@@ -456,12 +468,12 @@ func _input(event: InputEvent) -> void:
 	if !in_control:
 		return
 	if event.is_action_pressed("jump"):
-		if is_on_floor():
+		if is_on_floor() -> void:
 			jump()
 		else:
 			if stomp_area.has_overlapping_areas() and using_stomp:
 				stomp_hitbox.monitorable = true
-				get_tree().create_timer(0.1).timeout.connect(func(): 
+				get_tree().create_timer(0.1).timeout.connect(func() -> void: 
 					stomp_hitbox.monitorable = false
 					)
 				jump()
@@ -469,7 +481,7 @@ func _input(event: InputEvent) -> void:
 				jump()
 			if !jump_buffer:
 				jump_buffer = true
-				get_tree().create_timer(jump_buffer_duration).timeout.connect(func():
+				get_tree().create_timer(jump_buffer_duration).timeout.connect(func() -> void:
 					jump_buffer = false)
 
 	# ===== STAND =====
@@ -482,8 +494,8 @@ func _input(event: InputEvent) -> void:
 	
 	# ===== HOLDING ARROW / MELEE ATTACK =====
 	if event.is_action_pressed("shoot"):
-		if not melee_area.has_overlapping_areas():
-			if hold_arrow():
+		if not melee_area.has_overlapping_areas() -> void:
+			if hold_arrow() -> void:
 				holding_arrow = false
 				call_deferred("shoot")
 		else:
@@ -495,7 +507,7 @@ func _input(event: InputEvent) -> void:
 	# ===== SWITCH ARROW =====
 	if event.is_action_pressed("switch arrow"):
 		arrow_index = (arrow_index + 1) % arrows.size()
-		if current_arrow.is_inside_tree():
+		if current_arrow.is_inside_tree() -> void:
 			shoot()
 		else:
 			current_arrow = equip_arrow()
@@ -503,7 +515,7 @@ func _input(event: InputEvent) -> void:
 
 func melee_attack() -> void:
 	melee_hitbox.monitorable = true
-	get_tree().create_timer(melee_attack_duration).timeout.connect(func() :
+	get_tree().create_timer(melee_attack_duration).timeout.connect(func() -> void:
 		melee_hitbox.monitorable = false
 		)
 
@@ -597,10 +609,10 @@ func _on_aim_sight_enemy_exited(enemy: Node2D) -> void:
 func handle_aim_enemy() -> void:
 	var closest: CharacterBody2D = null
 	var min_dist: float = INF
-	for enemy in enemies_on_sight:
+	for enemy : Enemy in enemies_on_sight:
 		if not is_instance_valid(enemy):
 			continue
-		var dist = global_position.distance_to(enemy.global_position)
+		var dist := global_position.distance_to(enemy.global_position)
 		if dist < min_dist:
 			min_dist = dist
 			closest = enemy
@@ -634,5 +646,5 @@ func heal_on_bench() -> void:
 	gain_mana(max_mana)
 
 func _on_fire_component_caught_fire() -> void:
-	fire_comp.extinguished.connect(health_man.stop_burning, 4)
+	fire_comp.effect_ended.connect(health_man.stop_burning, 4)
 	health_man.start_burning(1.0)

@@ -1,15 +1,18 @@
 [gd_scene format=3 uid="uid://c17srlbk1bg00"]
 
-[ext_resource type="Script" uid="uid://j7sv0aeobret" path="res://Interactibles/Mechanisms/Buttons&Receptors/Blue_button.gd" id="1_toau0"]
+[ext_resource type="Script" uid="uid://diba0p2qt3d8j" path="res://Interactibles/Mechanisms/Buttons&Receptors/blue_target.gd" id="1_xan7g"]
 [ext_resource type="Shape2D" uid="uid://bkkdio2lxg7hd" path="res://Themes/Standardized_Capsule.tres" id="3_h85dg"]
 
-[node name="BlueTarget" type="Area2D"]
+[node name="BlueTarget" type="Node2D" unique_id=1832797233]
+script = ExtResource("1_xan7g")
+metadata/_custom_type_script = "uid://bg8pwgi4g5mmq"
+
+[node name="Target" type="Area2D" parent="." unique_id=1219359140]
 collision_layer = 0
 collision_mask = 2
-script = ExtResource("1_toau0")
 
-[node name="Collision" type="CollisionShape2D" parent="."]
+[node name="Collision" type="CollisionShape2D" parent="Target" unique_id=935701945]
 scale = Vector2(8, 14)
 shape = ExtResource("3_h85dg")
 
-[connection signal="body_entered" from="." to="." method="_on_body_entered"]
+[connection signal="body_entered" from="Target" to="Target" method="_on_body_entered"]

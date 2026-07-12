@@ -5,15 +5,15 @@ extends Control
 @export var reset_button: Button
 @export var back_button: Button
 
-var input_button = preload("res://Menus&UI/InputMap_button.tscn")
+var input_button : PackedScene = preload("res://Menus&UI/InputMap_button.tscn")
 
 var mapping: bool = false
-var remapping_action = null
-var remapping_button = null
+var remapping_action : Variant = null
+var remapping_button : Variant = null
 var previous_event: InputEvent = null
 var previous_button: Button = null
 
-var input_actions = {
+var input_actions : Dictionary = {
 	"up": "TEXT_CONTROLS_UP",
 	"down": "TEXT_CONTROLS_DOWN",
 	"left": "TEXT_CONTROLS_LEFT",
@@ -27,18 +27,17 @@ var input_actions = {
 	"map": "TEXT_CONTROLS_MAP"
 }
 
-var forbidden_keys = [
+var forbidden_keys : Array = [
 	KEY_ENTER,
 	KEY_ESCAPE,
-	KEY_ALT
+	KEY_ALT,
 ]
 
 func is_forbidden(event: InputEventKey) -> bool:
-	for key in forbidden_keys:
+	for key : Key in forbidden_keys:
 		if key == event.keycode:
 			return true
 	return false
-
 
 func _ready() -> void:
 	_create_action_list()
@@ -48,21 +47,21 @@ func _create_action_list() -> void:
 	var created_buttons: Array[Button] = []
 	
 	# Remove botões antigos
-	for button in buttons_container.get_children():
+	for button in buttons_container.get_children() -> void:
 		if button is Button:
 			if button.pressed.is_connected(remap_action):
 				button.pressed.disconnect(remap_action)
 		button.queue_free()
 	
 	# Cria lista de ações
-	for action in input_actions:
+	for action : String in input_actions:
 		var button: Button = input_button.instantiate()
 		var action_label: Label = button.find_child("ActionLabel")
 		var input_label: Label = button.find_child("InputLabel")
 		
 		action_label.text = tr(str(input_actions[action]))
 		
-		var events = InputMap.action_get_events(action)
+		var events := InputMap.action_get_events(action)
 		if events.size() > 0:
 			input_label.text = events[0].as_text().trim_suffix(" (Physical)")
 		else:
@@ -80,9 +79,9 @@ func _create_action_list() -> void:
 		last_button.focus_neighbor_bottom = reset_button.get_path()
 	
 	for i in range(0, created_buttons.size(), 2):
-		if i + 1 < created_buttons.size():
-			var left_button = created_buttons[i]
-			var right_button = created_buttons[i + 1]
+		if i + 1 < created_buttons.size() -> void:
+			var left_button : Button = created_buttons[i]
+			var right_button : Button = created_buttons[i + 1]
 			
 			left_button.focus_neighbor_right = right_button.get_path()
 			left_button.focus_neighbor_left = right_button.get_path()
@@ -97,7 +96,7 @@ func _create_action_list() -> void:
 		created_buttons[1].focus_neighbor_top = back_button.get_path()
 
 
-func remap_action(button, action) -> void:
+func remap_action(button: Button, action: String) -> void:
 	if not mapping:
 		mapping = true
 		remapping_action = action
@@ -109,7 +108,7 @@ func _input(event: InputEvent) -> void:
 	if mapping:
 		if event is InputEventKey:
 			if not is_forbidden(event):
-				var events = InputMap.action_get_events(remapping_action)
+				var events := InputMap.action_get_events(remapping_action)
 				if events.size() > 0:
 					previous_event = events[0]
 				remap_input(remapping_action, event)
@@ -121,11 +120,11 @@ func _input(event: InputEvent) -> void:
 				accept_event()
 
 
-func remap_input(action, event: InputEvent) -> void:
-	var previous_action = find_action_by_event(event)
+func remap_input(action : String, event: InputEvent) -> void:
+	var previous_action : String = find_action_by_event(event)
 	if previous_action != "":
 		if previous_action != action:
-			for button in buttons_container.get_children():
+			for button in buttons_container.get_children() -> void:
 				if button.find_child("ActionLabel").text == input_actions[previous_action]:
 					previous_button = button
 			InputMap.action_erase_events(previous_action)
@@ -135,8 +134,8 @@ func remap_input(action, event: InputEvent) -> void:
 
 
 func find_action_by_event(event: InputEvent) -> String:
-	for action in input_actions:
-		var events = InputMap.action_get_events(action)
+	for action : String in input_actions:
+		var events := InputMap.action_get_events(action)
 		if events.size() > 0:
 			if events[0].is_match(event):
 				return action

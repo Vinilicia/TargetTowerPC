@@ -1,6 +1,6 @@
 [gd_scene format=3 uid="uid://h5p666cxnxby"]
 
-[ext_resource type="Script" uid="uid://bf7d3vwk30cyx" path="res://Arrows/teleport_arrow.gd" id="1_1yo7r"]
+[ext_resource type="Script" uid="uid://c5fumkc0dexby" path="res://Arrows/teleport_arrow.gd" id="1_1yo7r"]
 [ext_resource type="Texture2D" uid="uid://bbudney8tyjxg" path="res://Assets/Home_bred/Arrows/Normal/Flying.png" id="2_1yo7r"]
 [ext_resource type="Shape2D" uid="uid://bgitonlnmqo6k" path="res://Themes/Standardized_Rectangle.tres" id="3_k3own"]
 [ext_resource type="PackedScene" uid="uid://d2p2ct7lnl0v6" path="res://Arrows/Arrow_trail.tscn" id="4_gbeok"]

@@ -34,12 +34,12 @@ func save() -> void:
 	SaveManager._save(save_id)
 	
 func get_room_number() -> int:
-	var room_node = get_parent()
+	var room_node : Room = get_parent()
 	if room_node:
 		var room_name : String = room_node.name
-		var regex = RegEx.new()
+		var regex := RegEx.new()
 		regex.compile(r"\d+")
-		var result = regex.search(room_name)
+		var result := regex.search(room_name)
 		if result:
 			return int(result.get_string())
 	return -1

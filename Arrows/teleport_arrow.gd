@@ -22,7 +22,7 @@ func move_target(target : Node2D, pos : Vector2) -> void:
 	target.global_position = pos
 	target.visible = false
 	target.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
-	get_tree().create_timer(teleport_duration).timeout.connect(func():
+	get_tree().create_timer(teleport_duration).timeout.connect(func() -> void:
 		target.visible = true
 		target.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)
 		)

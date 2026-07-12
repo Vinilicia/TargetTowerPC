@@ -20,17 +20,17 @@ func _ready() -> void:
 		queue_free()
 
 func adjust_to_ground() -> void:
-	var space = get_world_2d().direct_space_state
-	var origin = global_position
-	var half_spread = max_spread_distance / 2.0
+	var space := get_world_2d().direct_space_state
+	var origin : Vector2 = global_position
+	var half_spread := max_spread_distance / 2.0
 
 	# --- Checa se há chão ---
 	var has_ground_at : Callable = func(x_offset: float) -> bool:
-		var start = origin + Vector2(x_offset, 0)
-		var end = start + Vector2(0, ground_check_distance)
-		var query = PhysicsRayQueryParameters2D.create(start, end)
+		var start := origin + Vector2(x_offset, 0)
+		var end := start + Vector2(0, ground_check_distance)
+		var query := PhysicsRayQueryParameters2D.create(start, end)
 		query.collision_mask = self.collision_mask
-		var result = space.intersect_ray(query)
+		var result := space.intersect_ray(query)
 		if result:
 			return true
 		else:
@@ -38,11 +38,11 @@ func adjust_to_ground() -> void:
 
 	# --- Checa se há parede ---
 	var has_wall_at : Callable = func(x_offset: float) -> bool:
-		var start = origin + Vector2(0, 0)
-		var end = start + Vector2(x_offset, 0)
-		var query = PhysicsRayQueryParameters2D.create(start, end)
+		var start := origin + Vector2(0, 0)
+		var end := start + Vector2(x_offset, 0)
+		var query := PhysicsRayQueryParameters2D.create(start, end)
 		query.collision_mask = self.collision_mask
-		var result = space.intersect_ray(query)
+		var result := space.intersect_ray(query)
 		if result:
 			return true
 		else:
@@ -60,14 +60,14 @@ func adjust_to_ground() -> void:
 			break
 		left_dist += spread_step
 
-	var total_width = (left_dist - 13 + right_dist - 13) / 13.0
+	var total_width : float = (left_dist - 13 + right_dist - 13) / 13.0
 	width = int(clamp(total_width, 1, max_spread_distance / 10))
 	update_length(width)
 	
 	position.x -= (left_dist - right_dist) * 0.5
 
 func update_length(new_width: int) -> void:
-	if not is_node_ready():
+	if not is_node_ready() -> void:
 		await ready
 	if sprite and coll:
 		sprite.region_rect = Rect2(0, 0, 13 * new_width, 24)

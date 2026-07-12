@@ -9,6 +9,7 @@
 [ext_resource type="PackedScene" uid="uid://c4slmrws5ya4m" path="res://Components/Hurtbox.tscn" id="4_7pv7w"]
 [ext_resource type="PackedScene" uid="uid://dvo74hfh77vsa" path="res://Components/Actions-Reactions/Ice_Component.tscn" id="4_ggygh"]
 [ext_resource type="PackedScene" uid="uid://lmmbb0dc7g2n" path="res://Components/Hitbox.tscn" id="5_o68ib"]
+[ext_resource type="PackedScene" uid="uid://bwyfkkx8i03w6" path="res://Components/Actions-Reactions/electric_component.tscn" id="5_tgfqm"]
 
 [sub_resource type="Animation" id="Animation_pbpvn"]
 resource_name = "hitflash"
@@ -39,6 +40,7 @@ script = ExtResource("1_o22pi")
 regret_scene = ExtResource("2_6c138")
 fire_component_scene = ExtResource("3_kr3ad")
 ice_component_scene = ExtResource("4_ggygh")
+electric_component_scene = ExtResource("5_tgfqm")
 v_component = NodePath("BaseEnemyStuff/VelocityComponent")
 health_man = NodePath("BaseEnemyStuff/HealthManager")
 hurtbox = NodePath("BaseEnemyStuff/Hurtbox")

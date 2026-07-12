@@ -15,7 +15,7 @@ var actual_y : int = 0
 var last_exit : int = 0
 var same_last_exit : bool = false
 
-func _ready():
+func _ready() -> void:
 	spaw_initial_level()
 	for i in range(number_of_levels):
 		spaw_next_level()

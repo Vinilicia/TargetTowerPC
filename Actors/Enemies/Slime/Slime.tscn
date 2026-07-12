@@ -63,12 +63,12 @@ scale = Vector2(16, 16)
 shape = ExtResource("1_nn6wd")
 
 [node name="FireComponent" parent="BaseEnemyStuff/Hurtbox" index="2" unique_id=28466235 node_paths=PackedStringArray("hurtbox") instance=ExtResource("8_71yej")]
-hurtbox = NodePath("..")
 has_basic_fire = false
+hurtbox = NodePath("..")
 
 [node name="IceComponent" parent="BaseEnemyStuff/Hurtbox" index="3" unique_id=1854588271 node_paths=PackedStringArray("parent_health_man", "hurtbox") instance=ExtResource("8_ef4uu")]
-parent_health_man = NodePath("../../HealthManager")
 regular_behaviour = false
+parent_health_man = NodePath("../../HealthManager")
 hurtbox = NodePath("..")
 
 [node name="ContactHitbox" parent="BaseEnemyStuff" index="3" unique_id=2114649000]
@@ -107,10 +107,10 @@ wait_time = 3.0
 one_shot = true
 
 [node name="VisibleNotifier" type="VisibleOnScreenNotifier2D" parent="." index="5" unique_id=1651489017]
+scale = Vector2(0.1965553, 0.20258145)
 
-[connection signal="caught_fire" from="BaseEnemyStuff/Hurtbox/FireComponent" to="." method="_on_fire_comp_caught_fire"]
-[connection signal="froze" from="BaseEnemyStuff/Hurtbox/IceComponent" to="." method="_on_ice_manager_froze"]
-[connection signal="melt" from="BaseEnemyStuff/Hurtbox/IceComponent" to="." method="_on_ice_manager_melt"]
+[connection signal="effect_started" from="BaseEnemyStuff/Hurtbox/FireComponent" to="." method="_on_fire_comp_effect_started"]
+[connection signal="effect_started" from="BaseEnemyStuff/Hurtbox/IceComponent" to="." method="_on_ice_comp_froze"]
 [connection signal="body_entered" from="SightArea" to="." method="_player_entered_sight_area"]
 [connection signal="body_exited" from="SightArea" to="." method="_player_exited_sight_area"]
 [connection signal="timeout" from="Timers/AttackTimer" to="." method="_on_attack_timer_timeout"]

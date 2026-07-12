@@ -12,7 +12,7 @@ func _save(slot_index: int):
 	var file = FileAccess.open_encrypted_with_pass(save_path, FileAccess.WRITE, "1n1c19a436")
 
 	var data_to_save: Dictionary = {}
-	for prop_info in save_file_data.get_property_list():
+	for prop_info in save_file_data.get_property_list() -> void:
 		var prop_name = prop_info.name
 		if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path"]:
 			continue
@@ -64,7 +64,7 @@ func _load(slot_index: int):
 	# --- 🔹 CASO 2: SAVE ANTIGO (migração) ---
 	elif saved_version < current_version:
 		print("Save mais antigo (%d < %d) — migrando dados..." % [saved_version, current_version])
-		for prop_info in default_data.get_property_list():
+		for prop_info in default_data.get_property_list() -> void:
 			var prop_name = prop_info.name
 			if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path"]:
 				continue
@@ -96,10 +96,10 @@ func _load(slot_index: int):
 							new_array.append(bool(v))
 						else:
 							new_array.append(v)
-				if value.size() < default_value.size():
+				if value.size() < default_value.size() -> void:
 					for i in range(value.size(), default_value.size()):
 						value.append(default_value[i])
-				elif value.size() > default_value.size():
+				elif value.size() > default_value.size() -> void:
 					value.resize(default_value.size())
 				loaded_resource.set_array(prop_name, new_array)
 			else:
@@ -117,7 +117,7 @@ func _load(slot_index: int):
 
 	# --- 🔹 CASO 3: MESMA VERSÃO (verificação padrão) ---
 	else:
-		for prop_info in default_data.get_property_list():
+		for prop_info in default_data.get_property_list() -> void:
 			var prop_name = prop_info.name
 			if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path", "script"]:
 				continue
@@ -151,10 +151,10 @@ func _load(slot_index: int):
 							new_array.append(bool(v))
 						else:
 							new_array.append(v)
-				if value.size() < default_value.size():
+				if value.size() < default_value.size() -> void:
 					for i in range(value.size(), default_value.size()):
 						value.append(default_value[i])
-				elif value.size() > default_value.size():
+				elif value.size() > default_value.size() -> void:
 					value.resize(default_value.size())
 				loaded_resource.set_array(prop_name, new_array)
 			if not is_array:

@@ -19,14 +19,14 @@ extends Node2D
 var bodies_inside: Array[CharacterBody2D] = []
 
 func _physics_process(_delta: float) -> void:
-	if !Engine.is_editor_hint():
+	if !Engine.is_editor_hint() -> void:
 		apply_wind()
 
 func apply_wind() -> void:
 	for body in bodies_inside:
 		var v_component : VelocityComponent = body.find_child("VelocityComponent")
 		if v_component:
-			if body.is_on_floor():
+			if body.is_on_floor() -> void:
 				v_component.set_wind_velocity(Vector2.ZERO)
 			else:
 				v_component.set_wind_velocity(wind_direction * wind_force)

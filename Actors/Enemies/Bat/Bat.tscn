@@ -21,7 +21,7 @@ resource_local_to_scene = true
 shader = ExtResource("5_4cx4r")
 shader_parameter/enabled = false
 
-[node name="Bat" unique_id=546496135 node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "avoidance_rays", "dash_area", "dive_area", "sight_area", "contact_hitbox") instance=ExtResource("1_nstmu")]
+[node name="Bat" unique_id=546496135 node_paths=PackedStringArray("chasing_timer", "giving_up_timer", "line_of_sight", "ceiling_detector", "avoidance_rays", "dash_area", "dive_area", "sight_area", "contact_hitbox", "stunned_nodes") instance=ExtResource("1_nstmu")]
 material = SubResource("ShaderMaterial_jmqf7")
 script = ExtResource("2_4cx4r")
 starts_chasing = false
@@ -46,7 +46,7 @@ dash_hitbox_increase = 1.2
 chase_retarget_frames = 10
 facing_flip_deadzone = 2.0
 wander_strength = 15.0
-regular_shockable = false
+stunned_nodes = [NodePath("Timers"), NodePath("BehaviorChanging"), NodePath("StateChart")]
 metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0" unique_id=2038690234]

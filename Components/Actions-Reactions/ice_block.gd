@@ -20,11 +20,11 @@ func initialize(this_scale : Vector2 = Vector2(16, 16), child : Node2D = null, f
 	if melts:
 		call_deferred("start_melting_timer", freeze_duration)
 
-func start_melting_timer(freeze_duration) -> void:
+func start_melting_timer(freeze_duration : float) -> void:
 	melting_timer.start(freeze_duration)
 
 func _physics_process(delta: float) -> void:
-	if is_on_floor():
+	if is_on_floor() -> void:
 		velocity = Vector2.ZERO
 	else:
 		velocity.y += get_gravity().y * delta

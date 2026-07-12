@@ -20,7 +20,7 @@ var belt_direction: Vector2 = Vector2.RIGHT
 
 @export_range(20, 120, 10, 'hide_slider') var belt_speed : float = 20:
 	set(new_speed):
-		if not is_node_ready():
+		if not is_node_ready() -> void:
 			await ready
 		
 		var anim_modifier : int = max(new_speed / 30, 1)
@@ -47,14 +47,14 @@ var belt_direction: Vector2 = Vector2.RIGHT
 var bodies_inside : Array[Node2D] = []
 
 func _physics_process(_delta: float) -> void:
-	if !Engine.is_editor_hint():
+	if !Engine.is_editor_hint() -> void:
 		apply_speed()
 
 func apply_speed() -> void:
 	for body in bodies_inside:
 		var v_component : VelocityComponent = body.find_child("VelocityComponent")
 		if v_component:
-			if !body.is_on_floor():
+			if !body.is_on_floor() -> void:
 				v_component.set_ground_velocity(Vector2.ZERO)
 			else:
 				v_component.set_ground_velocity(belt_direction * belt_speed)
@@ -70,7 +70,7 @@ func _set_belt_direction_from_enum(new_dir: int) -> void:
 
 
 func _update_length(new_length: int) -> void:
-	if not is_node_ready():
+	if not is_node_ready() -> void:
 		await ready
 	
 	left_sprite.region_rect = Rect2(0, 0, 0, 0)
@@ -117,7 +117,7 @@ func reverse_direction() -> void:
 	_set_belt_direction_from_enum(belt_dir)
 
 	for body in bodies_inside:
-		var v_component = body.find_child("VelocityComponent")
+		var v_component : VelocityComponent = body.find_child("VelocityComponent")
 		if v_component:
 			v_component.add_ground_velocity(belt_direction * belt_speed * 2)
 

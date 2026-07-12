@@ -1,13 +1,18 @@
 extends Node
 
-var _sounds = {}
+var _sounds : Dictionary[String, AudioStreamPlayer] = {}
 
-func _ready():
-	for child in get_children():
+func _ready() -> void:
+	create_sound_list(self)
+
+func create_sound_list(node : Node) -> void:
+	for child in node.get_children() -> void:
 		if child is AudioStreamPlayer:
 			_sounds[child.name] = child
+		else:
+			create_sound_list(child)
 
-func play_song(track_name: String, from_position: float = 0.0):
+func play_song(track_name: String, from_position: float = 0.0) -> void:
 	if _sounds.has(track_name):
 		var player : AudioStreamPlayer = _sounds[track_name]
 		if player.playing:
@@ -17,6 +22,7 @@ func play_song(track_name: String, from_position: float = 0.0):
 			new_player.finished.connect(remove_child.bind(new_player))
 		else:
 			player.play(from_position)
+		#print("Now playing: ", track_name)
 	else:
 		push_warning("AudioManager: Som '" + track_name + "' não encontrado.")
 
@@ -27,13 +33,13 @@ func get_player(track_name: String) -> AudioStreamPlayer:
 		push_error("AudioManager: Tentativa de acessar player inexistente: " + track_name)
 		return null
 
-func stop(track_name: String):
+func stop(track_name: String) -> void:
 	if _sounds.has(track_name):
 		_sounds[track_name].stop()
 
-func stop_all():
-	for nome in _sounds:
-		_sounds[nome].stop()
+func stop_all() -> void:
+	for track_name in _sounds:
+		_sounds[track_name].stop()
 
 func is_playing(track_name : String) -> bool:
 	if _sounds.has(track_name):

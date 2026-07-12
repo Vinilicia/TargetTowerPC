@@ -39,4 +39,4 @@ script = ExtResource("5_8at2o")
 
 [connection signal="timeout" from="MeltingTimer" to="." method="_on_melting_timer_timeout"]
 [connection signal="got_hit_by" from="Hurtbox" to="." method="_on_hurtbox_got_hit_by"]
-[connection signal="caught_fire" from="Hurtbox/FireComponent" to="." method="melt"]
+[connection signal="effect_started" from="Hurtbox/FireComponent" to="." method="melt"]

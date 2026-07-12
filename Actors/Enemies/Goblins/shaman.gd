@@ -27,7 +27,7 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if player:
-		if look_for_player():
+		if look_for_player() -> void:
 			if !saw_player:
 				saw_player = true
 				engaging_state = true
@@ -48,7 +48,7 @@ func _physics_process(delta: float) -> void:
 	grounded_behaviour(delta)
 
 func start_attack_timer() -> void:
-	var random_delay = randf_range(base_attack_delay - attack_delay_variation,
+	var random_delay : float = randf_range(base_attack_delay - attack_delay_variation,
 								   base_attack_delay + attack_delay_variation)
 	attack_timer.start(random_delay)
 
@@ -65,7 +65,7 @@ func get_random_empty_position() -> Vector2:
 		var rand_angle : float = deg_to_rad(randi_range(-20, -10))
 		var rand_vec := (Vector2.RIGHT.rotated(rand_angle) * distance_to_player)
 		rand_vec = Vector2(rand_vec.x * x_sign, rand_vec.y)
-		var random_pos = rand_vec + player.global_position
+		var random_pos : Vector2 = rand_vec + player.global_position
 
 		# Checa colisão no ponto
 		var shape := CircleShape2D.new()
@@ -77,7 +77,7 @@ func get_random_empty_position() -> Vector2:
 		query.collision_mask = collision_mask
 
 		var result := space.intersect_shape(query, 1)
-		if result.is_empty():
+		if result.is_empty() -> void:
 			return random_pos
 
 	return Vector2.ZERO
@@ -85,7 +85,7 @@ func get_random_empty_position() -> Vector2:
 func summon_bat() -> void:
 	modulate = Color(1, 0, 0, 1)
 	await get_tree().create_timer(0.5).timeout
-	var new_bat = bat_scene.instantiate()
+	var new_bat : Enemy = bat_scene.instantiate()
 	new_bat.starts_chasing = true
 	var bat_pos := get_random_empty_position()
 	if bat_pos != Vector2.ZERO:
@@ -126,7 +126,7 @@ func give_up_chase() -> void:
 func look_for_player() -> bool:
 	line_of_sight.target_position = to_local(player.global_position)
 	line_of_sight.force_raycast_update()
-	if line_of_sight.is_colliding():
+	if line_of_sight.is_colliding() -> void:
 		if line_of_sight.get_collider() is Player:
 			return true
 	return false

@@ -20,16 +20,16 @@ func _change_bar_value(bar : TextureProgressBar, added_value : float) -> void:
 
 
 func _connect_signal(container : VBoxContainer, button_name: String, bar : TextureProgressBar, value: float) -> void:
-	var button = container.find_child(button_name, true)
+	var button : Button = container.find_child(button_name, true)
 	if button:
 		button.pressed.connect(_change_bar_value.bind(bar, value))
 
 
 func _connect_focus_neighbors(container : VBoxContainer) -> void:
-	var minus_button = container.find_child("MinusButton", true)
-	var plus_button = container.find_child("PlusButton", true)
-	var mute_button = container.find_child("MuteButton", true)
-	var full_button = container.find_child("FullVolumeButton", true)
+	var minus_button : Button = container.find_child("MinusButton", true)
+	var plus_button : Button = container.find_child("PlusButton", true)
+	var mute_button : Button = container.find_child("MuteButton", true)
+	var full_button : Button = container.find_child("FullVolumeButton", true)
 	
 	# Minus ↔ Plus
 	if minus_button and plus_button:
@@ -71,8 +71,8 @@ func _on_sfx_bar_value_changed(value: float) -> void:
 	AudioServer.set_bus_volume_db(2, linear_to_db(value))
 	SaveManager.settings_data.sfx_volume = value
 
-func _apply_saved_settings():
-	var s = SaveManager.settings_data
+func _apply_saved_settings() -> void:
+	var s : Dictionary = SaveManager.settings_data
 
 	if s.master_volume != null:
 		master_bar.value = s.master_volume
@@ -87,7 +87,7 @@ func _apply_saved_settings():
 		_on_sfx_bar_value_changed(s.sfx_volume)
 
 
-func _on_back_button_pressed():
+func _on_back_button_pressed() -> void:
 	SaveManager.save_settings()
 
 func _ready() -> void:

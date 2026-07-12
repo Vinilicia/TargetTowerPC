@@ -72,7 +72,7 @@ func get_invincible_for(duration_override : float = -1.0) -> void:
 	if not can_be_invincible or is_invincible:
 		return
 	get_invincible()
-	var duration = duration_override if duration_override > 0 else invincibility_duration
+	var duration : float = duration_override if duration_override > 0 else invincibility_duration
 	invincibility_timer.start(duration)
 	await invincibility_timer.timeout
 	lose_invincible()

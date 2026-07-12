@@ -17,5 +17,5 @@ one_shot = true
 [node name="BurningTimer" type="Timer" parent="." unique_id=1355227721]
 one_shot = true
 
-[connection signal="timeout" from="ExtinguishingTimer" to="." method="extinguish"]
-[connection signal="timeout" from="BurningTimer" to="." method="catch_fire"]
+[connection signal="timeout" from="ExtinguishingTimer" to="." method="end"]
+[connection signal="timeout" from="BurningTimer" to="." method="start"]

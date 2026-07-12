@@ -10,7 +10,7 @@ extends Node2D
 var follow := Vector2.ZERO
 var platform_center := 8
 
-func _ready():
+func _ready() -> void:
 	move_platform()
 
 
@@ -18,7 +18,7 @@ func _ready():
 func _physics_process(delta):
 	plataform.position = plataform.position.lerp(follow, 0.5)
 
-func move_platform():
+func move_platform() -> void:
 	var move_direction = Vector2.RIGHT * distance if direction == 0 else Vector2.UP * distance
 	var duration = move_direction.length() / float(move_speed * platform_center)
 	

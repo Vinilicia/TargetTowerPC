@@ -15,10 +15,11 @@ script = ExtResource("2_qddl6")
 surface_checker = ExtResource("3_tcgmn")
 shock_hitbox = NodePath("ShockHitbox")
 area_length = 200.0
-Despawn_Time = 40.0
+Despawn_Time = 4.0
 
 [node name="Hitbox" parent="." index="0" unique_id=34470544]
 visible = false
+collision_layer = 8448
 
 [node name="Sprite" parent="." index="1" unique_id=47676996]
 visible = false
@@ -27,6 +28,6 @@ visible = false
 gradient = SubResource("Gradient_q7y3h")
 
 [node name="ShockHitbox" parent="." index="5" unique_id=1773352715 node_paths=PackedStringArray("parent") instance=ExtResource("4_q7y3h")]
-collision_layer = 256
+collision_layer = 8192
 parent = NodePath("..")
 Damage = 1.0

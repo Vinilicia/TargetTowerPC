@@ -7,6 +7,7 @@ extends Arrow
 func _handle_collision(collision: KinematicCollision2D) -> void:
 	super._handle_collision(collision)
 	spawn_shock_area()
+	despawn()
 
 func spawn_shock_area() -> void:
 	var surf_checker : Node2D = surface_checker.instantiate()

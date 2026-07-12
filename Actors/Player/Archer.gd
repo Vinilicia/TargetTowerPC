@@ -115,7 +115,7 @@ var in_control : bool = true
 # ============================================================
 # READY
 # ============================================================
-func _ready():
+func _ready() -> void:
 	build_arrows()
 	current_arrow_index = initial_arrow_index
 	current_arrow = equip_arrow(current_arrow_index)
@@ -140,7 +140,7 @@ func _physics_process(delta: float) -> void:
 		handle_aim_enemy()
 		handle_movement()
 	velocity = v_component.get_total_velocity()
-	if is_on_floor():
+	if is_on_floor() -> void:
 		velocity.y -= v_component.get_wind_velocity(2)
 	corner_correction(7, delta)
 	move_and_slide()
@@ -152,7 +152,7 @@ func update_safe_position() -> void:
 		frames_until_check -= 1
 		return
 
-	for i in get_slide_collision_count():
+	for i in get_slide_collision_count() -> void:
 		var collision = get_slide_collision(i)
 
 		if collision.get_normal().y < -0.7:
@@ -184,7 +184,7 @@ func handle_combat_inputs() -> void:
 		dir_x = 0
 		dir_y = -1
 		dodge_dir_y = -1
-	elif Input.is_action_pressed("down") and !is_on_floor():
+	elif Input.is_action_pressed("down") and !is_on_floor() -> void:
 		dir_x = 0
 		dir_y = 1
 		dodge_dir_y = 1
@@ -215,7 +215,7 @@ func handle_combat_inputs() -> void:
 		
 		if Input.is_action_just_pressed("switch arrow"):
 			current_arrow_index = (current_arrow_index + 1) % arrows.size()
-			if current_arrow.is_inside_tree():
+			if current_arrow.is_inside_tree() -> void:
 				shoot()
 			else:
 				current_arrow = equip_arrow(current_arrow_index)
@@ -224,7 +224,7 @@ func handle_combat_inputs() -> void:
 func try_dodge() -> void:
 	var attempt_dodge_dir : Vector2 = combat.dodge_direction
 	var dodge_dir : Vector2
-	if is_on_floor():
+	if is_on_floor() -> void:
 		dodge_dir = Vector2(direction * dodge_horizontal_speed, DODGE_VERTICAL_VELOCITY)
 		dodge(dodge_dir, 1)
 	else:
@@ -255,7 +255,7 @@ func dodge(dodge_dir : Vector2, duration_multiplier : float) -> void:
 	#hurtbox.get_invincible(dodge_duration * duration_multiplier)
 	if duration_multiplier == 1:
 		play_anim("FrontDodge")
-		if !is_ledge_ahead():
+		if !is_ledge_ahead() -> void:
 			dodge_started_off_ledge = true
 		dodge_cancel_timer.start(dodge_duration * dodge_cancel_portion)
 	elif dodge_dir.y < 0:
@@ -271,9 +271,9 @@ func end_dodge() -> void:
 	combat.dodge_cancelled = false
 	combat.dodge_can_cancel = false
 	dodge_started_off_ledge = false
-	if jump_state.jump_queued and is_on_floor():
+	if jump_state.jump_queued and is_on_floor() -> void:
 		var dir = int(Input.get_axis("left", "right"))
-		if dir == facing_direction and !is_wall_ahead():
+		if dir == facing_direction and !is_wall_ahead() -> void:
 			move_speed = dodge_horizontal_speed
 			$Misc/StateChart/Root/Memes/Grounded.state_entered.connect(reset_speed, 4)
 		jump()
@@ -315,7 +315,7 @@ func handle_arrow_updates() -> void:
 # MOVIMENTO
 # ============================================================
 func apply_gravity(delta: float) -> void:
-	if !is_on_floor():
+	if !is_on_floor() -> void:
 		if v_component.get_proper_velocity(2) <= max_fall_speed:
 			v_component.add_proper_velocity(Vector2(0, get_current_gravity(velocity.y) * delta))
 		state_chart.send_event("Falling" if velocity.y >= 0 else "Rising")
@@ -334,12 +334,12 @@ func handle_movement() -> void:
 		locked_walk = not locked_walk
 		
 	if combat.is_dodging and in_control:
-		if Input.is_action_just_pressed("jump") and is_on_floor():
+		if Input.is_action_just_pressed("jump") and is_on_floor() -> void:
 			jump_state.jump_queued = true
 		if Input.is_action_just_released("jump"):
 			jump_state.jump_queued = false
 		
-		if is_ledge_ahead():
+		if is_ledge_ahead() -> void:
 			if jump_state.jump_queued or dodge_started_off_ledge:
 				end_dodge()
 		
@@ -349,7 +349,7 @@ func handle_movement() -> void:
 			end_dodge()
 	else:
 		if Input.is_action_just_pressed("jump") and (is_on_floor() or jump_state.coyote_time) and in_control and !Input.is_action_pressed("down"):
-			if is_on_floor():
+			if is_on_floor() -> void:
 				jump()
 			elif jump_state.coyote_time:
 				jump(1, true)
@@ -402,7 +402,7 @@ func reset_arrow() -> void:
 	combat.holding_time = 0.0
 
 func build_arrows() -> void:
-	if current_arrow and current_arrow.is_inside_tree():
+	if current_arrow and current_arrow.is_inside_tree() -> void:
 		current_arrow.queue_free()
 	arrows = []
 	for i in range(arrow_paths.size()):
@@ -511,7 +511,7 @@ func _rising_physics_processing(_delta: float) -> void:
 	if !Input.is_action_pressed("jump") and jump_state.jumping:
 		jump_state.jumping = false
 		dampen_jump(0.75)
-	if is_on_ceiling():
+	if is_on_ceiling() -> void:
 		dampen_jump(0.5)
 
 func _can_shoot_state_entered() -> void:
@@ -553,7 +553,7 @@ func _cant_shoot_physics_processing(_delta: float) -> void:
 		combat.is_holding = true
 
 func _falling_state_processing(_delta: float) -> void:
-	if is_on_floor():
+	if is_on_floor() -> void:
 		state_chart.send_event("Grounded")
 	if Input.is_action_just_pressed("jump"):
 		jump_state.jump_queued = true
@@ -571,7 +571,7 @@ func _standing_physics_processing(_delta: float) -> void:
 		state_chart.set_expression_property("crouching", true)
 		state_chart.send_event("Crouched")
 
-func crouch():
+func crouch() -> void:
 	play_anim("Crouch")
 	move_speed = 0
 	$UpColl.disabled = true
@@ -683,7 +683,7 @@ func _on_grounded_state_exited() -> void:
 		AudioManager.stop("Footsteps")
 
 func unlock_arrow(arrow_index : int) -> void:
-	if arrow_index < available_arrows.size():
+	if arrow_index < available_arrows.size() -> void:
 		available_arrows[arrow_index] = true
 		current_arrow_index = arrow_index
 		build_arrows()

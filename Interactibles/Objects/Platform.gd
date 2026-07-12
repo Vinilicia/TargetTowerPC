@@ -12,7 +12,7 @@ extends Node2D
 const DESPAWN_CHECK_DELAY : float = 0.5
 const TIME_TO_SHRINK : float = 0.15
 
-var platform_col
+var platform_col : CollisionShape2D
 var dir : int = 0
 var vertical: bool = false
 var down: bool = false
@@ -38,7 +38,7 @@ func activate(direction: int, downward: bool) -> void:
 		sprite.rotation = deg_to_rad(90) if !down else deg_to_rad(-90)
 	else:
 		sprite.rotation = deg_to_rad(0) if direction == 1 else deg_to_rad(180)
-	var old_pos = global_position
+	var old_pos := global_position
 	top_level = true
 	position = old_pos
 	$Timer.start(spawning_time)
@@ -48,7 +48,7 @@ func spawn() -> void:
 	timer.timeout.disconnect(spawn)
 	timer.timeout.connect(despawn)
 	timer.start(time_to_despawn)
-	var tween = create_tween()
+	var tween := create_tween()
 	platform_col.set_deferred("disabled", false)
 	if vertical:
 		platform_col.set_deferred("one_way_collision", false)
@@ -64,14 +64,14 @@ func spawn() -> void:
 		tween.tween_property($Platform, "scale", Vector2(platform_length * dir, -platform_width), time_to_pop_up)
 		tween.parallel().tween_property($Platform, "position", Vector2(12 * -dir, 0), time_to_pop_up)
 		sprite.position = Vector2(12 * -dir, 0)
-		tween.finished.connect(func():
+		tween.finished.connect(func() -> void:
 			player_detec.position.y += 0.25
 			player_detec.monitoring = true
 			)
 	sprite.play("Grow")
 
 func shrink() -> void:
-	var tween = create_tween()
+	var tween := create_tween()
 	if vertical:
 		if down:
 			tween.tween_property($Platform, "scale", Vector2(1, 1), TIME_TO_SHRINK)

@@ -5,7 +5,7 @@ extends Node2D
 
 @onready var platform := $Platform as RigidBody2D
 
-func _ready():
+func _ready() -> void:
 	pass
 	
 

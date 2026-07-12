@@ -1,7 +1,7 @@
 extends Node
 class_name PortableInfo
 
-@export_enum("Light", "Medium", "Heavy", "Very heavy") var weight = "Light"
+@export_enum("Light", "Medium", "Heavy", "Very heavy") var weight : String = "Light"
 @export_group("Player Modifiers")
 @export var medium_speed_multiplier : float = 0.9
 @export var medium_jump_multiplier : float = 0.9

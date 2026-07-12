@@ -26,7 +26,7 @@ func init_camera_one() -> void:
 	CameraMan.setup_camera($Cameras/Camera1)
 
 func kill_enemies(is_alive : Array[bool]) -> void:
-	var enemies = enemies_node.get_children()
+	var enemies : Array[Node] = enemies_node.get_children()
 	for i in range(enemies.size()):
 		if !is_alive[i]:
 			(enemies[i] as Enemy).money_amount = 0

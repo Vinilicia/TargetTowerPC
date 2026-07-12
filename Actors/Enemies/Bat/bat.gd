@@ -1,6 +1,6 @@
 extends Enemy
 
-@onready var state_chart = $StateChart as StateChart
+@onready var state_chart := $StateChart as StateChart
 
 @export var starts_chasing := false
 @export_subgroup("Timers")
@@ -47,7 +47,7 @@ var move_timer: Timer
 
 # Movimento novo
 var desired_velocity: Vector2 = Vector2.ZERO
-var current_to_do: Callable = func(): pass
+var current_to_do: Callable = func() -> void: pass
 var auto_face: bool = true
 
 # Controle interno
@@ -55,7 +55,7 @@ var give_up_time: float
 var remaining_time_for_chase: float = -1
 var _chase_frame_accum: int = 0
 var stopping_tween: Tween
-var current_attack: Callable = func(): pass
+var current_attack: Callable = func() -> void: pass
 var current_attack_type: String = ""
 var ceiling_retry_timer: Timer
 var attack_delay_timer : Timer
@@ -92,7 +92,7 @@ func start_at_chase() -> void:
 	sight_area.scale = Vector2(600, 400)
 	sight_area.position = Vector2.ZERO
 	($StateChart/State_Tree/SeeingPlayer/StartingChase as AtomicState).state_exited.connect(
-		func():
+		func() -> void:
 			backtracking_speed = old_backtracking
 			visible = true
 			($BaseEnemyStuff/ContactHitbox as Hitbox).monitorable = true
@@ -111,17 +111,18 @@ func _physics_process(_delta: float) -> void:
 	v_component.set_proper_velocity(lerped)
 
 	velocity = v_component.get_total_velocity()
-	move_and_slide()
+	if !stunned:
+		move_and_slide()
 #endregion
 
 #region Movimento baseado em tempo e velocidade
-func move_for(duration: float, direction: Vector2, speed: float, todo: Callable = func(): pass) -> void:
-	if stopping_tween and stopping_tween.is_running():
+func move_for(duration: float, direction: Vector2, speed: float, to_do: Callable = func() -> void: pass) -> void:
+	if stopping_tween and stopping_tween.is_running() -> void:
 		stopping_tween.kill()
 	if move_timer.is_connected("timeout", Callable(self, "_on_move_timeout")):
 		move_timer.timeout.disconnect(Callable(self, "_on_move_timeout"))
 
-	current_to_do = todo
+	current_to_do = to_do
 	moving = true
 	desired_velocity = direction.normalized() * speed
 
@@ -146,7 +147,7 @@ func set_facing(dir: int) -> void:
 		return
 	$BaseEnemyStuff/Bat.flip_h = !($BaseEnemyStuff/Bat.flip_h)
 	facing_direction = dir
-	for child in $BehaviorChanging.get_children():
+	for child in $BehaviorChanging.get_children() -> void:
 		child.position = Vector2(child.position.x * -1, child.position.y)
 	_update_ray_directions()
 #endregion
@@ -202,12 +203,12 @@ func _starting_chase_physics_processing(_delta : float) -> void:
 	var sees_player := line_of_sight.get_collider() == player_target
 	if sees_player:
 		giving_up_timer.stop()
-		if chasing_timer.is_stopped():
+		if chasing_timer.is_stopped() -> void:
 			chasing_timer.start(remaining_time_for_chase)
 	else:
 		remaining_time_for_chase = chasing_timer.time_left
 		chasing_timer.stop()
-		if giving_up_timer.is_stopped():
+		if giving_up_timer.is_stopped() -> void:
 			giving_up_timer.start(give_up_time)
 
 func start_chase() -> void:
@@ -232,7 +233,7 @@ func _apply_wander_variation() -> void:
 	var v : Vector2 = v_component.get_proper_velocity().normalized() * current_speed
 	v_component.set_proper_velocity(v)
 
-func _update_ray_directions():
+func _update_ray_directions() -> void:
 	for ray in avoidance_rays:
 		ray.scale.x = facing_direction
 
@@ -243,7 +244,7 @@ func _chasing_state_physics_processing(_delta: float) -> void:
 	if sees_player:
 		giving_up_timer.stop()
 	else:
-		if giving_up_timer.is_stopped():
+		if giving_up_timer.is_stopped() -> void:
 			giving_up_timer.start(give_up_time)
 
 	# retarget periódico
@@ -267,7 +268,7 @@ func _chasing_state_physics_processing(_delta: float) -> void:
 		var avoidance_strength := 0.45  # ajuste fino: 0.2 .. 0.6
 
 		for ray in avoidance_rays:
-			if ray.is_colliding():
+			if ray.is_colliding() -> void:
 				active_rays += 1
 				var collision_point := ray.get_collision_point()
 				var away := global_position - collision_point
@@ -305,11 +306,11 @@ func _try_find_ceiling() -> void:
 	var best_point := _find_best_ceiling_spot()
 	if best_point != global_position:
 		var dir := (best_point - global_position).normalized()
-		move_for(1.0, dir, current_speed, func(): state_chart.send_event("Got_On_Idling_Spot"))
+		move_for(1.0, dir, current_speed, func() -> void: state_chart.send_event("Got_On_Idling_Spot"))
 	else:
 		var dir := Vector2(0, -1)
 		move_for(2.0, dir, current_speed)
-		if ceiling_retry_timer.is_stopped():
+		if ceiling_retry_timer.is_stopped() -> void:
 			ceiling_retry_timer.start()
 
 func _on_ceiling_retry_timeout() -> void:
@@ -319,13 +320,13 @@ func _find_best_ceiling_spot() -> Vector2:
 	var best_distance := INF
 	var best_point := global_position
 	for angle_deg in range(160, 19, -10):
-		var dir = Vector2(cos(deg_to_rad(angle_deg)), -sin(deg_to_rad(angle_deg)))
+		var dir : Vector2 = Vector2(cos(deg_to_rad(angle_deg)), -sin(deg_to_rad(angle_deg)))
 		ceiling_detector.target_position = dir * 500
 		ceiling_detector.force_raycast_update()
-		if ceiling_detector.is_colliding():
-			var normal = ceiling_detector.get_collision_normal()
+		if ceiling_detector.is_colliding() -> void:
+			var normal := ceiling_detector.get_collision_normal()
 			if is_zero_approx(normal.y - 1):
-				var dist = (ceiling_detector.get_collision_point() - global_position).length()
+				var dist : float = (ceiling_detector.get_collision_point() - global_position).length()
 				if dist < best_distance:
 					best_distance = dist
 					best_point = ceiling_detector.get_collision_point()
@@ -337,7 +338,7 @@ func dash() -> void:
 	current_speed = dash_speed
 	var dir := Vector2(facing_direction, 0)
 	var duration := dash_distance / dash_speed
-	move_for(duration, dir, current_speed, func(): state_chart.send_event("Finished_Attack"))
+	move_for(duration, dir, current_speed, func() -> void: state_chart.send_event("Finished_Attack"))
 
 func dive() -> void:
 	current_speed = dash_speed
@@ -345,7 +346,7 @@ func dive() -> void:
 	var duration := dash_distance / dash_speed
 	($BaseEnemyStuff/Bat as Sprite2D).rotation = PI / 2 * facing_direction
 	($BaseEnemyStuff/Bat as Sprite2D).position = ($BaseEnemyStuff/Bat as Sprite2D).position.rotated(PI/2 * facing_direction)
-	move_for(duration, dir, current_speed, func():
+	move_for(duration, dir, current_speed, func() -> void:
 		state_chart.send_event("Finished_Attack")
 		($BaseEnemyStuff/Bat as Sprite2D).rotation = 0
 		($BaseEnemyStuff/Bat as Sprite2D).position = ($BaseEnemyStuff/Bat as Sprite2D).position.rotated(-PI/2 * facing_direction)
@@ -380,11 +381,11 @@ func _dive_area_body_exited(_body: Node2D) -> void:
 
 
 func _start_attack_delay() -> void:
-	if attack_delay_timer.is_stopped():
+	if attack_delay_timer.is_stopped() -> void:
 		attack_delay_timer.start(attack_reaction_delay)
 
 func _cancel_attack_delay_if_running() -> void:
-	if not attack_delay_timer.is_stopped():
+	if not attack_delay_timer.is_stopped() -> void:
 		attack_delay_timer.stop()
 
 func _on_attack_delay_timeout() -> void:
@@ -411,7 +412,7 @@ func _preparing_state_entered() -> void:
 	else:
 		retreat_dir = Vector2(-facing_direction, 0)
 
-	move_for(0.3, retreat_dir, current_speed, func():
+	move_for(0.3, retreat_dir, current_speed, func() -> void:
 		auto_face = true
 		state_chart.send_event("Prepared_Attack")
 	)

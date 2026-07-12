@@ -135,7 +135,7 @@ func fill_flags() -> void:
 			decorations_tilemap.set_cell(Vector2i(x, y), 0, Vector2i(i,j))
 		x -= 6
 		
-func draw_edges():
+func draw_edges() -> void:
 	var x = -max_x/2
 	ground_tilemap.set_cells_terrain_connect([Vector2i(x, 0)], 0, 0, false)
 	ground_tilemap.set_cells_terrain_connect([Vector2i(x, 1)], 0, 0, false)

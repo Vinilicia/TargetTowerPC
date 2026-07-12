@@ -15,7 +15,7 @@ var target_money : int = 0
 
 func init_hearts(amount : int = 3) -> void:
 	hearts.clear()
-	for child in hearts_container.get_children():
+	for child in hearts_container.get_children() -> void:
 		child.queue_free()
 	for i in range(amount):
 		var new_heart : HeartTexture = heart_rect.instantiate()
@@ -84,7 +84,7 @@ func add_money(value: int) -> void:
 	var duration_offset : float = (abs(float(target_money) - float(current_money)) / 100.0)
 	var duration : float = (min(round(duration_offset), 60) * 0.1) + 0.2 if duration_offset >= 0.1 else 0.05
 	
-	if tween == null or not tween.is_running():
+	if tween == null or not tween.is_running() -> void:
 		tween = get_tree().create_tween()
 		tween.set_trans(Tween.TRANS_LINEAR).set_ease(Tween.EASE_IN_OUT)
 

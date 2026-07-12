@@ -1,0 +1,7 @@
+[gd_scene format=3 uid="uid://bwyfkkx8i03w6"]
+
+[ext_resource type="Script" uid="uid://p778jnxt7dbn" path="res://Components/Actions-Reactions/electric_component.gd" id="1_jphig"]
+
+[node name="ElectricComponent" type="Node" unique_id=248748172]
+script = ExtResource("1_jphig")
+metadata/_custom_type_script = "uid://p778jnxt7dbn"

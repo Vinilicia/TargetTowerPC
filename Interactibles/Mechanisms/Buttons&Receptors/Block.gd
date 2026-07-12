@@ -14,14 +14,14 @@ var final_position = Vector2.RIGHT * moving_distance * move_signal if horizontal
 func _physics_process(delta):
 	the_block.position = the_block.position.lerp(current_position, 0.5)
 
-func button_was_pressed():
+func button_was_pressed() -> void:
 	var block_tween = create_tween()
 	block_tween.tween_property(self, "current_position", final_position, move_duration)
 	print_debug(final_position)
 	print_debug(current_position)
 
 
-func button_was_unpressed():
+func button_was_unpressed() -> void:
 	var block_tween = create_tween()
 	block_tween.tween_property(self, "current_position", Vector2.ZERO, move_duration)
 	print_debug(current_position)

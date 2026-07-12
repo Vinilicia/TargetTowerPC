@@ -16,7 +16,7 @@ resource_local_to_scene = true
 shader = ExtResource("5_yj5ul")
 shader_parameter/enabled = false
 
-[node name="Spooder" unique_id=450815639 node_paths=PackedStringArray("up_ray", "down_ray", "backup_down_ray", "side_ray", "plat_detec") instance=ExtResource("1_bh22r")]
+[node name="Spooder" unique_id=450815639 node_paths=PackedStringArray("up_ray", "down_ray", "backup_down_ray", "side_ray", "plat_detec", "stunned_nodes") instance=ExtResource("1_bh22r")]
 material = SubResource("ShaderMaterial_rw2p2")
 script = ExtResource("2_wapg0")
 speed = 25.0
@@ -28,7 +28,7 @@ down_ray = NodePath("DownRaycast")
 backup_down_ray = NodePath("BackupDownRay")
 side_ray = NodePath("FrontRaycast")
 plat_detec = NodePath("PlatDetec")
-regular_shockable = false
+stunned_nodes = [NodePath("UpRaycast"), NodePath("DownRaycast"), NodePath("BackupDownRay"), NodePath("FrontRaycast")]
 metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0" unique_id=2038690234]

@@ -22,7 +22,7 @@ resource_local_to_scene = true
 shader = ExtResource("5_mp5lk")
 shader_parameter/enabled = false
 
-[node name="CommonGoblin" unique_id=1436648139 node_paths=PackedStringArray("lines_of_sight", "slash_hitbox", "state_chart", "coll", "wall_detector", "jump_detector", "fall_detector", "ground_detector", "jump_attack_area", "stab_attack_area", "sight_area", "outer_arrow_detec", "inner_arrow_detec", "giving_up_timer", "jump_attack_timer", "stab_attack_timer") instance=ExtResource("1_j75sw")]
+[node name="CommonGoblin" unique_id=1436648139 node_paths=PackedStringArray("lines_of_sight", "slash_hitbox", "state_chart", "coll", "wall_detector", "jump_detector", "fall_detector", "ground_detector", "jump_attack_area", "stab_attack_area", "sight_area", "outer_arrow_detec", "inner_arrow_detec", "giving_up_timer", "jump_attack_timer", "stab_attack_timer", "stunned_nodes") instance=ExtResource("1_j75sw")]
 material = SubResource("ShaderMaterial_q4346")
 script = ExtResource("2_mp5lk")
 start_direction = 1
@@ -46,6 +46,7 @@ inner_arrow_detec = NodePath("Areas/InnerArrowDetector")
 giving_up_timer = NodePath("WhiteNodes/Timers/GivingUpTimer")
 jump_attack_timer = NodePath("WhiteNodes/Timers/JumpAttackTimer")
 stab_attack_timer = NodePath("WhiteNodes/Timers/StabAttackTimer")
+stunned_nodes = [NodePath("WhiteNodes"), NodePath("Areas"), NodePath("Raycasts")]
 metadata/_edit_pinned_properties_ = [&"material"]
 
 [node name="BodyCollision" parent="." index="0" unique_id=2038690234]

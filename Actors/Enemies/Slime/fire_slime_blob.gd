@@ -18,10 +18,10 @@ func _physics_process(delta: float) -> void:
 	set_collision_mask_value(5, true)
 
 	velocity.y += gravity * delta
-	var collision = move_and_collide(velocity * delta, true)
+	var collision := move_and_collide(velocity * delta, true)
 
 	if collision:
-		var normal = collision.get_normal()
+		var normal : Vector2 = collision.get_normal()
 		if normal.y < -0.7: 
 			explode(collision.get_position())
 		else:

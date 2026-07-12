@@ -19,11 +19,11 @@ func _ready() -> void:
 
 func _physics_process(delta: float) -> void:
 	if player != null:
-		var direction = to_local(player.global_position + Vector2(0, -5)).normalized()
-		var target_velocity = direction * flying_speed
+		var direction := to_local(player.global_position + Vector2(0, -5)).normalized()
+		var target_velocity := direction * flying_speed
 		v_comp.proper_velocity.lerp(target_velocity, delta * 5)
 	
-	if is_on_floor():
+	if is_on_floor() -> void:
 		if not on_ground:
 			on_ground = true
 			v_comp.set_proper_velocity(Vector2.ZERO)
@@ -51,7 +51,7 @@ func go_to_player() -> void:
 	player = get_tree().get_first_node_in_group("Player")
 
 func _on_player_detec_body_entered(_body: Node2D) -> void:
-	if SaveManager.save_file_data.get_money() == SaveManager.save_file_data.get_max_money():
+	if SaveManager.save_file_data.get_money() == SaveManager.save_file_data.get_max_money() -> void:
 		return
 	else:
 		($PlayerDetec as Area2D).set_deferred("monitoring", false)

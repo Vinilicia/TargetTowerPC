@@ -99,7 +99,7 @@ func check() -> void:
 			horizontal_checker.force_raycast_update()
 			vertical_checker.force_raycast_update()
 
-			if vertical_checker.is_colliding():
+			if vertical_checker.is_colliding() -> void:
 				var g_col = vertical_checker.get_collision_point()
 				var g_norm = vertical_checker.get_collision_normal()
 				var g_off = g_col + (g_norm * vertical_offset)
@@ -108,7 +108,7 @@ func check() -> void:
 				current_surface.append(start_global_transform.affine_inverse() * g_col)
 				current_offset.append(start_global_transform.affine_inverse() * g_off)
 
-				if horizontal_checker.is_colliding():
+				if horizontal_checker.is_colliding() -> void:
 					global_position = g_col + (g_norm * vertical_offset)
 					global_rotation += deg_to_rad(90) * -direction
 				else:
@@ -116,7 +116,7 @@ func check() -> void:
 					var side_dir = g_norm.rotated(deg_to_rad(90) * direction)
 					global_position += side_dir * jump_dist
 			else:
-				if !current_offset.is_empty():
+				if !current_offset.is_empty() -> void:
 					current_offset.append(current_offset.back() + horizontal_checker.target_position.rotated(rotation))
 				global_rotation += deg_to_rad(90) * direction
 				global_position += Vector2(0, -direction * vertical_offset).rotated(global_rotation)

@@ -1,7 +1,7 @@
 extends CharacterBody2D
 
 func _physics_process(delta):
-	if not is_on_floor():
+	if not is_on_floor() -> void:
 		velocity += get_gravity() * delta
 	else:
 		velocity.y = 0.0

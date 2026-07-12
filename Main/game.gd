@@ -16,11 +16,11 @@ func _ready() -> void:
 	#Engine.time_scale = 0.5
 	#connect("level_ready", (find_child("Player") as Player).gain_control)
 	#connect("readying_level", (find_child("Player") as Player).lose_control)
-	for child in get_children():
+	for child in get_children() -> void:
 		if child is Room:
 			current_level = child
 
-func change_level(next_level: String, spawn_position: Vector2, area: LevelDatabase.Areas = LevelDatabase.Areas.AREA_1):
+func change_level(next_level: String, spawn_position: Vector2, area: LevelDatabase.Areas = LevelDatabase.Areas.AREA_1) -> void:
 	readying_level.emit()
 	blackout_fade_in()
 	await get_tree().create_timer(0.5).timeout

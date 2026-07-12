@@ -42,7 +42,7 @@ func save_controls(path: String) -> void:
 	var controls_data: Dictionary = {}
 
 	# Só salva ações personalizáveis (não as de UI internas)
-	for action_name in InputMap.get_actions():
+	for action_name in InputMap.get_actions() -> void:
 		if action_name.begins_with("ui_"):
 			continue
 
@@ -67,7 +67,7 @@ func save_controls(path: String) -> void:
 				})
 		controls_data[action_name] = events
 
-	var file = FileAccess.open(path, FileAccess.WRITE)
+	var file : FileAccess = FileAccess.open(path, FileAccess.WRITE)
 	file.store_string(JSON.stringify(controls_data, "\t"))
 	file.close()
 
@@ -77,8 +77,8 @@ func load_controls(path: String) -> void:
 		print("⚠ Nenhum arquivo de controle encontrado em %s, mantendo padrão." % path)
 		return
 
-	var file = FileAccess.open(path, FileAccess.READ)
-	var parse_res = JSON.parse_string(file.get_as_text())
+	var file : FileAccess = FileAccess.open(path, FileAccess.READ)
+	var parse_res : Variant = JSON.parse_string(file.get_as_text())
 	file.close()
 
 	if typeof(parse_res) != TYPE_DICTIONARY:
@@ -88,17 +88,17 @@ func load_controls(path: String) -> void:
 	var data: Dictionary = parse_res
 
 	# Apenas limpa as ações que estão no arquivo salvo (nunca as 'ui_*')
-	for action_name in data.keys():
+	for action_name : String in data.keys() -> void:
 		if InputMap.has_action(action_name):
 			InputMap.action_erase_events(action_name)
 
 	# Restaura bindings do arquivo
-	for action_name in data.keys():
+	for action_name : String in data.keys() -> void:
 		if not InputMap.has_action(action_name):
 			print("⚠ Ação '%s' não existe no projeto, ignorando." % action_name)
 			continue
 
-		for e_data in data[action_name]:
+		for e_data : Variant in data[action_name]:
 			var ev: InputEvent = null
 			match e_data.get("type", ""):
 				"key":
@@ -123,27 +123,26 @@ func save_controls_for_slot(slot_index: int) -> void:
 	save_controls(get_controls_path(slot_index))
 
 func load_controls_for_slot(slot_index: int) -> void:
-	var path = get_controls_path(slot_index)
+	var path := get_controls_path(slot_index)
 	if FileAccess.file_exists(path):
 		load_controls(path)
 	else:
 		reset_default_controls()
 
-func reset_default_controls():
+func reset_default_controls() -> void:
 	InputMap.load_from_project_settings()
-
 
 # ===============================================================
 # === SALVAMENTO E CARREGAMENTO DE JOGO (por slot) - CRIPTOGRAFADO ===
 # ===============================================================
 
-func _save(slot_index: int):
-	var save_path = get_save_path(slot_index)
-	var file = FileAccess.open_encrypted_with_pass(save_path, FileAccess.WRITE, "1n1c19a436")
+func _save(slot_index: int) -> void:
+	var save_path : String = get_save_path(slot_index)
+	var file := FileAccess.open_encrypted_with_pass(save_path, FileAccess.WRITE, "1n1c19a436")
 
 	var data_to_save: Dictionary = {}
-	for prop_info in save_file_data.get_property_list():
-		var prop_name = prop_info.name
+	for prop_info in save_file_data.get_property_list() -> void:
+		var prop_name : String = prop_info.name
 		if prop_name == "Money":
 			print("BANANA ", save_file_data.get("MoneyUpgrades"))
 		if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path", "script"]:
@@ -152,7 +151,7 @@ func _save(slot_index: int):
 
 	data_to_save["SaveVersion"] = save_file_data.get("SaveVersion")
 
-	var json_ver = JSON.stringify(data_to_save)
+	var json_ver := JSON.stringify(data_to_save)
 	file.store_string(json_ver)
 	file.close()
 
@@ -162,7 +161,7 @@ func _save(slot_index: int):
 
 
 func _load(slot_index: int) -> bool:
-	var save_path = get_save_path(slot_index)
+	var save_path := get_save_path(slot_index)
 
 	if not FileAccess.file_exists(save_path):
 		print("Nenhum save encontrado no Slot %d — criando novo save padrão..." % slot_index)
@@ -171,15 +170,15 @@ func _load(slot_index: int) -> bool:
 		return true
 
 	current_slot_index = slot_index
-	var file = FileAccess.open_encrypted_with_pass(save_path, FileAccess.READ, "1n1c19a436")
+	var file := FileAccess.open_encrypted_with_pass(save_path, FileAccess.READ, "1n1c19a436")
 	if file == null:
-		var error_code = FileAccess.get_open_error()
+		var error_code : Error = FileAccess.get_open_error()
 		printerr("FALHA NO LOAD: Arquivo corrompido ou senha errada. Erro: ", error_code)
 		return false
-	var text_content = file.get_as_text()
+	var text_content := file.get_as_text()
 	
 	file.close() # Fecha o arquivo
-	var parse_res = JSON.parse_string(text_content)
+	var parse_res : Variant = JSON.parse_string(text_content)
 	if parse_res == null:
 		printerr("FALHA NO LOAD: O arquivo abriu, mas o JSON é inválido.")
 		return false
@@ -191,11 +190,11 @@ func _load(slot_index: int) -> bool:
 
 	var data: Dictionary = parse_res
 
-	var default_data = SaveDataResource.new()
-	var loaded_resource = SaveDataResource.new()
-	var valid = true
-	var saved_version = int(data.get("SaveVersion", 0))
-	var current_version = int(default_data.SaveVersion)
+	var default_data := SaveDataResource.new()
+	var loaded_resource := SaveDataResource.new()
+	var valid : bool = true
+	var saved_version := int(data.get("SaveVersion", 0))
+	var current_version := int(default_data.SaveVersion)
 
 	# SAVE MAIS NOVO
 	if saved_version > current_version:
@@ -207,17 +206,17 @@ func _load(slot_index: int) -> bool:
 	# SAVE ANTIGO (migração)
 	elif saved_version < current_version:
 		print("Save antigo (%d < %d) — migrando..." % [saved_version, current_version])
-		for prop_info in default_data.get_property_list():
-			var prop_name = prop_info.name
+		for prop_info in default_data.get_property_list() -> void:
+			var prop_name : String = prop_info.name
 			if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path", "script"]:
 				continue
 
-			var default_value = default_data.get(prop_name)
+			var default_value : Variant = default_data.get(prop_name)
 			if not data.has(prop_name):
 				loaded_resource.set(prop_name, default_value)
 				continue
 
-			var value = data[prop_name]
+			var value : Variant = data[prop_name]
 			if typeof(value) != typeof(default_value):
 				if (typeof(value) in [TYPE_INT, TYPE_FLOAT]) and (typeof(default_value) in [TYPE_INT, TYPE_FLOAT]):
 					# allow int/float interchange
@@ -228,7 +227,7 @@ func _load(slot_index: int) -> bool:
 
 			if typeof(default_value) == TYPE_ARRAY:
 				var new_array: Array = []
-				for v in value:
+				for v : Variant in value:
 					new_array.append(v)
 				loaded_resource.set_array(prop_name, new_array)
 			else:
@@ -242,8 +241,8 @@ func _load(slot_index: int) -> bool:
 
 	# MESMA VERSÃO
 	else:
-		for prop_info in default_data.get_property_list():
-			var prop_name = prop_info.name
+		for prop_info in default_data.get_property_list() -> void:
+			var prop_name : String = prop_info.name
 			if prop_name.begins_with("_") or prop_name in ["resource_name", "resource_path", "script"]:
 				continue
 
@@ -252,8 +251,8 @@ func _load(slot_index: int) -> bool:
 				valid = false
 				break
 
-			var value = data[prop_name]
-			var default_value = default_data.get(prop_name)
+			var value : Variant = data[prop_name]
+			var default_value : Variant = default_data.get(prop_name)
 
 			if typeof(value) != typeof(default_value):
 				if (typeof(value) in [TYPE_INT, TYPE_FLOAT]) and (typeof(default_value) in [TYPE_INT, TYPE_FLOAT]):
@@ -265,7 +264,7 @@ func _load(slot_index: int) -> bool:
 
 			if typeof(default_value) == TYPE_ARRAY:
 				var new_array: Array = []
-				for v in value:
+				for v : Variant in value:
 					new_array.append(v)
 				print(prop_name, value)
 				loaded_resource.set_array(prop_name, new_array)
@@ -282,7 +281,7 @@ func _load(slot_index: int) -> bool:
 		print("Jogo carregado com sucesso do Slot %d" % slot_index)
 
 	# carregar controles do slot
-	var controls_path = get_controls_path(slot_index)
+	var controls_path : String = get_controls_path(slot_index)
 	if FileAccess.file_exists(controls_path):
 		load_controls(controls_path)
 	else:
@@ -299,8 +298,8 @@ func _load(slot_index: int) -> bool:
 
 # Salva settings (não criptografado). Inclui checagem de versão no JSON.
 func save_settings() -> void:
-	var path = get_settings_path()
-	var file = FileAccess.open(path, FileAccess.WRITE) # NOT encrypted
+	var path : String = get_settings_path()
+	var file := FileAccess.open(path, FileAccess.WRITE) # NOT encrypted
 	if not file:
 		print("Erro ao abrir settings para escrita:", path)
 		return
@@ -315,15 +314,15 @@ func save_settings() -> void:
 
 # Carrega settings (não criptografado) com validação/migração de versão
 func load_settings() -> void:
-	var path = get_settings_path()
+	var path : String = get_settings_path()
 	if not FileAccess.file_exists(path):
 		print("⚙️ Nenhum arquivo de configurações encontrado, usando padrão.")
 		# mantemos settings_data já inicializado com defaults
 		apply_settings()
 		return
 
-	var file = FileAccess.open(path, FileAccess.READ)
-	var parse_res = JSON.parse_string(file.get_as_text())
+	var file := FileAccess.open(path, FileAccess.READ)
+	var parse_res : Variant  = JSON.parse_string(file.get_as_text())
 	file.close()
 
 	if typeof(parse_res) != TYPE_DICTIONARY:
@@ -332,9 +331,9 @@ func load_settings() -> void:
 		return
 
 	var data: Dictionary = parse_res
-	var saved_version = int(data.get("SettingsVersion", 0))
-	var current_version = SETTINGS_VERSION
-	var default_settings = {
+	var saved_version := int(data.get("SettingsVersion", 0))
+	var current_version : int = SETTINGS_VERSION
+	var default_settings : Dictionary = {
 		"SettingsVersion": current_version,
 		"master_volume": 1.0,
 		"music_volume": 0.8,
@@ -357,12 +356,12 @@ func load_settings() -> void:
 	if saved_version < current_version:
 		print("Settings antigo (%d < %d) — migrando..." % [saved_version, current_version])
 		var new_settings: Dictionary = default_settings.duplicate(true)
-		for key in default_settings.keys():
+		for key : String in default_settings.keys() -> void:
 			if key == "SettingsVersion":
 				continue
 			if data.has(key):
-				var def_val = default_settings[key]
-				var val = data[key]
+				var def_val : Variant = default_settings[key]
+				var val : Variant = data[key]
 				# permite int <-> float
 				if typeof(val) == typeof(def_val) or ((typeof(val) in [TYPE_INT, TYPE_FLOAT]) and (typeof(def_val) in [TYPE_INT, TYPE_FLOAT])):
 					new_settings[key] = val
@@ -375,10 +374,10 @@ func load_settings() -> void:
 
 	# MESMA VERSÃO — valida e preenche faltantes
 	var merged: Dictionary = default_settings.duplicate(true)
-	for key in default_settings.keys():
+	for key : String in default_settings.keys() -> void:
 		if data.has(key):
-			var def_val = default_settings[key]
-			var val = data[key]
+			var def_val : Variant = default_settings[key]
+			var val : Variant = data[key]
 			if typeof(val) == typeof(def_val) or ((typeof(val) in [TYPE_INT, TYPE_FLOAT]) and (typeof(def_val) in [TYPE_INT, TYPE_FLOAT])):
 				merged[key] = val
 			else:
@@ -398,17 +397,17 @@ func load_settings() -> void:
 # ===============================================================
 # === APLICAÇÃO DE CONFIGURAÇÕES (USANDO settings_data) ===
 # ===============================================================
-func apply_settings():
+func apply_settings() -> void:
 	# Use values from settings_data (não do save_file_data)
-	var master = float(settings_data.get("master_volume", 1.0))
-	var music = float(settings_data.get("music_volume", 0.8))
-	var sfx = float(settings_data.get("sfx_volume", 0.8))
+	var master := float(settings_data.get("master_volume", 1.0))
+	var music := float(settings_data.get("music_volume", 0.8))
+	var sfx := float(settings_data.get("sfx_volume", 0.8))
 
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Master"), linear_to_db(master))
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("Music"), linear_to_db(music))
 	AudioServer.set_bus_volume_db(AudioServer.get_bus_index("SFX"), linear_to_db(sfx))
 
-	var mode = DisplayServer.WINDOW_MODE_FULLSCREEN
+	var mode : DisplayServer.WindowMode = DisplayServer.WINDOW_MODE_FULLSCREEN
 	match int(settings_data.get("display_mode", 0)):
 		0, 2:
 			mode = DisplayServer.WINDOW_MODE_WINDOWED
@@ -420,30 +419,30 @@ func apply_settings():
 # ===============================================================
 # === GERENCIAMENTO DE SLOTS ===
 # ===============================================================
-func copy_slot(source_slot: int, destination_slot: int):
-	var source_path = get_save_path(source_slot)
-	var dest_path = get_save_path(destination_slot)
+func copy_slot(source_slot: int, destination_slot: int) -> void:
+	var source_path := get_save_path(source_slot)
+	var dest_path := get_save_path(destination_slot)
 
 	if not FileAccess.file_exists(source_path):
 		print("Erro ao copiar: Slot origem %d vazio." % source_slot)
 		return
 
-	var dir = DirAccess.open("user://")
-	var error = dir.copy(source_path, dest_path)
+	var dir : DirAccess = DirAccess.open("user://")
+	var error : Error = dir.copy(source_path, dest_path)
 	if error == OK:
 		print("Slot %d copiado para Slot %d." % [source_slot, destination_slot])
 	else:
 		print("Erro ao copiar arquivo. Código %d" % error)
 
-	var src_controls = get_controls_path(source_slot)
-	var dst_controls = get_controls_path(destination_slot)
+	var src_controls : String = get_controls_path(source_slot)
+	var dst_controls : String = get_controls_path(destination_slot)
 	if FileAccess.file_exists(src_controls):
 		dir.copy(src_controls, dst_controls)
 
 
-func delete_slot(slot_to_delete: int):
-	var save_path = get_save_path(slot_to_delete)
-	var dir = DirAccess.open("user://")
+func delete_slot(slot_to_delete: int) -> void:
+	var save_path : String = get_save_path(slot_to_delete)
+	var dir : DirAccess = DirAccess.open("user://")
 
 	if FileAccess.file_exists(save_path):
 		dir.remove(save_path)

@@ -32,7 +32,7 @@ signal landed
 
 func _ready() -> void:
 	player = get_tree().get_first_node_in_group("Player")
-	for marker : Marker2D in markers_node.get_children():
+	for marker : Marker2D in markers_node.get_children() -> void:
 		marker.top_level = true
 		marker.position += global_position
 	top_left_marker = markers_node.get_child(0)
@@ -70,14 +70,12 @@ func _physics_process(delta: float) -> void:
 		raycast.target_position = to_local(player.global_position)
 	grounded_behaviour(delta * gravity_scale)
 	
-	if jumping and is_on_floor():
+	if jumping and is_on_floor() -> void:
 		jumping = false
 		on_land()
 
-
-
 func on_land() -> void:
-	v_component.set_proper_velocity(0.0, 1)
+	v_component.set_proper_velocity(Vector2.ZERO)
 	
 	await get_tree().create_timer(bounce_delay).timeout
 	if jump_targets.size() > 0:
@@ -143,7 +141,7 @@ func dispersed_volley() -> void:
 		new_target = to_local(new_target) + position
 		targets.append(new_target)
 	for i in range(num_volley_attacks):
-		var mirror = num_volley_attacks - 1 - i
+		var mirror : int = num_volley_attacks - 1 - i
 		shoot(targets[i])
 		shoot(targets[mirror])
 		await get_tree().create_timer(0.4).timeout
@@ -159,8 +157,8 @@ func patterned_volley() -> void:
 	for j in range(num_patterned_shots):
 		var num := randi_range(4, 5)
 		for i in range(num):
-			var this_start = start + Vector2(patterned_rand_x_offset, 0) * randf_range(-1, 1)
-			var this_end = end + Vector2(patterned_rand_x_offset, 0) * randf_range(-1, 1)
+			var this_start : Vector2 = start + Vector2(patterned_rand_x_offset, 0) * randf_range(-1, 1)
+			var this_end : Vector2 = end + Vector2(patterned_rand_x_offset, 0) * randf_range(-1, 1)
 			var new_target : Vector2 = this_start + ((this_end - this_start) * (float(i) / float(num - 1)))
 			new_target = to_local(new_target) + position
 			targets.append(new_target)
@@ -199,7 +197,7 @@ func shoot(target : Vector2, straight : bool = false) -> void:
 func pursue() -> void:
 	for i in range(num_consecutive_jumps):
 		engaging = false
-		var target = player.global_position
+		var target : Vector2 = player.global_position
 		perform_jump(target, 0, 60)
 		await landed
 		engaging = true
@@ -227,24 +225,24 @@ func perform_jump(target: Vector2, offset : float = 10, height_increase : float 
 	var start := global_position
 	var end := target
 
-	var x0 = start.x
-	var y0 = start.y
-	var xf = end.x - (offset if start.x < end.x else -offset)
-	var yf = end.y
+	var x0 : float = start.x
+	var y0 : float = start.y
+	var xf : float = end.x - (offset if start.x < end.x else -offset)
+	var yf : float = end.y
 
-	var g = get_gravity().y * gravity_scale
+	var g : float = get_gravity().y * gravity_scale
 
-	var highest_point = min(y0, yf)
-	var yMax = highest_point - height_increase
+	var highest_point : float = min(y0, yf)
+	var yMax : float = highest_point - height_increase
 
-	var vy = -sqrt(2.0 * g * abs(yMax - y0)) 
-	var t_up = abs(vy) / g
+	var vy : float = -sqrt(2.0 * g * abs(yMax - y0)) 
+	var t_up : float = abs(vy) / g
 
-	var t_down = sqrt(2.0 * abs(yf - yMax) / g)
+	var t_down : float = sqrt(2.0 * abs(yf - yMax) / g)
 
-	var total_t = t_up + t_down
+	var total_t : float = t_up + t_down
 
-	var vx = (xf - x0) / total_t
+	var vx : float = (xf - x0) / total_t
 	
 	v_component.set_proper_velocity(Vector2(vx, vy))
 
@@ -253,8 +251,10 @@ func die() -> void:
 	super.die()
 
 func grounded_behaviour(delta : float) -> void:
-	if !is_on_floor():
+	if !is_on_floor() -> void:
 		apply_gravity(delta)
+	else:
+		v_component.set_gravity_velocity(Vector2.ZERO)
 	
 	velocity = v_component.get_total_velocity()
 	move_and_slide()

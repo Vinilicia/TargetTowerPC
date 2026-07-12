@@ -14,26 +14,36 @@ class_name Enemy
 @export_group("Variants")
 @export var spawns_money := true
 @export var money_amount : float = 1
+@export_subgroup("Elements")
 @export var regular_flammable : bool = true
 @export var regular_freezable : bool = true
 @export var regular_shockable : bool = true
+@export var stunned_nodes : Array[Node]
 
 var fire_comp : FireComponent = null
 var ice_comp : IceComponent = null
-#var electric_comp : ElectricComponent = null
+var electric_comp : ElectricComponent = null
+
+var stunned : bool = false
 
 signal died
 
 func _ready() -> void:
 	if regular_flammable and fire_component_scene:
 		fire_comp = fire_component_scene.instantiate()
+		fire_comp.parent_health_man = health_man
 		hurtbox.call_deferred("add_child", fire_comp)
-		fire_comp.caught_fire.connect(_on_fire_comp_caught_fire)
+		fire_comp.effect_started.connect(_on_fire_comp_effect_started)
 	if regular_freezable and ice_component_scene:
 		ice_comp = ice_component_scene.instantiate()
 		ice_comp.parent_health_man = health_man
 		ice_comp.regular_behaviour = true
 		hurtbox.call_deferred("add_child", ice_comp)
+	if regular_shockable and electric_component_scene:
+		electric_comp = electric_component_scene.instantiate()
+		electric_comp.parent_health_man = health_man
+		hurtbox.call_deferred("add_child", electric_comp)
+		electric_comp.effect_started.connect(_on_electric_comp_effect_started)
 
 func die() -> void:
 	died.emit()
@@ -57,18 +67,36 @@ func run_out_of_health() -> void:
 	die()
 
 func apply_gravity(delta : float) -> void:
-	v_component.add_proper_velocity(Vector2(0, get_gravity().y * delta))
+	v_component.add_gravity_velocity(Vector2(0, get_gravity().y * delta))
 
 func grounded_behaviour(delta : float) -> void:
-	if !is_on_floor():
+	if stunned:
+		return
+	if !is_on_floor() -> void:
 		apply_gravity(delta)
 	else:
 		v_component.set_proper_velocity(0.0, 2)
+		v_component.set_gravity_velocity(Vector2.ZERO)
 	
 	velocity = v_component.get_total_velocity()
 	move_and_slide()
 
-func _on_fire_comp_caught_fire() -> void:
-	if not fire_comp.extinguished.is_connected(health_man.stop_burning):
-		fire_comp.extinguished.connect(health_man.stop_burning, 4)
+func _on_fire_comp_effect_started() -> void:
+	if not fire_comp.effect_ended.is_connected(health_man.stop_burning):
+		fire_comp.effect_ended.connect(health_man.stop_burning, CONNECT_ONE_SHOT)
 		health_man.start_burning(0.5)
+
+func _on_electric_comp_effect_started() -> void:
+	if not electric_comp.effect_ended.is_connected(unstun):
+		electric_comp.effect_ended.connect(unstun)
+	stun()
+
+func stun() -> void:
+	stunned = true
+	for node in stunned_nodes:
+		node.set_deferred("process_mode", Node.PROCESS_MODE_DISABLED)
+
+func unstun() -> void:
+	stunned = false
+	for node in stunned_nodes:
+		node.set_deferred("process_mode", Node.PROCESS_MODE_INHERIT)

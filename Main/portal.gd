@@ -78,7 +78,7 @@ func _get(property: StringName):
 # 🔹 Helper: obtém o banco de dados de forma segura
 # ------------------------------------------------------------
 func _get_database() -> LevelDatabase:
-	if Engine.is_editor_hint():
+	if Engine.is_editor_hint() -> void:
 		return load(DB_PATH) as LevelDatabase
 	elif Engine.has_singleton("LevelDB"):
 		return LevelDB.database as LevelDatabase
@@ -102,7 +102,7 @@ func _on_body_entered(body: Node2D) -> void:
 			3:
 				velocity = Vector2(body.max_fall_speed, 0)
 		body.v_component.set_proper_velocity(velocity)
-		get_tree().create_timer(0.5).timeout.connect(func():
+		get_tree().create_timer(0.5).timeout.connect(func() -> void:
 			body.v_component.set_proper_velocity(Vector2.ZERO)
 			)
 	else:
