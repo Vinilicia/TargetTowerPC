@@ -5,9 +5,8 @@
 [ext_resource type="Shape2D" uid="uid://c15fxfokquco3" path="res://Themes/Standardized_Circle.tres" id="3_bwd2v"]
 [ext_resource type="Script" uid="uid://p778jnxt7dbn" path="res://Components/Actions-Reactions/electric_component.gd" id="4_bik6k"]
 
-[node name="ElectricActivator" type="Node2D" unique_id=754888994 node_paths=PackedStringArray("hurtbox")]
+[node name="ElectricActivator" type="Node2D" unique_id=754888994]
 script = ExtResource("1_4pd00")
-hurtbox = NodePath("")
 metadata/_custom_type_script = "uid://bg8pwgi4g5mmq"
 
 [node name="Hurtbox" parent="." unique_id=87970197 node_paths=PackedStringArray("parent") instance=ExtResource("2_4pd00")]

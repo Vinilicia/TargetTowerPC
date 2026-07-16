@@ -81,7 +81,7 @@ func instantiate_main_menu() -> void:
 	main_menu.visible = false
 	get_parent().add_child(main_menu)
 
-func load_game(save_id) -> void:
+func load_game(save_id : int) -> void:
 	SaveManager._load(save_id)
 	
 	var bench_id := SaveManager.save_file_data.get_last_bench_id()

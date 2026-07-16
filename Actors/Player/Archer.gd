@@ -663,7 +663,7 @@ func _on_health_manager_ran_out() -> void:
 	get_tree().quit()
 
 func _on_health_manager_gained_health(amount: int) -> void:
-	HudHandler.hud.gain_hearts(amount as int)
+	HudHandler.hud.gain_hearts(amount)
 
 func gain_control() -> void:
 	in_control = true

@@ -108,6 +108,9 @@ func _physics_process(delta: float) -> void:
 func _ready() -> void:
 	CameraMan.setup_player(self)
 	build_arrows()
+	await HudHandler.hud.ready
+	HudHandler.hud.init_mana(max_mana)
+	HudHandler.hud.init_hearts(health_man.max_health as int)
 
 func equip_arrow() -> Arrow:
 	var arrow: Arrow = arrows[arrow_index].duplicate()
@@ -394,6 +397,7 @@ func get_current_gravity() -> Vector2:
 func _on_mana_changed(value : int) -> void:
 	if value < 0:
 		mana_timer.start(mana_regen_time)
+		HudHandler.hud.lose_mana(-value)
 	if value > 0:
 		if Input.is_action_pressed("shoot"):
 			hold_arrow()
@@ -431,9 +435,9 @@ func invincible_flicker() -> void:
 		invincible_flicker()
 
 func _on_health_manager_lost_health(amount: int) -> void:
-	
 	if amount > 0:
 		took_damage.emit()
+		HudHandler.hud.lose_hearts(amount)
 		flinch()
 
 func _on_ice_manager_froze() -> void:
@@ -633,6 +637,8 @@ func move_smoothly(global_pos : Vector2, duration : float) -> void:
 	while to_local(initial_pos).length() <= initial_distance:
 		position += direction * speed / Engine.physics_ticks_per_second
 		await get_tree().process_frame
+	v_comp.set_proper_velocity(Vector2.ZERO)
+	v_comp.set_gravity_velocity(Vector2.ZERO)
 	visible = true
 	in_control = true
 	process_mode = Node.PROCESS_MODE_INHERIT
@@ -640,6 +646,7 @@ func move_smoothly(global_pos : Vector2, duration : float) -> void:
 func gain_mana(value : int) -> void:
 	var true_value : int = min(max_mana - mana, value)
 	mana += true_value
+	HudHandler.hud.gain_mana(true_value)
 
 func heal_on_bench() -> void:
 	health_man.gain_health(health_man.max_health)
@@ -648,3 +655,16 @@ func heal_on_bench() -> void:
 func _on_fire_component_caught_fire() -> void:
 	fire_comp.effect_ended.connect(health_man.stop_burning, 4)
 	health_man.start_burning(1.0)
+
+func increase_total_health() -> void:
+	health_man.max_health += 1
+	HudHandler.hud.add_heart()
+	health_man.gain_health(health_man.max_health)
+
+func increase_max_mana() -> void:
+	max_mana += 1
+	HudHandler.hud.init_mana(max_mana)
+	gain_mana(max_mana)
+
+func _on_health_manager_gained_health(amount: int) -> void:
+	HudHandler.hud.gain_hearts(amount)

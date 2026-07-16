@@ -51,10 +51,11 @@ grow_horizontal = 2
 grow_vertical = 2
 color = Color(0, 0, 0, 1)
 
-[node name="TitleScreen" parent="UILayer" unique_id=980632050 node_paths=PackedStringArray("game") instance=ExtResource("2_i3fi7")]
+[node name="TitleScreen" parent="UILayer" unique_id=980632050 node_paths=PackedStringArray("game", "save_file_buttons") instance=ExtResource("2_i3fi7")]
 offset_top = 1.0
 offset_bottom = 1.0
 game = NodePath("../GameViewportContainer/GameViewport/Game")
+save_file_buttons = []
 
 [node name="GameCanvasLayer" type="CanvasLayer" parent="." unique_id=600997667]
 visible = false

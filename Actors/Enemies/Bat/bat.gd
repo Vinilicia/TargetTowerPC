@@ -119,8 +119,8 @@ func _physics_process(_delta: float) -> void:
 func move_for(duration: float, direction: Vector2, speed: float, to_do: Callable = func() -> void: pass) -> void:
 	if stopping_tween and stopping_tween.is_running():
 		stopping_tween.kill()
-	if move_timer.is_connected("timeout", Callable(self, "_on_move_timeout")):
-		move_timer.timeout.disconnect(Callable(self, "_on_move_timeout"))
+	if move_timer.is_connected("timeout", _on_move_timeout):
+		move_timer.timeout.disconnect(_on_move_timeout)
 
 	current_to_do = to_do
 	moving = true

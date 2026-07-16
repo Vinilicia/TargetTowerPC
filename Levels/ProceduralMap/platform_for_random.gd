@@ -1,6 +1,6 @@
 extends TileMapLayer
 
-var can_down = false
+var can_down : bool = false
 	
 func _on_player_entered(body: Node2D) -> void:
 	can_down = true

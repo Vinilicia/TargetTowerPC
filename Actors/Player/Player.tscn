@@ -36,7 +36,6 @@ ice_comp = NodePath("Hurtbox/IceComponent")
 jump_buffer_duration = 0.1
 arrow_paths = Array[String](["res://Arrows/Common_Arrow.tscn", "res://Arrows/Fire_Arrow.tscn", "res://Arrows/Platform_Arrow.tscn", "res://Arrows/Teleport_Arrow.tscn", "res://Arrows/Ice_Arrow.tscn", "res://Arrows/Wind_Arrow.tscn", "res://Arrows/Phantom_Arrow.tscn", "res://Arrows/Shock_Arrow.tscn"])
 arrow_cooldown = 0.3
-mana_regen_time = 0.01
 dodge_duration = 0.3
 dodge_side_speed = 250.0
 dodge_up_speed = 160.0
@@ -182,6 +181,7 @@ position = Vector2(-24, -26)
 [connection signal="mana_changed" from="." to="." method="_on_mana_changed"]
 [connection signal="took_damage" from="." to="Misc/AnimHandler" method="_on_player_took_damage"]
 [connection signal="timeout" from="Misc/DodgeCancelTimer" to="." method="_on_dodge_cancel_timer_timeout"]
+[connection signal="gained_health" from="Misc/HealthManager" to="." method="_on_health_manager_gained_health"]
 [connection signal="lost_health" from="Misc/HealthManager" to="." method="_on_health_manager_lost_health"]
 [connection signal="timeout" from="Misc/ManaRegenTimer" to="." method="_on_mana_regen_timer_timeout"]
 [connection signal="took_damage" from="Hurtbox" to="Misc/HealthManager" method="lose_health"]

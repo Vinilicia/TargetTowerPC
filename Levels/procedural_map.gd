@@ -22,9 +22,9 @@ func _ready() -> void:
 	spaw_final_level()
 
 func spaw_initial_level() -> void:
-	var initial_level = initial_level_scene.instantiate()
+	var initial_level : Node2D = initial_level_scene.instantiate()
 	initial_level.position = Vector2i(0, 0)
-	var r = randi_range(0, 1)
+	var r := randi_range(0, 1)
 	initial_level.setup(r)
 	add_child(initial_level)
 	player.global_position = Vector2i(0, -50)
@@ -32,8 +32,8 @@ func spaw_initial_level() -> void:
 	actual_x = initial_level.x * 16
 	
 func spaw_final_level() -> void:
-	var final_level = final_level_scene.instantiate()
-	var direction = -1
+	var final_level : Node2D = final_level_scene.instantiate()
+	var direction : int = -1
 	if last_exit == 0:
 		direction = 1
 	actual_x = actual_x + direction * 16 * 16
@@ -42,7 +42,7 @@ func spaw_final_level() -> void:
 	add_child(final_level)
 	
 func spaw_next_level() -> void:
-	var level = random_level()
+	var level : Node2D = random_level()
 	level.setup(Vector2i(1 - last_exit, 0))
 	if last_exit == 0:
 		actual_x = actual_x + level.max_x/2 * 16
@@ -60,25 +60,25 @@ func spaw_next_level() -> void:
 		else:
 			actual_x = actual_x - level.max_x * 16
 		
-	var r = randf() * 100.0
+	var r : float = randf() * 100.0
 	last_exit = level.level_exit.x
 	if r < 50:
 		spaw_corridors()
 	
 func random_level() -> Node2D:
-	var r = randi() % 100
+	var r : int = randi() % 100
 	if r < 70:
 		return small_level_scene.instantiate()
 	else:
 		return medium_level_scene.instantiate()
 
 func spaw_corridors() -> void:
-	var number_of_corridors = randi_range(2, 3)
-	var direction = -1
+	var number_of_corridors : int = randi_range(2, 3)
+	var direction : int = -1
 	if last_exit == 0:
 		direction = 1
 	for i in range(number_of_corridors):
-		var corridor = corridor_scene.instantiate()
+		var corridor : Node2D = corridor_scene.instantiate()
 		actual_x = actual_x + direction * 4 * 16
 		corridor.position = Vector2i(actual_x, actual_y)
 		actual_x = actual_x + direction * 4 * 16

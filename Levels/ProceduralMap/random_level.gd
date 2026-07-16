@@ -27,7 +27,7 @@ func _ready() -> void:
 		#level_exit.x = 1 - level_entrance.x
 		#level_exit.y = level_entrance.y
 	#else:
-	var r = randf() * 100.0
+	var r : float = randf() * 100.0
 	if r < 65:
 		level_exit.x = level_entrance.x
 	else:
@@ -50,19 +50,19 @@ func remove_barrier(entrance : Vector2i) -> void:
 		x = -max_x/2
 	else:
 		x = max_x/2 - 1
-	var y = -entrance.y * 6
+	var y : int = -entrance.y * 6
 	ground_tilemap.erase_cell(Vector2i(x, y-1))
 	ground_tilemap.erase_cell(Vector2i(x, y-2))
 	ground_tilemap.erase_cell(Vector2i(x, y-3))
 	
 func set_platform_position() -> void:
-	var r = randi_range(0, spaces_to_fill-1)
+	var r : int = randi_range(0, spaces_to_fill-1)
 	while r == platform_last_position:
 		r = randi_range(0, spaces_to_fill-1)
 	platform_position = r
 	
-	var x = (max_x/2 - 6) - 8 * platform_position
-	var y = -actual_floor * 6
+	var x : int = (max_x/2 - 6) - 8 * platform_position
+	var y : int = -actual_floor * 6
 	ground_tilemap.erase_cell(Vector2i(x-1, y-5))
 	ground_tilemap.erase_cell(Vector2i(x-2, y-5))
 	ground_tilemap.erase_cell(Vector2i(x-3, y-5))
@@ -77,34 +77,34 @@ func set_platform_position() -> void:
 	ground_tilemap.set_cells_terrain_connect([Vector2i(x, y-5)], 0, 0, false)
 	ground_tilemap.set_cells_terrain_connect([Vector2i(x, y-5)], 0, 0, false)
 	
-	var platoform = platform_scene.instantiate()
+	var platform : Node2D = platform_scene.instantiate()
 	x = (x - 2) * 16
 	y = (y - 3) * 16
-	platoform.position = Vector2(x, y)
-	add_child(platoform)
+	platform.position = Vector2(x, y)
+	add_child(platform)
 	r = randf_range(0,1)
 	if r < 0.4:
-		var spider = spider_scene.instantiate()
+		var spider : Enemy = spider_scene.instantiate()
 		spider.position = Vector2(x,y-5)
 		add_child(spider)
 	
 func fill_enemies() -> void:
-	var x
-	var y = -actual_floor * 6
+	var x : int 
+	var y : int = -actual_floor * 6
 	for i in range(spaces_to_fill):
 		if i != platform_last_position and i != platform_position:
 			x = (max_x/2 - 6) - 8 * i
 			
-			var pr = randf() * 100.0
+			var pr : float = randf() * 100.0
 			if pr < 50:
 				decorations_tilemap.set_cell(Vector2i(x-1, y-1), 1, Vector2i(0,0))
 				decorations_tilemap.set_cell(Vector2i(x, y-1), 1, Vector2i(1,0))
 				decorations_tilemap.set_cell(Vector2i(x+1, y-1), 1, Vector2i(0,0))
 					
 			x = (x - 2)
-			var r = randf() * 100.0
+			var r : float = randf() * 100.0
 			if r < 25:
-				var goblin = goblin_scene.instantiate()
+				var goblin : Enemy = goblin_scene.instantiate()
 				goblin.position = Vector2(x*16,y*16-2)
 				add_child(goblin)
 			elif r < 50:
@@ -112,21 +112,21 @@ func fill_enemies() -> void:
 				ground_tilemap.set_cells_terrain_connect([Vector2i(x-1, y-1)], 0, 0, false)
 				ground_tilemap.set_cells_terrain_connect([Vector2i(x, y-2)], 0, 0, false)
 				ground_tilemap.set_cells_terrain_connect([Vector2i(x-1, y-2)], 0, 0, false)
-				var slime = slime_scene.instantiate()
+				var slime : Enemy = slime_scene.instantiate()
 				slime.position = Vector2(x*16,(y-2)*16-2)
 				add_child(slime)
 			elif r < 75:
-				var bat = bat_scene.instantiate()
+				var bat : Enemy = bat_scene.instantiate()
 				bat.position = Vector2(x*16,y*16-(4*16))
 				add_child(bat)
 
 func fill_flags() -> void:
-	var x = max_x/2 - 6
-	var y = -actual_floor * 6 - 3
-	var r
-	var i
-	var j
-	var possible_j = [0, 2]
+	var x : float = max_x/2 - 6
+	var y : float = -actual_floor * 6 - 3
+	var r : float
+	var i : float
+	var j : float
+	var possible_j : Array[int] = [0, 2]
 	while x > -max_x/2 + 4:
 		r = randf() * 100
 		if r < 70:
@@ -136,7 +136,7 @@ func fill_flags() -> void:
 		x -= 6
 		
 func draw_edges() -> void:
-	var x = -max_x/2
+	var x : int = -max_x/2
 	ground_tilemap.set_cells_terrain_connect([Vector2i(x, 0)], 0, 0, false)
 	ground_tilemap.set_cells_terrain_connect([Vector2i(x, 1)], 0, 0, false)
 	for y in range((max_y+1) * 6):

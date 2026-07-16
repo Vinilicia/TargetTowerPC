@@ -13,7 +13,7 @@ func init_arrow_textures(save_data : SaveDataResource) -> void:
 
 func initialize() -> void:
 	if SaveManager._load(save_slot):
-		var save_data = SaveManager.save_file_data as SaveDataResource
+		var save_data : SaveDataResource = SaveManager.save_file_data
 		if save_data == null:
 			push_error("save_data é nulo no slot %d!" % save_slot)
 			return
